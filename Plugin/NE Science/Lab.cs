@@ -30,9 +30,6 @@ namespace NE_Science
         public float TestPointsPerHour = 0;
 
         [KSPField(isPersistant = false)]
-        public float ExposureTimePerHour = 0;
-
-        [KSPField(isPersistant = false)]
         public float ChargePerTestPoint = 0;
 
         [KSPField(isPersistant = false)]
@@ -71,23 +68,23 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = false, guiName = "Testpoints")]
         public string testRunsStatus = "";
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Exposure Time")]
-        public string exposureTimeStatus = "";
+        
+
+        protected List<Generator> generators;
 
         protected virtual bool isActive()
         {
             return doResearch && part.protoModuleCrew.Count >= minimumCrew && !ExperimentCore.checkBoring(vessel, false);
         }
 
-        private void displayStatusMessage(string s)
+        protected virtual void displayStatusMessage(string s)
         {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
             Fields["testRunsStatus"].guiActive = false;
-            Fields["exposureTimeStatus"].guiActive = false;
         }
 
-        private V getOrDefault<K, V>(Dictionary<K, V> dict, K key)
+        protected V getOrDefault<K, V>(Dictionary<K, V> dict, K key)
         {
             try
             {
@@ -127,50 +124,33 @@ namespace NE_Science
                 }
                 Fields["testRunsStatus"].guiActive = (testRunsStatus != "");
 
-                exposureTimeStatus = "";
-                var er = getOrDefault(ExposureTimeGenerator.rates, "ExposureTime");
-                if (er != null)
-                {
-                    if (er.last_available == 0)
-                        exposureTimeStatus = "No Experiments";
-                    else
-                        exposureTimeStatus = String.Format("{0:F2} per hour", -er.ratePerHour * er.rateMultiplier);
-                }
-                Fields["exposureTimeStatus"].guiActive = (exposureTimeStatus != "");
-                checkStatusLabRunning();
+                updateLabStatus();
             }
         }
 
-        public virtual void checkStatusLabRunning()
+        protected virtual void updateLabStatus()
         {
-            return;
         }
 
         double owed_time = 0;
 
-        public Generator TestPointsGenerator, ExposureTimeGenerator;
+        public Generator TestPointsGenerator;
 
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
-            //this.moduleName = "Research Facility";
             if (state == StartState.Editor) {
                 return; }
             this.part.force_activate();
-
+            generators = new List<Generator>();
             TestPointsGenerator = new Generator(this.part);
-            ExposureTimeGenerator = new Generator(this.part);
+            
             if (TestPointsPerHour > 0)
             {
                 TestPointsGenerator.addRate("TestPoints", -TestPointsPerHour);
                 if (ChargePerTestPoint > 0)
                     TestPointsGenerator.addRate("ElectricCharge", ChargePerTestPoint);
-
-            }
-
-            if (ExposureTimePerHour > 0)
-            {
-                ExposureTimeGenerator.addRate("ExposureTime", -ExposureTimePerHour);
+                generators.Add(TestPointsGenerator);
             }
 
             if (LastActive > 0)
@@ -410,8 +390,10 @@ namespace NE_Science
         {
             if (isActive())
             {
-                TestPointsGenerator.doTimeStep(TimeWarp.fixedDeltaTime + owed_time);
-                ExposureTimeGenerator.doTimeStep(TimeWarp.fixedDeltaTime + owed_time);
+                foreach (Generator gen in generators)
+                {
+                    gen.doTimeStep(TimeWarp.fixedDeltaTime + owed_time);
+                }
                 owed_time = 0;
                 LastActive = Planetarium.GetUniversalTime();
             }
@@ -431,8 +413,7 @@ namespace NE_Science
                 ret += "Researchers required: " + minimumCrew;
             if (TestPointsPerHour > 0)
                 ret += (ret == "" ? "" : "\n") + "Testpoints per hour: " + TestPointsPerHour;
-            if (ExposureTimePerHour > 0)
-                ret += (ret == "" ? "" : "\n") + "Exposure Time per hour: " + ExposureTimePerHour;
+            
             return ret;
         }
     }
