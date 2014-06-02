@@ -33,6 +33,7 @@ namespace NE_Science
         public const int RUNNING = 2;
         public const int FINISHED = 3;
         public const int FINALIZED = 4;
+        public const int ERROR = 5;
 
 
         [KSPField(isPersistant = false)]
@@ -70,10 +71,11 @@ namespace NE_Science
         public string runningStatus = "Running";
         public string finishedStatus = "Research done";
         public string finalizedStatus = "Finalized";
+        public string errorStatus = "Lab Failure";
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
-            //return false;
+            return false;
             //TODO eneable
             if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
             {
@@ -130,14 +132,16 @@ namespace NE_Science
             }
             if (checkBoring(vessel, true)) return;
 
-            experimentStarted();
-            PartResource eurekas = setResourceMaxAmount("Eurekas", eurekasRequired);
-            PartResource kuarqs = setResourceMaxAmount("Kuarqs", kuarqsRequired);
-            PartResource bioproducts = setResourceMaxAmount("Bioproducts", bioproductsRequired);
-            PartResource testPoints = setResourceMaxAmount("TestPoints", testPointsRequired);
-            PartResource exposureTime = setResourceMaxAmount("ExposureTime", exposureTimeRequired);
-            
-            ScreenMessages.PostScreenMessage("Started experiment!", 6, ScreenMessageStyle.UPPER_CENTER);
+            if (experimentStarted())
+            {
+                PartResource eurekas = setResourceMaxAmount("Eurekas", eurekasRequired);
+                PartResource kuarqs = setResourceMaxAmount("Kuarqs", kuarqsRequired);
+                PartResource bioproducts = setResourceMaxAmount("Bioproducts", bioproductsRequired);
+                PartResource testPoints = setResourceMaxAmount("TestPoints", testPointsRequired);
+                PartResource exposureTime = setResourceMaxAmount("ExposureTime", exposureTimeRequired);
+
+                ScreenMessages.PostScreenMessage("Started experiment!", 6, ScreenMessageStyle.UPPER_CENTER);
+            }
         }
 
 
@@ -259,6 +263,12 @@ namespace NE_Science
                     Events["DeployExperiment"].active = false;
                     expStatus = finalizedStatus;
                     break;
+                case ERROR:
+                    Events["StartExperiment"].active = false;
+                    Events["DeployExperiment"].active = false;
+                    expStatus = errorStatus;
+                    checkLabFixed();
+                    break;
             }
         }
 
@@ -275,7 +285,10 @@ namespace NE_Science
             }
         }
 
-        
+        public virtual void checkLabFixed()
+        {
+
+        }
 
         public virtual void checkUndocked()
         {
@@ -348,12 +361,13 @@ namespace NE_Science
             state = READY;
         }
 
-        public virtual void experimentStarted()
+        public virtual bool experimentStarted()
         {
             NE_Helper.log("Exp started");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             state = RUNNING;
+            return true;
         }
 
         public virtual void finished()
@@ -362,6 +376,22 @@ namespace NE_Science
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = deployChecks(false);
             state = FINISHED;
+        }
+
+        public virtual void error()
+        {
+            NE_Helper.log("Lab Error");
+            Events["StartExperiment"].active = false;
+            Events["DeployExperiment"].active = deployChecks(false);
+            state = ERROR;
+        }
+
+        public virtual void labFixed()
+        {
+            NE_Helper.log("Lab Fixed");
+            Events["StartExperiment"].active = false;
+            Events["DeployExperiment"].active = deployChecks(false);
+            state = RUNNING;
         }
 
         public virtual void finalized()

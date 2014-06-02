@@ -1,7 +1,7 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
  *   
- *   Part of the code may originate from Station Science ba ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
+ *   Part of the code may originate from Station Science by ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
  * 
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    class ExposureExperiment:ExperimentCore
+    class ExposureExperiment : ExperimentCore
     {
         [KSPField(isPersistant = true)]
         public int expID = 0;
@@ -36,7 +36,7 @@ namespace NE_Science
             bool labFound = false;
             foreach (ExposureLab lab in allExpLabs)
             {
-                if (lab.vessel == this.vessel && !lab.running)
+                if (lab.vessel == this.vessel && lab.isReady())
                 {
                     labFound = true;
                     break;
@@ -66,7 +66,12 @@ namespace NE_Science
             bool labFound = false;
             foreach (ExposureLab lab in allExpLabs)
             {
-                if (lab.vessel == this.vessel && lab.running && lab.expID == expID)
+                if (lab.vessel == this.vessel && lab.isRunning() && lab.expID == expID)
+                {
+                    labFound = true;
+                    break;
+                }
+                else if (lab.vessel == this.vessel && lab.hasError() && lab.expID == expID)
                 {
                     labFound = true;
                     break;
@@ -83,28 +88,41 @@ namespace NE_Science
             }
         }
 
+        public override void checkLabFixed()
+        {
+            List<ExposureLab> allExpLabs = new List<ExposureLab>(GameObject.FindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
+            foreach (ExposureLab lab in allExpLabs)
+            {
+                if (lab.vessel == this.vessel && lab.isRunning() && lab.expID == expID)
+                {
+                    labFixed();
+                    break;
+                }
+            }
+        }
+
         public override void biomeChanged()
         {
             base.biomeChanged();
-            stopLab();
+            stopLab(false);
         }
 
         public override void undockedRunningExp()
         {
             base.undockedRunningExp();
-            stopLab();
+            stopLab(false);
         }
 
-        public override void experimentStarted()
+        public override bool experimentStarted()
         {
-            
+
             List<ExposureLab> allExpLabs = new List<ExposureLab>(GameObject.FindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
             bool labFound = false;
             ExposureLab labf = null;
             NE_Helper.log("Looking for Exposure Lab");
             foreach (ExposureLab lab in allExpLabs)
             {
-                if (lab.vessel == this.vessel && !lab.running)
+                if (lab.vessel == this.vessel && lab.isReady())
                 {
                     labFound = true;
                     labf = lab;
@@ -121,22 +139,33 @@ namespace NE_Science
                 {
                     labf.startExperiment(this.experiment.experimentTitle, expID);
                     NE_Helper.log("Lab started expID: " + expID);
+                    base.experimentStarted();
+                    return true;
+
                 }
                 else
                 {
                     NE_Helper.log("labf null");
+                    return false;
                 }
-                base.experimentStarted();
+
             }
+            return false;
         }
 
         public override void finished()
         {
-            base.finished();
-            stopLab();
+            if (stopLab(true))
+            {
+                base.finished();
+            }
+            else
+            {
+                base.error();
+            }
         }
 
-        private bool stopLab()
+        private bool stopLab(bool finished)
         {
             List<ExposureLab> allExpLabs = new List<ExposureLab>(GameObject.FindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
             bool labFound = false;
@@ -145,8 +174,7 @@ namespace NE_Science
                 if (lab.expID == expID)
                 {
                     labFound = true;
-                    lab.stopExperiment();
-                    break;
+                    return lab.stopExperiment(finished);
                 }
             }
             return labFound;
