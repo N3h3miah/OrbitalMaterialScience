@@ -27,7 +27,12 @@ namespace NE_Science
 {
     class NE_Helper
     {
-        private static bool debug = false;
+        public const int MEP_NOT_READY = 0;
+        public const int MEP_READY = 1;
+        public const int MEP_RUNNING = 2;
+        public const int MEP_ERROR_ON_START = 3;
+        public const int MEP_ERROR_ON_STOP = 4;
+        private static bool debug = true;
 
         public static void log( string msg)
         {
