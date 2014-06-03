@@ -34,6 +34,12 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public float ExposureTimePerHour = 0;
 
+        [KSPField(isPersistant = false)]
+        public bool failures = true;
+
+        [KSPField(isPersistant = false)]
+        public int failurePercentage = 1;
+
         [KSPField(isPersistant = true)]
         [Obsolete]
         public bool running = false;
@@ -363,15 +369,31 @@ namespace NE_Science
             }
         }
 
-        private bool tempSuc = false;
+        //private bool tempSuc = false;
         private bool isSuccessfull()
         {
-            bool ret = tempSuc;
-            tempSuc = !tempSuc;
-            return ret;
-            int i = new System.Random().Next(100);
-            NE_Helper.log("ExpLab is successfull: " + i + " ; " + (i == 1));
-            return !(i == 1);
+            //bool ret = tempSuc;
+            //tempSuc = !tempSuc;
+            //return ret;
+            if (failures)
+            {
+                if (failurePercentage > 100)
+                {
+                    failurePercentage = 100;
+                }
+                if (failurePercentage < 1)
+                {
+                    failurePercentage = 1;
+                }
+
+                int i = new System.Random().Next(1, (100 / failurePercentage)+1);
+                NE_Helper.log("ExpLab is successfull: " + !(i == 1) + " ; " + i + " ; percentage: " + failurePercentage);
+                return !(i == 1);
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private void playAnimation(string animName, float speed, float time)
