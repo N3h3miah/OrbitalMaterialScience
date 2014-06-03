@@ -133,8 +133,9 @@ namespace NE_Science
             switch (MEPlabState)
             {
                 case NE_Helper.MEP_ERROR_ON_START:
-                    MEPlabState = NE_Helper.MEP_READY;
+                    MEPlabState = NE_Helper.MEP_RUNNING;
                     playAnimation(errorOnStartAnimName, -1f, 1f);
+                    StartCoroutine(playAninimationAfter(5.8f,startExpAnimName, 1f, 0));
                     break;
                 case NE_Helper.MEP_ERROR_ON_STOP:
                     MEPlabState = NE_Helper.MEP_RUNNING;
@@ -142,6 +143,13 @@ namespace NE_Science
                     break;
             }
             stopWarnLights();
+        }
+        System.Collections.IEnumerator playAninimationAfter(float seconds, string animation, float speed, float normalizedTime)
+        {
+            NE_Helper.log("Wait for animation: " + seconds);
+            yield return new WaitForSeconds(seconds);
+            NE_Helper.log("Time over");
+            playAnimation(animation, speed, normalizedTime);
         }
 
 
@@ -327,6 +335,17 @@ namespace NE_Science
 
         }
 
+        System.Collections.IEnumerator ErrorCallback(float seconds, int targetState)
+        {
+            NE_Helper.log("Wait for animation: " + seconds);
+            yield return new WaitForSeconds(seconds);
+            NE_Helper.log("Time over");
+            startWarnLights();
+            ScreenMessages.PostScreenMessage("Warning: robotic arm failure", 6, ScreenMessageStyle.UPPER_CENTER);
+            MEPlabState = targetState;
+        }
+
+
         private void startWarnLights()
         {
 
@@ -412,17 +431,7 @@ namespace NE_Science
             }
         }
 
-        System.Collections.IEnumerator ErrorCallback(float seconds, int targetState)
-        {
-            NE_Helper.log("Wait for animation: " + seconds);
-            yield return new WaitForSeconds(seconds);
-            NE_Helper.log("Time over");
-            startWarnLights();
-            ScreenMessages.PostScreenMessage("Warning: robotic arm failure", 6, ScreenMessageStyle.UPPER_CENTER);
-            MEPlabState = targetState;
-        }
-
-        public override string GetInfo()
+       public override string GetInfo()
         {
             String ret = base.GetInfo();
             ret += (ret == "" ? "" : "\n") + "Exposure Time per hour: " + ExposureTimePerHour;
