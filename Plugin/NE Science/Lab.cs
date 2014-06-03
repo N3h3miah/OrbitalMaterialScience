@@ -26,11 +26,6 @@ namespace NE_Science
 {
     class Lab : PartModule
     {
-        [KSPField(isPersistant = false)]
-        public float TestPointsPerHour = 0;
-
-        [KSPField(isPersistant = false)]
-        public float ChargePerTestPoint = 0;
 
         [KSPField(isPersistant = false)]
         public int minimumCrew = 0;
@@ -65,10 +60,9 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = false, guiName = "Lab Status")]
         public string labStatus = "";
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Testpoints")]
-        public string testRunsStatus = "";
 
-        
+
+
 
         protected List<Generator> generators;
 
@@ -81,7 +75,6 @@ namespace NE_Science
         {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
-            Fields["testRunsStatus"].guiActive = false;
         }
 
         protected V getOrDefault<K, V>(Dictionary<K, V> dict, K key)
@@ -112,18 +105,6 @@ namespace NE_Science
             }
             else
             {
-                Fields["labStatus"].guiActive = false;
-                testRunsStatus = "";
-                var r = getOrDefault(TestPointsGenerator.rates,"TestPoints");
-                if (r != null && isActive())
-                {
-                    if (r.last_available == 0)
-                        testRunsStatus = "No Experiments";
-                    else
-                        testRunsStatus = String.Format("{0:F2} per hour", -r.ratePerHour * r.rateMultiplier);
-                }
-                Fields["testRunsStatus"].guiActive = (testRunsStatus != "");
-
                 updateLabStatus();
             }
         }
@@ -134,24 +115,15 @@ namespace NE_Science
 
         double owed_time = 0;
 
-        public Generator TestPointsGenerator;
-
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
-            if (state == StartState.Editor) {
-                return; }
+            if (state == StartState.Editor)
+            {
+                return;
+            }
             this.part.force_activate();
             generators = new List<Generator>();
-            TestPointsGenerator = new Generator(this.part);
-            
-            if (TestPointsPerHour > 0)
-            {
-                TestPointsGenerator.addRate("TestPoints", -TestPointsPerHour);
-                if (ChargePerTestPoint > 0)
-                    TestPointsGenerator.addRate("ElectricCharge", ChargePerTestPoint);
-                generators.Add(TestPointsGenerator);
-            }
 
             if (LastActive > 0)
             {
@@ -242,7 +214,7 @@ namespace NE_Science
                     this.resource = _resource;
                     this.ratePerHour = _ratePerHour;
                     isScience = (resource.Length >= SCIENCE_PREFIX.Length && resource.Substring(0, SCIENCE_PREFIX.Length) == "__SCIENCE__");
-                    if(isScience)
+                    if (isScience)
                         subjectString = resource.Substring(SCIENCE_PREFIX.Length);
                 }
 
@@ -252,7 +224,8 @@ namespace NE_Science
 
                 public readonly string subjectString = "";
 
-                public ScienceSubject getSubject() {
+                public ScienceSubject getSubject()
+                {
                     return ScienceHelper.getScienceSubject(subjectString, owner.part.vessel);
                 }
 
@@ -288,13 +261,14 @@ namespace NE_Science
                 private string subjOwedId = "";
                 public double rateMultiplier = 1;
 
-                public double requestResource(double amount) {
+                public double requestResource(double amount)
+                {
                     if (isScience)
                     {
                         if (amount < 0)
                         {
                             ScienceSubject subject = getSubject();
-                            if(subject != null)
+                            if (subject != null)
                             {
                                 double cap = subject.scienceCap;
                                 double curve_base = (cap - 1) / (cap);
@@ -361,7 +335,7 @@ namespace NE_Science
                 }
                 return ret;
             }
-            
+
             public void doTimeStep(double seconds)
             {
                 //print("doTimeStep: " + seconds);
@@ -399,8 +373,6 @@ namespace NE_Science
             }
             else
             {
-                //owed_eurekas = 0;
-                //last_rate = 0;
                 LastActive = 0;
             }
             updateStatus();
@@ -411,8 +383,6 @@ namespace NE_Science
             string ret = "";
             if (minimumCrew > 0)
                 ret += "Researchers required: " + minimumCrew;
-            if (TestPointsPerHour > 0)
-                ret += (ret == "" ? "" : "\n") + "Testpoints per hour: " + TestPointsPerHour;
             
             return ret;
         }
