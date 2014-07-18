@@ -47,6 +47,9 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public int expID = -1;
 
+        [KSPField(isPersistant = true)]
+        public int armOps = 0;
+
         [KSPField(isPersistant = false, guiActive = false, guiName = "Exposure Time")]
         public string exposureTimeStatus = "";
 
@@ -130,26 +133,39 @@ namespace NE_Science
         public void FixArm()
         {
             Events["FixArm"].guiActiveUnfocused = false;
+            armOps = 0;
             switch (MEPlabState)
             {
                 case NE_Helper.MEP_ERROR_ON_START:
                     MEPlabState = NE_Helper.MEP_RUNNING;
                     playAnimation(errorOnStartAnimName, -1f, 1f);
+                    ScreenMessages.PostScreenMessage("Robotic arm fixed. Experiment will start soon.", 2, ScreenMessageStyle.UPPER_CENTER);
                     StartCoroutine(playAninimationAfter(5.8f,startExpAnimName, 1f, 0));
                     break;
                 case NE_Helper.MEP_ERROR_ON_STOP:
-                    MEPlabState = NE_Helper.MEP_RUNNING;
+                    ScreenMessages.PostScreenMessage("Robotic arm fixed.", 2, ScreenMessageStyle.UPPER_CENTER);
                     playAnimation(errorOnStopAnimName, 1f, 0f);
+                    StartCoroutine(waitForAnimation(5.8f));
                     break;
             }
             stopWarnLights();
         }
+
         System.Collections.IEnumerator playAninimationAfter(float seconds, string animation, float speed, float normalizedTime)
         {
             NE_Helper.log("Wait for animation: " + seconds);
             yield return new WaitForSeconds(seconds);
             NE_Helper.log("Time over");
-            playAnimation(animation, speed, normalizedTime);
+            playAnimation(animation, speed, normalizedTime);  
+        }
+
+        System.Collections.IEnumerator waitForAnimation(float seconds)
+        {
+            NE_Helper.log("Wait for animation: " + seconds);
+            yield return new WaitForSeconds(seconds);
+            NE_Helper.log("Time over");
+            MEPlabState = NE_Helper.MEP_RUNNING;
+
         }
 
 
@@ -276,10 +292,12 @@ namespace NE_Science
                 expID = expIDp;
                 playAnimation(startExpAnimName, 1f, 0f);
                 NE_Helper.log("Experiment Started");
+                armOps++;
                 return true;
             }
             else
             {
+                armOps++;
                 errorOnStart(expIDp, name);
                 NE_Helper.log("Failure during start");
                 return false;
@@ -292,6 +310,7 @@ namespace NE_Science
             {
                 if (isSuccessfull())
                 {
+                    armOps++;
                     MEPlabState = NE_Helper.MEP_READY;
                     experimentName = "No Experiment";
                     expID = -1;
@@ -300,6 +319,7 @@ namespace NE_Science
                 }
                 else
                 {
+                    armOps++;
                     errorOnStop();
                     return false;
                 }
@@ -404,9 +424,9 @@ namespace NE_Science
                 {
                     failurePercentage = 1;
                 }
-
-                int i = new System.Random().Next(1, (100 / failurePercentage)+1);
-                NE_Helper.log("ExpLab is successfull: " + !(i == 1) + " ; " + i + " ; percentage: " + failurePercentage);
+                int actFailurePerc = failurePercentage + (int)(armOps * 1.5f);
+                int i = new System.Random().Next(1, (100 / actFailurePerc + 1));
+                NE_Helper.log("ExpLab is successfull: " + !(i == 1) + " ; " + i + " ; percentage: " + failurePercentage + "% armOps: " + armOps + " actual percentage: " + actFailurePerc + "%:");
                 return !(i == 1);
             }
             else

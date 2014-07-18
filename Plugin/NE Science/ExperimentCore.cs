@@ -75,7 +75,7 @@ namespace NE_Science
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
-            return false;
+            //return false;
             //TODO eneable
             if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
             {
