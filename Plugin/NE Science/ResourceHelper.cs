@@ -86,7 +86,7 @@ namespace NE_Science
             var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
             if (res_def == null) return 0;
-            part.GetConnectedResources(res_def.id, res_set);
+            part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
             if (res_set == null) return 0;
             return sumDemand(res_set);
         }
@@ -107,7 +107,7 @@ namespace NE_Science
             var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
             if (res_def == null) return 0;
-            part.GetConnectedResources(res_def.id, res_set);
+			part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
             if (res_set == null) return 0;
             return sumAvailable(res_set);
         }
