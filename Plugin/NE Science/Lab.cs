@@ -293,7 +293,8 @@ namespace NE_Science
                         else
                             rateMultiplier = 1;
                         double sci_before = ResearchAndDevelopment.Instance.Science;
-                        ResearchAndDevelopment.Instance.Science += (float)(-amount + owed);
+                        /* MKW - Which TransactionReason should we use?? */
+                        ResearchAndDevelopment.Instance.AddScience ((float)(-amount + owed), TransactionReasons.ScienceTransmission);
                         owed = (-amount + owed + sci_before) - ((double)ResearchAndDevelopment.Instance.Science);
                         return sci_before - ResearchAndDevelopment.Instance.Science;
                     }
