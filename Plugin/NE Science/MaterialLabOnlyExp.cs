@@ -61,6 +61,8 @@ namespace NE_Science
             }
         }
 
+        
+
         public override void checkUndocked()
         {
             List<PhysicsMaterialsLab> allPhysicsLabs = new List<PhysicsMaterialsLab>(GameObject.FindObjectsOfType(typeof(PhysicsMaterialsLab)) as PhysicsMaterialsLab[]);
@@ -89,6 +91,11 @@ namespace NE_Science
             double numTestPoints = getResourceAmount("TestPoints");
 
             return Math.Round(numTestPoints, 2) >= testPointsRequired;
+        }
+
+        public override void stopResearch()
+        {
+            stopResearch("TestPoints");
         }
 
         public override string GetInfo()

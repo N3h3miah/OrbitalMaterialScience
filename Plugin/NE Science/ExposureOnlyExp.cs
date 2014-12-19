@@ -195,6 +195,11 @@ namespace NE_Science
             return Math.Round(numExposureTime, 2) >= exposureTimeRequired;
         }
 
+        public override void stopResearch()
+        {
+            stopResearch("TestPoints");
+        }
+
         public override string GetInfo()
         {
             string ret = base.GetInfo();
