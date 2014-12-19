@@ -35,11 +35,6 @@ namespace NE_Science
         public const int FINALIZED = 4;
         public const int ERROR = 5;
 
-        [KSPField(isPersistant = false)]
-        public int testPointsRequired;
-
-        [KSPField(isPersistant = false)]
-        public int exposureTimeRequired;
 
         [KSPField(isPersistant = true)]
         public string last_subjectId = "";
@@ -117,11 +112,16 @@ namespace NE_Science
 
             if (experimentStarted())
             {
-                PartResource testPoints = setResourceMaxAmount("TestPoints", testPointsRequired);
-                PartResource exposureTime = setResourceMaxAmount("ExposureTime", exposureTimeRequired);
+                createResources();
 
                 ScreenMessages.PostScreenMessage("Started experiment!", 6, ScreenMessageStyle.UPPER_CENTER);
             }
+        }
+
+        //Create the resources needed to finish the Experiment. Subclasses should override this.
+        public virtual void createResources()
+        {
+            
         }
 
 
@@ -242,12 +242,17 @@ namespace NE_Science
 
         public virtual void checkFinished()
         {
-            double numTestPoints = getResourceAmount("TestPoints");
-            double numExposureTime = getResourceAmount("ExposureTime");
-            if(Math.Round(numTestPoints, 2) >= testPointsRequired && Math.Round(numExposureTime, 2) >= exposureTimeRequired)
+            
+            if(isFinished())
             {
                 finished();
             }
+        }
+
+        public virtual bool isFinished()
+        {
+
+            return true;
         }
 
         public virtual void checkLabFixed()
@@ -378,16 +383,6 @@ namespace NE_Science
         public override string GetInfo()
         {
             string ret = "";
-            if (testPointsRequired > 0)
-            {
-                if (ret != "") ret += "\n";
-                ret += "Testpoints required: " + testPointsRequired;
-            }
-            if (exposureTimeRequired > 0)
-            {
-                if (ret != "") ret += "\n";
-                ret += "Exposure time required: " + exposureTimeRequired;
-            }
             return ret;
         }
     }

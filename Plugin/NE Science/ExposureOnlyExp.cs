@@ -27,6 +27,10 @@ namespace NE_Science
 {
     class ExposureExperiment : ExperimentCore
     {
+
+        [KSPField(isPersistant = false)]
+        public int exposureTimeRequired;
+
         [KSPField(isPersistant = true)]
         public int expID = 0;
 
@@ -180,9 +184,24 @@ namespace NE_Science
             return labFound;
         }
 
+        public override void createResources()
+        {
+            PartResource exposureTime = setResourceMaxAmount("ExposureTime", exposureTimeRequired);
+        }
+
+        public override bool isFinished()
+        {
+            double numExposureTime = getResourceAmount("ExposureTime");
+            return Math.Round(numExposureTime, 2) >= exposureTimeRequired;
+        }
+
         public override string GetInfo()
         {
             string ret = base.GetInfo();
+
+            if (ret != "") ret += "\n";
+            ret += "Exposure time required: " + exposureTimeRequired;
+
             if (ret != "") ret += "\n";
             ret += "You need a NE MEP-825 to run this Exeriment";
 

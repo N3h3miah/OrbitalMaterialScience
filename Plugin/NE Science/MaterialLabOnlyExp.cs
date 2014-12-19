@@ -28,6 +28,9 @@ namespace NE_Science
     class MaterialLabExperiment:ExperimentCore
     {
 
+        [KSPField(isPersistant = false)]
+        public int testPointsRequired;
+
         public override void checkForLabs(bool ready)
         {
             List<PhysicsMaterialsLab> allPhysicsLabs = new List<PhysicsMaterialsLab>(GameObject.FindObjectsOfType(typeof(PhysicsMaterialsLab)) as PhysicsMaterialsLab[]);
@@ -76,9 +79,25 @@ namespace NE_Science
             }
         }
 
+        public override void createResources()
+        {
+            PartResource testPoints = setResourceMaxAmount("TestPoints", testPointsRequired);
+        }
+
+        public override bool isFinished()
+        {
+            double numTestPoints = getResourceAmount("TestPoints");
+
+            return Math.Round(numTestPoints, 2) >= testPointsRequired;
+        }
+
         public override string GetInfo()
         {
             string ret = base.GetInfo();
+
+            if (ret != "") ret += "\n";
+            ret += "Testpoints required: " + testPointsRequired;
+
             if (ret != "") ret += "\n";
             ret += "You need a NE MSL-1000 to run this Exeriment.";
 
