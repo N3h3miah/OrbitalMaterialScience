@@ -35,27 +35,11 @@ namespace NE_Science
         public const int FINALIZED = 4;
         public const int ERROR = 5;
 
-
-        [KSPField(isPersistant = false)]
-        public int eurekasRequired;
-
         [KSPField(isPersistant = false)]
         public int testPointsRequired;
 
         [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
-
-        [KSPField(isPersistant = false)]
-        public int kuarqsRequired;
-
-        [KSPField(isPersistant = false)]
-        public float kuarqHalflife;
-
-        [KSPField(isPersistant = false, guiName = "Decay rate", guiUnits = " kuarqs/s", guiActive = false, guiFormat = "F2")]
-        public float kuarqDecay;
-
-        [KSPField(isPersistant = false)]
-        public int bioproductsRequired;
 
         [KSPField(isPersistant = true)]
         public string last_subjectId = "";
@@ -75,14 +59,14 @@ namespace NE_Science
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
-            //return false;
-            //TODO eneable
-            if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
-            {
-                if (msg) ScreenMessages.PostScreenMessage("Too boring here. Go to space!", 6, ScreenMessageStyle.UPPER_CENTER);
-                return true;
-            }
             return false;
+            //TODO eneable
+            //if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
+            //{
+            //    if (msg) ScreenMessages.PostScreenMessage("Too boring here. Go to space!", 6, ScreenMessageStyle.UPPER_CENTER);
+            //    return true;
+            //}
+            //return false;
         }
 
         public PartResource getResource(string name)
@@ -105,7 +89,6 @@ namespace NE_Science
             base.OnStart(state);
             if (state == StartState.Editor) { return; }
             NE_Helper.log("OnStart");
-            Fields["kuarqDecay"].guiActive = (kuarqsRequired > 0 && kuarqHalflife > 0);
             this.part.force_activate();
             switch(this.state){
                 case READY:
@@ -134,9 +117,6 @@ namespace NE_Science
 
             if (experimentStarted())
             {
-                PartResource eurekas = setResourceMaxAmount("Eurekas", eurekasRequired);
-                PartResource kuarqs = setResourceMaxAmount("Kuarqs", kuarqsRequired);
-                PartResource bioproducts = setResourceMaxAmount("Bioproducts", bioproductsRequired);
                 PartResource testPoints = setResourceMaxAmount("TestPoints", testPointsRequired);
                 PartResource exposureTime = setResourceMaxAmount("ExposureTime", exposureTimeRequired);
 
@@ -192,18 +172,6 @@ namespace NE_Science
         public override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
-            if (kuarqHalflife > 0 && kuarqsRequired > 0)
-            {
-                var kuarqs = getResource("Kuarqs");
-                if (kuarqs && kuarqs.amount < (.99 * kuarqsRequired))
-                {
-                    double decay = Math.Pow(.5, TimeWarp.fixedDeltaTime / kuarqHalflife);
-                    kuarqDecay = (float)((kuarqs.amount * (1 - decay)) / TimeWarp.fixedDeltaTime);
-                    kuarqs.amount = kuarqs.amount * decay;
-                }
-                else
-                    kuarqDecay = 0;
-            }
         }
 
         public void stopResearch(string resName)
@@ -274,12 +242,9 @@ namespace NE_Science
 
         public virtual void checkFinished()
         {
-            double numEurekas = getResourceAmount("Eurekas");
-            double numKuarqs = getResourceAmount("Kuarqs");
-            double numBioproducts = getResourceAmount("Bioproducts");
             double numTestPoints = getResourceAmount("TestPoints");
             double numExposureTime = getResourceAmount("ExposureTime");
-            if(Math.Round(numEurekas, 2) >= eurekasRequired && Math.Round(numTestPoints, 2) >= testPointsRequired && Math.Round(numExposureTime, 2) >= exposureTimeRequired && Math.Round(numKuarqs, 2) >= kuarqsRequired && Math.Round(numBioproducts, 2) >= bioproductsRequired - 0.001)
+            if(Math.Round(numTestPoints, 2) >= testPointsRequired && Math.Round(numExposureTime, 2) >= exposureTimeRequired)
             {
                 finished();
             }
@@ -297,9 +262,6 @@ namespace NE_Science
 
         public virtual void checkBiomeChange()
         {
-            double numEurekas = getResourceAmount("Eurekas");
-            double numKuarqs = getResourceAmount("Kuarqs");
-            double numBioproducts = getResourceAmount("Bioproducts");
             double numTestPoints = getResourceAmount("TestPoints");
             double numExposureTime = getResourceAmount("ExposureTime");
             int sciCount = GetScienceCount();
@@ -308,7 +270,7 @@ namespace NE_Science
             var subject = ScienceHelper.getScienceSubject(experimentID, vessel);
             string subjectId = ((subject == null) ? "" : subject.id);
             if (subjectId != "" && last_subjectId != "" && last_subjectId != subjectId &&
-                (numEurekas > 0 || numKuarqs > 0 || numTestPoints > 0 || numExposureTime > 0 || (numBioproducts > 0 && sciCount == 0)))
+                (numTestPoints > 0 || numExposureTime > 0 ))
             {
                 biomeChanged();
             }
@@ -416,8 +378,6 @@ namespace NE_Science
         public override string GetInfo()
         {
             string ret = "";
-            if (eurekasRequired > 0)
-                ret += "Eurekas required: " + eurekasRequired;
             if (testPointsRequired > 0)
             {
                 if (ret != "") ret += "\n";
@@ -427,25 +387,6 @@ namespace NE_Science
             {
                 if (ret != "") ret += "\n";
                 ret += "Exposure time required: " + exposureTimeRequired;
-            }
-            if (kuarqsRequired > 0)
-            {
-                if (ret != "") ret += "\n";
-                ret += "Kuarqs required: " + kuarqsRequired;
-            }
-            if (kuarqHalflife > 0)
-            {
-                if (ret != "") ret += "\n";
-                ret += "Kuarq decay halflife: " + kuarqHalflife + " seconds" + "\n";
-                ret += String.Format("Production required: {0:F2} kuarq/s", kuarqsRequired * (1 - Math.Pow(.5, 1.0 / kuarqHalflife)));
-            }
-            if (bioproductsRequired > 0)
-            {
-                if (ret != "") ret += "\n";
-                ret += "Bioproducts required: " + bioproductsRequired;
-                double bioproductDensity = ResourceHelper.getResourceDensity("Bioproducts");
-                if (bioproductDensity > 0)
-                    ret += String.Format("\nMass when complete: {0:G} t", Math.Round(bioproductsRequired * bioproductDensity + part.mass,2));
             }
             return ret;
         }
