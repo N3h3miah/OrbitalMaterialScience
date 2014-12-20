@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExperimentPhaseCore.cs" />
     <Compile Include="ExperimentPhase.cs" />
     <Compile Include="MaterialExpPhase.cs" />
     <Compile Include="MaterialLabOnlyExp.cs" />

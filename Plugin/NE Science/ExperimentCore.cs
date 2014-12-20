@@ -179,12 +179,8 @@ namespace NE_Science
             setResourceMaxAmount(resName, 0);
         }
 
-        public void stopResearch()
+        public virtual void stopResearch()
         {
-            stopResearch("Eurekas");
-            stopResearch("Kuarqs");
-            stopResearch("TestPoints");
-            stopResearch("ExposureTime");
         }
 
         public System.Collections.IEnumerator updateStatus()

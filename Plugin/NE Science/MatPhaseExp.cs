@@ -5,12 +5,15 @@ using System.Text;
 
 namespace NE_Science
 {
-    public class MatPhaseExp : ExperimentCore
+    public class MatPhaseExp : ExperimentPhaseCore
     {
+
+        [KSPField(isPersistant = false)]
+        public int testPointsRequired;
 
         protected override void setPhases()
         {
-            phase = new MaterialExpPhase(this, 15);
+            phase = new MaterialExpPhase(this, testPointsRequired);
         }
     }
 }

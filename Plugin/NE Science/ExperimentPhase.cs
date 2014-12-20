@@ -8,9 +8,9 @@ namespace NE_Science
     public class ExperimentPhase
     {
 
-        protected ExperimentCore exp;
+        protected ExperimentPhaseCore exp;
 
-        public ExperimentPhase(ExperimentCore experiment)
+        public ExperimentPhase(ExperimentPhaseCore experiment)
         {
             exp = experiment;
         }

@@ -9,7 +9,8 @@ namespace NE_Science
     {
         private int testPointsRequired;
 
-        public MaterialExpPhase(ExperimentCore exp, int points): base(exp)
+        public MaterialExpPhase(ExperimentPhaseCore exp, int points)
+            : base(exp)
         {
            
             testPointsRequired = points;
@@ -80,7 +81,7 @@ namespace NE_Science
             exp.stopResearch("TestPoints");
         }
 
-        public override string GetInfo()
+        public override string getInfo()
         {
             return "Testpoints required: " + testPointsRequired + "\n" + "You need a NE MSL-1000 to run this Exeriment.";
         }
