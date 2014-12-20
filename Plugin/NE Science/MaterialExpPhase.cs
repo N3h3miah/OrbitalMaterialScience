@@ -9,10 +9,15 @@ namespace NE_Science
     {
         private int testPointsRequired;
 
-        public MaterialExpPhase(ExperimentPhaseCore exp, int points)
+        public MaterialExpPhase()
+        {
+            NE_Helper.log("Default C-tor");
+        }
+
+        public MaterialExpPhase(PhaseExperimentCore exp, int points)
             : base(exp)
         {
-           
+            NE_Helper.log("Param C-tor");
             testPointsRequired = points;
         }
 

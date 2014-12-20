@@ -26,7 +26,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public class ExperimentPhaseCore : ModuleScienceExperiment
+    public class PhaseExperimentCore : ModuleScienceExperiment
     {
         public const int NOT_READY = 0;
         public const int READY = 1;
@@ -45,6 +45,9 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = true, guiName = "Status")]
         public string expStatus = "";
 
+        [KSPField(isPersistant = false)]
+        public string  phaseConfig;
+
         public string notReadyStatus = "No Lab available";
         public string readyStatus = "Lab available";
         public string runningStatus = "Running";
@@ -53,6 +56,13 @@ namespace NE_Science
         public string errorStatus = "Lab Failure";
 
         protected ExperimentPhase phase;
+
+
+        public PhaseExperimentCore()
+        {
+            NE_Helper.log("ExperimentPhaseCore C-tor");
+            phase = new ExperimentPhase(this);
+        }
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
@@ -83,11 +93,11 @@ namespace NE_Science
 
         public override void OnStart(StartState state)
         {
+            NE_Helper.log("OnStart");
             base.OnStart(state);
-            phase = new ExperimentPhase(this);
             setPhases();
             if (state == StartState.Editor) { return; }
-            NE_Helper.log("OnStart");
+            
             this.part.force_activate();
             switch(this.state){
                 case READY:
@@ -103,11 +113,12 @@ namespace NE_Science
             }
             
             StartCoroutine(updateStatus());
+            NE_Helper.log("OnStart End");
         }
 
         protected virtual void setPhases()
         {
-
+            phase = NE_ExperimentPhaseParser.getPhasesFromConfig(phaseConfig, this);
         }
 
 

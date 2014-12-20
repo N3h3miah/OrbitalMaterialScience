@@ -41,5 +41,9 @@ namespace NE_Science
                 MonoBehaviour.print("[NE] " + msg);
             }
         }
+
+        public static void logError(string errMsg){
+            MonoBehaviour.print("[NE] Error: " + errMsg);
+        }
     }
 }

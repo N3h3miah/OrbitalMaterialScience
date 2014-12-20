@@ -49,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExperimentPhaseCore.cs" />
+    <Compile Include="PhaseExperimentCore.cs" />
     <Compile Include="ExperimentPhase.cs" />
     <Compile Include="MaterialExpPhase.cs" />
     <Compile Include="MaterialLabOnlyExp.cs" />
@@ -57,6 +57,7 @@
     <Compile Include="ExposureLab.cs" />
     <Compile Include="ExposureOnlyExp.cs" />
     <Compile Include="MatPhaseExp.cs" />
+    <Compile Include="NE_ExperimentPhaseParser.cs" />
     <Compile Include="NE_Helper.cs" />
     <Compile Include="Lab.cs" />
     <Compile Include="PhysicsMaterialsLab.cs" />

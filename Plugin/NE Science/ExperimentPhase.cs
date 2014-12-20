@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
-    public class ExperimentPhase
+    public class ExperimentPhase 
     {
 
-        protected ExperimentPhaseCore exp;
+        protected PhaseExperimentCore exp;
 
-        public ExperimentPhase(ExperimentPhaseCore experiment)
+        public ExperimentPhase()
+        {
+        }
+
+        public ExperimentPhase(PhaseExperimentCore experiment)
         {
             exp = experiment;
         }

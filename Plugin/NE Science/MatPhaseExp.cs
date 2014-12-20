@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
-    public class MatPhaseExp : ExperimentPhaseCore
+    public class MatPhaseExp : PhaseExperimentCore
     {
 
         [KSPField(isPersistant = false)]
@@ -13,6 +12,7 @@ namespace NE_Science
 
         protected override void setPhases()
         {
+            NE_Helper.log("set Phase");
             phase = new MaterialExpPhase(this, testPointsRequired);
         }
     }
