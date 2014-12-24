@@ -84,5 +84,39 @@ namespace NE_Science
             return "";
         }
 
+
+        public virtual bool startExperiment()
+        {
+            return true;
+        }
+
+        public virtual void biomeChanged()
+        {
+            
+        }
+
+        public virtual void undockedRunningExp()
+        {
+           
+        }
+
+        public virtual bool finished()
+        {
+            return true;
+        }
+
+
+        public virtual void load(ConfigNode node)
+        {
+        }
+
+        public virtual void save(ConfigNode node)
+        {
+        }
+
+        public virtual int getExperimentID()
+        {
+            return Int32.MinValue;
+        }
     }
 }

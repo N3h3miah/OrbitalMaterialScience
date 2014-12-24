@@ -95,7 +95,7 @@ namespace NE_Science
         {
             NE_Helper.log("OnStart");
             base.OnStart(state);
-            setPhases();
+            //setPhases();
             if (state == StartState.Editor) { return; }
             
             this.part.force_activate();
@@ -111,9 +111,28 @@ namespace NE_Science
                     Events["DeployExperiment"].active = true;
                     break;
             }
-            
-            StartCoroutine(updateStatus());
             NE_Helper.log("OnStart End");
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            updateState();
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+            phase.save(node);
+        }
+
+        public override void OnLoad(ConfigNode node)
+        {
+            NE_Helper.log("PhaseExperimentCore OnLoad");
+            base.OnLoad(node);
+            NE_Helper.log("PhaseExperimentCore OnLoad setPhases config: " + phaseConfig);
+            setPhases();
+            phase.load(node);
         }
 
         protected virtual void setPhases()
@@ -206,14 +225,6 @@ namespace NE_Science
             phase.stopResearch();
         }
 
-        public System.Collections.IEnumerator updateStatus()
-        {
-            while (true)
-            {
-                updateState();
-                yield return new UnityEngine.WaitForSeconds(1f);
-            }
-        }
 
         public void updateState()
         {
@@ -299,22 +310,22 @@ namespace NE_Science
         public virtual void biomeChanged()
         {
             NE_Helper.log("biome chaned");
+            phase.biomeChanged();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Location changed mid-experiment! " + part.partInfo.title + " ruined.", 6, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
-            stopResearch("Bioproducts");
             state = NOT_READY;
         }
 
         public virtual void undockedRunningExp()
         {
             NE_Helper.log("Exp Undocked");
+            phase.undockedRunningExp();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the station without being finalized.", 2, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
-            stopResearch("Bioproducts");
             state = NOT_READY;
         }
 
@@ -328,24 +339,35 @@ namespace NE_Science
 
         public virtual bool experimentStarted()
         {
-            NE_Helper.log("Exp started");
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
-            state = RUNNING;
-            return true;
+            if (phase.startExperiment())
+            {
+                NE_Helper.log("Exp started");
+                Events["StartExperiment"].active = false;
+                Events["DeployExperiment"].active = false;
+                state = RUNNING;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public virtual void finished()
         {
             NE_Helper.log("research finished");
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = deployChecks(false);
-            state = FINISHED;
+            if (phase.finished())
+            {
+                Events["StartExperiment"].active = false;
+                Events["DeployExperiment"].active = deployChecks(false);
+                state = FINISHED;
+            }
         }
 
         public virtual void error()
         {
             NE_Helper.log("Lab Error");
+            
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = deployChecks(false);
             state = ERROR;
@@ -387,6 +409,11 @@ namespace NE_Science
         public UnityEngine.Object[] UnityFindObjectsOfType(Type type)
         {
             return GameObject.FindObjectsOfType(type);
+        }
+
+        public int getExperimentID()
+        {
+            return phase.getExperimentID();
         }
     }
 }

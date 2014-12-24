@@ -104,7 +104,7 @@ namespace NE_Science
                     break;
 
                 case NE_Helper.MEP_RUNNING:
-                    NE_Helper.log("Running Lab onStart. Set Animationstate");
+                    NE_Helper.log("Running Lab onStart. Set Animationstate, ExpID: " + expID);
                     playAnimation(startExpAnimName, 1f, 1f);
                     Events["DeployPlatform"].guiActive = false;
                     Events["FixArm"].guiActiveUnfocused = false;
@@ -256,11 +256,11 @@ namespace NE_Science
             switch (MEPlabState)
             {
                 case NE_Helper.MEP_RUNNING:
-                    List<ExposureExperiment> allExpExps = new List<ExposureExperiment>(GameObject.FindObjectsOfType(typeof(ExposureExperiment)) as ExposureExperiment[]);
+                    List<PhaseExperimentCore> allExps = new List<PhaseExperimentCore>(GameObject.FindObjectsOfType(typeof(PhaseExperimentCore)) as PhaseExperimentCore[]);
                     bool expFound = false;
-                    foreach (ExposureExperiment exp in allExpExps)
+                    foreach (PhaseExperimentCore exp in allExps)
                     {
-                        if (exp.expID == expID)
+                        if (exp.getExperimentID() == expID)
                         {
                             expFound = true;
                             break;
@@ -291,7 +291,7 @@ namespace NE_Science
                 experimentName = name;
                 expID = expIDp;
                 playAnimation(startExpAnimName, 1f, 0f);
-                NE_Helper.log("Experiment Started");
+                NE_Helper.log("Lab: Experiment Started: " + expID);
                 armOps++;
                 return true;
             }
@@ -306,6 +306,7 @@ namespace NE_Science
 
         public bool stopExperiment(bool finished)
         {
+            NE_Helper.log("ExpLab: Stop experiment finished: " + finished);
             if (finished)
             {
                 if (isSuccessfull())
