@@ -5,20 +5,20 @@ using System.Text;
 
 namespace NE_Science
 {
-    public class MaterialExpPhase : ExperimentPhase
+    public class LabTimeExpPhase : ExperimentPhase
     {
-        private int testPointsRequired;
+        private int labTimeRequired;
 
-        public MaterialExpPhase()
+        public LabTimeExpPhase()
         {
             NE_Helper.log("Default C-tor");
         }
 
-        public MaterialExpPhase(PhaseExperimentCore exp, int points)
+        public LabTimeExpPhase(PhaseExperimentCore exp, int time)
             : base(exp)
         {
             NE_Helper.log("Param C-tor");
-            testPointsRequired = points;
+            labTimeRequired = time;
         }
 
         public override void checkForLabs(bool ready)
@@ -71,24 +71,24 @@ namespace NE_Science
 
         public override void createResources()
         {
-            PartResource testPoints = exp.setResourceMaxAmount("TestPoints", testPointsRequired);
+            PartResource testPoints = exp.setResourceMaxAmount(Resources.LAB_TIME, labTimeRequired);
         }
 
         public override bool isFinished()
         {
-            double numTestPoints = exp.getResourceAmount("TestPoints");
+            double numTestPoints = exp.getResourceAmount(Resources.LAB_TIME);
 
-            return Math.Round(numTestPoints, 2) >= testPointsRequired;
+            return Math.Round(numTestPoints, 2) >= labTimeRequired;
         }
 
         public override void stopResearch()
         {
-            exp.stopResearch("TestPoints");
+            exp.stopResearch(Resources.LAB_TIME);
         }
 
         public override string getInfo()
         {
-            return "Testpoints required: " + testPointsRequired + "\n" + "You need a NE MSL-1000 to run this Exeriment.";
+            return "Lab Time required: " + labTimeRequired + "\n" + "You need a NE MSL-1000 to run this Exeriment.";
         }
 
     }

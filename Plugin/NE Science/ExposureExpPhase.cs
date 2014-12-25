@@ -172,18 +172,18 @@ namespace NE_Science
 
         public override void createResources()
         {
-            PartResource exposureTime = exp.setResourceMaxAmount("ExposureTime", exposureTimeRequired);
+            PartResource exposureTime = exp.setResourceMaxAmount(Resources.EXPOSURE_TIME, exposureTimeRequired);
         }
 
         public override bool isFinished()
         {
-            double numExposureTime = exp.getResourceAmount("ExposureTime");
+            double numExposureTime = exp.getResourceAmount(Resources.EXPOSURE_TIME);
             return Math.Round(numExposureTime, 2) >= exposureTimeRequired;
         }
 
         public override void stopResearch()
         {
-            exp.stopResearch("TestPoints");
+            exp.stopResearch(Resources.EXPOSURE_TIME);
         }
 
         public override string getInfo()

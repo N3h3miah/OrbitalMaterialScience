@@ -19,23 +19,49 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
     class PhysicsMaterialsLab : Lab
     {
-        [KSPField(isPersistant = false)]
-        public float TestPointsPerHour = 0;
+
+        public enum EquipmentRacks
+        {
+            CIR, FFR, NONE
+        }
 
         [KSPField(isPersistant = false)]
-        public float ChargePerTestPoint = 0;
+        public float LabTimePerHour = 0;
+        [KSPField(isPersistant = false)]
+        public float ChargePerLabTime = 0;
+
+        [KSPField(isPersistant = false)]
+        public float CirBurnTimePerHour = 0;
+        [KSPField(isPersistant = false)]
+        public float ChargePerCirBurnTime = 0;
+
+        [KSPField(isPersistant = false)]
+        public float FFRTestRunPerHour = 0;
+        [KSPField(isPersistant = false)]
+        public float ChargePerTestRun = 0;
+
+        [KSPField(isPersistant = true)]
+        public bool cirInstalled = false;
+
+        [KSPField(isPersistant = true)]
+        public bool ffrInstalled = false;
 
         [KSPField(isPersistant = false, guiActive = false, guiName = "Testpoints")]
         public string testRunsStatus = "";
 
-        private Generator TestPointsGenerator;
+        private GameObject cir;
+        private GameObject ffr;
+
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+        }
 
         public override void OnStart(PartModule.StartState state)
         {
@@ -44,13 +70,85 @@ namespace NE_Science
             {
                 return;
             }
-            
-            TestPointsGenerator = new Generator(this.part);
-            TestPointsGenerator.addRate("TestPoints", -TestPointsPerHour);
-            if (ChargePerTestPoint > 0)
-                TestPointsGenerator.addRate("ElectricCharge", ChargePerTestPoint);
-            generators.Add(TestPointsGenerator);
 
+            initERacksActive();
+
+            Generator labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
+            generators.Add(labTimeGenerator);
+
+        }
+
+        private Generator createGenerator(string resToCreate, float creationRate, string useRes, float usePerUnit)
+        {
+            Generator gen = new Generator(this.part);
+            gen.addRate(resToCreate, -creationRate);
+            if (usePerUnit > 0)
+                gen.addRate(useRes, usePerUnit);
+            return gen;
+        }
+
+        private void initERacksActive()
+        {
+            GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+            if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
+            {
+                cir = labIVA.transform.GetChild(0).gameObject;
+                ffr = labIVA.transform.GetChild(1).gameObject;
+
+                if (ffrInstalled)
+                {
+                    installEquipmentRack(EquipmentRacks.FFR);
+                }
+                else
+                {
+                    ffr.SetActive(false);
+                }
+
+                if (cirInstalled)
+                {
+                    installEquipmentRack(EquipmentRacks.CIR);
+                }
+                else
+                {
+                    cir.SetActive(false);
+                }
+            }
+        }
+
+        
+
+        public void installEquipmentRack(EquipmentRacks rack)
+        {
+            switch (rack)
+            {
+                case EquipmentRacks.FFR:
+                    ffrInstalled = true;
+                    ffr.SetActive(ffrInstalled);
+                    part.mass += 3;
+                    generators.Add(createGenerator(Resources.FFR_TEST_RUN, FFRTestRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerTestRun));
+                    break;
+                case EquipmentRacks.CIR:
+                    cirInstalled = true;
+                    cir.SetActive(cirInstalled);
+                    part.mass += 3;
+                    generators.Add(createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime));
+                    break;
+            }
+        }
+
+        public bool hasEquipmentInstalled(EquipmentRacks rack)
+        {
+            switch (rack)
+            {
+                case EquipmentRacks.CIR:
+                    return cirInstalled;
+
+                case EquipmentRacks.FFR:
+                    return ffrInstalled;
+
+                default:
+                    return false;
+            }
         }
 
         protected override void displayStatusMessage(string s)
@@ -64,21 +162,92 @@ namespace NE_Science
         {
             Fields["labStatus"].guiActive = false;
             testRunsStatus = "";
-            var r = getOrDefault(TestPointsGenerator.rates, "TestPoints");
-            if (r != null && isActive())
-            {
-                if (r.last_available == 0)
-                    testRunsStatus = "No Experiments";
-                else
-                    testRunsStatus = String.Format("{0:F2} per hour", -r.ratePerHour * r.rateMultiplier);
-            }
+            
             Fields["testRunsStatus"].guiActive = (testRunsStatus != "");
+
+            if (!cirInstalled)
+            {
+                Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
+            }
+            else
+            {
+                Events["installCIR"].active = false;
+            }
+            if (!ffrInstalled)
+            {
+                Events["installFFR"].active = checkForRackModul(EquipmentRacks.FFR);
+            }
+            else
+            {
+                Events["installFFR"].active = false;
+            }
+        }
+
+        private bool checkForRackModul(EquipmentRacks equipmentRack)
+        {
+            List<EquipmentRackModule> moduls = new List<EquipmentRackModule>(GameObject.FindObjectsOfType(typeof(EquipmentRackModule)) as EquipmentRackModule[]);
+
+            foreach (EquipmentRackModule modul in moduls)
+            {
+                if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private EquipmentRackModule getRackModul(EquipmentRacks equipmentRack)
+        {
+            List<EquipmentRackModule> moduls = new List<EquipmentRackModule>(GameObject.FindObjectsOfType(typeof(EquipmentRackModule)) as EquipmentRackModule[]);
+
+            foreach (EquipmentRackModule modul in moduls)
+            {
+                if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
+                {
+                    return modul;
+                }
+            }
+
+            return null;
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Install CIR", active = false)]
+        public void installCIR()
+        {
+            EquipmentRackModule modul = getRackModul(EquipmentRacks.CIR);
+            if (modul != null)
+            {
+                modul.install();
+                installEquipmentRack(EquipmentRacks.CIR);
+            }
+            else
+            {
+                displayStatusMessage("Equipment Rack Modul not found!");
+            }
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Install FFR", active = false)]
+        public void installFFR()
+        {
+            EquipmentRackModule modul = getRackModul(EquipmentRacks.FFR);
+            if (modul != null)
+            {
+                modul.install();
+                installEquipmentRack(EquipmentRacks.FFR);
+            }
+            else
+            {
+                displayStatusMessage("Equipment Rack Modul not found!");
+            }
         }
 
         public override string GetInfo()
         {
             String ret = base.GetInfo();
-            ret += (ret == "" ? "" : "\n") + "Testpoints per hour: " + TestPointsPerHour;
+            ret += (ret == "" ? "" : "\n") + "Lab Time per hour: " + LabTimePerHour;
+            ret += "\nYou can install equipment racks in this lab to run experiments.";
             return ret;
         }
 
