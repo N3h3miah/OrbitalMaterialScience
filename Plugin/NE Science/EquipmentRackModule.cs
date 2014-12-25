@@ -36,6 +36,10 @@ namespace NE_Science
                         type = PhysicsMaterialsLab.EquipmentRacks.FFR;
                         break;
 
+                    case "Printer":
+                        type = PhysicsMaterialsLab.EquipmentRacks.PRINTER;
+                        break;
+
                     default:
                         type = PhysicsMaterialsLab.EquipmentRacks.NONE;
                         break;
@@ -65,6 +69,10 @@ namespace NE_Science
                     case PhysicsMaterialsLab.EquipmentRacks.CIR:
                         status = "Combustion Integrated Rack (CIR)";
                         break;
+                    case PhysicsMaterialsLab.EquipmentRacks.PRINTER:
+                        status = "3D-Printer";
+                        break;
+
                 }
             }
         }
@@ -91,6 +99,9 @@ namespace NE_Science
                     break;
                 case PhysicsMaterialsLab.EquipmentRacks.CIR:
                     rackString = "Combustion Integrated Rack (CIR)";
+                    break;
+                case PhysicsMaterialsLab.EquipmentRacks.PRINTER:
+                    rackString = "3D-Printer";
                     break;
             }
             return "Contains a " + rackString + " that can be installed in a MSL-1000, to run additional experiments" ;

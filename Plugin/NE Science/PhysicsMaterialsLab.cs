@@ -28,7 +28,7 @@ namespace NE_Science
 
         public enum EquipmentRacks
         {
-            CIR, FFR, NONE
+            CIR, FFR, PRINTER, NONE
         }
 
         [KSPField(isPersistant = false)]
@@ -52,11 +52,15 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public bool ffrInstalled = false;
 
+        [KSPField(isPersistant = true)]
+        public bool printerInstalled = false;
+
         [KSPField(isPersistant = false, guiActive = false, guiName = "Testpoints")]
         public string testRunsStatus = "";
 
         private GameObject cir;
         private GameObject ffr;
+        private GameObject printer;
 
         public override void OnLoad(ConfigNode node)
         {
@@ -92,8 +96,9 @@ namespace NE_Science
             GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
             if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
             {
-                cir = labIVA.transform.GetChild(0).gameObject;
-                ffr = labIVA.transform.GetChild(1).gameObject;
+                printer = labIVA.transform.GetChild(0).gameObject;
+                cir = labIVA.transform.GetChild(1).gameObject;
+                ffr = labIVA.transform.GetChild(2).gameObject;
 
                 if (ffrInstalled)
                 {
@@ -111,6 +116,15 @@ namespace NE_Science
                 else
                 {
                     cir.SetActive(false);
+                }
+
+                if (printerInstalled)
+                {
+                    installEquipmentRack(EquipmentRacks.PRINTER);
+                }
+                else
+                {
+                    printer.SetActive(false);
                 }
             }
         }
@@ -133,6 +147,12 @@ namespace NE_Science
                     part.mass += 3;
                     generators.Add(createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime));
                     break;
+                case EquipmentRacks.PRINTER:
+                    printerInstalled = true;
+                    printer.SetActive(cirInstalled);
+                    part.mass += 2.7f;
+                    generators.Add(createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime));
+                    break;
             }
         }
 
@@ -145,6 +165,9 @@ namespace NE_Science
 
                 case EquipmentRacks.FFR:
                     return ffrInstalled;
+
+                case EquipmentRacks.PRINTER:
+                    return printerInstalled;
 
                 default:
                     return false;
@@ -180,6 +203,14 @@ namespace NE_Science
             else
             {
                 Events["installFFR"].active = false;
+            }
+            if (!printerInstalled)
+            {
+                Events["installPrinter"].active = checkForRackModul(EquipmentRacks.PRINTER);
+            }
+            else
+            {
+                Events["installPrinter"].active = false;
             }
         }
 
@@ -236,6 +267,21 @@ namespace NE_Science
             {
                 modul.install();
                 installEquipmentRack(EquipmentRacks.FFR);
+            }
+            else
+            {
+                displayStatusMessage("Equipment Rack Modul not found!");
+            }
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Install 3D-Printer", active = false)]
+        public void installPrinter()
+        {
+            EquipmentRackModule modul = getRackModul(EquipmentRacks.PRINTER);
+            if (modul != null)
+            {
+                modul.install();
+                installEquipmentRack(EquipmentRacks.PRINTER);
             }
             else
             {
