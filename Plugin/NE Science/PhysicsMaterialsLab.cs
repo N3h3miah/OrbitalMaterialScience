@@ -60,8 +60,8 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public bool printerInstalled = false;
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Testpoints")]
-        public string testRunsStatus = "";
+        [KSPField(isPersistant = false, guiActive = false, guiName = "Equipment")]
+        public string equipment = "";
 
         private GameObject cir;
         private GameObject ffr;
@@ -183,16 +183,14 @@ namespace NE_Science
         {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
-            Fields["testRunsStatus"].guiActive = false;
+            Fields["equipment"].guiActive = false;
         }
 
         protected override void updateLabStatus()
         {
             Fields["labStatus"].guiActive = false;
-            testRunsStatus = "";
-            
-            Fields["testRunsStatus"].guiActive = (testRunsStatus != "");
-
+            Fields["equipment"].guiActive = true;
+            equipment = getEquipmentString();
             if (!cirInstalled)
             {
                 Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
@@ -217,6 +215,30 @@ namespace NE_Science
             {
                 Events["installPrinter"].active = false;
             }
+        }
+
+        private string getEquipmentString()
+        {
+            string ret = "";
+            if (ffrInstalled)
+            {
+                ret += "FFR";
+            }
+            if (cirInstalled)
+            {
+                if (ret.Length > 0) ret += ", ";
+                ret += "CIR";
+            }
+            if (printerInstalled)
+            {
+                if (ret.Length > 0) ret += ", ";
+                ret += "3PR";
+            }
+            if (ret.Length == 0)
+            {
+                ret = "none";
+            }
+            return ret;
         }
 
         private bool checkForRackModul(EquipmentRacks equipmentRack)
