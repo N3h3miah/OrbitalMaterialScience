@@ -12,8 +12,8 @@ namespace NE_Science
 
         private int exposureTimeRequired;
 
-        public ExposureExpPhase(PhaseExperimentCore exp, int exposureTime)
-            : base(exp)
+        public ExposureExpPhase(PhaseExperimentCore exp, string n, int exposureTime)
+            : base(exp, n)
         {
             exposureTimeRequired = exposureTime;
         }

@@ -45,6 +45,12 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = true, guiName = "Status")]
         public string expStatus = "";
 
+        [KSPField(isPersistant = false, guiActive = false, guiName = "Phase")]
+        public string phaseStatus = "";
+
+        [KSPField(isPersistant = false, guiActive = false, guiName = "Phase")]
+        public string phaseName = "";
+
         [KSPField(isPersistant = false)]
         public string  phaseConfig;
 
@@ -55,13 +61,21 @@ namespace NE_Science
         public string finalizedStatus = "Finalized";
         public string errorStatus = "Lab Failure";
 
-        protected ExperimentPhase phase;
+        protected List<ExperimentPhase> phases = new List<ExperimentPhase>();
+
+        [KSPField(isPersistant = true)]
+        public int activePhase = 0;
 
 
         public PhaseExperimentCore()
         {
             NE_Helper.log("ExperimentPhaseCore C-tor");
-            phase = new ExperimentPhase(this);
+            phases.Add(new ExperimentPhase(this, ""));
+        }
+
+        private ExperimentPhase getActivePhase()
+        {
+            return phases.ElementAt(activePhase);
         }
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
@@ -95,7 +109,6 @@ namespace NE_Science
         {
             NE_Helper.log("OnStart");
             base.OnStart(state);
-            //setPhases();
             if (state == StartState.Editor) { return; }
             
             this.part.force_activate();
@@ -123,7 +136,9 @@ namespace NE_Science
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
-            phase.save(node);
+            foreach(ExperimentPhase phase in phases){
+                phase.save(node);
+            }
         }
 
         public override void OnLoad(ConfigNode node)
@@ -132,12 +147,31 @@ namespace NE_Science
             base.OnLoad(node);
             NE_Helper.log("PhaseExperimentCore OnLoad setPhases config: " + phaseConfig);
             setPhases();
-            phase.load(node);
+            foreach (ExperimentPhase phase in phases)
+            {
+                phase.load(node);
+            }
+            if (phases.Count > 1)
+            {
+                Fields["phaseStatus"].guiActive = true;
+            }
+            else
+            {
+                Fields["phaseStatus"].guiActive = false;
+            }
         }
 
         protected virtual void setPhases()
         {
-            phase = NE_ExperimentPhaseParser.getPhasesFromConfig(phaseConfig, this);
+            phases = NE_ExperimentPhaseParser.getPhasesFromConfig(phaseConfig, this);
+            if (activePhase == 0)
+            {
+                Events["StartExperiment"].guiName = "Start Experiment";
+            }
+            else
+            {
+                Events["StartExperiment"].guiName = "Start Next Phase";
+            }
         }
 
 
@@ -159,10 +193,18 @@ namespace NE_Science
             }
         }
 
+        [KSPEvent(guiActive = true, guiName = "Finish Phase", active = false)]
+        public void finishPhase()
+        {
+            getActivePhase().done();
+            activePhase++;
+            state = READY;
+        }
+
         //Create the resources needed to finish the Experiment. Subclasses should override this.
         public void createResources()
         {
-            phase.createResources();
+            getActivePhase().createResources();
         }
 
 
@@ -222,30 +264,43 @@ namespace NE_Science
 
         public void stopResearch()
         {
-            phase.stopResearch();
+            getActivePhase().stopResearch();
         }
 
 
         public void updateState()
         {
             //NE_Helper.log("[NE] update state: " + state);
+            phaseStatus = (activePhase + 1) + " of " + phases.Count;
+            if (getActivePhase().hasName())
+            {
+                Fields["phaseName"].guiActive = true;
+                phaseName = getActivePhase().getName();
+            }
+            else
+            {
+                Fields["phaseName"].guiActive = false;
+            }
             switch (state)
             {
                 case NOT_READY:
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = false;
+                    Events["finishPhase"].active = false;
                     expStatus = notReadyStatus;
                     checkForLabs(false);
                     break;
                 case READY:
                     Events["StartExperiment"].active = true;
                     Events["DeployExperiment"].active = false;
+                    Events["finishPhase"].active = false;
                     expStatus = readyStatus;
                     checkForLabs(true);
                     break;
                 case RUNNING:
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = false;
+                    Events["finishPhase"].active = false;
                     expStatus = runningStatus;
                     checkBiomeChange();
                     checkUndocked();
@@ -253,27 +308,43 @@ namespace NE_Science
                     break;
                 case FINISHED:
                     Events["StartExperiment"].active = false;
-                    Events["DeployExperiment"].active = deployChecks(false);
+                    if (isLastPhase())
+                    {
+                        Events["DeployExperiment"].active = deployChecks(false);
+                        Events["finishPhase"].active = false;
+                    }
+                    else
+                    {
+                        Events["DeployExperiment"].active = false;
+                        Events["finishPhase"].active = true;
+                    }
                     expStatus = finishedStatus;
                     break;
                 case FINALIZED:
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = false;
+                    Events["finishPhase"].active = false;
                     expStatus = finalizedStatus;
                     break;
                 case ERROR:
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = false;
+                    Events["finishPhase"].active = false;
                     expStatus = errorStatus;
                     checkLabFixed();
                     break;
             }
         }
 
+        private bool isLastPhase()
+        {
+            return activePhase + 1 == phases.Count;
+        }
+
         public virtual void checkFinished()
         {
             
-            if(phase.isFinished())
+            if(getActivePhase().isFinished())
             {
                 finished();
             }
@@ -281,22 +352,22 @@ namespace NE_Science
 
         public void checkLabFixed()
         {
-            phase.checkLabFixed();
+            getActivePhase().checkLabFixed();
         }
 
         public void checkUndocked()
         {
-            phase.checkUndocked();
+            getActivePhase().checkUndocked();
         }
 
         public void checkBiomeChange()
         {
-            phase.checkBiomeChange();
+            getActivePhase().checkBiomeChange();
         }
 
         public void checkForLabs(bool ready)
         {
-            phase.checkForLabs(ready);
+            getActivePhase().checkForLabs(ready);
         }
 
         public virtual void labLost()
@@ -310,7 +381,7 @@ namespace NE_Science
         public virtual void biomeChanged()
         {
             NE_Helper.log("biome chaned");
-            phase.biomeChanged();
+            getActivePhase().biomeChanged();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Location changed mid-experiment! " + part.partInfo.title + " ruined.", 6, ScreenMessageStyle.UPPER_CENTER);
@@ -321,7 +392,7 @@ namespace NE_Science
         public virtual void undockedRunningExp()
         {
             NE_Helper.log("Exp Undocked");
-            phase.undockedRunningExp();
+            getActivePhase().undockedRunningExp();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the station without being finalized.", 2, ScreenMessageStyle.UPPER_CENTER);
@@ -339,7 +410,7 @@ namespace NE_Science
 
         public virtual bool experimentStarted()
         {
-            if (phase.startExperiment())
+            if (getActivePhase().startExperiment())
             {
                 NE_Helper.log("Exp started");
                 Events["StartExperiment"].active = false;
@@ -356,7 +427,7 @@ namespace NE_Science
         public virtual void finished()
         {
             NE_Helper.log("research finished");
-            if (phase.finished())
+            if (getActivePhase().finished())
             {
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = deployChecks(false);
@@ -402,8 +473,17 @@ namespace NE_Science
 
         public override string GetInfo()
         {
-            string ret = phase.getInfo(); ;
-            return ret;
+            string ret = "";
+            int i = 1;
+            foreach (ExperimentPhase phase in phases)
+            {
+                if (phases.Count > 1)
+                {
+                    ret += "Phase: " + i++ + (phase.hasName() ? " " + phase.getName() + "\n" : "\n");
+                }
+                ret += phase.getInfo() + "\n\n" ;
+            }
+            return ret.Trim(); ;
         }
 
         public UnityEngine.Object[] UnityFindObjectsOfType(Type type)
@@ -413,7 +493,7 @@ namespace NE_Science
 
         public int getExperimentID()
         {
-            return phase.getExperimentID();
+            return getActivePhase().getExperimentID();
         }
     }
 }

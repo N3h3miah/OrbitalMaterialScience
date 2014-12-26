@@ -8,51 +8,67 @@ namespace NE_Science
     class NE_ExperimentPhaseParser
     {
 
-        public static ExperimentPhase getPhasesFromConfig(string config, PhaseExperimentCore exp)
+        public static List<ExperimentPhase> getPhasesFromConfig(string config, PhaseExperimentCore exp)
         {
             config = config.Trim();
-            string[] parts = config.Split(':');
-            ExperimentPhase ret = new ExperimentPhase(exp);
-
-            if (parts.Length == 2)
+            string[] phaseConfigs = config.Split(';');
+            List<ExperimentPhase> ret = new List<ExperimentPhase>(phaseConfigs.Length);
+            foreach (string pc in phaseConfigs)
             {
-                string name = parts[0].Trim();
-                string paramString = parts[1].Trim();
-                Parameter para = getParameter(paramString.Split(' '));
-                Type type = Type.GetType(name);
+                string phaseConfig = pc.Trim();
+                string[] parts = phaseConfig.Split(':');
 
-                switch (para.parameterType)
+                string phaseName = "";
+                ExperimentPhase phase = new ExperimentPhase(exp, phaseName);
+
+                if (parts.Length == 2)
                 {
-                    case ParaType.int_T:
-                        int i = Convert.ToInt32(para.valueString);
-                        Type[] paramTypes = new Type[] { typeof(PhaseExperimentCore), typeof(int) };
-                        Object[] ctorParams = new Object[] { exp, i};
-                        ConstructorInfo ctorInfo = type.GetConstructor(paramTypes);
-                        ret = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
-                        break;
+                    string className = parts[0].Trim();
 
-                    case ParaType.doulbe_T:
-                        double d = Convert.ToDouble(para.valueString);
-                        paramTypes = new Type[] { typeof(PhaseExperimentCore), typeof(double) };
-                        ctorParams = new Object[] { exp, d};
-                        ctorInfo = type.GetConstructor(paramTypes);
-                        ret = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
-                        break;
+                    string[] nameParam = parts[1].Trim().Split(',');
+                    string paramString = "";
+                    if(nameParam.Length == 1){
+                        paramString = nameParam[0].Trim();
+                    }else{
+                        phaseName = nameParam[0].Trim();
+                        paramString = nameParam[1].Trim();
+                    }
 
-                    case ParaType.string_T:
-                        paramTypes = new Type[] { typeof(PhaseExperimentCore), typeof(string) };
-                        ctorParams = new Object[] { exp, para.valueString};
-                        ctorInfo = type.GetConstructor(paramTypes);
-                        ret = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
-                        break;
+                    Parameter para = getParameter(paramString.Split(' '));
+                    Type type = Type.GetType(className);
+
+                    switch (para.parameterType)
+                    {
+                        case ParaType.int_T:
+                            int i = Convert.ToInt32(para.valueString);
+                            Type[] paramTypes = new Type[] { typeof(PhaseExperimentCore),typeof(string), typeof(int) };
+                            Object[] ctorParams = new Object[] { exp, phaseName, i };
+                            ConstructorInfo ctorInfo = type.GetConstructor(paramTypes);
+                            phase = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
+                            break;
+
+                        case ParaType.doulbe_T:
+                            double d = Convert.ToDouble(para.valueString);
+                            paramTypes = new Type[] { typeof(PhaseExperimentCore), typeof(string), typeof(double) };
+                            ctorParams = new Object[] { exp, phaseName, d };
+                            ctorInfo = type.GetConstructor(paramTypes);
+                            phase = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
+                            break;
+
+                        case ParaType.string_T:
+                            paramTypes = new Type[] { typeof(PhaseExperimentCore), typeof(string), typeof(string) };
+                            ctorParams = new Object[] { exp, phaseName, para.valueString };
+                            ctorInfo = type.GetConstructor(paramTypes);
+                            phase = (ExperimentPhase)ctorInfo.Invoke(ctorParams);
+                            break;
+                    }
                 }
+                else
+                {
+                    NE_Helper.logError("Experimentphase config invalid");
+                }
+                ret.Add(phase);
             }
-            else
-            {
-                NE_Helper.logError("Experimentphase config invalid");
-            }
-
-            
 
             return ret;
         }

@@ -14,8 +14,8 @@ namespace NE_Science
             NE_Helper.log("Default C-tor");
         }
 
-        public PrinterExpPhase(PhaseExperimentCore exp, int layers)
-            : base(exp)
+        public PrinterExpPhase(PhaseExperimentCore exp, string n, int layers)
+            : base(exp, n)
         {
             NE_Helper.log("Param C-tor");
             layersRequired = layers;

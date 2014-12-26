@@ -14,8 +14,8 @@ namespace NE_Science
             NE_Helper.log("Default C-tor");
         }
 
-        public LabTimeExpPhase(PhaseExperimentCore exp, int time)
-            : base(exp)
+        public LabTimeExpPhase(PhaseExperimentCore exp, string n, int time)
+            : base(exp, n)
         {
             NE_Helper.log("Param C-tor");
             labTimeRequired = time;

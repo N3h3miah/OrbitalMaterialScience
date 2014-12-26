@@ -9,13 +9,16 @@ namespace NE_Science
 
         protected PhaseExperimentCore exp;
 
+        private string name = "";
+
         public ExperimentPhase()
         {
         }
 
-        public ExperimentPhase(PhaseExperimentCore experiment)
+        public ExperimentPhase(PhaseExperimentCore experiment, string n)
         {
             exp = experiment;
+            name = n;
         }
 
         //Create the resources needed to finish the Experiment. Subclasses should override this.
@@ -117,6 +120,21 @@ namespace NE_Science
         public virtual int getExperimentID()
         {
             return Int32.MinValue;
+        }
+
+        public virtual void done()
+        {
+            stopResearch();
+        }
+
+        public bool hasName()
+        {
+            return name.Length > 0;
+        }
+
+        public string getName()
+        {
+            return name;
         }
     }
 }
