@@ -32,7 +32,7 @@ namespace NE_Science
         public const int MEP_RUNNING = 2;
         public const int MEP_ERROR_ON_START = 3;
         public const int MEP_ERROR_ON_STOP = 4;
-        private static bool debug = true;
+        private static bool debug = false;
 
         public static void log( string msg)
         {
