@@ -46,6 +46,11 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public float ChargePerTestRun = 0;
 
+        [KSPField(isPersistant = false)]
+        public float PrintLayerRunPerHour = 0;
+        [KSPField(isPersistant = false)]
+        public float ChargePerLayer = 0;
+
         [KSPField(isPersistant = true)]
         public bool cirInstalled = false;
 
@@ -149,9 +154,9 @@ namespace NE_Science
                     break;
                 case EquipmentRacks.PRINTER:
                     printerInstalled = true;
-                    printer.SetActive(cirInstalled);
+                    printer.SetActive(printerInstalled);
                     part.mass += 2.7f;
-                    generators.Add(createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime));
+                    generators.Add(createGenerator(Resources.PRINT_LAYER, PrintLayerRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerLayer));
                     break;
             }
         }

@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrinterExpPhase.cs" />
     <Compile Include="EquipmentRackModule.cs" />
     <Compile Include="LabTimeExpPhase.cs" />
     <Compile Include="FfrExpPhase.cs" />
