@@ -125,12 +125,17 @@ namespace NE_Science
                     break;
             }
             NE_Helper.log("OnStart End");
+            updatePhaseState();
+            StartCoroutine(updateStatus());
         }
 
-        public override void OnUpdate()
+        public System.Collections.IEnumerator updateStatus()
         {
-            base.OnUpdate();
-            updateState();
+            while (true)
+            {
+                updateState();
+                yield return new UnityEngine.WaitForSeconds(1f);
+            }
         }
 
         public override void OnSave(ConfigNode node)
@@ -199,6 +204,8 @@ namespace NE_Science
             getActivePhase().done();
             activePhase++;
             state = READY;
+            updatePhaseState();
+            updateState();
         }
 
         //Create the resources needed to finish the Experiment. Subclasses should override this.
@@ -266,11 +273,8 @@ namespace NE_Science
         {
             getActivePhase().stopResearch();
         }
-
-
-        public void updateState()
+        private void updatePhaseState()
         {
-            //NE_Helper.log("[NE] update state: " + state);
             phaseStatus = (activePhase + 1) + " of " + phases.Count;
             if (getActivePhase().hasName())
             {
@@ -281,6 +285,11 @@ namespace NE_Science
             {
                 Fields["phaseName"].guiActive = false;
             }
+        }
+
+
+        public void updateState()
+        {
             switch (state)
             {
                 case NOT_READY:

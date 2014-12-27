@@ -131,6 +131,16 @@ namespace NE_Science
             }
             Events["stopResearch"].active = doResearch;
             Events["startResearch"].active = !doResearch;
+            StartCoroutine(updateState());
+        }
+
+        public System.Collections.IEnumerator updateState()
+        {
+            while (true)
+            {
+                updateStatus();
+                yield return new UnityEngine.WaitForSeconds(1f);
+            }
         }
 
         [KSPEvent(guiActive = true, guiName = "Resume Research", active = true)]
@@ -376,7 +386,6 @@ namespace NE_Science
             {
                 LastActive = 0;
             }
-            updateStatus();
         }
 
         public override string GetInfo()

@@ -23,6 +23,7 @@ namespace NE_Science
             {
                 part.mass = 0.2f;
                 type = PhysicsMaterialsLab.EquipmentRacks.NONE;
+                status = "empty";
             }
             else
             {
@@ -30,50 +31,35 @@ namespace NE_Science
                 {
                     case "CIR":
                         type = PhysicsMaterialsLab.EquipmentRacks.CIR;
+                        status = "Combustion Integrated Rack (CIR)";
                         break;
 
                     case "FFR":
                         type = PhysicsMaterialsLab.EquipmentRacks.FFR;
+                        status = "Fluid Flow Rack (FFR)";
                         break;
 
                     case "Printer":
                         type = PhysicsMaterialsLab.EquipmentRacks.PRINTER;
+                        status = "3D Printer Rack (3PR)";
                         break;
 
                     default:
                         type = PhysicsMaterialsLab.EquipmentRacks.NONE;
+                        status = "empty";
                         break;
                 }
             }
         }
 
-        public override void OnUpdate()
+        public override void OnStart(PartModule.StartState state)
         {
-            base.OnUpdate();
-            updateStatus();
-        }
-
-        private void updateStatus()
-        {
+            base.OnStart(state);
             if (empty)
             {
+                part.mass = 0.2f;
+                type = PhysicsMaterialsLab.EquipmentRacks.NONE;
                 status = "empty";
-            }
-            else
-            {
-                switch (type)
-                {
-                    case PhysicsMaterialsLab.EquipmentRacks.FFR:
-                        status = "Fluid Flow Rack (FFR)";
-                        break;
-                    case PhysicsMaterialsLab.EquipmentRacks.CIR:
-                        status = "Combustion Integrated Rack (CIR)";
-                        break;
-                    case PhysicsMaterialsLab.EquipmentRacks.PRINTER:
-                        status = "3D Printer Rack (3PR)";
-                        break;
-
-                }
             }
         }
 
@@ -86,6 +72,7 @@ namespace NE_Science
         {
             empty = true;
             type = PhysicsMaterialsLab.EquipmentRacks.NONE;
+            status = "empty";
             part.mass = 0.2f;
         }
 
