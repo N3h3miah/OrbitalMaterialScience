@@ -22,14 +22,7 @@ namespace NE_Science
         {
             List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
             bool labFound = false;
-            foreach (ExposureLab lab in allExpLabs)
-            {
-                if (lab.vessel == exp.vessel && lab.isReady())
-                {
-                    labFound = true;
-                    break;
-                }
-            }
+            
             if (!ready)
             {
                 if (labFound)
@@ -39,12 +32,8 @@ namespace NE_Science
                 }
                 else
                 {
-                    exp.notReadyStatus = "No Exposure Lab available";
+                    exp.notReadyStatus = "Install experiment on a KEES PEC";
                 }
-            }
-            if (ready && !labFound)
-            {
-                exp.labLost();
             }
         }
 
@@ -69,10 +58,6 @@ namespace NE_Science
             {
                 NE_Helper.log("Lab lost");
                 exp.undockedRunningExp();
-                foreach (ExposureLab lab in allExpLabs)
-                {
-                    NE_Helper.log("Lab expID: " + lab.expID);
-                }
             }
         }
 

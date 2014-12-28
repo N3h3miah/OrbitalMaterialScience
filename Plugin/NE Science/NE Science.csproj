@@ -49,6 +49,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KEESExperiment.cs" />
+    <Compile Include="KEES_Lab.cs" />
+    <Compile Include="KEES_PEC.cs" />
     <Compile Include="PrinterExpPhase.cs" />
     <Compile Include="EquipmentRackModule.cs" />
     <Compile Include="LabTimeExpPhase.cs" />

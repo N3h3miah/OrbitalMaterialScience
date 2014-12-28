@@ -82,11 +82,11 @@ namespace NE_Science
         {
             return false;
             //TODO eneable
-            if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
-            {
-                if (msg) ScreenMessages.PostScreenMessage("Too boring here. Go to space!", 6, ScreenMessageStyle.UPPER_CENTER);
-                return true;
-            }
+            //if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
+            //{
+            //    if (msg) ScreenMessages.PostScreenMessage("Too boring here. Go to space!", 6, ScreenMessageStyle.UPPER_CENTER);
+            //    return true;
+            //}
             return false;
         }
 
@@ -164,6 +164,12 @@ namespace NE_Science
             {
                 Fields["phaseStatus"].guiActive = false;
             }
+        }
+
+        public void setEVAconfigForStart(bool unfocused, float distance)
+        {
+            Events["StartExperiment"].guiActiveUnfocused = unfocused;
+            Events["StartExperiment"].unfocusedRange = distance;
         }
 
         protected virtual void setPhases()
