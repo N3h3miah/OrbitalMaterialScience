@@ -448,7 +448,7 @@ namespace NE_Science
             }
             else
             {
-                NE_Helper.log("no Animation; Name: " + errorOnStartAnimName);
+                NE_Helper.log("no Animation; Name: " + animName);
             }
         }
 
