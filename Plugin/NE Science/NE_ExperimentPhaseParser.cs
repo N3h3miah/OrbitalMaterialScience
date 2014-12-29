@@ -84,19 +84,16 @@ namespace NE_Science
                     switch (paramParts[0].Trim())
                     {
                         case "int":
-                            NE_Helper.log("Parametertype: int");
                             ret.parameterType = ParaType.int_T;
                             //test conversion
                             int i = Convert.ToInt32(ret.valueString);
                             break;
                         case "string":
-                            NE_Helper.log("Parametertype: string");
                             ret.parameterType = ParaType.string_T;
                             //test conversion
                             double d= Convert.ToDouble(ret.valueString);
                             break;
                         case "double":
-                            NE_Helper.log("Parametertype: double");
                             ret.parameterType = ParaType.doulbe_T;
                             break;
 

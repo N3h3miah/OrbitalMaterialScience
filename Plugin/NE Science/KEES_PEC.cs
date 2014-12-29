@@ -46,14 +46,12 @@ namespace NE_Science
                 {
                     if (exp != null && exp != newExp)
                     {
-                        NE_Helper.log("PEC: Experiment replaced");
                         exp.dockedToPEC(false);
                         exp = newExp;
                         exp.dockedToPEC(true);
                     }
                     else if (exp == null)
                     {
-                        NE_Helper.log("PEC: new Experiment");
                         exp = newExp;
                         exp.dockedToPEC(true);
                     }
@@ -62,7 +60,6 @@ namespace NE_Science
             }
             if (exp != null)
             {
-                NE_Helper.log("PEC: Experiment undocked");
                 exp.dockedToPEC(false);
                 exp = null;
             }

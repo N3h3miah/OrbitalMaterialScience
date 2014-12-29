@@ -68,7 +68,7 @@ namespace NE_Science
 
         protected virtual bool isActive()
         {
-            return doResearch && part.protoModuleCrew.Count >= minimumCrew && !ExperimentCore.checkBoring(vessel, false);
+            return doResearch && part.protoModuleCrew.Count >= minimumCrew && !PhaseExperimentCore.checkBoring(vessel, false);
         }
 
         protected virtual void displayStatusMessage(string s)
@@ -99,7 +99,7 @@ namespace NE_Science
             {
                 displayStatusMessage("Understaffed (" + part.protoModuleCrew.Count + "/" + minimumCrew + ")");
             }
-            else if (ExperimentCore.checkBoring(vessel, false))
+            else if (PhaseExperimentCore.checkBoring(vessel, false))
             {
                 displayStatusMessage("Go to space!");
             }

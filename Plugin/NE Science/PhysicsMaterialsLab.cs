@@ -188,7 +188,6 @@ namespace NE_Science
 
         protected override void updateLabStatus()
         {
-            NE_Helper.log("update Labstatus");
             Fields["labStatus"].guiActive = false;
             Fields["equipment"].guiActive = true;
             equipment = getEquipmentString();

@@ -9,15 +9,13 @@ namespace NE_Science
     {
         private int cirBurnTimeRequired;
 
-        public CirExpPhase()
+        public CirExpPhase():base()
         {
-            NE_Helper.log("Default C-tor");
         }
 
         public CirExpPhase(PhaseExperimentCore exp, string n, int time)
             : base(exp, n)
         {
-            NE_Helper.log("Param C-tor");
             cirBurnTimeRequired = time;
         }
 

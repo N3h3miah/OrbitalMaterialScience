@@ -56,7 +56,6 @@ namespace NE_Science
             }
             if (!labFound)
             {
-                NE_Helper.log("Lab lost");
                 exp.undockedRunningExp();
             }
         }
@@ -90,21 +89,18 @@ namespace NE_Science
             List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
             bool labFound = false;
             ExposureLab labf = null;
-            NE_Helper.log("Looking for Exposure Lab");
             foreach (ExposureLab lab in allExpLabs)
             {
                 if (lab.vessel == exp.vessel && lab.isReady())
                 {
                     labFound = true;
                     labf = lab;
-                    NE_Helper.log("Lab found: " + lab.name);
                     break;
                 }
             }
 
             if (labFound)
             {
-                NE_Helper.log("starting Lab Experiment");
                 expID = new System.Random().Next();
                 if (expID == Int32.MinValue)
                 {
@@ -113,13 +109,11 @@ namespace NE_Science
                 if (labf != null)
                 {
                     labf.startExperiment(exp.experiment.experimentTitle, expID);
-                    NE_Helper.log("Lab started expID: " + expID);
                     return true;
 
                 }
                 else
                 {
-                    NE_Helper.log("labf null");
                     return false;
                 }
 
@@ -189,12 +183,9 @@ namespace NE_Science
 
         public override void load(ConfigNode node)
         {
-            NE_Helper.log("ExpExp load, calling base");
             base.load(node);
             string expIdstring = node.GetValue(EXP_ID_STRING);
-            NE_Helper.log("ExpExp load, ExpID String: " + expIdstring);
             expID = Convert.ToInt32(expIdstring);
-            NE_Helper.log("ExpExp load, ExpID: " + expID);
         }
 
         public override int getExperimentID()

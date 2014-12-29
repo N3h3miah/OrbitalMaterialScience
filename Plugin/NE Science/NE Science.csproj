@@ -60,10 +60,7 @@
     <Compile Include="PhaseExperimentCore.cs" />
     <Compile Include="ExperimentPhase.cs" />
     <Compile Include="CirExpPhase.cs" />
-    <Compile Include="MaterialLabOnlyExp.cs" />
-    <Compile Include="ExperimentCore.cs" />
     <Compile Include="ExposureLab.cs" />
-    <Compile Include="ExposureOnlyExp.cs" />
     <Compile Include="NE_ExperimentPhaseParser.cs" />
     <Compile Include="NE_Helper.cs" />
     <Compile Include="Lab.cs" />

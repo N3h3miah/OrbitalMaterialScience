@@ -69,7 +69,6 @@ namespace NE_Science
 
         public PhaseExperimentCore()
         {
-            NE_Helper.log("ExperimentPhaseCore C-tor");
             phases.Add(new ExperimentPhase(this, ""));
         }
 
@@ -107,24 +106,20 @@ namespace NE_Science
 
         public override void OnStart(StartState state)
         {
-            NE_Helper.log("OnStart");
             base.OnStart(state);
             if (state == StartState.Editor) { return; }
             
             this.part.force_activate();
             switch(this.state){
                 case READY:
-                    NE_Helper.log("ready");
                     Events["StartExperiment"].active = true;
                     Events["DeployExperiment"].active = false;
                     break;
                 case FINISHED:
-                    NE_Helper.log("ONStart: Finished");
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = true;
                     break;
             }
-            NE_Helper.log("OnStart End");
             updatePhaseState();
             StartCoroutine(updateStatus());
         }
@@ -148,9 +143,7 @@ namespace NE_Science
 
         public override void OnLoad(ConfigNode node)
         {
-            NE_Helper.log("PhaseExperimentCore OnLoad");
             base.OnLoad(node);
-            NE_Helper.log("PhaseExperimentCore OnLoad setPhases config: " + phaseConfig);
             setPhases();
             foreach (ExperimentPhase phase in phases)
             {
@@ -387,7 +380,6 @@ namespace NE_Science
 
         public virtual void labLost()
         {
-            NE_Helper.log("Lab lost");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             state = NOT_READY;
@@ -395,7 +387,6 @@ namespace NE_Science
 
         public virtual void biomeChanged()
         {
-            NE_Helper.log("biome chaned");
             getActivePhase().biomeChanged();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
@@ -406,7 +397,6 @@ namespace NE_Science
 
         public virtual void undockedRunningExp()
         {
-            NE_Helper.log("Exp Undocked");
             getActivePhase().undockedRunningExp();
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
@@ -417,7 +407,6 @@ namespace NE_Science
 
         public virtual void labFound()
         {
-            NE_Helper.log("Lab found");
             Events["StartExperiment"].active = true;
             Events["DeployExperiment"].active = false;
             state = READY;
@@ -427,7 +416,6 @@ namespace NE_Science
         {
             if (getActivePhase().startExperiment())
             {
-                NE_Helper.log("Exp started");
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = false;
                 state = RUNNING;
@@ -441,7 +429,6 @@ namespace NE_Science
 
         public virtual void finished()
         {
-            NE_Helper.log("research finished");
             if (getActivePhase().finished())
             {
                 Events["StartExperiment"].active = false;
@@ -452,7 +439,6 @@ namespace NE_Science
 
         public virtual void error()
         {
-            NE_Helper.log("Lab Error");
             
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = deployChecks(false);
@@ -461,7 +447,6 @@ namespace NE_Science
 
         public virtual void labFixed()
         {
-            NE_Helper.log("Lab Fixed");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = deployChecks(false);
             state = RUNNING;
@@ -469,7 +454,6 @@ namespace NE_Science
 
         public virtual void finalized()
         {
-            NE_Helper.log("Exp finalized");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             stopResearch();
@@ -478,7 +462,6 @@ namespace NE_Science
 
         public virtual void resetExp()
         {
-            NE_Helper.log("Reset");
             ScreenMessages.PostScreenMessage("Reseting Experiment " + part.partInfo.title, 2, ScreenMessageStyle.UPPER_CENTER);
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;

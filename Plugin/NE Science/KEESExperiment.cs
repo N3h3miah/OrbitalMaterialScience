@@ -93,12 +93,10 @@ namespace NE_Science
             this.part.force_activate();
             switch(this.state){
                 case READY:
-                    NE_Helper.log("ready");
                     Events["StartExperiment"].active = true;
                     Events["DeployExperiment"].active = false;
                     break;
                 case FINISHED:
-                    NE_Helper.log("ONStart: Finished");
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = true;
                     break;
@@ -263,7 +261,6 @@ namespace NE_Science
 
             if (!docked)
             {
-                NE_Helper.log("Lab lost");
                 undockedRunningExp();
             }
         }
@@ -309,7 +306,6 @@ namespace NE_Science
 
         public virtual void labLost()
         {
-            NE_Helper.log("Lab lost");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             state = NOT_READY;
@@ -317,7 +313,6 @@ namespace NE_Science
 
         public virtual void biomeChanged()
         {
-            NE_Helper.log("biome chaned");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Location changed mid-experiment! " + part.partInfo.title + " ruined.", 6, ScreenMessageStyle.UPPER_CENTER);
@@ -328,7 +323,6 @@ namespace NE_Science
 
         public virtual void undockedRunningExp()
         {
-            NE_Helper.log("Exp Undocked");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the station without being finalized.", 2, ScreenMessageStyle.UPPER_CENTER);
@@ -339,7 +333,6 @@ namespace NE_Science
 
         public virtual void labFound()
         {
-            NE_Helper.log("Lab found");
             Events["StartExperiment"].active = true;
             Events["DeployExperiment"].active = false;
             state = READY;
@@ -347,7 +340,6 @@ namespace NE_Science
 
         public virtual bool experimentStarted()
         {
-                NE_Helper.log("Exp started");
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = false;
                 state = RUNNING;
@@ -357,7 +349,6 @@ namespace NE_Science
 
         public virtual void finished()
         {
-            NE_Helper.log("research finished");
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = deployChecks(false);
                 state = FINISHED;
@@ -366,7 +357,6 @@ namespace NE_Science
 
         public virtual void finalized()
         {
-            NE_Helper.log("Exp finalized");
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
             stopResearch();
@@ -375,7 +365,6 @@ namespace NE_Science
 
         public virtual void resetExp()
         {
-            NE_Helper.log("Reset");
             ScreenMessages.PostScreenMessage("Reseting Experiment " + part.partInfo.title, 2, ScreenMessageStyle.UPPER_CENTER);
             Events["StartExperiment"].active = false;
             Events["DeployExperiment"].active = false;
@@ -416,7 +405,7 @@ namespace NE_Science
             }
             else
             {
-                NE_Helper.log("no Animation; Name: " + animName);
+                NE_Helper.logError("no Animation; Name: " + animName);
             }
         }
 

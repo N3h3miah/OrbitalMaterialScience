@@ -11,13 +11,11 @@ namespace NE_Science
 
         public FfrExpPhase()
         {
-            NE_Helper.log("Default C-tor");
         }
 
         public FfrExpPhase(PhaseExperimentCore exp, string n, int runs)
             : base(exp, n)
         {
-            NE_Helper.log("Param C-tor");
             ffrTestRunsRequired = runs;
         }
 
