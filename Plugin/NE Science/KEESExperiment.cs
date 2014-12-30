@@ -26,33 +26,11 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public class KEESExperiment : ModuleScienceExperiment
+    public class KEESExperiment : OMSExperiment
     {
-        public const int NOT_READY = 0;
-        public const int READY = 1;
-        public const int RUNNING = 2;
-        public const int FINISHED = 3;
-        public const int FINALIZED = 4;
-        public const int ERROR = 5;
 
          [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
-
-        [KSPField(isPersistant = true)]
-        public string last_subjectId = "";
-
-        [KSPField(isPersistant = true)]
-        public int state = NOT_READY;
-
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Status")]
-        public string expStatus = "";
-
-        public string notReadyStatus = "No Lab available";
-        public string readyStatus = "Lab available";
-        public string runningStatus = "Running";
-        public string finishedStatus = "Research done";
-        public string finalizedStatus = "Finalized";
-        public string errorStatus = "Lab Failure";
 
         private bool docked = false;
 
@@ -352,6 +330,7 @@ namespace NE_Science
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = deployChecks(false);
                 state = FINISHED;
+                completed = (float)Planetarium.GetUniversalTime();
                 playAnimation(debloyAnimation, -1, 1);
         }
 

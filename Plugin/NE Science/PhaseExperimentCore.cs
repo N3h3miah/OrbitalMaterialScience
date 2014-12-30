@@ -26,24 +26,8 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public class PhaseExperimentCore : ModuleScienceExperiment
+    public class PhaseExperimentCore : OMSExperiment
     {
-        public const int NOT_READY = 0;
-        public const int READY = 1;
-        public const int RUNNING = 2;
-        public const int FINISHED = 3;
-        public const int FINALIZED = 4;
-        public const int ERROR = 5;
-
-
-        [KSPField(isPersistant = true)]
-        public string last_subjectId = "";
-
-        [KSPField(isPersistant = true)]
-        public int state = NOT_READY;
-
-        [KSPField(isPersistant = false, guiActive = true, guiName = "Status")]
-        public string expStatus = "";
 
         [KSPField(isPersistant = false, guiActive = false, guiName = "Phase")]
         public string phaseStatus = "";
@@ -53,13 +37,6 @@ namespace NE_Science
 
         [KSPField(isPersistant = false)]
         public string  phaseConfig;
-
-        public string notReadyStatus = "No Lab available";
-        public string readyStatus = "Lab available";
-        public string runningStatus = "Running";
-        public string finishedStatus = "Research done";
-        public string finalizedStatus = "Finalized";
-        public string errorStatus = "Lab Failure";
 
         protected List<ExperimentPhase> phases = new List<ExperimentPhase>();
 
@@ -434,6 +411,7 @@ namespace NE_Science
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = deployChecks(false);
                 state = FINISHED;
+                completed = (float)Planetarium.GetUniversalTime();
             }
         }
 
