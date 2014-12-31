@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+ *   This file is part of Orbital Material Science.
+ *   
+ *   Orbital Material Science is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Orbital Material Sciencee is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with Orbital Material Science.  If not, see <http://www.gnu.org/licenses/>.
+ */
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +28,18 @@ namespace NE_Science.Contracts.Parameters
 {
     public class OMSReturnExperimentParameter : ContractParameter
     {
+        static readonly Dictionary<string, OMSExperimentRecovery> recoveryStrategy =
+          new Dictionary<string, OMSExperimentRecovery> {
+              { "NE.KEES.PPMD", new KEESExperimentRecovery() },
+              { "StnSciExperiment2", new OMSExperimentRecovery() },
+              
+          };
 
+        
         private CelestialBody targetBody = null;
         private AvailablePart experiment = null;
 
-        static readonly Dictionary<string, string> experimentModulname =
-          new Dictionary<string, string> {
-              { "StnSciExperiment1", "1" },
-              { "StnSciExperiment2", "2" },
-              
-          };
+        
 
         public OMSReturnExperimentParameter()
         {
@@ -46,6 +65,7 @@ namespace NE_Science.Contracts.Parameters
 
         protected override void OnRegister()
         {
+            NE_Helper.log("On Register");
             GameEvents.onVesselRecovered.Add(OnRecovered);
         }
         protected override void OnUnregister()
@@ -55,53 +75,16 @@ namespace NE_Science.Contracts.Parameters
 
         private void OnRecovered(ProtoVessel pv)
         {
-            if (targetBody == null || experiment == null)
+            NE_Helper.log("Recovery ProtoVessel");
+            if (targetBody != null && experiment != null)
             {
-                Debug.Log("targetBody or experimentType is null");
-                return;
-            }
-            foreach (ProtoPartSnapshot part in pv.protoPartSnapshots)
-            {
-                if (part.partName == experiment.name)
-                {
-                    foreach (ProtoPartModuleSnapshot module in part.modules)
-                    {
-                        NE_Helper.log("ProtoVessel recovery Modulename: " + module.moduleName);
-                        //TODO
-                    }
+                NE_Helper.log("Lookingup stratege for " + experiment.name);
+                OMSExperimentRecovery strategy = recoveryStrategy[experiment.name];
+                if(strategy.protovesselHasDoneExperiement(pv, experiment,targetBody, this.Root.DateAccepted)){
+                    SetComplete();
                 }
             }
-        }
-
-        private void OnRecovery(Vessel vessel)
-        {
-            if (targetBody == null || experiment == null)
-            {
-                Debug.Log("targetBody or experimentType is null");
-                return;
-            }
-            foreach (Part part in vessel.Parts)
-            {
-                if (part.name == experiment.name)
-                {
-                    OMSExperiment e = part.FindModuleImplementing<OMSExperiment>();
-                    if (e != null)
-                    {
-                        if (e.launched >= this.Root.DateAccepted)
-                        {
-                            ScienceData[] data = e.GetData();
-                            foreach (ScienceData sc in data)
-                            {
-                                if (sc.subjectID.ToLower().Contains("@" + targetBody.name.ToLower() + "inspace"))
-                                {
-                                    SetComplete();
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            
         }
 
         private bool setTargetExperiment(string exp)
@@ -109,7 +92,7 @@ namespace NE_Science.Contracts.Parameters
             experiment = PartLoader.getPartInfoByName(exp);
             if (experiment == null)
             {
-                Debug.LogError("Couldn't find experiment part: " + exp);
+                NE_Helper.logError("Couldn't find experiment part: " + exp);
                 return false;
             }
             return true;

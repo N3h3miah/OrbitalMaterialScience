@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OMSExperimentRecovery.cs" />
     <Compile Include="OMSReturnExperimentParameter.cs" />
     <Compile Include="KEESExperiment.cs" />
     <Compile Include="KEES_Lab.cs" />

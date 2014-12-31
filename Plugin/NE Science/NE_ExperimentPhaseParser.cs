@@ -119,12 +119,12 @@ namespace NE_Science
 
                     
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     NE_Helper.logError("Param string is not a sequence of digits. Set Value to: 10");
                     ret.valueString = "10";
                 }
-                catch (OverflowException e)
+                catch (OverflowException)
                 {
                     NE_Helper.logError("The number cannot fit in an Int32. Set Value to: 10");
                     ret.valueString = "10";

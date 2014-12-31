@@ -24,6 +24,7 @@ namespace NE_Science
 {
     public class OMSExperiment : ModuleScienceExperiment
     {
+        public const string COMPLETED = "completed";
 
         public const int NOT_READY = 0;
         public const int READY = 1;
