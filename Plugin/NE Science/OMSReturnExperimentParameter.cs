@@ -31,8 +31,10 @@ namespace NE_Science.Contracts.Parameters
         static readonly Dictionary<string, OMSExperimentRecovery> recoveryStrategy =
           new Dictionary<string, OMSExperimentRecovery> {
               { "NE.KEES.PPMD", new KEESExperimentRecovery() },
-              { "StnSciExperiment2", new OMSExperimentRecovery() },
-              
+              { "NE.KEES.POSA1", new KEESExperimentRecovery() },
+              { "NE.KEES.POSA2", new KEESExperimentRecovery() },
+              { "NE.KEES.ODC", new KEESExperimentRecovery() },
+                            
           };
 
         

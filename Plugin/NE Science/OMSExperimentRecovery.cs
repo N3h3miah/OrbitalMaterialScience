@@ -31,7 +31,9 @@ namespace NE_Science.Contracts.Parameters
         protected static readonly Dictionary<string, string> experimentModulname =
           new Dictionary<string, string> {
               { "NE.KEES.PPMD", "KEESExperiment" },
-              { "StnSciExperiment2", "2" },
+              { "NE.KEES.POSA1", "KEESExperiment" },
+              { "NE.KEES.POSA2", "KEESExperiment" },
+              { "NE.KEES.ODC", "KEESExperiment" },
               
           };
 
