@@ -78,6 +78,9 @@ namespace NE_Science
                     Events["StartExperiment"].active = false;
                     Events["DeployExperiment"].active = true;
                     break;
+                case RUNNING:
+                    playAnimation(debloyAnimation, 1f, 1f);
+                    break;
             }
             setEVAconfigForStart(true, 3);
             StartCoroutine(updateStatus());
