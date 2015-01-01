@@ -102,20 +102,20 @@ namespace NE_Science.Contracts.Parameters
 
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue(OMSExperimentContract.TARGET_BODY));
+            int bodyID = int.Parse(node.GetValue(KEESExperimentContract.TARGET_BODY));
             foreach (var body in FlightGlobals.Bodies)
             {
                 if (body.flightGlobalsIndex == bodyID)
                     targetBody = body;
             }
-            setTargetExperiment(node.GetValue(OMSExperimentContract.EXPERIMENT_STRING));
+            setTargetExperiment(node.GetValue(KEESExperimentContract.EXPERIMENT_STRING));
         }
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
-            node.AddValue(OMSExperimentContract.TARGET_BODY, bodyID);
+            node.AddValue(KEESExperimentContract.TARGET_BODY, bodyID);
 
-            node.AddValue(OMSExperimentContract.EXPERIMENT_STRING, experiment.name);
+            node.AddValue(KEESExperimentContract.EXPERIMENT_STRING, experiment.name);
         }
     }
 }
