@@ -116,13 +116,39 @@ namespace NE_Science.Contracts
             return ret;
         }
 
+        private int activeAndDoneContracts(String experimentPartName = null, CelestialBody body = null)
+        {
+            int ret = 0;
+            if (ContractSystem.Instance == null)
+            {
+                return 0;
+            }
+            if (ContractSystem.Instance.Contracts == null)
+            {
+                return 0;
+            }
+            foreach (Contract con in ContractSystem.Instance.Contracts)
+            {
+                KEESExperimentContract keesCon = con as KEESExperimentContract;
+                if (keesCon != null && (keesCon.ContractState == Contract.State.Active ||
+                    keesCon.ContractState == Contract.State.Offered ||
+                    keesCon.ContractState == Contract.State.Completed) &&
+                  (experimentPartName == null || keesCon.experiment != null) &&
+                  (body == null || keesCon.targetBody != null) &&
+                  ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName()) &&
+                   (body == null || body.theName == keesCon.targetBody.theName)))
+                    ret += 1;
+            }
+            return ret;
+        }
+
         private Experiment getTargetExperiment()
         {
             List<Experiment> unlockedExperiments = getUnlookedKEESExperiments();
             List<Experiment> unlookedNoContract = new List<Experiment>();
             foreach (Experiment exp in unlockedExperiments)
             {
-                if (activeContracts(exp.getPartName(), targetBody) == 0)
+                if (activeAndDoneContracts(exp.getPartName(), targetBody) == 0)
                 {
                     unlookedNoContract.Add(exp);
                 }
