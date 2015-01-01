@@ -54,18 +54,6 @@ namespace NE_Science
             return phases.ElementAt(activePhase);
         }
 
-        public static bool checkBoring(Vessel vessel, bool msg = false)
-        {
-            return false;
-            //TODO eneable
-            //if ((vessel.orbit.referenceBody.name == "Kerbin") && (vessel.situation == Vessel.Situations.LANDED || vessel.situation == Vessel.Situations.PRELAUNCH || vessel.situation == Vessel.Situations.SPLASHED || vessel.altitude <= vessel.orbit.referenceBody.maxAtmosphereAltitude))
-            //{
-            //    if (msg) ScreenMessages.PostScreenMessage("Too boring here. Go to space!", 6, ScreenMessageStyle.UPPER_CENTER);
-            //    return true;
-            //}
-            return false;
-        }
-
         public PartResource getResource(string name)
         {
             return ResourceHelper.getResource(part, name);
