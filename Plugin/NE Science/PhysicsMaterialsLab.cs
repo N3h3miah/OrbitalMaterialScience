@@ -98,39 +98,47 @@ namespace NE_Science
 
         private void initERacksActive()
         {
-            GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
-            if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
+            if (part.internalModel != null)
             {
-                printer = labIVA.transform.GetChild(0).gameObject;
-                cir = labIVA.transform.GetChild(1).gameObject;
-                ffr = labIVA.transform.GetChild(2).gameObject;
+                GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+                if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
+                {
+                    NE_Helper.log("set euipment racks");
+                    printer = labIVA.transform.GetChild(0).gameObject;
+                    cir = labIVA.transform.GetChild(1).gameObject;
+                    ffr = labIVA.transform.GetChild(2).gameObject;
 
-                if (ffrInstalled)
-                {
-                    installEquipmentRack(EquipmentRacks.FFR);
-                }
-                else
-                {
-                    ffr.SetActive(false);
-                }
+                    if (ffrInstalled)
+                    {
+                        installEquipmentRack(EquipmentRacks.FFR);
+                    }
+                    else
+                    {
+                        ffr.SetActive(false);
+                    }
 
-                if (cirInstalled)
-                {
-                    installEquipmentRack(EquipmentRacks.CIR);
-                }
-                else
-                {
-                    cir.SetActive(false);
-                }
+                    if (cirInstalled)
+                    {
+                        installEquipmentRack(EquipmentRacks.CIR);
+                    }
+                    else
+                    {
+                        cir.SetActive(false);
+                    }
 
-                if (printerInstalled)
-                {
-                    installEquipmentRack(EquipmentRacks.PRINTER);
+                    if (printerInstalled)
+                    {
+                        installEquipmentRack(EquipmentRacks.PRINTER);
+                    }
+                    else
+                    {
+                        printer.SetActive(false);
+                    }
                 }
-                else
-                {
-                    printer.SetActive(false);
-                }
+                NE_Helper.log("init E Racks successfull");
+            }
+            else {
+                NE_Helper.log("init E Racks internal model null");
             }
         }
 
@@ -157,6 +165,46 @@ namespace NE_Science
                     printer.SetActive(printerInstalled);
                     part.mass += 2.7f;
                     generators.Add(createGenerator(Resources.PRINT_LAYER, PrintLayerRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerLayer));
+                    break;
+            }
+        }
+
+        private void setEquipmentActive(EquipmentRacks rack)
+        {
+            switch (rack)
+            {
+                case EquipmentRacks.FFR:
+                    if (ffr != null)
+                    {
+                        ffr.SetActive(ffrInstalled);
+                    }
+                    else
+                    {
+                        initERacksActive();
+                        if(ffr != null)ffr.SetActive(ffrInstalled);
+                    }
+                    break;
+                case EquipmentRacks.CIR:
+                    if (cir != null)
+                    {
+                        cir.SetActive(cirInstalled);
+                    }
+                    else
+                    {
+                        initERacksActive();
+                        if (cir != null) cir.SetActive(cirInstalled);
+                    }
+                    break;
+                case EquipmentRacks.PRINTER:
+                    if (printer != null)
+                    {
+                        printer.SetActive(printerInstalled);
+                    }
+                    else
+                    {
+                        initERacksActive();
+                        if (printer != null) printer.SetActive(printerInstalled);
+                    }
                     break;
             }
         }
@@ -191,6 +239,11 @@ namespace NE_Science
             Fields["labStatus"].guiActive = false;
             Fields["equipment"].guiActive = true;
             equipment = getEquipmentString();
+            if (cir == null || ffr == null || printer == null)
+            {
+                initERacksActive();
+            }
+
             if (!cirInstalled)
             {
                 Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
