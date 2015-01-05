@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{8A1BDA32-AEF8-3A1C-EB04-46F51452F17D}") = "Lab Unity", "Assembly-CSharp-Editor.csproj", "{001B90E4-6C0F-3FE6-A18A-0C5795B5284E}"
+Project("{AF98D8BD-E9A0-11E5-656E-0B1F0395D549}") = "MEP IVA", "Assembly-CSharp-Editor-vs.csproj", "{62ACD863-8177-1954-59E4-066FE17E0853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{001B90E4-6C0F-3FE6-A18A-0C5795B5284E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{001B90E4-6C0F-3FE6-A18A-0C5795B5284E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{001B90E4-6C0F-3FE6-A18A-0C5795B5284E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{001B90E4-6C0F-3FE6-A18A-0C5795B5284E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62ACD863-8177-1954-59E4-066FE17E0853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62ACD863-8177-1954-59E4-066FE17E0853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62ACD863-8177-1954-59E4-066FE17E0853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62ACD863-8177-1954-59E4-066FE17E0853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																													GlobalSection(MonoDevelopProperties) = preSolution
+		GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
