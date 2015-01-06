@@ -27,6 +27,9 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string nodeName;
 
+        [KSPField(isPersistant = false)]
+        public double maxGforce = 2.5;
+
         private AttachNode node;
         private KEESExperiment exp = null;
 
@@ -78,6 +81,15 @@ namespace NE_Science
             {
                 exp.dockedToPEC(false);
                 exp = null;
+            }
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            if (vessel.geeForce > maxGforce)
+            {
+                part.decouple();
             }
         }
 

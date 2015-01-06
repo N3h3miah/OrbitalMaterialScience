@@ -42,6 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="KAS">
+      <HintPath>..\..\Lib\KAS.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -49,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />
     <Compile Include="OMSReturnExperimentParameter.cs" />
     <Compile Include="KEESExperiment.cs" />

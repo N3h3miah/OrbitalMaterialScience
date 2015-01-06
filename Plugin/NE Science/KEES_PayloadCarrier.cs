@@ -1,8 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
  *   
- *   Part of the code may originate from Station Science ba ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
- * 
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -17,6 +15,7 @@
  *   along with Orbital Material Science.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,25 +24,27 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    class NE_Helper
+    class KEES_PayloadCarrier : PartModule
     {
-        public const int MEP_NOT_READY = 0;
-        public const int MEP_READY = 1;
-        public const int MEP_RUNNING = 2;
-        public const int MEP_ERROR_ON_START = 3;
-        public const int MEP_ERROR_ON_STOP = 4;
-        private static bool debug = true;
 
-        public static void log( string msg)
+        private bool kasInstalled = false;
+
+
+        public override void OnStart(PartModule.StartState state)
         {
-            if (debug)
-            {
-                MonoBehaviour.print("[NE] " + msg);
-            }
-        }
+            base.OnStart(state);
 
-        public static void logError(string errMsg){
-            MonoBehaviour.print("[NE] Error: " + errMsg);
+            KAS.KASModuleGrab kasGrab = part.GetComponent<KAS.KASModuleGrab>();
+            if (kasGrab == null)
+            {
+                kasInstalled = false;
+                NE_Helper.log("No KAS");
+            }
+            else
+            {
+                kasInstalled = false;
+                NE_Helper.log("KAS Installed");
+            }
         }
     }
 }
