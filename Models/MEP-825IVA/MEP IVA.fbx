@@ -10,10 +10,10 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2015
 		Month: 01
-		Day: 05
-		Hour: 19
-		Minute: 54
-		Second: 26
+		Day: 10
+		Hour: 20
+		Minute: 43
+		Second: 24
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2015-01-05 19:54:26:000"
+CreationTime: "2015-01-10 20:43:24:000"
 Creator: "Blender version 2.70 (sub 0)"
 
 ; Object definitions
@@ -29,15 +29,15 @@ Creator: "Blender version 2.70 (sub 0)"
 
 Definitions:  {
 	Version: 100
-	Count: 31
+	Count: 34
 	ObjectType: "Model" {
-		Count: 9
+		Count: 10
 	}
 	ObjectType: "Geometry" {
-		Count: 9
+		Count: 10
 	}
 	ObjectType: "Material" {
-		Count: 11
+		Count: 13
 	}
 	ObjectType: "Texture" {
 		Count: 5
@@ -945,6 +945,158 @@ Objects:  {
 			MappingInformationType: "ByPolygon"
 			ReferenceInformationType: "IndexToDirect"
 			Materials: 0,1,1,0,1,1,1,1,1,1,0,1,1,1,1
+		}
+		Layer: 0 {
+			Version: 100
+			LayerElement:  {
+				Type: "LayerElementNormal"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementSmoothing"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementUV"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementTexture"
+				TypedIndex: 0
+			}
+			LayerElement:  {
+				Type: "LayerElementMaterial"
+				TypedIndex: 0
+			}
+		}
+	}
+	Model: "Model::AlarmLight", "Mesh" {
+		Version: 232
+		Properties60:  {
+			Property: "QuaternionInterpolate", "bool", "",0
+			Property: "Visibility", "Visibility", "A+",1
+			Property: "Lcl Translation", "Lcl Translation", "A+",0.005405495408922,0.169506371021271,0.108674466609955
+			Property: "Lcl Rotation", "Lcl Rotation", "A+",-45.000014912552764,0.000000000000000,0.000000000000000
+			Property: "Lcl Scaling", "Lcl Scaling", "A+",1.000000000000000,1.000000000000000,1.000000000000000
+			Property: "RotationOffset", "Vector3D", "",0,0,0
+			Property: "RotationPivot", "Vector3D", "",0,0,0
+			Property: "ScalingOffset", "Vector3D", "",0,0,0
+			Property: "ScalingPivot", "Vector3D", "",0,0,0
+			Property: "TranslationActive", "bool", "",0
+			Property: "TranslationMin", "Vector3D", "",0,0,0
+			Property: "TranslationMax", "Vector3D", "",0,0,0
+			Property: "TranslationMinX", "bool", "",0
+			Property: "TranslationMinY", "bool", "",0
+			Property: "TranslationMinZ", "bool", "",0
+			Property: "TranslationMaxX", "bool", "",0
+			Property: "TranslationMaxY", "bool", "",0
+			Property: "TranslationMaxZ", "bool", "",0
+			Property: "RotationOrder", "enum", "",0
+			Property: "RotationSpaceForLimitOnly", "bool", "",0
+			Property: "AxisLen", "double", "",10
+			Property: "PreRotation", "Vector3D", "",0,0,0
+			Property: "PostRotation", "Vector3D", "",0,0,0
+			Property: "RotationActive", "bool", "",0
+			Property: "RotationMin", "Vector3D", "",0,0,0
+			Property: "RotationMax", "Vector3D", "",0,0,0
+			Property: "RotationMinX", "bool", "",0
+			Property: "RotationMinY", "bool", "",0
+			Property: "RotationMinZ", "bool", "",0
+			Property: "RotationMaxX", "bool", "",0
+			Property: "RotationMaxY", "bool", "",0
+			Property: "RotationMaxZ", "bool", "",0
+			Property: "RotationStiffnessX", "double", "",0
+			Property: "RotationStiffnessY", "double", "",0
+			Property: "RotationStiffnessZ", "double", "",0
+			Property: "MinDampRangeX", "double", "",0
+			Property: "MinDampRangeY", "double", "",0
+			Property: "MinDampRangeZ", "double", "",0
+			Property: "MaxDampRangeX", "double", "",0
+			Property: "MaxDampRangeY", "double", "",0
+			Property: "MaxDampRangeZ", "double", "",0
+			Property: "MinDampStrengthX", "double", "",0
+			Property: "MinDampStrengthY", "double", "",0
+			Property: "MinDampStrengthZ", "double", "",0
+			Property: "MaxDampStrengthX", "double", "",0
+			Property: "MaxDampStrengthY", "double", "",0
+			Property: "MaxDampStrengthZ", "double", "",0
+			Property: "PreferedAngleX", "double", "",0
+			Property: "PreferedAngleY", "double", "",0
+			Property: "PreferedAngleZ", "double", "",0
+			Property: "InheritType", "enum", "",0
+			Property: "ScalingActive", "bool", "",0
+			Property: "ScalingMin", "Vector3D", "",1,1,1
+			Property: "ScalingMax", "Vector3D", "",1,1,1
+			Property: "ScalingMinX", "bool", "",0
+			Property: "ScalingMinY", "bool", "",0
+			Property: "ScalingMinZ", "bool", "",0
+			Property: "ScalingMaxX", "bool", "",0
+			Property: "ScalingMaxY", "bool", "",0
+			Property: "ScalingMaxZ", "bool", "",0
+			Property: "GeometricTranslation", "Vector3D", "",0,0,0
+			Property: "GeometricRotation", "Vector3D", "",0,0,0
+			Property: "GeometricScaling", "Vector3D", "",1,1,1
+			Property: "LookAtProperty", "object", ""
+			Property: "UpVectorProperty", "object", ""
+			Property: "Show", "bool", "",1
+			Property: "NegativePercentShapeSupport", "bool", "",1
+			Property: "DefaultAttributeIndex", "int", "",0
+			Property: "Color", "Color", "A",0.8,0.8,0.8
+			Property: "Size", "double", "",100
+			Property: "Look", "enum", "",1
+		}
+		MultiLayer: 0
+		MultiTake: 1
+		Shading: Y
+		Culling: "CullingOff"
+		Vertices: -0.120000,-0.020000,-0.070000,-0.120000,0.020000,-0.070000,0.120000,0.020000,-0.070000,0.120000,-0.020000,-0.070000,
+		          -0.120000,-0.020000,0.070000,-0.120000,0.020000,0.070000,0.120000,0.020000,0.070000,0.120000,-0.020000,0.070000
+		PolygonVertexIndex: 4,5,1,-1,5,6,2,-2,6,7,3,-3,7,4,0,-4,0,1,2,-4,7,6,5,-5
+		GeometryVersion: 124
+		LayerElementNormal: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "Direct"
+			Normals: -1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,
+			         0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,
+			         1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,
+			         0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,
+			         0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,0.000000,0.000000,-1.000000,
+			         0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000,0.000000,0.000000,1.000000
+		}
+		LayerElementSmoothing: 0 {
+			Version: 102
+			Name: ""
+			MappingInformationType: "ByPolygon"
+			ReferenceInformationType: "Direct"
+			Smoothing: 0,0,0,0,0,0
+		}
+		LayerElementUV: 0 {
+			Version: 101
+			Name: "UVMap"
+			MappingInformationType: "ByPolygonVertex"
+			ReferenceInformationType: "IndexToDirect"
+			UV: 0.093204,0.510367,0.222651,0.528859,0.074711,0.593583,0.093204,0.593583,0.204158,0.593583,0.000000,0.000000,
+			    0.074711,0.528859,0.222651,0.593583,0.204158,0.528859,0.093204,0.612075,0.093204,0.528859,0.204158,0.612075,
+			    0.204158,0.510367
+			UVIndex: 7,4,8,1,4,3,10,8,3,2,6,10,5,5,5,5,12,8,10,0,9,3,4,11
+		}
+		LayerElementTexture: 0 {
+			Version: 101
+			Name: "UVMap"
+			MappingInformationType: "ByPolygon"
+			ReferenceInformationType: "IndexToDirect"
+			BlendMode: "Translucent"
+			TextureAlpha: 1
+			TextureId: 1,1,1,0,1,1
+		}
+		LayerElementMaterial: 0 {
+			Version: 101
+			Name: ""
+			MappingInformationType: "ByPolygon"
+			ReferenceInformationType: "IndexToDirect"
+			Materials: 1,1,1,0,1,1
 		}
 		Layer: 0 {
 			Version: 100
@@ -2132,6 +2284,66 @@ Objects:  {
 			}
 		}
 	}
+	Material: "Material::AlarmLight", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties60:  {
+			Property: "ShadingModel", "KString", "", "Lambert"
+			Property: "MultiLayer", "bool", "",0
+			Property: "EmissiveColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "EmissiveFactor", "double", "",0.0000
+			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "AmbientFactor", "double", "",1.0000
+			Property: "DiffuseColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "DiffuseFactor", "double", "",0.8000
+			Property: "Bump", "Vector3D", "",0,0,0
+			Property: "TransparentColor", "ColorRGB", "",1,1,1
+			Property: "TransparencyFactor", "double", "",0.0000
+			Property: "SpecularColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "SpecularFactor", "double", "",0.5000
+			Property: "ShininessExponent", "double", "",12.3
+			Property: "ReflectionColor", "ColorRGB", "",0,0,0
+			Property: "ReflectionFactor", "double", "",1
+			Property: "Emissive", "ColorRGB", "",0,0,0
+			Property: "Ambient", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Diffuse", "ColorRGB", "",0.8,0.8,0.8
+			Property: "Specular", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Shininess", "double", "",12.3
+			Property: "Opacity", "double", "",1.0
+			Property: "Reflectivity", "double", "",0
+		}
+	}
+	Material: "Material::AlarmLight__MEP_IVA_UV_png", "" {
+		Version: 102
+		ShadingModel: "lambert"
+		MultiLayer: 0
+		Properties60:  {
+			Property: "ShadingModel", "KString", "", "Lambert"
+			Property: "MultiLayer", "bool", "",0
+			Property: "EmissiveColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "EmissiveFactor", "double", "",0.0000
+			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "AmbientFactor", "double", "",1.0000
+			Property: "DiffuseColor", "ColorRGB", "",0.8000,0.8000,0.8000
+			Property: "DiffuseFactor", "double", "",0.8000
+			Property: "Bump", "Vector3D", "",0,0,0
+			Property: "TransparentColor", "ColorRGB", "",1,1,1
+			Property: "TransparencyFactor", "double", "",0.0000
+			Property: "SpecularColor", "ColorRGB", "",1.0000,1.0000,1.0000
+			Property: "SpecularFactor", "double", "",0.5000
+			Property: "ShininessExponent", "double", "",12.3
+			Property: "ReflectionColor", "ColorRGB", "",0,0,0
+			Property: "ReflectionFactor", "double", "",1
+			Property: "Emissive", "ColorRGB", "",0,0,0
+			Property: "Ambient", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Diffuse", "ColorRGB", "",0.8,0.8,0.8
+			Property: "Specular", "ColorRGB", "",1.0,1.0,1.0
+			Property: "Shininess", "double", "",12.3
+			Property: "Opacity", "double", "",1.0
+			Property: "Reflectivity", "double", "",0
+		}
+	}
 	Material: "Material::MEP_Control_Base__MEP_IVA_UV_png_001", "" {
 		Version: 102
 		ShadingModel: "lambert"
@@ -2384,7 +2596,7 @@ Objects:  {
 			Property: "AmbientColor", "ColorRGB", "",1.0000,1.0000,1.0000
 			Property: "AmbientFactor", "double", "",1.0000
 			Property: "DiffuseColor", "ColorRGB", "",0.8000,0.8000,0.8000
-			Property: "DiffuseFactor", "double", "",0.8000
+			Property: "DiffuseFactor", "double", "",0.0000
 			Property: "Bump", "Vector3D", "",0,0,0
 			Property: "TransparentColor", "ColorRGB", "",1,1,1
 			Property: "TransparencyFactor", "double", "",0.0000
@@ -2717,7 +2929,7 @@ Objects:  {
 		Version: 100
 		Properties60:  {
 		}
-		NbPoseNodes: 9
+		NbPoseNodes: 10
 		PoseNode:  {
 			Node: "Model::IVA"
 			Matrix: 0.000000075497901,0.000000000000000,-1.000000000000000,0.000000000000000,-1.000000000000000,0.000000000000000,-0.000000075497901,0.000000000000000,0.000000000000000,1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000
@@ -2737,6 +2949,10 @@ Objects:  {
 		PoseNode:  {
 			Node: "Model::Screen"
 			Matrix: 0.000000075497901,0.000000000000000,-1.000000000000000,0.000000000000000,-1.000000000000000,0.000000000000000,-0.000000075497901,0.000000000000000,0.000000000000000,1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.609411120414734,0.163823172450066,1.000000000000000
+		}
+		PoseNode:  {
+			Node: "Model::AlarmLight"
+			Matrix: 0.000000075497901,-0.707106947898865,-0.707106590270996,0.000000000000000,-1.000000000000000,-0.000000053385090,-0.000000053385065,0.000000000000000,0.000000000000000,0.707106590270996,-0.707106947898865,0.000000000000000,0.005405495408922,0.718085587024689,-0.005683202296495,1.000000000000000
 		}
 		PoseNode:  {
 			Node: "Model::Arm_Control_Base_R"
@@ -2783,6 +2999,8 @@ Relations:  {
 	}
 	Model: "Model::Screen", "Mesh" {
 	}
+	Model: "Model::AlarmLight", "Mesh" {
+	}
 	Model: "Model::Arm_Control_Base_R", "Mesh" {
 	}
 	Model: "Model::Stick_R", "Mesh" {
@@ -2806,6 +3024,10 @@ Relations:  {
 	Model: "Model::Producer Left", "Camera" {
 	}
 	Model: "Model::Camera Switcher", "CameraSwitcher" {
+	}
+	Material: "Material::AlarmLight", "" {
+	}
+	Material: "Material::AlarmLight__MEP_IVA_UV_png", "" {
 	}
 	Material: "Material::MEP_Control_Base__MEP_IVA_UV_png_001", "" {
 	}
@@ -2860,6 +3082,7 @@ Connections:  {
 	Connect: "OO", "Model::Window", "Model::IVA"
 	Connect: "OO", "Model::Airlock", "Model::IVA"
 	Connect: "OO", "Model::Screen", "Model::IVA"
+	Connect: "OO", "Model::AlarmLight", "Model::Screen"
 	Connect: "OO", "Model::Arm_Control_Base_R", "Model::Screen"
 	Connect: "OO", "Model::Stick_R", "Model::Arm_Control_Base_R"
 	Connect: "OO", "Model::Arm_Control_Base_L", "Model::Screen"
@@ -2871,6 +3094,8 @@ Connections:  {
 	Connect: "OO", "Material::MEP_IVA_Mat__UV_Map", "Model::Airlock"
 	Connect: "OO", "Material::MEP_Screen", "Model::Screen"
 	Connect: "OO", "Material::MEP_Screen__MEP_IVA_UV_png_001", "Model::Screen"
+	Connect: "OO", "Material::AlarmLight", "Model::AlarmLight"
+	Connect: "OO", "Material::AlarmLight__MEP_IVA_UV_png", "Model::AlarmLight"
 	Connect: "OO", "Material::MEP_Control_Base__MEP_IVA_UV_png_001", "Model::Arm_Control_Base_R"
 	Connect: "OO", "Material::MEP_Control_Stick__MEP_IVA_UV_png_001", "Model::Stick_R"
 	Connect: "OO", "Material::MEP_Control_Base__MEP_IVA_UV_png_002", "Model::Arm_Control_Base_L"
@@ -2880,6 +3105,7 @@ Connections:  {
 	Connect: "OO", "Texture::MEP_IVA_UV_png", "Model::Window"
 	Connect: "OO", "Texture::UV_Map", "Model::Airlock"
 	Connect: "OO", "Texture::MEP_IVA_UV_png_001", "Model::Screen"
+	Connect: "OO", "Texture::MEP_IVA_UV_png", "Model::AlarmLight"
 	Connect: "OO", "Texture::MEP_IVA_UV_png_001", "Model::Arm_Control_Base_R"
 	Connect: "OO", "Texture::MEP_IVA_UV_png_001", "Model::Stick_R"
 	Connect: "OO", "Texture::MEP_IVA_UV_png_002", "Model::Arm_Control_Base_L"
@@ -3283,6 +3509,92 @@ Takes:  {
 						KeyCount: 1
 						Key: 
 							0,0.000000000000000,L
+						Color: 1,0,0
+					}
+					Channel: "Y" {
+						Default: -0.000000000000000
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,-0.000000000000000,L
+						Color: 0,1,0
+					}
+					Channel: "Z" {
+						Default: 0.000000000000000
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,0.000000000000000,L
+						Color: 0,0,1
+					}
+					LayerType: 2
+				}
+				Channel: "S" {
+					Channel: "X" {
+						Default: 1.000000000000000
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,1.000000000000000,L
+						Color: 1,0,0
+					}
+					Channel: "Y" {
+						Default: 1.000000000000000
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,1.000000000000000,L
+						Color: 0,1,0
+					}
+					Channel: "Z" {
+						Default: 1.000000000000000
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,1.000000000000000,L
+						Color: 0,0,1
+					}
+					LayerType: 3
+				}
+			}
+		}
+		Model: "Model::AlarmLight" {
+			Version: 1.1
+			Channel: "Transform" {
+				Channel: "T" {
+					Channel: "X" {
+						Default: 0.005405495408922
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,0.005405495408922,L
+						Color: 1,0,0
+					}
+					Channel: "Y" {
+						Default: 0.169506371021271
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,0.169506371021271,L
+						Color: 0,1,0
+					}
+					Channel: "Z" {
+						Default: 0.108674466609955
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,0.108674466609955,L
+						Color: 0,0,1
+					}
+					LayerType: 1
+				}
+				Channel: "R" {
+					Channel: "X" {
+						Default: -45.000014912552764
+						KeyVer: 4005
+						KeyCount: 1
+						Key: 
+							0,-45.000014912552764,L
 						Color: 1,0,0
 					}
 					Channel: "Y" {

@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KEES_PayloadCarrier.cs" />
+    <Compile Include="MEP_StatusScreen.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />
     <Compile Include="OMSReturnExperimentParameter.cs" />
     <Compile Include="KEESExperiment.cs" />
