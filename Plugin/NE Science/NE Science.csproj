@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MEP_ExpScreen.cs" />
     <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="MEP_StatusScreen.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />
