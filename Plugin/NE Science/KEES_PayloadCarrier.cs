@@ -34,16 +34,44 @@ namespace NE_Science
         {
             base.OnStart(state);
 
-            KAS.KASModuleGrab kasGrab = part.GetComponent<KAS.KASModuleGrab>();
-            if (kasGrab == null)
+            if (checkedForKAS())
             {
-                kasInstalled = false;
-                NE_Helper.log("No KAS");
+                kasInstalled = true;
+                NE_Helper.log("KAS Installed");
+                Events["attachPEC"].active = false;
+                Events["attachPEC"].guiActive = false;
             }
             else
             {
                 kasInstalled = false;
-                NE_Helper.log("KAS Installed");
+                NE_Helper.log("No KAS");
+                Events["attachPEC"].active = true;
+                Events["attachPEC"].guiActive = true;
+            }
+        }
+
+        private bool checkedForKAS()
+        {
+            GameObject go = GameDatabase.Instance.GetModel("KAS/Parts/container1/container1");
+            return (go != null);
+        }
+
+        [KSPEvent(guiActive = false, guiName = "Attach PEC", active = false)]
+        public void attachPEC()
+        {
+
+            //GameObject pec = GameDatabase.Instance.GetModel("NehemiahInc/Parts/KEES/PEC/model");
+            //Vector3 pos = FlightGlobals.ActiveVessel.GetTransform().position;
+            //Quaternion rot = FlightGlobals.ActiveVessel.GetTransform().rotation;
+
+            Part my_part = PartLoader.getPartInfoByName("NE.KEES.PEC").partPrefab;
+            if (my_part != null)
+            {
+                Part parent_part = this.part;
+                my_part.setParent(parent_part);
+                my_part.transform.position += Vector3.right;
+                my_part.attachJoint = PartJoint.Create(my_part, parent_part, my_part.srfAttachNode, null, AttachModes.SRF_ATTACH);
+                this.vessel.Parts.Add(my_part);
             }
         }
     }
