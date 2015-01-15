@@ -126,6 +126,24 @@ namespace NE_Science.Contracts.Parameters
                     if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
                         return true;
                 }
+                else if (isKasContainerPart(part))
+                {
+                    if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private bool isKasContainerPart(ProtoPartSnapshot part)
+        {
+            foreach (ProtoPartModuleSnapshot module in part.modules)
+            {
+                NE_Helper.log("ProtoVessel recovery Modulename: " + module.moduleName);
+                if (module.moduleName == KAS_CONTAINER)
+                {
+                    return true;
+                }
             }
             return false;
         }
