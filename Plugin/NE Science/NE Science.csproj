@@ -52,7 +52,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MSL_Printer_Animation.cs" />
+    <Compile Include="MSL_FFR_Animation.cs" />
     <Compile Include="MEP_ExpScreen.cs" />
+    <Compile Include="FFR_Laptop.cs" />
     <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="MEP_StatusScreen.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />

@@ -19,6 +19,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
 namespace NE_Science
@@ -63,9 +65,19 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = false, guiName = "Equipment")]
         public string equipment = "";
 
+        private const string FFR_ANIMATION = "FFR_Pump";
+
         private GameObject cir;
         private GameObject ffr;
         private GameObject printer;
+
+        public Generator labTimeGenerator;
+        public Generator ffrGenerator;
+        public Generator cirGenerator;
+        public Generator printerGenerator;
+
+        public bool ffrRunning;
+        public bool printerRunning;
 
         public override void OnLoad(ConfigNode node)
         {
@@ -82,7 +94,7 @@ namespace NE_Science
 
             initERacksActive();
 
-            Generator labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
+            labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
             generators.Add(labTimeGenerator);
 
         }
@@ -152,19 +164,22 @@ namespace NE_Science
                     ffrInstalled = true;
                     ffr.SetActive(ffrInstalled);
                     part.mass += 3;
-                    generators.Add(createGenerator(Resources.FFR_TEST_RUN, FFRTestRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerTestRun));
+                    ffrGenerator = createGenerator(Resources.FFR_TEST_RUN, FFRTestRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerTestRun);
+                    generators.Add(ffrGenerator);
                     break;
                 case EquipmentRacks.CIR:
                     cirInstalled = true;
                     cir.SetActive(cirInstalled);
                     part.mass += 3;
-                    generators.Add(createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime));
+                    cirGenerator = createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime);
+                    generators.Add(cirGenerator);
                     break;
                 case EquipmentRacks.PRINTER:
                     printerInstalled = true;
                     printer.SetActive(printerInstalled);
                     part.mass += 2.7f;
-                    generators.Add(createGenerator(Resources.PRINT_LAYER, PrintLayerRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerLayer));
+                    printerGenerator = createGenerator(Resources.PRINT_LAYER, PrintLayerRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerLayer);
+                    generators.Add(printerGenerator);
                     break;
             }
         }
@@ -267,6 +282,31 @@ namespace NE_Science
             else
             {
                 Events["installPrinter"].active = false;
+            }
+
+            updateAnimaitonState();
+        }
+
+        private void updateAnimaitonState()
+        {
+            if (ffrInstalled)
+            {
+                double last = ffrGenerator.rates[Resources.FFR_TEST_RUN].last_produced;
+                bool state = (last < -0.0000001);
+                if (ffrRunning != state)
+                {
+                    ffrRunning = state;
+                }
+            }
+
+            if (printerInstalled)
+            {
+                double last = printerGenerator.rates[Resources.PRINT_LAYER].last_produced;
+                bool state = (last < -0.0000001);
+                if (printerRunning != state)
+                {
+                    printerRunning = state;
+                }
             }
         }
 
