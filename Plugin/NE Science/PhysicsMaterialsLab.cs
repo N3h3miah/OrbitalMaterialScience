@@ -77,6 +77,7 @@ namespace NE_Science
         public Generator printerGenerator;
 
         public bool ffrRunning;
+        public bool cirRunning;
         public bool printerRunning;
 
         public override void OnLoad(ConfigNode node)
@@ -306,6 +307,16 @@ namespace NE_Science
                 if (printerRunning != state)
                 {
                     printerRunning = state;
+                }
+            }
+
+            if (cirInstalled)
+            {
+                double last = cirGenerator.rates[Resources.CIR_BURN_TIME].last_produced;
+                bool state = (last < -0.0000001);
+                if (cirRunning != state)
+                {
+                    cirRunning = state;
                 }
             }
         }

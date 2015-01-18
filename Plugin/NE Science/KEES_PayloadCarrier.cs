@@ -68,10 +68,9 @@ namespace NE_Science
             if (my_part != null)
             {
                 Part parent_part = this.part;
-                my_part.setParent(parent_part);
-                my_part.transform.position += Vector3.right;
-                my_part.attachJoint = PartJoint.Create(my_part, parent_part, my_part.srfAttachNode, null, AttachModes.SRF_ATTACH);
-                this.vessel.Parts.Add(my_part);
+                //my_part.setParent(parent_part);
+                my_part.transform.position += new Vector3(0.669f, -0.638f, -0.386f);
+                this.part.Couple(my_part);
             }
         }
     }

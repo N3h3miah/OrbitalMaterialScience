@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CIR_Laptop.cs" />
     <Compile Include="MSL_Printer_Animation.cs" />
     <Compile Include="MSL_FFR_Animation.cs" />
     <Compile Include="MEP_ExpScreen.cs" />
