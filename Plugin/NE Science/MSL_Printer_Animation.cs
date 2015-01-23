@@ -25,6 +25,15 @@ namespace NE_Science
     class MSL_Printer_Animation : InternalModule
     {
 
+        [KSPField]
+        public string prMovingSound = "NehemiahInc/Sounds/3DPmove";
+
+        [KSPField]
+        public string prBaseChgDirSound = "NehemiahInc/Sounds/3DPchgDir";
+
+        [KSPField]
+        public string prHeadChgDirSound = "NehemiahInc/Sounds/3DPheadChgDir";
+
         private const float BASE_SPEED = 0.01f;
         private const float HEAD_SPEED = 0.02f;
 
@@ -34,13 +43,22 @@ namespace NE_Science
         private const float BASE_MAX = 0.35f;
         private const float BASE_MIN = -0.33f;
 
+        private const float DOPPLER_LEVEL = 0f;
+        private const float MIN_DIST = 0.003f;
+        private const float MAX_DIST = 0.004f;
+
+
         private Transform headBase;
         private Transform head;
+
+        private AudioSource prAs;
+        private AudioSource prBaseChgDirAs;
+        private AudioSource prHeadChgDirAs;
 
         private int count = 0;
 
         private int baseDirection = 1;
-        private int headDirection = 1;
+        private int headDirection = 1;        
 
         public override void OnFixedUpdate()
         {
@@ -56,9 +74,30 @@ namespace NE_Science
                 {
                     moveBase();
                     moveHead();
+                    playSoundFX();
+                }
+                else
+                {
+                    stopSoundFX();
                 }
             }
             count = (count + 1) % 2;
+        }
+
+        private void stopSoundFX()
+        {
+            if (prAs.isPlaying)
+            {
+                prAs.Stop();
+            }
+        }
+
+        private void playSoundFX()
+        {
+            if (!prAs.isPlaying)
+            {                
+                prAs.Play();
+            }
         }
 
         private void moveHead()
@@ -67,12 +106,18 @@ namespace NE_Science
             pos += HEAD_SPEED * -headDirection; //I dont understand why it has to be -headDirection to work
             if (pos > HEAD_MAX || pos < HEAD_MIN)
             {
-                headDirection = headDirection * -1;
+               headDirection = headDirection * -1;  
             }
             else
             {
                 float movment = HEAD_SPEED * headDirection;
                 head.Translate(0, movment, 0, Space.Self);
+            }
+
+            pos += HEAD_SPEED * -headDirection;
+            if (pos > HEAD_MAX || pos < HEAD_MIN)
+            {
+                prHeadChgDirAs.Play();
             }
         }
 
@@ -88,6 +133,12 @@ namespace NE_Science
             {
                 headBase.Translate(BASE_SPEED * baseDirection, 0, 0);
             }
+
+            pos += BASE_SPEED * baseDirection;
+            if (pos > BASE_MAX || pos < BASE_MIN)
+            {
+                prBaseChgDirAs.Play();
+            }
         }
 
         private void initPartObjects()
@@ -101,6 +152,39 @@ namespace NE_Science
                     GameObject printer = labIVA.transform.GetChild(0).gameObject;
                     //GameObject cir = labIVA.transform.GetChild(1).gameObject;
                     headBase = printer.transform.GetChild(1).GetChild(0);
+                    if (headBase != null)
+                    {
+                        prAs = headBase.gameObject.AddComponent<AudioSource>();
+                        AudioClip clip = GameDatabase.Instance.GetAudioClip(prMovingSound);
+                        prAs.clip = clip;
+                        prAs.dopplerLevel = DOPPLER_LEVEL;
+                        prAs.rolloffMode = AudioRolloffMode.Logarithmic;
+                        prAs.Stop();
+                        prAs.loop = true;
+                        prAs.minDistance = MIN_DIST;
+                        prAs.maxDistance = MAX_DIST;
+                        prAs.volume = 1f;
+
+                        prBaseChgDirAs = headBase.gameObject.AddComponent<AudioSource>();
+                        prBaseChgDirAs.clip = GameDatabase.Instance.GetAudioClip(prBaseChgDirSound);
+                        prBaseChgDirAs.dopplerLevel = DOPPLER_LEVEL;
+                        prBaseChgDirAs.rolloffMode = AudioRolloffMode.Logarithmic;
+                        prBaseChgDirAs.Stop();
+                        prBaseChgDirAs.loop = false;
+                        prBaseChgDirAs.minDistance = MIN_DIST;
+                        prBaseChgDirAs.maxDistance = MAX_DIST;
+                        prBaseChgDirAs.volume = 0.4f;
+
+                        prHeadChgDirAs = headBase.gameObject.AddComponent<AudioSource>();
+                        prHeadChgDirAs.clip = GameDatabase.Instance.GetAudioClip(prHeadChgDirSound);
+                        prHeadChgDirAs.dopplerLevel = DOPPLER_LEVEL;
+                        prHeadChgDirAs.rolloffMode = AudioRolloffMode.Logarithmic;
+                        prHeadChgDirAs.Stop();
+                        prHeadChgDirAs.loop = false;
+                        prHeadChgDirAs.minDistance = MIN_DIST;
+                        prHeadChgDirAs.maxDistance = MAX_DIST;
+                        prHeadChgDirAs.volume = 1f;
+                    }
                     head = headBase.GetChild(0);
                 }
             }

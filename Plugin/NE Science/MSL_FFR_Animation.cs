@@ -25,11 +25,20 @@ namespace NE_Science
     class MSL_FFR_Animation : InternalModule
     {
 
+        [KSPField]
+        public string pumpSound = "NehemiahInc/Sounds/pump";
+
         private const float PUMP1_SPEED = 10;
         private const float PUMP2_SPEED = 15;
 
+        private const float DOPPLER_LEVEL = 0f;
+        private const float MIN_DIST = 0.003f;
+        private const float MAX_DIST = 0.004f;
+
         private Transform pump1;
         private Transform pump2;
+
+        private AudioSource pumpAs;
 
         private int count = 0;
 
@@ -53,9 +62,30 @@ namespace NE_Science
                     {
                         pump2.Rotate(PUMP2_SPEED, 0, 0);
                     }
+                    playSoundFX();
+                }
+                else
+                {
+                    stopSoundFX();
                 }
             }
             count = (count + 1) % 2;
+        }
+
+        private void stopSoundFX()
+        {
+            if (pumpAs.isPlaying)
+            {
+                pumpAs.Stop();
+            }
+        }
+
+        private void playSoundFX()
+        {
+            if (!pumpAs.isPlaying)
+            {
+                pumpAs.Play();
+            }
         }
 
         private void initPartObjects()
@@ -71,6 +101,17 @@ namespace NE_Science
                     GameObject ffr = labIVA.transform.GetChild(2).gameObject;
                     pump1 = ffr.transform.GetChild(1);
                     pump2 = ffr.transform.GetChild(2);
+
+                    pumpAs = ffr.AddComponent<AudioSource>();
+                    AudioClip clip = GameDatabase.Instance.GetAudioClip(pumpSound);
+                    pumpAs.clip = clip;
+                    pumpAs.dopplerLevel = DOPPLER_LEVEL;
+                    pumpAs.rolloffMode = AudioRolloffMode.Logarithmic;
+                    pumpAs.Stop();
+                    pumpAs.loop = true;
+                    pumpAs.minDistance = MIN_DIST;
+                    pumpAs.maxDistance = MAX_DIST;
+                    pumpAs.volume = 1f;
                 }
             }
         }
