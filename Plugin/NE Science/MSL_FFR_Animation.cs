@@ -95,7 +95,6 @@ namespace NE_Science
                 GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
                 if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
                 {
-                    NE_Helper.log("set pump transforms");
                     //printer = labIVA.transform.GetChild(0).gameObject;
                     //GameObject cir = labIVA.transform.GetChild(1).gameObject;
                     GameObject ffr = labIVA.transform.GetChild(2).gameObject;

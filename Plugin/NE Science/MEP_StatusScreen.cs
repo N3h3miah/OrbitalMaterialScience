@@ -88,8 +88,6 @@ namespace NE_Science
             Material mat = getScreenMaterial();
             if (mat != null)
             {
-                NE_Helper.log("Old Texture: " + mat.mainTexture.name);
-                NE_Helper.log("Set new Texture: " + newTexture.name);
                 mat.mainTexture = newTexture.texture;
             }
             else
@@ -105,7 +103,6 @@ namespace NE_Science
                 Transform t = internalProp.FindModelTransform("MEP IVA Screen");
                 if (t != null)
                 {
-                    NE_Helper.log("Transform found: " + "MEP IVA Screen");
                     screenMat = t.renderer.material;
                     return screenMat;
                 }

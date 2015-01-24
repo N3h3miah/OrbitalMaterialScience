@@ -59,7 +59,6 @@ namespace NE_Science
                 PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
                 if (gameObject.activeSelf != lab.ffrInstalled)
                 {
-                    NE_Helper.log("Set FFR_Laptop.active to: " + lab.ffrInstalled);
                     gameObject.SetActive(lab.ffrInstalled);
                 }
                 if (lab.ffrInstalled)
@@ -67,7 +66,6 @@ namespace NE_Science
                     if (running != lab.ffrRunning)
                     {
                         running = lab.ffrRunning;
-                        NE_Helper.log("Change Texture, running: " + running);
                         changeTexture(getTextureForState(running));
                     }
                 }
@@ -80,8 +78,6 @@ namespace NE_Science
             Material mat = getScreenMaterial();
             if (mat != null)
             {
-                NE_Helper.log("Old Texture: " + mat.mainTexture.name);
-                NE_Helper.log("Set new Texture: " + newTexture.name);
                 mat.mainTexture = newTexture.texture;
             }
             else
@@ -97,7 +93,6 @@ namespace NE_Science
                 Transform t = internalProp.FindModelTransform(SCREEN_PART_NAME);
                 if (t != null)
                 {
-                    NE_Helper.log("Transform found: " + SCREEN_PART_NAME);
                     screenMat = t.renderer.material;
                     return screenMat;
                 }

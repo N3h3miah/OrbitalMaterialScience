@@ -60,8 +60,6 @@ namespace NE_Science
         private string startExpAnimName = "StartExperiment";
         private string errorOnStartAnimName = "ErrorOnStart";
         private string errorOnStopAnimName = "ErrorOnStop";
-        private Light warnLight;
-        private Light warnPointLight;
 
         public Generator ExposureTimeGenerator;
 
@@ -73,18 +71,6 @@ namespace NE_Science
                 return;
             }
 
-            foreach (Light child in gameObject.GetComponentsInChildren(typeof(Light)))
-            {
-                if (child.name == "rotationLight")
-                {
-                    warnLight = child;
-                }
-                else if (child.name == "WarnPointLlight")
-                {
-                    warnPointLight = child;
-                }
-
-            }
             ExposureTimeGenerator = new Generator(this.part);
             ExposureTimeGenerator.addRate("ExposureTime", -ExposureTimePerHour);
             generators.Add(ExposureTimeGenerator);
@@ -110,14 +96,12 @@ namespace NE_Science
 
                 case NE_Helper.MEP_ERROR_ON_START:
                     playAnimation(errorOnStartAnimName, 1f, 1f);
-                    startWarnLights();
                     Events["FixArm"].guiActiveUnfocused = true;
                     Events["DeployPlatform"].guiActive = false;
                     break;
 
                 case NE_Helper.MEP_ERROR_ON_STOP:
                     playAnimation(errorOnStopAnimName, -1f, 0f);
-                    startWarnLights();
                     Events["FixArm"].guiActiveUnfocused = true;
                     Events["DeployPlatform"].guiActive = false;
                     break;
@@ -144,7 +128,6 @@ namespace NE_Science
                     StartCoroutine(waitForAnimation(5.8f));
                     break;
             }
-            stopWarnLights();
         }
 
         System.Collections.IEnumerator playAninimationAfter(float seconds, string animation, float speed, float normalizedTime)
@@ -236,7 +219,6 @@ namespace NE_Science
                     Events["DeployPlatform"].guiActive = false;
                     Events["FixArm"].guiActiveUnfocused = true;
                     displayStatusMessage("Robotic Arm Failure");
-                    warnLight.transform.Rotate(Time.deltaTime * 180, 0, 0);
                     break;
             }
             Events["FixArm"].active = Events["FixArm"].guiActiveUnfocused;
@@ -341,52 +323,8 @@ namespace NE_Science
         System.Collections.IEnumerator ErrorCallback(float seconds, int targetState)
         {
             yield return new WaitForSeconds(seconds);
-            startWarnLights();
             ScreenMessages.PostScreenMessage("Warning: robotic arm failure", 6, ScreenMessageStyle.UPPER_CENTER);
             MEPlabState = targetState;
-        }
-
-
-        private void startWarnLights()
-        {
-
-            if (warnLight != null)
-            {
-                warnLight.intensity = 6f;
-            }
-            else
-            {
-                NE_Helper.logError("WarnLight null");
-            }
-            if (warnPointLight != null)
-            {
-                warnPointLight.intensity = 0.5f;
-            }
-            else
-            {
-                NE_Helper.logError("WarnPointLight null");
-            }
-        }
-
-        private void stopWarnLights()
-        {
-
-            if (warnLight != null)
-            {
-                warnLight.intensity = 0f;
-            }
-            else
-            {
-                NE_Helper.logError("WarnLight null");
-            }
-            if (warnPointLight != null)
-            {
-                warnPointLight.intensity = 0.0f;
-            }
-            else
-            {
-                NE_Helper.logError("WarnPointLight null");
-            }
         }
 
         //private bool tempSuc = false;
