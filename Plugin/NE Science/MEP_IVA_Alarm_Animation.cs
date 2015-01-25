@@ -37,12 +37,12 @@ namespace NE_Science
         private const string EMISSIVE_COLOR = "_EmissiveCollor";
 
         private const float DOPPLER_LEVEL = 0f;
-        private const float MIN_DIST = 2f;
-        private const float MAX_DIST = 5f;
+        private const float MIN_DIST = 1f;
+        private const float MAX_DIST = 2f;
 
         private Light alarmLight;
         private Material lightMat;
-        
+
         private AudioSource alarmAs;
 
         private int count = 0;
@@ -70,9 +70,9 @@ namespace NE_Science
                     {
                         curIntensity = 0f;
                         alarmLight.intensity = curIntensity;
-                        lightMat.SetColor(EMISSIVE_COLOR, new Color(0,0,0,1));
-                        stopSoundFX();
+                        lightMat.SetColor(EMISSIVE_COLOR, new Color(0, 0, 0, 1));
                     }
+                    stopSoundFX();
                 }
 
             }
@@ -81,7 +81,7 @@ namespace NE_Science
 
         private void animateAlarmLight()
         {
-            float newIntesity = curIntensity +  (intensityStep * (float)lightDir);
+            float newIntesity = curIntensity + (intensityStep * (float)lightDir);
             if (newIntesity > maxIntensity || newIntesity < 0.01f)
             {
                 lightDir = lightDir * -1;
@@ -97,9 +97,10 @@ namespace NE_Science
 
         private void stopSoundFX()
         {
-            if (alarmAs.isPlaying)
+            if (!alarmAs.isPlaying)
             {
                 alarmAs.Stop();
+                NE_Helper.log("Stop Alarm");
             }
         }
 
@@ -108,7 +109,6 @@ namespace NE_Science
             if (!alarmAs.isPlaying)
             {
                 alarmAs.Play();
-                NE_Helper.log("Sound Alarm: " + alarmAs.isPlaying);
             }
         }
 
@@ -129,7 +129,7 @@ namespace NE_Science
 
                     lightMat = light.renderer.material;
 
-                    alarmAs = light.AddComponent<AudioSource>();
+                    alarmAs = part.gameObject.AddComponent<AudioSource>(); // using gameobjects from the internal model does not work AS would stay in the place it was added.
                     AudioClip clip = GameDatabase.Instance.GetAudioClip(alarmSound);
                     alarmAs.clip = clip;
                     alarmAs.dopplerLevel = DOPPLER_LEVEL;
@@ -138,7 +138,7 @@ namespace NE_Science
                     alarmAs.loop = true;
                     alarmAs.minDistance = MIN_DIST;
                     alarmAs.maxDistance = MAX_DIST;
-                    alarmAs.volume = 1f;
+                    alarmAs.volume = 0.6f;
                 }
                 else
                 {

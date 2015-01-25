@@ -154,7 +154,7 @@ namespace NE_Science
                     headBase = printer.transform.GetChild(1).GetChild(0);
                     if (headBase != null)
                     {
-                        prAs = headBase.gameObject.AddComponent<AudioSource>();
+                        prAs = part.gameObject.AddComponent<AudioSource>();// using gameobjects from the internal model does not work AS would stay in the place it was added.
                         AudioClip clip = GameDatabase.Instance.GetAudioClip(prMovingSound);
                         prAs.clip = clip;
                         prAs.dopplerLevel = DOPPLER_LEVEL;
@@ -165,7 +165,7 @@ namespace NE_Science
                         prAs.maxDistance = MAX_DIST;
                         prAs.volume = 1f;
 
-                        prBaseChgDirAs = headBase.gameObject.AddComponent<AudioSource>();
+                        prBaseChgDirAs = part.gameObject.AddComponent<AudioSource>();// using gameobjects from the internal model does not work AS would stay in the place it was added.
                         prBaseChgDirAs.clip = GameDatabase.Instance.GetAudioClip(prBaseChgDirSound);
                         prBaseChgDirAs.dopplerLevel = DOPPLER_LEVEL;
                         prBaseChgDirAs.rolloffMode = AudioRolloffMode.Logarithmic;
@@ -175,7 +175,7 @@ namespace NE_Science
                         prBaseChgDirAs.maxDistance = MAX_DIST;
                         prBaseChgDirAs.volume = 0.4f;
 
-                        prHeadChgDirAs = headBase.gameObject.AddComponent<AudioSource>();
+                        prHeadChgDirAs = part.gameObject.AddComponent<AudioSource>();// using gameobjects from the internal model does not work AS would stay in the place it was added.
                         prHeadChgDirAs.clip = GameDatabase.Instance.GetAudioClip(prHeadChgDirSound);
                         prHeadChgDirAs.dopplerLevel = DOPPLER_LEVEL;
                         prHeadChgDirAs.rolloffMode = AudioRolloffMode.Logarithmic;

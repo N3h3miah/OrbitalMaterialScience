@@ -101,7 +101,7 @@ namespace NE_Science
                     pump1 = ffr.transform.GetChild(1);
                     pump2 = ffr.transform.GetChild(2);
 
-                    pumpAs = ffr.AddComponent<AudioSource>();
+                    pumpAs = part.gameObject.AddComponent<AudioSource>(); // using gameobjects from the internal model does not work AS would stay in the place it was added.
                     AudioClip clip = GameDatabase.Instance.GetAudioClip(pumpSound);
                     pumpAs.clip = clip;
                     pumpAs.dopplerLevel = DOPPLER_LEVEL;
