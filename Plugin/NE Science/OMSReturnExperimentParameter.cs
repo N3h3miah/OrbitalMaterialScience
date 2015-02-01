@@ -45,8 +45,6 @@ namespace NE_Science.Contracts.Parameters
 
         public OMSReturnExperimentParameter()
         {
-            //this.Enabled = true;
-            //this.DisableOnStateChange = false;
         }
 
         public OMSReturnExperimentParameter(CelestialBody target, AvailablePart exp)
@@ -69,10 +67,27 @@ namespace NE_Science.Contracts.Parameters
         {
             NE_Helper.log("On Register");
             GameEvents.onVesselRecovered.Add(OnRecovered);
+            if (StageRecoveryWrapper.StageRecoveryAvailable)
+            {
+                StageRecoveryWrapper.AddRecoverySuccessEvent(StageRecoverySuccessEvent);
+            }
         }
+
         protected override void OnUnregister()
         {
             GameEvents.onVesselRecovered.Remove(OnRecovered);
+            if (StageRecoveryWrapper.StageRecoveryAvailable)
+            {
+                StageRecoveryWrapper.RemoveRecoverySuccessEvent(StageRecoverySuccessEvent);
+            }
+        }
+
+        private void StageRecoverySuccessEvent(Vessel v, float[] infoArray, string reason)
+        {
+            if (reason == "SUCCESS")
+            {
+                OnRecovered(v.protoVessel);
+            }
         }
 
         private void OnRecovered(ProtoVessel pv)

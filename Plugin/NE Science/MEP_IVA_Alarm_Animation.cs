@@ -128,8 +128,11 @@ namespace NE_Science
                     alarmLight = light.transform.GetChild(0).gameObject.GetComponent<Light>();
 
                     lightMat = light.renderer.material;
-
-                    alarmAs = part.gameObject.AddComponent<AudioSource>(); // using gameobjects from the internal model does not work AS would stay in the place it was added.
+                    alarmAs = part.gameObject.GetComponent<AudioSource>();
+                    if (alarmAs == null)
+                    {
+                        alarmAs = part.gameObject.AddComponent<AudioSource>(); // using gameobjects from the internal model does not work AS would stay in the place it was added.
+                    }
                     AudioClip clip = GameDatabase.Instance.GetAudioClip(alarmSound);
                     alarmAs.clip = clip;
                     alarmAs.dopplerLevel = DOPPLER_LEVEL;
