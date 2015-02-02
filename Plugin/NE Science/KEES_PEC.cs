@@ -87,10 +87,10 @@ namespace NE_Science
         public override void OnUpdate()
         {
             base.OnUpdate();
-            //if (vessel.geeForce > maxGforce)
-            //{
-            //    part.decouple();
-            //}
+            if (vessel.geeForce > maxGforce)
+            {
+                part.decouple();
+            }
         }
 
     }

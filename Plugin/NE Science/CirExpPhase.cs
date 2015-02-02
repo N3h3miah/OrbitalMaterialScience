@@ -41,7 +41,7 @@ namespace NE_Science
             bool labFound = false;
             foreach (PhysicsMaterialsLab lab in allPhysicsLabs)
             {
-                if (lab.vessel == exp.vessel && lab.hasEquipmentInstalled(PhysicsMaterialsLab.EquipmentRacks.CIR))
+                if (lab.vessel == exp.vessel && lab.hasEquipmentInstalled(EquipmentRacks.CIR))
                 {
                     labFound = true;
                     break;
@@ -71,7 +71,7 @@ namespace NE_Science
             bool labFound = false;
             foreach (PhysicsMaterialsLab lab in allPhysicsLabs)
             {
-                if (lab.vessel == exp.vessel && lab.hasEquipmentInstalled(PhysicsMaterialsLab.EquipmentRacks.CIR))
+                if (lab.vessel == exp.vessel && lab.hasEquipmentInstalled(EquipmentRacks.CIR))
                 {
                     labFound = true;
                     break;

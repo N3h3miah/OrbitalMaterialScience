@@ -28,11 +28,6 @@ namespace NE_Science
     class PhysicsMaterialsLab : Lab
     {
 
-        public enum EquipmentRacks
-        {
-            CIR, FFR, PRINTER, NONE
-        }
-
         [KSPField(isPersistant = false)]
         public float LabTimePerHour = 0;
         [KSPField(isPersistant = false)]
@@ -347,9 +342,8 @@ namespace NE_Science
 
         private bool checkForRackModul(EquipmentRacks equipmentRack)
         {
-            List<EquipmentRackModule> moduls = new List<EquipmentRackModule>(GameObject.FindObjectsOfType(typeof(EquipmentRackModule)) as EquipmentRackModule[]);
-
-            foreach (EquipmentRackModule modul in moduls)
+            List<EquipmentRackContainer> moduls = new List<EquipmentRackContainer>(GameObject.FindObjectsOfType(typeof(EquipmentRackContainer)) as EquipmentRackContainer[]);
+            foreach (EquipmentRackContainer modul in moduls)
             {
                 if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
                 {
@@ -360,11 +354,11 @@ namespace NE_Science
             return false;
         }
 
-        private EquipmentRackModule getRackModul(EquipmentRacks equipmentRack)
+        private EquipmentRackContainer getRackModul(EquipmentRacks equipmentRack)
         {
-            List<EquipmentRackModule> moduls = new List<EquipmentRackModule>(GameObject.FindObjectsOfType(typeof(EquipmentRackModule)) as EquipmentRackModule[]);
+            List<EquipmentRackContainer> moduls = new List<EquipmentRackContainer>(GameObject.FindObjectsOfType(typeof(EquipmentRackContainer)) as EquipmentRackContainer[]);
 
-            foreach (EquipmentRackModule modul in moduls)
+            foreach (EquipmentRackContainer modul in moduls)
             {
                 if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
                 {
@@ -378,7 +372,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Install CIR", active = false)]
         public void installCIR()
         {
-            EquipmentRackModule modul = getRackModul(EquipmentRacks.CIR);
+            EquipmentRackContainer modul = getRackModul(EquipmentRacks.CIR);
             if (modul != null)
             {
                 modul.install();
@@ -393,7 +387,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Install FFR", active = false)]
         public void installFFR()
         {
-            EquipmentRackModule modul = getRackModul(EquipmentRacks.FFR);
+            EquipmentRackContainer modul = getRackModul(EquipmentRacks.FFR);
             if (modul != null)
             {
                 modul.install();
@@ -408,7 +402,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Install 3D-Printer", active = false)]
         public void installPrinter()
         {
-            EquipmentRackModule modul = getRackModul(EquipmentRacks.PRINTER);
+            EquipmentRackContainer modul = getRackModul(EquipmentRacks.PRINTER);
             if (modul != null)
             {
                 modul.install();
