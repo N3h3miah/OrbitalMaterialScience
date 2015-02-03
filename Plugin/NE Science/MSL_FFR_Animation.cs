@@ -52,7 +52,7 @@ namespace NE_Science
                     initPartObjects();
                 }
                 PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
-                if (lab.ffrRunning)
+                if (lab.isEquipmentRunning(EquipmentRacks.FFR))
                 {
                     if (pump1 != null)
                     {

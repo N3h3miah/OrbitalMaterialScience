@@ -70,7 +70,7 @@ namespace NE_Science
                     initPartObjects();
                 }
                 PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
-                if (lab.printerRunning)
+                if (lab.isEquipmentRunning(EquipmentRacks.PRINTER))
                 {
                     moveBase();
                     moveHead();

@@ -33,6 +33,16 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string eqName = "";
 
+        [KSPField(isPersistant = true)]
+        public float productPerHour = 0;
+        [KSPField(isPersistant = false)]
+        public string product = "";
+
+        [KSPField(isPersistant = true)]
+        public float reactantPerProduct = 0;
+        [KSPField(isPersistant = false)]
+        public string reactant = "";
+
     }
 
     /*
@@ -45,18 +55,36 @@ namespace NE_Science
         private const string NAME_VALUE = "name";
         private const string TYPE_VALUE = "type";
         private const string MASS_VALUE = "mass";
+        private const string PRODUCT_VALUE = "product";
+        private const string PRODUCT_PER_HOUR_VALUE = "productPerHour";
+        private const string REACTANT_VALUE = "reactant";
+        private const string REACTANT_PER_PRODUCT_VALUE = "reactantPerProduct";
 
         private string abb;
         private string name;
         private float mass;
         private EquipmentRacks type;
 
-        public LabEquipment(string abb, string name, EquipmentRacks type, float mass)
+        private float productPerHour = 0;
+        private string product = "";
+
+        private float reactantPerProduct = 0;
+        private string reactant = "";
+
+        private Generator gen;
+
+        public LabEquipment(string abb, string name, EquipmentRacks type, float mass, float productPerHour, string product, float reactantPerProduct, string reactant)
         {
             this.abb = abb;
             this.name = name;
             this.type = type;
             this.mass = mass;
+
+            this.product = product;
+            this.productPerHour = productPerHour;
+
+            this.reactant = reactant;
+            this.reactantPerProduct = reactantPerProduct;
         }
 
         public string getAbbreviation()
@@ -81,7 +109,7 @@ namespace NE_Science
 
         static public LabEquipment getNullObject()
         {
-             return new LabEquipment("empty", "empty", EquipmentRacks.NONE, 0f);
+             return new LabEquipment("empty", "empty", EquipmentRacks.NONE, 0f, 0f, "", 0f, "");
         }
 
         public ConfigNode getNode()
@@ -92,6 +120,12 @@ namespace NE_Science
             node.AddValue(NAME_VALUE, name);
             node.AddValue(MASS_VALUE, mass);
             node.AddValue(TYPE_VALUE, type.ToString());
+
+            node.AddValue(PRODUCT_VALUE, product);
+            node.AddValue(PRODUCT_PER_HOUR_VALUE, productPerHour);
+
+            node.AddValue(REACTANT_VALUE, reactant);
+            node.AddValue(REACTANT_PER_PRODUCT_VALUE, reactantPerProduct);
 
             return node;
         }
@@ -107,26 +141,43 @@ namespace NE_Science
             string abb = node.GetValue(ABB_VALUE);
             string name = node.GetValue(NAME_VALUE);
             float mass = float.Parse(node.GetValue(MASS_VALUE));
-            EquipmentRacks type = getType(node.GetValue(TYPE_VALUE));
 
-            return new LabEquipment(abb, name, type, mass);
+            string product = node.GetValue(PRODUCT_VALUE);
+            float productPerHour = float.Parse(node.GetValue(PRODUCT_PER_HOUR_VALUE));
+
+            string reactant = node.GetValue(REACTANT_VALUE);
+            float reactantPerProduct = float.Parse(node.GetValue(REACTANT_PER_PRODUCT_VALUE));
+
+            EquipmentRacks type = EquipmentRacksFactory.getType(node.GetValue(TYPE_VALUE));
+
+            return new LabEquipment(abb, name, type, mass, productPerHour, product, reactantPerProduct, reactant);
         }
 
-        private static EquipmentRacks getType(string p)
+
+        public bool isRunning()
         {
-            switch (p)
+            if (gen != null)
             {
-                case "FFR":
-                    return EquipmentRacks.FFR;
-                case "CIR":
-                    return EquipmentRacks.CIR;
-                case "PRINTER":
-                    return EquipmentRacks.PRINTER;
-                default:
-                    return EquipmentRacks.NONE;
-
+                double last = gen.rates[product].last_produced;
+                bool state = (last < -0.0000001);
+                return state;
             }
+            return false;
         }
 
+        public void install(Lab lab)
+        {
+            gen = createGenerator(product, productPerHour, reactant, reactantPerProduct, lab);
+            lab.addGenerator(gen);
+        }
+
+        private Generator createGenerator(string resToCreate, float creationRate, string useRes, float usePerUnit, Lab lab)
+        {
+            Generator gen = new Generator(lab.part);
+            gen.addRate(resToCreate, -creationRate);
+            if (usePerUnit > 0)
+                gen.addRate(useRes, usePerUnit);
+            return gen;
+        }
     }
 }

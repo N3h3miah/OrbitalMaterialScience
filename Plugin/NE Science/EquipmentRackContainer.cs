@@ -51,7 +51,7 @@ namespace NE_Science
 
         private Material contMat = null;
 
-        private LabEquipment type = LabEquipment.getNullObject();
+        private LabEquipment leq = LabEquipment.getNullObject();
 
         private List<LabEquipment> availableRacks = new List<LabEquipment>();
         private bool showGui = false;
@@ -74,14 +74,14 @@ namespace NE_Science
         {
             base.OnSave(node);
 
-            node.AddNode(type.getNode());
+            node.AddNode(leq.getNode());
         }
 
         private void setEquipment(LabEquipment er)
         {
-            type = er;
-            status = type.getName();
-            if (type.getType() == EquipmentRacks.NONE)
+            leq = er;
+            status = leq.getName();
+            if (leq.getType() == EquipmentRacks.NONE)
             {
                 Events["chooseEquipment"].guiName = "Add Lab Equipment";
                 part.mass = EMPTY_MASS;
@@ -92,7 +92,7 @@ namespace NE_Science
                 part.mass += er.getMass();
             }
             
-            setTexture(type);
+            setTexture(leq);
         }
 
         private void setTexture(LabEquipment type)
@@ -124,7 +124,7 @@ namespace NE_Science
         [KSPEvent(guiActiveEditor = true, guiName = "Add Lab Equipment", active = false)]
         public void chooseEquipment()
         {
-            if (type.getType() == EquipmentRacks.NONE)
+            if (leq.getType() == EquipmentRacks.NONE)
             {
                 availableRacks = EquipmentRackRegistry.getAvailableRacks();
                 showGui = true;
@@ -163,12 +163,14 @@ namespace NE_Science
 
         public EquipmentRacks getRackType()
         {
-            return type.getType();
+            return leq.getType();
         }
 
-        public void install()
+        public LabEquipment install()
         {
+            LabEquipment ret = leq;
             setEquipment(LabEquipment.getNullObject());
+            return ret;
         }
 
         public override string GetInfo()

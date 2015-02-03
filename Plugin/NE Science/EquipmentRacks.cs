@@ -36,13 +36,7 @@ namespace NE_Science
                 if (part != null)
                 {
                     Part pPf = part.partPrefab;
-                    NE_Helper.log("Mass" + pPf.mass);
                     LabEquipmentModule lem = pPf.GetComponent<LabEquipmentModule>();
-                    NE_Helper.log(lem.eqName);
-                    foreach (AvailablePart.ModuleInfo mi in part.moduleInfos)
-                    {
-                        NE_Helper.log(mi.ToString());
-                    }
                     if(ResearchAndDevelopment.PartTechAvailable(part)){
                     list.Add(getLabEquipment(part.partPrefab, p.Key));
                     }
@@ -55,12 +49,31 @@ namespace NE_Science
         private static LabEquipment getLabEquipment(Part part, EquipmentRacks type)
         {
             LabEquipmentModule lem = part.GetComponent<LabEquipmentModule>();
-            return new LabEquipment(lem.abbreviation, lem.eqName, type, part.mass);
+            return new LabEquipment(lem.abbreviation, lem.eqName, type, part.mass, lem.productPerHour, lem.product, lem.reactantPerProduct, lem.reactant);
         }
     }
 
     public enum EquipmentRacks
     {
         CIR, FFR, PRINTER, NONE
+    }
+
+    public class EquipmentRacksFactory{
+
+        public static EquipmentRacks getType(string p)
+        {
+            switch (p)
+            {
+                case "FFR":
+                    return EquipmentRacks.FFR;
+                case "CIR":
+                    return EquipmentRacks.CIR;
+                case "PRINTER":
+                    return EquipmentRacks.PRINTER;
+                default:
+                    return EquipmentRacks.NONE;
+
+            }
+        }
     }
 }

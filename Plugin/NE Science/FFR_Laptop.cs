@@ -57,15 +57,15 @@ namespace NE_Science
             {
                 lastUpdate = Time.time;
                 PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
-                if (gameObject.activeSelf != lab.ffrInstalled)
+                if (gameObject.activeSelf != lab.hasEquipmentInstalled(EquipmentRacks.FFR))
                 {
-                    gameObject.SetActive(lab.ffrInstalled);
+                    gameObject.SetActive(lab.hasEquipmentInstalled(EquipmentRacks.FFR));
                 }
-                if (lab.ffrInstalled)
+                if (lab.hasEquipmentInstalled(EquipmentRacks.FFR))
                 {
-                    if (running != lab.ffrRunning)
+                    if (running != lab.isEquipmentRunning(EquipmentRacks.FFR))
                     {
-                        running = lab.ffrRunning;
+                        running = lab.isEquipmentRunning(EquipmentRacks.FFR);
                         changeTexture(getTextureForState(running));
                     }
                 }

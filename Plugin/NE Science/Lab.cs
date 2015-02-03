@@ -24,7 +24,7 @@ using System.Text;
 
 namespace NE_Science
 {
-    class Lab : PartModule
+    public class Lab : PartModule
     {
 
         [KSPField(isPersistant = false)]

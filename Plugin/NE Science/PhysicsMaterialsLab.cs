@@ -28,56 +28,65 @@ namespace NE_Science
     class PhysicsMaterialsLab : Lab
     {
 
+        private const string CIR_CONFIG_NODE_NAME = "NE_CIR_LabEquipmentSlot";
+        private const string FFR_CONFIG_NODE_NAME = "NE_FFR_LabEquipmentSlot";
+        private const string DPR_CONFIG_NODE_NAME = "NE_DPR_LabEquipmentSlot";
+
         [KSPField(isPersistant = false)]
         public float LabTimePerHour = 0;
         [KSPField(isPersistant = false)]
         public float ChargePerLabTime = 0;
 
-        [KSPField(isPersistant = false)]
-        public float CirBurnTimePerHour = 0;
-        [KSPField(isPersistant = false)]
-        public float ChargePerCirBurnTime = 0;
-
-        [KSPField(isPersistant = false)]
-        public float FFRTestRunPerHour = 0;
-        [KSPField(isPersistant = false)]
-        public float ChargePerTestRun = 0;
-
-        [KSPField(isPersistant = false)]
-        public float PrintLayerRunPerHour = 0;
-        [KSPField(isPersistant = false)]
-        public float ChargePerLayer = 0;
-
-        [KSPField(isPersistant = true)]
-        public bool cirInstalled = false;
-
-        [KSPField(isPersistant = true)]
-        public bool ffrInstalled = false;
-
-        [KSPField(isPersistant = true)]
-        public bool printerInstalled = false;
-
         [KSPField(isPersistant = false, guiActive = false, guiName = "Equipment")]
         public string equipment = "";
-
-        private const string FFR_ANIMATION = "FFR_Pump";
 
         private GameObject cir;
         private GameObject ffr;
         private GameObject printer;
 
         public Generator labTimeGenerator;
-        public Generator ffrGenerator;
-        public Generator cirGenerator;
-        public Generator printerGenerator;
 
-        public bool ffrRunning;
-        public bool cirRunning;
-        public bool printerRunning;
+        private LabEquipmentSlot cirSlot = new LabEquipmentSlot(EquipmentRacks.CIR);
+        private LabEquipmentSlot ffrSlot = new LabEquipmentSlot(EquipmentRacks.FFR);
+        private LabEquipmentSlot printerSlot = new LabEquipmentSlot(EquipmentRacks.PRINTER);
 
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
+            NE_Helper.log("MSL OnLoad");
+            cirSlot = getLabEquipmentSlot(node.GetNode(CIR_CONFIG_NODE_NAME));
+            ffrSlot = getLabEquipmentSlot(node.GetNode(FFR_CONFIG_NODE_NAME));
+            printerSlot = getLabEquipmentSlot(node.GetNode(DPR_CONFIG_NODE_NAME));
+        }
+
+        private LabEquipmentSlot getLabEquipmentSlot(ConfigNode configNode)
+        {
+            if (configNode != null)
+            {
+                return LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME));
+            }
+            else
+            {
+                NE_Helper.logError("MSL onLoad: LabEquipmentSlotNode null");
+                return new LabEquipmentSlot(EquipmentRacks.NONE);
+            }
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+            NE_Helper.log("MSL OnSave");
+            node.AddNode(getConfigNodeForSlot(CIR_CONFIG_NODE_NAME, cirSlot));
+            node.AddNode(getConfigNodeForSlot(FFR_CONFIG_NODE_NAME, ffrSlot));
+            node.AddNode(getConfigNodeForSlot(DPR_CONFIG_NODE_NAME, printerSlot));
+
+        }
+
+        private ConfigNode getConfigNodeForSlot(string nodeName, LabEquipmentSlot slot)
+        {
+            ConfigNode node = new ConfigNode(nodeName);
+            node.AddNode(slot.getConfigNode());
+            return node;
         }
 
         public override void OnStart(PartModule.StartState state)
@@ -92,6 +101,9 @@ namespace NE_Science
 
             labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
             generators.Add(labTimeGenerator);
+            cirSlot.onStart(this);
+            ffrSlot.onStart(this);
+            printerSlot.onStart(this);
 
         }
 
@@ -111,32 +123,31 @@ namespace NE_Science
                 GameObject labIVA = part.internalModel.gameObject.transform.GetChild(0).GetChild(0).gameObject;
                 if (labIVA.GetComponent<MeshFilter>().name == "Lab1IVA")
                 {
-                    NE_Helper.log("set euipment racks");
                     printer = labIVA.transform.GetChild(0).gameObject;
                     cir = labIVA.transform.GetChild(1).gameObject;
                     ffr = labIVA.transform.GetChild(2).gameObject;
 
-                    if (ffrInstalled)
+                    if (ffrSlot.isEquipmentInstalled())
                     {
-                        installEquipmentRack(EquipmentRacks.FFR);
+                        ffr.SetActive(true);
                     }
                     else
                     {
                         ffr.SetActive(false);
                     }
 
-                    if (cirInstalled)
+                    if (cirSlot.isEquipmentInstalled())
                     {
-                        installEquipmentRack(EquipmentRacks.CIR);
+                        cir.SetActive(true);
                     }
                     else
                     {
                         cir.SetActive(false);
                     }
 
-                    if (printerInstalled)
+                    if (printerSlot.isEquipmentInstalled())
                     {
-                        installEquipmentRack(EquipmentRacks.PRINTER);
+                        printer.SetActive(true);
                     }
                     else
                     {
@@ -152,32 +163,24 @@ namespace NE_Science
 
         
 
-        public void installEquipmentRack(EquipmentRacks rack)
+        public void installEquipmentRack(LabEquipment le)
         {
-            switch (rack)
+            switch (le.getType())
             {
                 case EquipmentRacks.FFR:
-                    ffrInstalled = true;
-                    ffr.SetActive(ffrInstalled);
-                    part.mass += 3;
-                    ffrGenerator = createGenerator(Resources.FFR_TEST_RUN, FFRTestRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerTestRun);
-                    generators.Add(ffrGenerator);
+                    ffr.SetActive(true);
+                    ffrSlot.install(le, this);
                     break;
                 case EquipmentRacks.CIR:
-                    cirInstalled = true;
-                    cir.SetActive(cirInstalled);
-                    part.mass += 3;
-                    cirGenerator = createGenerator(Resources.CIR_BURN_TIME, CirBurnTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerCirBurnTime);
-                    generators.Add(cirGenerator);
+                    cir.SetActive(true);
+                    cirSlot.install(le, this);
                     break;
                 case EquipmentRacks.PRINTER:
-                    printerInstalled = true;
-                    printer.SetActive(printerInstalled);
-                    part.mass += 2.7f;
-                    printerGenerator = createGenerator(Resources.PRINT_LAYER, PrintLayerRunPerHour, Resources.ELECTRIC_CHARGE, ChargePerLayer);
-                    generators.Add(printerGenerator);
+                    printer.SetActive(true);
+                    printerSlot.install(le, this);
                     break;
             }
+            part.mass += le.getMass();
         }
 
         private void setEquipmentActive(EquipmentRacks rack)
@@ -187,34 +190,34 @@ namespace NE_Science
                 case EquipmentRacks.FFR:
                     if (ffr != null)
                     {
-                        ffr.SetActive(ffrInstalled);
+                        ffr.SetActive(ffrSlot.isEquipmentInstalled());
                     }
                     else
                     {
                         initERacksActive();
-                        if(ffr != null)ffr.SetActive(ffrInstalled);
+                        if(ffr != null)ffr.SetActive(ffrSlot.isEquipmentInstalled());
                     }
                     break;
                 case EquipmentRacks.CIR:
                     if (cir != null)
                     {
-                        cir.SetActive(cirInstalled);
+                        cir.SetActive(cirSlot.isEquipmentInstalled());
                     }
                     else
                     {
                         initERacksActive();
-                        if (cir != null) cir.SetActive(cirInstalled);
+                        if (cir != null) cir.SetActive(cirSlot.isEquipmentInstalled());
                     }
                     break;
                 case EquipmentRacks.PRINTER:
                     if (printer != null)
                     {
-                        printer.SetActive(printerInstalled);
+                        printer.SetActive(printerSlot.isEquipmentInstalled());
                     }
                     else
                     {
                         initERacksActive();
-                        if (printer != null) printer.SetActive(printerInstalled);
+                        if (printer != null) printer.SetActive(printerSlot.isEquipmentInstalled());
                     }
                     break;
             }
@@ -225,13 +228,31 @@ namespace NE_Science
             switch (rack)
             {
                 case EquipmentRacks.CIR:
-                    return cirInstalled;
+                    return cirSlot.isEquipmentInstalled();
 
                 case EquipmentRacks.FFR:
-                    return ffrInstalled;
+                    return ffrSlot.isEquipmentInstalled();
 
                 case EquipmentRacks.PRINTER:
-                    return printerInstalled;
+                    return printerSlot.isEquipmentInstalled();
+
+                default:
+                    return false;
+            }
+        }
+
+        public bool isEquipmentRunning(EquipmentRacks rack)
+        {
+            switch (rack)
+            {
+                case EquipmentRacks.CIR:
+                    return cirSlot.isEquipmentRunning();
+
+                case EquipmentRacks.FFR:
+                    return ffrSlot.isEquipmentRunning();
+
+                case EquipmentRacks.PRINTER:
+                    return printerSlot.isEquipmentRunning();
 
                 default:
                     return false;
@@ -255,7 +276,7 @@ namespace NE_Science
                 initERacksActive();
             }
 
-            if (!cirInstalled)
+            if (!cirSlot.isEquipmentInstalled())
             {
                 Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
             }
@@ -263,7 +284,7 @@ namespace NE_Science
             {
                 Events["installCIR"].active = false;
             }
-            if (!ffrInstalled)
+            if (!ffrSlot.isEquipmentInstalled())
             {
                 Events["installFFR"].active = checkForRackModul(EquipmentRacks.FFR);
             }
@@ -271,7 +292,7 @@ namespace NE_Science
             {
                 Events["installFFR"].active = false;
             }
-            if (!printerInstalled)
+            if (!printerSlot.isEquipmentInstalled())
             {
                 Events["installPrinter"].active = checkForRackModul(EquipmentRacks.PRINTER);
             }
@@ -280,55 +301,54 @@ namespace NE_Science
                 Events["installPrinter"].active = false;
             }
 
-            updateAnimaitonState();
         }
 
-        private void updateAnimaitonState()
-        {
-            if (ffrInstalled)
-            {
-                double last = ffrGenerator.rates[Resources.FFR_TEST_RUN].last_produced;
-                bool state = (last < -0.0000001);
-                if (ffrRunning != state)
-                {
-                    ffrRunning = state;
-                }
-            }
+        //private void updateAnimaitonState()
+        //{
+        //    if (ffrSlot.isEquipmentInstalled())
+        //    {
+        //        double last = ffrGenerator.rates[Resources.FFR_TEST_RUN].last_produced;
+        //        bool state = (last < -0.0000001);
+        //        if (ffrRunning != state)
+        //        {
+        //            ffrRunning = state;
+        //        }
+        //    }
 
-            if (printerInstalled)
-            {
-                double last = printerGenerator.rates[Resources.PRINT_LAYER].last_produced;
-                bool state = (last < -0.0000001);
-                if (printerRunning != state)
-                {
-                    printerRunning = state;
-                }
-            }
+        //    if (printerSlot.isEquipmentInstalled())
+        //    {
+        //        double last = printerGenerator.rates[Resources.PRINT_LAYER].last_produced;
+        //        bool state = (last < -0.0000001);
+        //        if (printerRunning != state)
+        //        {
+        //            printerRunning = state;
+        //        }
+        //    }
 
-            if (cirInstalled)
-            {
-                double last = cirGenerator.rates[Resources.CIR_BURN_TIME].last_produced;
-                bool state = (last < -0.0000001);
-                if (cirRunning != state)
-                {
-                    cirRunning = state;
-                }
-            }
-        }
+        //    if (cirSlot.isEquipmentInstalled())
+        //    {
+        //        double last = cirGenerator.rates[Resources.CIR_BURN_TIME].last_produced;
+        //        bool state = (last < -0.0000001);
+        //        if (cirRunning != state)
+        //        {
+        //            cirRunning = state;
+        //        }
+        //    }
+        //}
 
         private string getEquipmentString()
         {
             string ret = "";
-            if (ffrInstalled)
+            if (ffrSlot.isEquipmentInstalled())
             {
                 ret += "FFR";
             }
-            if (cirInstalled)
+            if (cirSlot.isEquipmentInstalled())
             {
                 if (ret.Length > 0) ret += ", ";
                 ret += "CIR";
             }
-            if (printerInstalled)
+            if (printerSlot.isEquipmentInstalled())
             {
                 if (ret.Length > 0) ret += ", ";
                 ret += "3PR";
@@ -375,8 +395,7 @@ namespace NE_Science
             EquipmentRackContainer modul = getRackModul(EquipmentRacks.CIR);
             if (modul != null)
             {
-                modul.install();
-                installEquipmentRack(EquipmentRacks.CIR);
+                installEquipmentRack(modul.install());
             }
             else
             {
@@ -390,8 +409,7 @@ namespace NE_Science
             EquipmentRackContainer modul = getRackModul(EquipmentRacks.FFR);
             if (modul != null)
             {
-                modul.install();
-                installEquipmentRack(EquipmentRacks.FFR);
+                installEquipmentRack(modul.install());
             }
             else
             {
@@ -405,8 +423,7 @@ namespace NE_Science
             EquipmentRackContainer modul = getRackModul(EquipmentRacks.PRINTER);
             if (modul != null)
             {
-                modul.install();
-                installEquipmentRack(EquipmentRacks.PRINTER);
+                installEquipmentRack(modul.install());
             }
             else
             {
