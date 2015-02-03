@@ -24,17 +24,13 @@ namespace NE_Science
 {
     class EquipmentRackContainer : PartModule
     {
-        [KSPField(isPersistant = true)]
-        public string RackType = "";
-
-        [KSPField(isPersistant = true)]
-        public bool empty = true;
+        private const float EMPTY_MASS = 0.4f;
 
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor= true ,guiName = "Contains")]
         public string status = "";
 
         [KSPField(isPersistant = false)]
-        public string folder = "NehemiahInc/Parts/LabEquipment/";
+        public string folder = "NehemiahInc/Parts/LabEquipmentContainer/";
 
         [KSPField(isPersistant = false)]
         public string noEquTexture = "ContainerTexture";
@@ -55,82 +51,51 @@ namespace NE_Science
 
         private Material contMat = null;
 
-        private EquipmentRacks type;
+        private LabEquipment type = LabEquipment.getNullObject();
 
-        private List<EquipmentRacks> availableRacks = new List<EquipmentRacks>();
+        private List<LabEquipment> availableRacks = new List<LabEquipment>();
         private bool showGui = false;
 
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
-            if (empty)
+            ConfigNode eqNode = node.GetNode(LabEquipment.CONFIG_NODE_NAME);
+            if (eqNode != null)
             {
-                part.mass = 0.2f;
-                type = EquipmentRacks.NONE;
-                status = "empty";
+                setEquipment(LabEquipment.getLabEquipmentFromNode(eqNode));
             }
             else
             {
-                switch (RackType)
-                {
-                    case "CIR":
-                        type = EquipmentRacks.CIR;
-                        status = "Combustion Integrated Rack (CIR)";
-                        break;
-
-                    case "FFR":
-                        type = EquipmentRacks.FFR;
-                        status = "Fluid Flow Rack (FFR)";
-                        break;
-
-                    case "Printer":
-                        type = EquipmentRacks.PRINTER;
-                        status = "3D Printer Rack (3PR)";
-                        break;
-
-                    default:
-                        type = EquipmentRacks.NONE;
-                        status = "empty";
-                        break;
-                }
-                setTexture(type);
+                setEquipment(LabEquipment.getNullObject());
             }
         }
 
-        private void setEquipment(EquipmentRacks er)
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+
+            node.AddNode(type.getNode());
+        }
+
+        private void setEquipment(LabEquipment er)
         {
             type = er;
-            empty = false;
-            Events["chooseEquipment"].guiName = "Remove Equipment";
-            switch (type)
+            status = type.getName();
+            if (type.getType() == EquipmentRacks.NONE)
             {
-                case EquipmentRacks.PRINTER:
-                    RackType = "Printer";
-                    status = "3D Printer Rack (3PR)";
-                    break;
-
-                case EquipmentRacks.FFR:
-                    RackType = "FFR";
-                    status = "Fluid Flow Rack (FFR)";
-                    break;
-
-                case EquipmentRacks.CIR:
-                    RackType = "CIR";
-                    status = "Combustion Integrated Rack (CIR)";
-                    break;
-
-                default:
-                    type = EquipmentRacks.NONE;
-                    status = "empty";
-                    RackType = "";
-                    empty = true;
-                    Events["chooseEquipment"].guiName = "Add Lab Equipment";
-                    break;
+                Events["chooseEquipment"].guiName = "Add Lab Equipment";
+                part.mass = EMPTY_MASS;
             }
+            else
+            {
+                Events["chooseEquipment"].guiName = "Remove Equipment";
+                part.mass += er.getMass();
+            }
+            
             setTexture(type);
         }
 
-        private void setTexture(EquipmentRacks type)
+        private void setTexture(LabEquipment type)
         {
             GameDatabase.TextureInfo tex = getTextureForRack(type);
             if (tex != null)
@@ -146,12 +111,6 @@ namespace NE_Science
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
-            if (empty)
-            {
-                part.mass = 0.2f;
-                type = EquipmentRacks.NONE;
-                status = "empty";
-            }
             if (state.Equals(StartState.Editor))
             {
                 Events["chooseEquipment"].active = true;
@@ -165,16 +124,14 @@ namespace NE_Science
         [KSPEvent(guiActiveEditor = true, guiName = "Add Lab Equipment", active = false)]
         public void chooseEquipment()
         {
-            NE_Helper.log("" + empty);
-            if (empty)
+            if (type.getType() == EquipmentRacks.NONE)
             {
                 availableRacks = EquipmentRackRegistry.getAvailableRacks();
-                NE_Helper.log(availableRacks.ToString());
                 showGui = true;
             }
             else
             {
-                setEquipment(EquipmentRacks.NONE);
+                setEquipment(LabEquipment.getNullObject());
                 Events["chooseEquipment"].guiName = "Add Lab Equipment";
             }
         }
@@ -186,16 +143,17 @@ namespace NE_Science
                 GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 250, 200, 500));
                 GUI.Box(new Rect(0, 0, 200, 500), "Add Lab Equipment");
                 int top = 40;
-                foreach (EquipmentRacks e in availableRacks)
+                foreach (LabEquipment e in availableRacks)
                 {
-                    if (GUI.Button(new Rect(10, top, 180, 40), e.ToString()))
+                    if (GUI.Button(new Rect(10, top, 180, 30), e.getName()))
                     {
                         setEquipment(e);
                         showGui = false;
                     }
-                    top += 45;
+                    top += 35;
                 }
-                if (GUI.Button(new Rect(10, top, 180, 40), "Close"))
+                top += 20;
+                if (GUI.Button(new Rect(10, top, 180, 30), "Close"))
                 {
                     showGui = false;
                 }
@@ -205,16 +163,12 @@ namespace NE_Science
 
         public EquipmentRacks getRackType()
         {
-            return type;
+            return type.getType();
         }
 
         public void install()
         {
-            empty = true;
-            type = EquipmentRacks.NONE;
-            status = "empty";
-            part.mass = 0.2f;
-            setTexture(type);
+            setEquipment(LabEquipment.getNullObject());
         }
 
         public override string GetInfo()
@@ -256,9 +210,9 @@ namespace NE_Science
             }
         }
 
-        private GameDatabase.TextureInfo getTextureForRack(EquipmentRacks type)
+        private GameDatabase.TextureInfo getTextureForRack(LabEquipment type)
         {
-            switch (type)
+            switch (type.getType())
             {
                 case EquipmentRacks.PRINTER:
                     if (printer == null) printer = getTexture(folder, printTexture);
