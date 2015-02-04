@@ -62,7 +62,7 @@ namespace NE_Science
             ConfigNode eqNode = node.GetNode(LabEquipment.CONFIG_NODE_NAME);
             if (eqNode != null)
             {
-                setEquipment(LabEquipment.getLabEquipmentFromNode(eqNode));
+                setEquipment(LabEquipment.getLabEquipmentFromNode(eqNode, null));
             }
             else
             {

@@ -37,8 +37,8 @@ namespace NE_Science
         private string name;
         private string abb;
         protected EquipmentRacks neededEquipment;
-        protected ExperimentState state = ExperimentState.STORED;
-        private ExperimentDataStorage store;
+        internal ExperimentState state = ExperimentState.STORED;
+        internal ExperimentDataStorage store;
 
         public ExperimentData(string id, string name, string abb, EquipmentRacks eq)
         {
@@ -90,19 +90,19 @@ namespace NE_Science
                 case "STORED":
                     return ExperimentState.STORED;
                 case "INSTALLED":
-                    return ExperimentState.STORED;
+                    return ExperimentState.INSTALLED;
                 case "RUNNING":
-                    return ExperimentState.STORED;
+                    return ExperimentState.RUNNING;
                 case "FINISHED":
-                    return ExperimentState.STORED;
+                    return ExperimentState.FINISHED;
                 case "FINALIZED":
-                    return ExperimentState.STORED;
+                    return ExperimentState.FINALIZED;
                 default:
                     return ExperimentState.STORED;
             }
         }
 
-        public ConfigNode getNode()
+        public virtual ConfigNode getNode()
         {
             ConfigNode node = new ConfigNode(CONFIG_NODE_NAME);
 
@@ -214,14 +214,122 @@ namespace NE_Science
         {
             store = storage;
         }
+
+        internal virtual string getActionString()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    return "Start " + getAbbreviation();
+
+                case ExperimentState.FINISHED:
+                    return "End " + getAbbreviation() + " Step";
+
+                default:
+                    return "";
+            }
+        }
+
+        public virtual void runLabAction()
+        {
+            
+        }
+
+        internal string getStateString()
+        {
+            switch (state)
+            {
+                case ExperimentState.STORED:
+                    return "Stored";
+                case ExperimentState.INSTALLED:
+                    return "Installed";
+                case ExperimentState.RUNNING:
+                    return "Running";
+                case ExperimentState.FINISHED:
+                    return "Finished";
+                case ExperimentState.FINALIZED:
+                    return "Finalized";
+                default:
+                    return "NullState";
+            }
+        }
+
+        internal void load(LabEquipment labEquipment)
+        {
+            store = labEquipment;
+        }
+    }
+
+    public class StepExperimentData : ExperimentData
+    {
+        protected ExperimentStep step;
+
+        protected StepExperimentData(string id, string name, string abb, EquipmentRacks eq)
+            : base(id, name, abb, eq)
+        {}
+
+        public override ConfigNode getNode()
+        {
+            ConfigNode baseNode = base.getNode();
+            if(step != null){
+                baseNode.AddNode(step.getNode());
+            }
+            return baseNode;
+        }
+
+        protected override void load(ConfigNode node)
+        {
+            base.load(node);
+            ConfigNode stepNode = node.GetNode(ExperimentStep.CONFIG_NODE_NAME);
+
+            step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
+        }
+
+        internal override string getActionString()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    return "Start " + getAbbreviation();
+
+                case ExperimentState.RUNNING:
+                    if (step.isResearchFinished())
+                    {
+                        return "End " + getAbbreviation() + " Step";
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                default:
+                    return "";
+            }
+        }
+
+        public override void runLabAction()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    step.start();
+                    state = ExperimentState.RUNNING;
+                    break;
+                case ExperimentState.RUNNING:
+                    if (step.isResearchFinished()) {
+                        step.finishStep();
+                        state = ExperimentState.FINISHED;
+                    }
+                    break;
+            }
+        }
     }
 
     /*
      * Experiments needing MSL-1000
      */
-    public class MSLExperimentData : ExperimentData
+    public class MSLExperimentData : StepExperimentData
     {
-        public MSLExperimentData(string id, string name, string abb, EquipmentRacks eq) : base(id, name, abb, eq)
+        protected MSLExperimentData(string id, string name, string abb, EquipmentRacks eq) : base(id, name, abb, eq)
         {}
         
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel){
@@ -243,7 +351,7 @@ namespace NE_Science
         public CCFExperimentData()
             : base("NE_CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR)
         {
-            
+            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
         }
 
         public override bool canInstall(Vessel vessel)
@@ -260,6 +368,7 @@ namespace NE_Science
         protected override void load(ConfigNode node)
         {
             base.load(node);
+
         }
 
     }

@@ -70,7 +70,7 @@ namespace NE_Science
         {
             if (configNode != null)
             {
-                return LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME));
+                return LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME), this);
             }
             else
             {
@@ -366,9 +366,15 @@ namespace NE_Science
             {
                 Events["installFFR"].active = false;
                 Events["moveFFRExp"].active = ffrSlot.canExperimentMove(part.vessel);
+                string ffrActionString = ffrSlot.getActionString();
+                if (ffrActionString.Length > 0)
+                {
+                    Events["actionFFRExp"].guiName = ffrActionString;
+                }
+                Events["actionFFRExp"].active = ffrActionString.Length > 0;
                 if (!ffrSlot.experimentSlotFree())
                 {
-                    ffrStatus = ffrSlot.getExperiment().getAbbreviation();
+                    ffrStatus = ffrSlot.getExperiment().getAbbreviation() + ": " + ffrSlot.getExperiment().getStateString();
                     Fields["ffrStatus"].guiActive = true;
                 }
                 else
@@ -528,6 +534,12 @@ namespace NE_Science
         public void moveFFRExp()
         {
             ffrSlot.moveExperiment(part.vessel);
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Action FFR Experiment", active = false)]
+        public void actionFFRExp()
+        {
+            ffrSlot.experimentAction();
         }
 
         public override string GetInfo()

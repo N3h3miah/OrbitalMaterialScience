@@ -66,6 +66,15 @@ namespace NE_Science
         }
 
 
+        public double getResourceAmount(string name)
+        {
+            return ResourceHelper.getResourceAmount(part, name);
+        }
+
+        public PartResource setResourceMaxAmount(string name, double max)
+        {
+            return ResourceHelper.setResourceMaxAmount(part, name, max);
+        }
 
         protected List<Generator> generators;
 

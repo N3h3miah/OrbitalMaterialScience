@@ -139,7 +139,7 @@ namespace NE_Science
             return node;
         }
 
-        public static LabEquipment getLabEquipmentFromNode(ConfigNode node)
+        public static LabEquipment getLabEquipmentFromNode(ConfigNode node, Lab lab)
         {
             if (node.name != CONFIG_NODE_NAME)
             {
@@ -160,16 +160,21 @@ namespace NE_Science
             EquipmentRacks type = EquipmentRacksFactory.getType(node.GetValue(TYPE_VALUE));
 
             LabEquipment eq = new LabEquipment(abb, name, type, mass, productPerHour, product, reactantPerProduct, reactant);
-
+            eq.lab = lab;
             ConfigNode expNode = node.GetNode(ExperimentData.CONFIG_NODE_NAME);
             if (expNode != null)
             {
-                eq.installExperiment(ExperimentData.getExperimentDataFromNode(expNode));
+                eq.loadExperiment(ExperimentData.getExperimentDataFromNode(expNode));
             }
 
             return eq;
         }
 
+        private void loadExperiment(ExperimentData experimentData)
+        {
+            this.exp = experimentData;
+            exp.load(this);
+        }
 
         public bool isRunning()
         {
@@ -242,6 +247,42 @@ namespace NE_Science
         public GameObject getPartGo()
         {
             return lab.part.gameObject;
+        }
+
+        internal void createResourceInLab(string res, float amount)
+        {
+            lab.setResourceMaxAmount(res, amount);
+        }
+
+        internal double getResourceAmount(string res)
+        {
+            return lab.getResourceAmount(res);
+        }
+
+        internal string getActionString()
+        {
+            if (exp != null)
+            {
+                return exp.getActionString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        internal void experimentAction()
+        {
+            if (exp != null)
+            {
+                exp.runLabAction();
+            }
+        }
+
+        internal void setResourceMaxAmount(string res, float p)
+        {
+            NE_Helper.log("Set AmountTo: " + p);
+            lab.setResourceMaxAmount(res, p);
         }
     }
 }

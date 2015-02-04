@@ -91,7 +91,7 @@ namespace NE_Science
             return node;
         }
 
-        public static LabEquipmentSlot getLabEquipmentSlotFromConfigNode(ConfigNode node)
+        public static LabEquipmentSlot getLabEquipmentSlotFromConfigNode(ConfigNode node, Lab lab)
         {
             if (node.name != CONFIG_NODE_NAME)
             {
@@ -103,7 +103,7 @@ namespace NE_Science
             ConfigNode leNode = node.GetNode(LabEquipment.CONFIG_NODE_NAME);
             if (leNode != null)
             {
-                le = LabEquipment.getLabEquipmentFromNode(leNode);
+                le = LabEquipment.getLabEquipmentFromNode(leNode, lab);
             }
             return new LabEquipmentSlot(type, le);
         }
@@ -154,6 +154,26 @@ namespace NE_Science
             if (equ != null)
             {
                 equ.moveExperiment(vessel);
+            }
+        }
+
+        internal void experimentAction()
+        {
+            if (equ != null)
+            {
+                equ.experimentAction();
+            }
+        }
+
+        internal string getActionString()
+        {
+            if (equ != null)
+            {
+                return equ.getActionString();
+            }
+            else
+            {
+                return "";
             }
         }
     }

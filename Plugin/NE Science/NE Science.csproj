@@ -58,6 +58,7 @@
     <Compile Include="EquipmentRackContainer.cs" />
     <Compile Include="ExperimentData.cs" />
     <Compile Include="ExperimentFactory.cs" />
+    <Compile Include="ExperimentStep.cs" />
     <Compile Include="LabEquipment.cs" />
     <Compile Include="LabEquipmentSlot.cs" />
     <Compile Include="MEP_IVA_Alarm_Animation.cs" />

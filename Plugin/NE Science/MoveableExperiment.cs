@@ -63,6 +63,7 @@ namespace NE_Science
 
         private void setExperiment(ExperimentData experimentData)
         {
+            NE_Helper.log("MOVExp.setExp() id: " + experimentData.getId());
             expData = experimentData;
             expData.setStorage(this);
             experimentID = expData.getId();
