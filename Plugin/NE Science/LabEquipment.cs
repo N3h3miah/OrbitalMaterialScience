@@ -49,7 +49,7 @@ namespace NE_Science
     /*
      * Class used to add LabEquipment to Containers
      */
-    public class LabEquipment : ExperimentDataStarage
+    public class LabEquipment : ExperimentDataStorage
     {
         public const string CONFIG_NODE_NAME = "NE_LabEquipment";
         private const string ABB_VALUE = "abb";

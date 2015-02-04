@@ -32,7 +32,7 @@ namespace NE_Science
                 int i = 0;
                 foreach (MoveableExperiment e in targets)
                 {
-                    if (GUI.Button(new Rect(10, top, 180, 30), new GUIContent(e.part.partName, i.ToString())))
+                    if (GUI.Button(new Rect(10, top, 180, 30), new GUIContent(e.identifier, i.ToString())))
                     {
                         exp.moveTo(e);
                         closeGui();
@@ -51,7 +51,7 @@ namespace NE_Science
                 try
                 {
                     int hoverIndex = int.Parse(hover);
-                    targets[hoverIndex].part.SetHighlightColor(Color.green);
+                    targets[hoverIndex].part.SetHighlightColor(Color.magenta);
                     targets[hoverIndex].part.SetHighlightType(Part.HighlightType.AlwaysOn);
                     targets[hoverIndex].part.SetHighlight(true, false);
                 }

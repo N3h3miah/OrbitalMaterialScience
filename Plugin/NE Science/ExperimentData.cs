@@ -38,7 +38,7 @@ namespace NE_Science
         private string abb;
         protected EquipmentRacks neededEquipment;
         protected ExperimentState state = ExperimentState.STORED;
-        private ExperimentDataStarage store;
+        private ExperimentDataStorage store;
 
         public ExperimentData(string id, string name, string abb, EquipmentRacks eq)
         {
@@ -190,7 +190,7 @@ namespace NE_Science
             }
         }
 
-        private ChooseMoveTarget getGuiComponent(ExperimentDataStarage store)
+        private ChooseMoveTarget getGuiComponent(ExperimentDataStorage store)
         {
             ChooseMoveTarget t = store.getPartGo().GetComponent<ChooseMoveTarget>();
             if (t == null)
@@ -210,7 +210,7 @@ namespace NE_Science
             exp.storeExperiment(this);
         }
 
-        internal void setStorage(ExperimentDataStarage storage)
+        internal void setStorage(ExperimentDataStorage storage)
         {
             store = storage;
         }

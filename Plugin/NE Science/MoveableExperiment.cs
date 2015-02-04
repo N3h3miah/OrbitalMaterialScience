@@ -22,15 +22,18 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public interface ExperimentDataStarage
+    public interface ExperimentDataStorage
     {
         void removeExperimentData();
 
         GameObject getPartGo();
     }
 
-    public class MoveableExperiment : ModuleScienceExperiment, ExperimentDataStarage
+    public class MoveableExperiment : ModuleScienceExperiment, ExperimentDataStorage
     {
+
+        [KSPField(isPersistant = false)]
+        public string identifier = "";
 
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "Contains")]
         public string contains = "";
