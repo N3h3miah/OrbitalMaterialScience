@@ -46,7 +46,15 @@ namespace NE_Science
 
         public bool isEquipmentRunning()
         {
-            return equ.isRunning();
+            if (isEquipmentInstalled())
+            {
+
+                return equ.isRunning();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void install(LabEquipment eq, Lab lab)

@@ -187,7 +187,7 @@ namespace NE_Science
             }
             else
             {
-                NE_Helper.logError("Transform NOT found: " + "MEP IVA Screen");
+                NE_Helper.logError("Transform NOT found: " + "Equipment Container");
             }
         }
 

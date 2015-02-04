@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CIR_Laptop.cs" />
+    <Compile Include="ExperimentContainer.cs" />
     <Compile Include="EquipmentRacks.cs" />
     <Compile Include="EquipmentRackContainer.cs" />
     <Compile Include="LabEquipment.cs" />
