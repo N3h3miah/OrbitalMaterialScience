@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
@@ -48,7 +49,7 @@ namespace NE_Science
     /*
      * Class used to add LabEquipment to Containers
      */
-    public class LabEquipment
+    public class LabEquipment : ExperimentDataStarage
     {
         public const string CONFIG_NODE_NAME = "NE_LabEquipment";
         private const string ABB_VALUE = "abb";
@@ -72,6 +73,9 @@ namespace NE_Science
         private string reactant = "";
 
         private Generator gen;
+
+        private Lab lab;
+        private ExperimentData exp;
 
         public LabEquipment(string abb, string name, EquipmentRacks type, float mass, float productPerHour, string product, float reactantPerProduct, string reactant)
         {
@@ -127,6 +131,11 @@ namespace NE_Science
             node.AddValue(REACTANT_VALUE, reactant);
             node.AddValue(REACTANT_PER_PRODUCT_VALUE, reactantPerProduct);
 
+            if (exp != null)
+            {
+                node.AddNode(exp.getNode());
+            }
+
             return node;
         }
 
@@ -150,7 +159,15 @@ namespace NE_Science
 
             EquipmentRacks type = EquipmentRacksFactory.getType(node.GetValue(TYPE_VALUE));
 
-            return new LabEquipment(abb, name, type, mass, productPerHour, product, reactantPerProduct, reactant);
+            LabEquipment eq = new LabEquipment(abb, name, type, mass, productPerHour, product, reactantPerProduct, reactant);
+
+            ConfigNode expNode = node.GetNode(ExperimentData.CONFIG_NODE_NAME);
+            if (expNode != null)
+            {
+                eq.installExperiment(ExperimentData.getExperimentDataFromNode(expNode));
+            }
+
+            return eq;
         }
 
 
@@ -169,6 +186,7 @@ namespace NE_Science
         {
             gen = createGenerator(product, productPerHour, reactant, reactantPerProduct, lab);
             lab.addGenerator(gen);
+            this.lab = lab;
         }
 
         private Generator createGenerator(string resToCreate, float creationRate, string useRes, float usePerUnit, Lab lab)
@@ -178,6 +196,52 @@ namespace NE_Science
             if (usePerUnit > 0)
                 gen.addRate(useRes, usePerUnit);
             return gen;
+        }
+
+        internal bool isExperimentSlotFree()
+        {
+            return exp == null;
+        }
+
+        internal void installExperiment(ExperimentData exp)
+        {
+            this.exp = exp;
+            exp.installed(this);
+        }
+
+        internal ExperimentData getExperiment()
+        {
+            return exp;
+        }
+
+        internal bool canExperimentMove(Vessel vessel)
+        {
+            if (exp != null)
+            {
+                return exp.canMove(vessel);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        internal void moveExperiment(Vessel vessel)
+        {
+            if (exp != null)
+            {
+                exp.move(vessel);
+            }
+        }
+
+        public void removeExperimentData()
+        {
+            exp = null;
+        }
+
+        public GameObject getPartGo()
+        {
+            return lab.part.gameObject;
         }
     }
 }

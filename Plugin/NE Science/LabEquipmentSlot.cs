@@ -107,5 +107,54 @@ namespace NE_Science
             }
             return new LabEquipmentSlot(type, le);
         }
+
+        internal bool experimentSlotFree()
+        {
+            if (equ != null)
+            {
+                return equ.isExperimentSlotFree();
+            }
+            return false;
+        }
+
+        internal void installExperiment(ExperimentData exp)
+        {
+            if (equ != null)
+            {
+                equ.installExperiment(exp);
+            }
+        }
+
+        internal ExperimentData getExperiment()
+        {
+            if (!isEquipmentInstalled() || experimentSlotFree())
+            {
+                return ExperimentData.getNullObject();
+            }
+            else
+            {
+                return equ.getExperiment();
+            }
+        }
+
+        internal bool canExperimentMove(Vessel vessel)
+        {
+            if (isEquipmentInstalled() && !experimentSlotFree())
+            {
+                return equ.canExperimentMove(vessel);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        internal void moveExperiment(Vessel vessel)
+        {
+            if (equ != null)
+            {
+                equ.moveExperiment(vessel);
+            }
+        }
     }
 }

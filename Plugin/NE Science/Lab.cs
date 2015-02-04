@@ -60,7 +60,10 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = false, guiName = "Lab Status")]
         public string labStatus = "";
 
+        public virtual void installExperiment(ExperimentData exp)
+        {
 
+        }
 
 
 
