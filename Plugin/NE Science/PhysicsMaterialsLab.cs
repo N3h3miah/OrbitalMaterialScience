@@ -351,10 +351,14 @@ namespace NE_Science
             {
                 Events["installCIR"].active = false;
                 Events["moveCIRExp"].active = cirSlot.canExperimentMove(part.vessel);
+                if (Events["moveCIRExp"].active)
+                {
+                    Events["moveCIRExp"].guiName = "Move " + cirSlot.getExperiment().getAbbreviation();
+                }
                 string cirActionString = cirSlot.getActionString();
                 if (cirActionString.Length > 0)
                 {
-                    Events["actionFFRExp"].guiName = cirActionString;
+                    Events["actionCIRExp"].guiName = cirActionString;
                 }
                 Events["actionCIRExp"].active = cirActionString.Length > 0;
                 if (!cirSlot.experimentSlotFree())
@@ -375,6 +379,10 @@ namespace NE_Science
             {
                 Events["installFFR"].active = false;
                 Events["moveFFRExp"].active = ffrSlot.canExperimentMove(part.vessel);
+                if (Events["moveFFRExp"].active)
+                {
+                    Events["moveFFRExp"].guiName = "Move " + ffrSlot.getExperiment().getAbbreviation();
+                }
                 string ffrActionString = ffrSlot.getActionString();
                 if (ffrActionString.Length > 0)
                 {
@@ -399,6 +407,10 @@ namespace NE_Science
             {
                 Events["installPrinter"].active = false;
                 Events["movePRExp"].active = printerSlot.canExperimentMove(part.vessel);
+                if (Events["movePRExp"].active)
+                {
+                    Events["movePRExp"].guiName = "Move " + printerSlot.getExperiment().getAbbreviation();
+                }
                 string prActionString = printerSlot.getActionString();
                 if (prActionString.Length > 0)
                 {

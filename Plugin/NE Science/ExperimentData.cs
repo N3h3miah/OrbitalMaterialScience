@@ -351,9 +351,9 @@ namespace NE_Science
         }
     }
 
-    public class CCFExperimentData :MSLExperimentData
+    public class CCF_ExperimentData :MSLExperimentData
     {
-        public CCFExperimentData()
+        public CCF_ExperimentData()
             : base("NE_CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR)
         {
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
@@ -363,8 +363,90 @@ namespace NE_Science
         {
             return "CCF";
         }
+    }
 
+    public class CFE_ExperimentData : MSLExperimentData
+    {
+        public CFE_ExperimentData()
+            : base("NE_CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.FFR)
+        {
+            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 40);
+        }
 
+        protected override string getType()
+        {
+            return "CFE";
+        }
+    }
+
+    public class FLEX_ExperimentData : MSLExperimentData
+    {
+        public FLEX_ExperimentData()
+            : base("NE_FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR)
+        {
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18);
+        }
+
+        protected override string getType()
+        {
+            return "FLEX";
+        }
+    }
+
+    public class CFI_ExperimentData : MSLExperimentData
+    {
+        public CFI_ExperimentData()
+            : base("NE_CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR)
+        {
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50);
+        }
+
+        protected override string getType()
+        {
+            return "CFI";
+        }
+    }
+
+    public class MIS1_ExperimentData : MSLExperimentData
+    {
+        public MIS1_ExperimentData()
+            : base("NE_MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER)
+        {
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100);
+        }
+
+        protected override string getType()
+        {
+            return "MIS1";
+        }
+    }
+
+    public class MIS2_ExperimentData : MSLExperimentData
+    {
+        public MIS2_ExperimentData()
+            : base("NE_MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER)
+        {
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200);
+        }
+
+        protected override string getType()
+        {
+            return "MIS2";
+        }
+    }
+
+    public class MIS3_ExperimentData : MSLExperimentData
+    {
+        public MIS3_ExperimentData()
+            : base("NE_MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER)
+        {
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300);
+        }
+
+        protected override string getType()
+        {
+            return "MIS3";
+        }
     }
 
     public class TestExperimentData : MSLExperimentData
