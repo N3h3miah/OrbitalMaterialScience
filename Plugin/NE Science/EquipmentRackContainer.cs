@@ -106,7 +106,7 @@ namespace NE_Science
             }
             else
             {
-                NE_Helper.logError("Change Container Texure: Texture Null");
+                NE_Helper.logError("Change Equipment Container Texure: Texture Null");
             }
         }
 

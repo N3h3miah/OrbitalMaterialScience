@@ -51,6 +51,9 @@ namespace NE_Science
         private Vector2 addScrollPos = new Vector2();
         private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
         private Vector2 labScrollPos = new Vector2();
+
+        private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
+        private Material contMat;
         
 
         public override void OnLoad(ConfigNode node)
@@ -92,6 +95,8 @@ namespace NE_Science
             collectActionName = "Collect Results";
             interactionRange = 1.2f;
             xmitDataScalar = 0.2f;
+
+            setTexture(expData);
         }
 
         public override void OnSave(ConfigNode node)
@@ -336,6 +341,97 @@ namespace NE_Science
         public GameObject getPartGo()
         {
             return part.gameObject;
+        }
+
+        private void setTexture(ExperimentData expData)
+        {
+            GameDatabase.TextureInfo tex = textureReg.getTextureForExperiment(expData);
+            if (tex != null)
+            {
+                changeTexture(tex);
+            }
+            else
+            {
+                NE_Helper.logError("Change Experiment Container Texure: Texture Null");
+            }
+        }
+
+        private void changeTexture(GameDatabase.TextureInfo newTexture)
+        {
+            Material mat = getContainerMaterial();
+            if (mat != null)
+            {
+                mat.mainTexture = newTexture.texture;
+            }
+            else
+            {
+                NE_Helper.logError("Transform NOT found: " + "Equipment Container");
+            }
+        }
+
+        private Material getContainerMaterial()
+        {
+            if (contMat == null)
+            {
+                Transform t = part.FindModelTransform("Experiment");
+                if (t != null)
+                {
+                    contMat = t.renderer.material;
+                    return contMat;
+                }
+                else
+                {
+                    NE_Helper.logError("Experiment Container Material null");
+                    return null;
+                }
+            }
+            else
+            {
+                return contMat;
+            }
+        }
+    }
+
+    class ExpContainerTextureFactory
+    {
+        private Dictionary<string, GameDatabase.TextureInfo> textureReg = new Dictionary<string, GameDatabase.TextureInfo>();
+        private string folder = "NehemiahInc/Parts/ExperimentContainer/";
+        private Dictionary<string, string> textureNameReg = new Dictionary<string, string>() { { "", "ExperimentContainerTexture" },
+        { "FLEX", "FlexContainerTexture" }, { "CFI", "CfiContainerTexture" } };
+
+
+        internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)
+        {
+            GameDatabase.TextureInfo tex;
+            if (textureReg.TryGetValue(expData.getType(), out tex))
+            {
+                return tex;
+            }
+            else
+            {
+                NE_Helper.log("Loading Texture for experiment: " + expData.getType());
+                GameDatabase.TextureInfo newTex = getTexture(expData.getType());
+                if(newTex != null){
+                    textureReg.Add(expData.getType(), newTex);
+                    return newTex;
+                }
+            }
+
+            return null;
+        }
+
+        private GameDatabase.TextureInfo getTexture(string p)
+        {
+            string textureName;
+            if(textureNameReg.TryGetValue(p, out textureName)){
+                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+                if (newTex != null)
+                {
+                    return newTex;
+                }
+            }
+            NE_Helper.logError("Could not load texture for Exp: " + p);
+            return null;
         }
     }
 }

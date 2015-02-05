@@ -73,7 +73,7 @@ namespace NE_Science
             return state == ExperimentState.FINISHED;
         }
 
-        protected virtual string getType()
+        public virtual string getType()
         {
             return "";
         }
@@ -359,7 +359,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "CCF";
         }
@@ -373,7 +373,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 40);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "CFE";
         }
@@ -387,7 +387,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "FLEX";
         }
@@ -401,7 +401,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "CFI";
         }
@@ -415,7 +415,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "MIS1";
         }
@@ -429,7 +429,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "MIS2";
         }
@@ -443,7 +443,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "MIS3";
         }
@@ -457,7 +457,7 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 2);
         }
 
-        protected override string getType()
+        public override string getType()
         {
             return "Test";
         }
