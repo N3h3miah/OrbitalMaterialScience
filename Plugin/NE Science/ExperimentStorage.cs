@@ -46,7 +46,7 @@ namespace NE_Science
         List<Lab> availableLabs = new List<Lab>();
 
         private int showGui = 0;
-        private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 400, 200);
+        private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 160, Screen.height / 4, 320, 120);
         private Rect addWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 250, 200, 400);
         private Vector2 addScrollPos = new Vector2();
         private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
@@ -128,6 +128,11 @@ namespace NE_Science
                 {
                     NE_Helper.log("onupdate: setState to FINALIZED");
                     expData.state = ExperimentState.FINALIZED;
+                }
+                if (expData.state == ExperimentState.FINALIZED && GetScienceCount() == 0)
+                {
+                    NE_Helper.log("onupdate: setState to FINISHED");
+                    expData.state = ExperimentState.FINISHED;
                 }
             }
             count = (count + 1) % 3;
@@ -269,7 +274,8 @@ namespace NE_Science
         void finalizeWindow(int id)
         {
             GUILayout.BeginVertical();
-            GUILayout.Label("You can no longer move the Experiment after finalization.");
+            GUILayout.Label("You can no longer move the experiment after finalization.");
+            GUILayout.Label("");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Cancel"))
             {
