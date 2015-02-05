@@ -142,11 +142,11 @@ namespace NE_Science
             return id != "" && (state == ExperimentState.STORED || state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED ) && getFreeExperimentContainers(vessel).Count > 0;
         }
 
-        public List<MoveableExperiment> getFreeExperimentContainers(Vessel vessel)
+        public List<ExperimentStorage> getFreeExperimentContainers(Vessel vessel)
         {
-            List<MoveableExperiment> freeCont = new List<MoveableExperiment>();
-            List<MoveableExperiment> allCont = new List<MoveableExperiment>(UnityFindObjectsOfType(typeof(MoveableExperiment)) as MoveableExperiment[]);
-            foreach (MoveableExperiment c in allCont)
+            List<ExperimentStorage> freeCont = new List<ExperimentStorage>();
+            List<ExperimentStorage> allCont = new List<ExperimentStorage>(UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[]);
+            foreach (ExperimentStorage c in allCont)
             {
                 if (c.vessel == vessel && c.isEmpty())
                 {
@@ -181,7 +181,7 @@ namespace NE_Science
 
         internal void move(Vessel vessel)
         {
-            List<MoveableExperiment> targets = getFreeExperimentContainers(vessel);
+            List<ExperimentStorage> targets = getFreeExperimentContainers(vessel);
             if ((state == ExperimentState.STORED || state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED) && targets.Count > 0)
             {
                 ChooseMoveTarget t = getGuiComponent(store);
@@ -199,7 +199,7 @@ namespace NE_Science
             return t;
         }
 
-        public void moveTo(MoveableExperiment exp)
+        public void moveTo(ExperimentStorage exp)
         {
             if (state == ExperimentState.INSTALLED)
             {

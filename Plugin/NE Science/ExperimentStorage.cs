@@ -29,7 +29,7 @@ namespace NE_Science
         GameObject getPartGo();
     }
 
-    public class MoveableExperiment : ModuleScienceExperiment, ExperimentDataStorage
+    public class ExperimentStorage : ModuleScienceExperiment, ExperimentDataStorage
     {
 
         [KSPField(isPersistant = false)]
@@ -43,16 +43,20 @@ namespace NE_Science
 
         private List<ExperimentData> availableExperiments
             = new List<ExperimentData>();
+        List<Lab> availableLabs = new List<Lab>();
 
         private int showGui = 0;
         private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 400, 200);
         private Rect addWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 250, 200, 400);
         private Vector2 addScrollPos = new Vector2();
+        private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
+        private Vector2 labScrollPos = new Vector2();
+        
 
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
-            NE_Helper.log("MoveableExperiment: OnLoad");
+            NE_Helper.log("ExperimentStorage: OnLoad");
 
             ConfigNode expNode = node.GetNode(ExperimentData.CONFIG_NODE_NAME);
             if (expNode != null)
@@ -148,16 +152,28 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Install Experiment", active = false)]
         public void installExperiment()
         {
-            List<Lab> labs = expData.getFreeLabsWithEquipment(part.vessel);
-            if (labs.Count > 0)
+            availableLabs = expData.getFreeLabsWithEquipment(part.vessel);
+            if (availableLabs.Count > 0)
             {
-                labs[0].installExperiment(expData);
-                setExperiment(ExperimentData.getNullObject());
+                if (availableLabs.Count == 1)
+                {
+                    installExperimentInLab(availableLabs[0]);
+                }
+                else
+                {
+                    showGui = 3;
+                }
             }
             else
             {
                 NE_Helper.logError("Experiment install: No lab found");
             }
+        }
+
+        private void installExperimentInLab(Lab lab)
+        {
+            lab.installExperiment(expData);
+            setExperiment(ExperimentData.getNullObject());
         }
 
         [KSPEvent(guiActive = true, guiName = "Move Experiment", active = false)]
@@ -182,7 +198,66 @@ namespace NE_Science
                 case 2:
                     showFinalizeWaring();
                     break;
+                case 3:
+                    showLabWindow();
+                    break;
 
+            }
+        }
+
+        private void showLabWindow()
+        {
+            labWindowRect = GUI.ModalWindow(7909034, labWindowRect, showLabGui, "Install Experiment");
+        }
+
+        void showLabGui(int id)
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Label("Choose Lab");
+            labScrollPos = GUILayout.BeginScrollView(labScrollPos, GUILayout.Width(180), GUILayout.Height(320));
+            int i = 0;
+            foreach (Lab l in availableLabs)
+            {
+                if (GUILayout.Button(new GUIContent(l.abbreviation, i.ToString())))
+                {
+                    installExperimentInLab(l);
+                    closeGui();
+                }
+                ++i;
+            }
+            GUILayout.EndScrollView();
+            if (GUILayout.Button("Close"))
+            {
+                closeGui();
+            }
+            GUILayout.EndVertical();
+
+            String hover = GUI.tooltip;
+            try
+            {
+                int hoverIndex = int.Parse(hover);
+                availableLabs[hoverIndex].part.SetHighlightColor(Color.cyan);
+                availableLabs[hoverIndex].part.SetHighlightType(Part.HighlightType.AlwaysOn);
+                availableLabs[hoverIndex].part.SetHighlight(true, false);
+            }
+            catch (FormatException)
+            {
+                resetHighlight();
+            }
+            GUI.DragWindow();
+        }
+
+        private void closeGui()
+        {
+            resetHighlight();
+            showGui = 0;
+        }
+
+        private void resetHighlight()
+        {
+            foreach (Lab l in availableLabs)
+            {
+                l.part.SetHighlightDefault();
             }
         }
 

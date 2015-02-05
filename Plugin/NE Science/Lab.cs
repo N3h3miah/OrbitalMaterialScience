@@ -36,6 +36,9 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public string last_active = "0";
 
+        [KSPField(isPersistant = false)]
+        public string abbreviation = "";
+
         public double LastActive
         {
             get

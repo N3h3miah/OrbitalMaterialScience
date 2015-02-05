@@ -63,7 +63,7 @@
     <Compile Include="LabEquipmentSlot.cs" />
     <Compile Include="MEP_IVA_Alarm_Animation.cs" />
     <Compile Include="MEP_Animations.cs" />
-    <Compile Include="MoveableExperiment.cs" />
+    <Compile Include="ExperimentStorage.cs" />
     <Compile Include="MSL_Printer_Animation.cs" />
     <Compile Include="MSL_FFR_Animation.cs" />
     <Compile Include="MEP_ExpScreen.cs" />
