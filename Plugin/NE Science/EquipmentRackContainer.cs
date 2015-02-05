@@ -55,6 +55,8 @@ namespace NE_Science
 
         private List<LabEquipment> availableRacks = new List<LabEquipment>();
         private bool showGui = false;
+        private Rect addWindowRect = new Rect(Screen.width / 2 - 220, Screen.height / 2 - 220, 250, 400);
+        private Vector2 addScrollPos = new Vector2();
 
         public override void OnLoad(ConfigNode node)
         {
@@ -140,25 +142,34 @@ namespace NE_Science
         {
             if (showGui)
             {
-                GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 250, 200, 500));
-                GUI.Box(new Rect(0, 0, 200, 500), "Add Lab Equipment");
-                int top = 40;
-                foreach (LabEquipment e in availableRacks)
+                showAddGui();
+            }
+        }
+
+        private void showAddGui()
+        {
+            addWindowRect = GUI.ModalWindow(7909031, addWindowRect, showAddGui, "Add Lab Equipment");
+        }
+
+        void showAddGui(int id)
+        {
+            GUILayout.BeginVertical();
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(200), GUILayout.Height(350));
+            foreach (LabEquipment e in availableRacks)
+            {
+                if (GUILayout.Button(e.getName()))
                 {
-                    if (GUI.Button(new Rect(10, top, 180, 30), e.getName()))
-                    {
-                        setEquipment(e);
-                        showGui = false;
-                    }
-                    top += 35;
-                }
-                top += 20;
-                if (GUI.Button(new Rect(10, top, 180, 30), "Close"))
-                {
+                    setEquipment(e);
                     showGui = false;
                 }
-                GUI.EndGroup();
             }
+            GUILayout.EndScrollView();
+            if (GUILayout.Button("Close"))
+            {
+                showGui = false;
+            }
+            GUILayout.EndVertical();
+            GUI.DragWindow();
         }
 
         public EquipmentRacks getRackType()

@@ -43,7 +43,11 @@ namespace NE_Science
 
         private List<ExperimentData> availableExperiments
             = new List<ExperimentData>();
-        private bool showGui = false;
+
+        private int showGui = 0;
+        private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 100, 400, 200);
+        private Rect addWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 250, 200, 400);
+        private Vector2 addScrollPos = new Vector2();
 
         public override void OnLoad(ConfigNode node)
         {
@@ -65,18 +69,20 @@ namespace NE_Science
         {
             NE_Helper.log("MOVExp.setExp() id: " + experimentData.getId());
             expData = experimentData;
-            expData.setStorage(this);
-            experimentID = expData.getId();
             contains = expData.getAbbreviation();
+            expData.setStorage(this);
 
-            experimentActionName = "Finalize Results";
+            experimentID = expData.getId();
+            experiment = ResearchAndDevelopment.GetExperiment(experimentID);
+
+            experimentActionName = "Results";
             resetActionName = "Throw Away Results";
 
             useStaging = false;
             useActionGroups = true;
             hideUIwhenUnavailable = true;
-            resettable = true;
-            resettableOnEVA = true;
+            resettable = false;
+            resettableOnEVA = false;
 
             dataIsCollectable = false;
             collectActionName = "Collect Results";
@@ -93,7 +99,6 @@ namespace NE_Science
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
-            NE_Helper.log("MoveableExperiment: OnStart");
             if (state.Equals(StartState.Editor))
             {
                 Events["chooseEquipment"].active = true;
@@ -102,17 +107,24 @@ namespace NE_Science
             {
                 Events["chooseEquipment"].active = false;
             }
-            
+            Events["DeployExperiment"].active = false;
         }
 
         public override void OnUpdate()
         {
+
             base.OnUpdate();
             if (count == 0)
             {
-                Events["DeployExperiment"].active = expData.canFinalize();
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
                 Events["moveExp"].active = expData.canMove(part.vessel);
+                Events["finalize"].active = expData.canFinalize();
+                Events["DeployExperiment"].active = false;
+                if (expData.state == ExperimentState.FINISHED && GetScienceCount() > 0)
+                {
+                    NE_Helper.log("onupdate: setState to FINALIZED");
+                    expData.state = ExperimentState.FINALIZED;
+                }
             }
             count = (count + 1) % 3;
 
@@ -124,8 +136,7 @@ namespace NE_Science
             if (expData.getId() == "")
             {
                 availableExperiments = ExperimentFactory.getAvailableExperiments();
-                showGui = true;
-                Events["chooseEquipment"].guiName = "Remove Experiment";
+                showGui = 1;
             }
             else
             {
@@ -155,38 +166,75 @@ namespace NE_Science
             expData.move(part.vessel);
         }
 
-        new public void DeployExperiment()
+        [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
+        public void finalize()
         {
-            if (expData.canFinalize() )
-            {
-                base.DeployExperiment();
-                expData.finalize();
-            }
+            showGui = 2;
         }
 
         void OnGUI()
         {
-            if (showGui)
+            switch (showGui)
             {
-                GUI.BeginGroup(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 250, 200, 500));
-                GUI.Box(new Rect(0, 0, 200, 500), "Add Experiment");
-                int top = 40;
-                foreach (ExperimentData e in availableExperiments)
-                {
-                    if (GUI.Button(new Rect(10, top, 180, 30), e.getAbbreviation()))
-                    {
-                        setExperiment(e);
-                        showGui = false;
-                    }
-                    top += 35;
-                }
-                top += 20;
-                if (GUI.Button(new Rect(10, top, 180, 30), "Close"))
-                {
-                    showGui = false;
-                }
-                GUI.EndGroup();
+                case 1:
+                    showAddWindow();
+                    break;
+                case 2:
+                    showFinalizeWaring();
+                    break;
+
             }
+        }
+
+        private void showFinalizeWaring()
+        {
+            finalizeWindowRect = GUI.ModalWindow(7909032, finalizeWindowRect, finalizeWindow, "Finalize " + expData.getAbbreviation() + " Experiment");
+        }
+
+        void finalizeWindow(int id)
+        {
+            GUILayout.BeginVertical();
+            GUILayout.Label("You can no longer move the Experiment after finalization.");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Cancel"))
+            {
+                showGui = 0;
+            }
+            if (GUILayout.Button("OK"))
+            {
+                DeployExperiment();
+                showGui = 0;
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            GUI.DragWindow();
+        }
+
+        private void showAddWindow()
+        {
+            addWindowRect = GUI.ModalWindow(7909031, addWindowRect, showAddGUI, "Add Experiment");
+        }
+        private void showAddGUI(int id)
+        {
+
+            GUILayout.BeginVertical();
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(180), GUILayout.Height(350));
+            foreach (ExperimentData e in availableExperiments)
+            {
+                if (GUILayout.Button(e.getAbbreviation()))
+                {
+                    setExperiment(e);
+                    Events["chooseEquipment"].guiName = "Remove Experiment";
+                    showGui = 0;
+                }
+            }
+            GUILayout.EndScrollView();
+            if (GUILayout.Button("Close"))
+            {
+                showGui = 0;
+            }
+            GUILayout.EndVertical();
+            GUI.DragWindow();
         }
 
         public bool isEmpty()

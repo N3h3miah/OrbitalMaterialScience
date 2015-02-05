@@ -184,7 +184,6 @@ namespace NE_Science
             List<MoveableExperiment> targets = getFreeExperimentContainers(vessel);
             if ((state == ExperimentState.STORED || state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED) && targets.Count > 0)
             {
-                //moveTo(targets.First());
                 ChooseMoveTarget t = getGuiComponent(store);
                 t.showDialog(targets, this);
             }
@@ -344,6 +343,12 @@ namespace NE_Science
             }
             return ret;
         }
+
+        public override bool canInstall(Vessel vessel)
+        {
+            List<Lab> labs = getFreeLabsWithEquipment(vessel);
+            return labs.Count > 0 && state == ExperimentState.STORED;
+        }
     }
 
     public class CCFExperimentData :MSLExperimentData
@@ -354,36 +359,20 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
         }
 
-        public override bool canInstall(Vessel vessel)
-        {
-            List<Lab> labs = getFreeLabsWithEquipment(vessel);
-            return labs.Count > 0 && state == ExperimentState.STORED;
-        }
-
         protected override string getType()
         {
             return "CCF";
         }
 
-        protected override void load(ConfigNode node)
-        {
-            base.load(node);
-
-        }
 
     }
 
-    public class TestExperimentData : ExperimentData
+    public class TestExperimentData : MSLExperimentData
     {
         public TestExperimentData()
-            : base("NE_Test", "Test Experiment", "Test", EquipmentRacks.NONE)
+            : base("NE_Test", "Test Experiment", "Test", EquipmentRacks.FFR)
         {
-
-        }
-
-        public override bool canFinalize()
-        {
-            return true;
+            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 2);
         }
 
         protected override string getType()
@@ -391,9 +380,5 @@ namespace NE_Science
             return "Test";
         }
 
-        protected override void load(ConfigNode node)
-        {
-            base.load(node);
-        }
     }
 }

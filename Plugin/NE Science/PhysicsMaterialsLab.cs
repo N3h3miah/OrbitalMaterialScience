@@ -350,11 +350,20 @@ namespace NE_Science
             else
             {
                 Events["installCIR"].active = false;
+                Events["moveCIRExp"].active = cirSlot.canExperimentMove(part.vessel);
+                string cirActionString = cirSlot.getActionString();
+                if (cirActionString.Length > 0)
+                {
+                    Events["actionFFRExp"].guiName = cirActionString;
+                }
+                Events["actionCIRExp"].active = cirActionString.Length > 0;
                 if (!cirSlot.experimentSlotFree())
                 {
-                    cirStatus = cirSlot.getExperiment().getAbbreviation() ;
+                    cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().getStateString();
                     Fields["cirStatus"].guiActive = true;
-                }else{
+                }
+                else
+                {
                     Fields["cirStatus"].guiActive = false;
                 }
             }
@@ -389,9 +398,16 @@ namespace NE_Science
             else
             {
                 Events["installPrinter"].active = false;
+                Events["movePRExp"].active = printerSlot.canExperimentMove(part.vessel);
+                string prActionString = printerSlot.getActionString();
+                if (prActionString.Length > 0)
+                {
+                    Events["actionPRExp"].guiName = prActionString;
+                }
+                Events["actionPRExp"].active = prActionString.Length > 0;
                 if (!printerSlot.experimentSlotFree())
                 {
-                    prStatus = printerSlot.getExperiment().getAbbreviation();
+                    prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().getStateString();
                     Fields["prStatus"].guiActive = true;
                 }
                 else
@@ -540,6 +556,30 @@ namespace NE_Science
         public void actionFFRExp()
         {
             ffrSlot.experimentAction();
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Move CIR Experiment", active = false)]
+        public void moveCIRExp()
+        {
+            cirSlot.moveExperiment(part.vessel);
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Action CIR Experiment", active = false)]
+        public void actionCIRExp()
+        {
+            cirSlot.experimentAction();
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Move Printer Experiment", active = false)]
+        public void movePRExp()
+        {
+            printerSlot.moveExperiment(part.vessel);
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Action Printer Experiment", active = false)]
+        public void actionPRExp()
+        {
+            printerSlot.experimentAction();
         }
 
         public override string GetInfo()
