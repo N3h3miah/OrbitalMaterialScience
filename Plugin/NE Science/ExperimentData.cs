@@ -36,13 +36,15 @@ namespace NE_Science
         private string id;
         private string name;
         private string abb;
+        private string type = "";
         protected EquipmentRacks neededEquipment;
         internal ExperimentState state = ExperimentState.STORED;
         internal ExperimentDataStorage store;
 
-        public ExperimentData(string id, string name, string abb, EquipmentRacks eq)
+        public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq)
         {
             this.id = id;
+            this.type = type;
             this.name = name;
             this.abb = abb;
             neededEquipment = eq;
@@ -73,9 +75,9 @@ namespace NE_Science
             return state == ExperimentState.FINISHED;
         }
 
-        public virtual string getType()
+        public string getType()
         {
-            return "";
+            return type;
         }
 
         protected virtual void load(ConfigNode node)
@@ -129,7 +131,7 @@ namespace NE_Science
 
         public static ExperimentData getNullObject()
         {
-            return new ExperimentData("", "null Experiment", "empty", EquipmentRacks.NONE);
+            return new ExperimentData("", "", "null Experiment", "empty", EquipmentRacks.NONE);
         }
 
         public virtual bool canInstall(Vessel vessel)
@@ -263,8 +265,8 @@ namespace NE_Science
     {
         protected ExperimentStep step;
 
-        protected StepExperimentData(string id, string name, string abb, EquipmentRacks eq)
-            : base(id, name, abb, eq)
+        protected StepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq)
+            : base(id, type, name, abb, eq)
         {}
 
         public override ConfigNode getNode()
@@ -328,7 +330,7 @@ namespace NE_Science
      */
     public class MSLExperimentData : StepExperimentData
     {
-        protected MSLExperimentData(string id, string name, string abb, EquipmentRacks eq) : base(id, name, abb, eq)
+        protected MSLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq) : base(id, type, name, abb, eq)
         {}
         
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel){
@@ -354,112 +356,72 @@ namespace NE_Science
     public class CCF_ExperimentData :MSLExperimentData
     {
         public CCF_ExperimentData()
-            : base("NE_CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR)
+            : base("NE_CCF", "CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR)
         {
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
-        }
-
-        public override string getType()
-        {
-            return "CCF";
         }
     }
 
     public class CFE_ExperimentData : MSLExperimentData
     {
         public CFE_ExperimentData()
-            : base("NE_CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.FFR)
+            : base("NE_CFE", "CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.FFR)
         {
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 40);
-        }
-
-        public override string getType()
-        {
-            return "CFE";
         }
     }
 
     public class FLEX_ExperimentData : MSLExperimentData
     {
         public FLEX_ExperimentData()
-            : base("NE_FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR)
+            : base("NE_FLEX", "FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR)
         {
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18);
-        }
-
-        public override string getType()
-        {
-            return "FLEX";
         }
     }
 
     public class CFI_ExperimentData : MSLExperimentData
     {
         public CFI_ExperimentData()
-            : base("NE_CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR)
+            : base("NE_CFI", "CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR)
         {
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50);
-        }
-
-        public override string getType()
-        {
-            return "CFI";
         }
     }
 
     public class MIS1_ExperimentData : MSLExperimentData
     {
         public MIS1_ExperimentData()
-            : base("NE_MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER)
+            : base("NE_MIS1", "MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100);
-        }
-
-        public override string getType()
-        {
-            return "MIS1";
         }
     }
 
     public class MIS2_ExperimentData : MSLExperimentData
     {
         public MIS2_ExperimentData()
-            : base("NE_MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER)
+            : base("NE_MIS2", "MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200);
-        }
-
-        public override string getType()
-        {
-            return "MIS2";
         }
     }
 
     public class MIS3_ExperimentData : MSLExperimentData
     {
         public MIS3_ExperimentData()
-            : base("NE_MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER)
+            : base("NE_MIS3", "MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300);
-        }
-
-        public override string getType()
-        {
-            return "MIS3";
         }
     }
 
     public class TestExperimentData : MSLExperimentData
     {
         public TestExperimentData()
-            : base("NE_Test", "Test Experiment", "Test", EquipmentRacks.FFR)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.FFR)
         {
             step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 2);
-        }
-
-        public override string getType()
-        {
-            return "Test";
         }
 
     }
