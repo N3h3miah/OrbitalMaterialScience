@@ -154,7 +154,7 @@ namespace NE_Science
             }
             else
             {
-                setExperiment(ExperimentData.getNullObject());
+                removeExperimentData();
                 Events["chooseEquipment"].guiName = "Add Experiment";
             }
         }
@@ -183,7 +183,7 @@ namespace NE_Science
         private void installExperimentInLab(Lab lab)
         {
             lab.installExperiment(expData);
-            setExperiment(ExperimentData.getNullObject());
+            removeExperimentData();
         }
 
         [KSPEvent(guiActive = true, guiName = "Move Experiment", active = false)]
@@ -310,6 +310,9 @@ namespace NE_Science
                 if (GUILayout.Button(e.getAbbreviation()))
                 {
                     setExperiment(e);
+                    part.mass += e.getMass();
+                    NE_Helper.log("new mass: " + part.mass + "; fireEvent");
+                    GameEvents.onVesselWasModified.Fire(part.vessel);
                     Events["chooseEquipment"].guiName = "Remove Experiment";
                     showGui = 0;
                 }
@@ -335,6 +338,7 @@ namespace NE_Science
 
         public void removeExperimentData()
         {
+            part.mass -= expData.getMass();
             setExperiment(ExperimentData.getNullObject());
         }
 

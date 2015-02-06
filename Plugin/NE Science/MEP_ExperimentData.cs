@@ -7,8 +7,8 @@ namespace NE_Science
 {
     public class MEPExperimentData : StepExperimentData
     {
-        protected MEPExperimentData(string id, string type, string name, string abb, EquipmentRacks eq)
-            : base(id, type, name, abb, eq)
+        protected MEPExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
+            : base(id, type, name, abb, eq, mass)
         { }
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
@@ -34,8 +34,8 @@ namespace NE_Science
 
     public class MEE1_ExperimentData : MEPExperimentData
     {
-        public MEE1_ExperimentData()
-            : base("NE_MEE1", "MEE1", "Material Exposure Experiment 1", "MEE1", EquipmentRacks.EXPOSURE)
+        public MEE1_ExperimentData(float mass)
+            : base("NE_MEE1", "MEE1", "Material Exposure Experiment 1", "MEE1", EquipmentRacks.EXPOSURE, mass)
         {
             step = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 20);
         }
@@ -43,8 +43,8 @@ namespace NE_Science
 
     public class MEE2_ExperimentData : MEPExperimentData
     {
-        public MEE2_ExperimentData()
-            : base("NE_MEE2", "MEE2", "Material Exposure Experiment 2", "MEE2", EquipmentRacks.EXPOSURE)
+        public MEE2_ExperimentData(float mass)
+            : base("NE_MEE2", "MEE2", "Material Exposure Experiment 2", "MEE2", EquipmentRacks.EXPOSURE, mass)
         {
             step = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 40);
         }

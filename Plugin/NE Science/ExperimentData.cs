@@ -32,21 +32,24 @@ namespace NE_Science
         public const string CONFIG_NODE_NAME = "NE_ExperimentData";
         private const string TYPE_VALUE = "Type";
         private const string STATE_VALUE = "State";
+        private const string MASS_VALUE = "Mass";
 
         private string id;
         private string name;
         private string abb;
         private string type = "";
+        private float mass = 0f;
         protected EquipmentRacks neededEquipment;
         internal ExperimentState state = ExperimentState.STORED;
         internal ExperimentDataStorage store;
 
-        public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq)
+        public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
         {
             this.id = id;
             this.type = type;
             this.name = name;
             this.abb = abb;
+            this.mass = mass;
             neededEquipment = eq;
         }
 
@@ -63,6 +66,10 @@ namespace NE_Science
         public string getAbbreviation()
         {
             return abb;
+        }
+        public float getMass()
+        {
+            return mass;
         }
 
         public EquipmentRacks getEquipmentNeeded()
@@ -110,6 +117,7 @@ namespace NE_Science
 
             node.AddValue(TYPE_VALUE, getType());
             node.AddValue(STATE_VALUE, state);
+            node.AddValue(MASS_VALUE, mass);
 
             return node;
         }
@@ -121,17 +129,32 @@ namespace NE_Science
                 NE_Helper.logError("getLabEquipmentFromNode: invalid Node: " + node.name);
                 return getNullObject();
             }
+            float mass = getMass(node.GetValue(MASS_VALUE));
 
-            ExperimentData exp = ExperimentFactory.getExperiment(node.GetValue(TYPE_VALUE));
+            ExperimentData exp = ExperimentFactory.getExperiment(node.GetValue(TYPE_VALUE), mass);
             exp.load(node);
             return exp; ;
+        }
+
+        private static float getMass(string p)
+        {
+            if (p != null)
+            {
+                try
+                {
+                    return float.Parse(p);
+                }catch(FormatException){
+                    return 0f;
+                }
+            }
+            return 0f;
         }
 
 
 
         public static ExperimentData getNullObject()
         {
-            return new ExperimentData("", "", "null Experiment", "empty", EquipmentRacks.NONE);
+            return new ExperimentData("", "", "null Experiment", "empty", EquipmentRacks.NONE, 0f);
         }
 
         public virtual bool canInstall(Vessel vessel)
@@ -174,6 +197,7 @@ namespace NE_Science
         {
             state = ExperimentState.INSTALLED;
             store = rack;
+            rack.getLab().part.mass += getMass();
         }
 
         internal void finalize()
@@ -208,6 +232,7 @@ namespace NE_Science
                 state = ExperimentState.STORED;
             }
             store.removeExperimentData();
+            exp.part.mass += getMass();
             exp.storeExperiment(this);
         }
 
@@ -270,8 +295,8 @@ namespace NE_Science
     {
         protected ExperimentStep step;
 
-        protected StepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq)
-            : base(id, type, name, abb, eq)
+        protected StepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
+            : base(id, type, name, abb, eq, mass)
         {}
 
         public override ConfigNode getNode()
@@ -350,8 +375,8 @@ namespace NE_Science
 
     public class TestExperimentData : MEPExperimentData
     {
-        public TestExperimentData()
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE)
+        public TestExperimentData(float mass)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE, mass)
         {
             step = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1);
         }

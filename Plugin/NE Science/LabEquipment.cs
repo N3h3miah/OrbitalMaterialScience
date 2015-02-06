@@ -242,6 +242,7 @@ namespace NE_Science
 
         public void removeExperimentData()
         {
+            lab.part.mass -= exp.getMass();
             exp = null;
         }
 

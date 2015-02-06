@@ -50,7 +50,8 @@ namespace NE_Science
                     {
                         Part pPf = part.partPrefab;
                         NE_ExperimentModule exp = pPf.GetComponent<NE_ExperimentModule>();
-                        list.Add(getExperiment(exp.type));
+                        float mass = pPf.mass;
+                        list.Add(getExperiment(exp.type, mass));
                     }
                 }
             }
@@ -58,30 +59,30 @@ namespace NE_Science
             return list;
         }
 
-        public static ExperimentData getExperiment(string type)
+        public static ExperimentData getExperiment(string type, float mass)
         {
             switch (type)
             {
                 case "Test":
-                    return new TestExperimentData();
+                    return new TestExperimentData(mass);
                 case "CCF":
-                    return new CCF_ExperimentData();
+                    return new CCF_ExperimentData(mass);
                 case "CFE":
-                    return new CFE_ExperimentData();
+                    return new CFE_ExperimentData(mass);
                 case "FLEX":
-                    return new FLEX_ExperimentData();
+                    return new FLEX_ExperimentData(mass);
                 case "CFI":
-                    return new CFI_ExperimentData();
+                    return new CFI_ExperimentData(mass);
                 case "MIS1":
-                    return new MIS1_ExperimentData();
+                    return new MIS1_ExperimentData(mass);
                 case "MIS2":
-                    return new MIS2_ExperimentData();
+                    return new MIS2_ExperimentData(mass);
                 case "MIS3":
-                    return new MIS3_ExperimentData();
+                    return new MIS3_ExperimentData(mass);
                 case "MEE1":
-                    return new MEE1_ExperimentData();
+                    return new MEE1_ExperimentData(mass);
                 case "MEE2":
-                    return new MEE2_ExperimentData();
+                    return new MEE2_ExperimentData(mass);
                 default:
                     return ExperimentData.getNullObject();
 
