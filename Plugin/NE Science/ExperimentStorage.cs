@@ -126,8 +126,20 @@ namespace NE_Science
             if (count == 0)
             {
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
+                if (Events["installExperiment"].active)
+                {
+                    Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                }
                 Events["moveExp"].active = expData.canMove(part.vessel);
+                if (Events["moveExp"].active)
+                {
+                    Events["moveExp"].guiName = "Move " + expData.getAbbreviation();
+                }
                 Events["finalize"].active = expData.canFinalize();
+                if (Events["installExperiment"].active)
+                {
+                    Events["finalize"].guiName = "Finalize " + expData.getAbbreviation();
+                }
                 Events["DeployExperiment"].active = false;
                 if (expData.state == ExperimentState.FINISHED && GetScienceCount() > 0)
                 {
