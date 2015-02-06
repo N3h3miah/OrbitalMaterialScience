@@ -188,5 +188,17 @@ namespace NE_Science
                 return false;
             }
         }
+
+        internal bool isExposureAction()
+        {
+            if (equ != null)
+            {
+                return equ.isExposureAction();
+            }
+            else
+            {
+                return false;
+            };
+        }
     }
 }

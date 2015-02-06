@@ -303,5 +303,17 @@ namespace NE_Science
         {
             return lab;
         }
+
+        internal bool isExposureAction()
+        {
+            if (exp != null)
+            {
+                return exp.isExposureExperiment();
+            }
+            else
+            {
+                return false;
+            };
+        }
     }
 }

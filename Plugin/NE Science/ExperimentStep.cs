@@ -25,20 +25,35 @@ namespace NE_Science
     {
         public const string CONFIG_NODE_NAME = "NE_ExperimentStep";
         private const string TYPE_VALUE = "Type";
+        private const string NAME_VALUE = "Name";
+        private const string INDEX_VALUE = "INDEX";
 
         protected ExperimentData exp;
 
         private string type = "";
+        private string name = "";
+        private int index = 0;
 
-        protected ExperimentStep(ExperimentData exp, string type)
+        protected ExperimentStep(ExperimentData exp, string type, string name, int index = 0)
         {
             this.exp = exp;
             this.type = type;
+            this.name = name;
+            this.index = index;
         }
 
         public virtual bool ready()
         {
             return false;
+        }
+
+        public string getName(){
+            return name;
+        }
+
+        public int getIndex()
+        {
+            return index;
         }
 
         public virtual bool isResearchFinished()
@@ -60,6 +75,8 @@ namespace NE_Science
             ConfigNode node = new ConfigNode(CONFIG_NODE_NAME);
 
             node.AddValue(TYPE_VALUE, getType());
+            node.AddValue(NAME_VALUE, getName());
+            node.AddValue(INDEX_VALUE, getIndex());
             return node;
         }
 
@@ -68,9 +85,11 @@ namespace NE_Science
             if (node.name != CONFIG_NODE_NAME)
             {
                 NE_Helper.logError("getExperimentStepFromConfigNode: invalid Node: " + node.name);
-                return new ExperimentStep(exp, "");
+                return new ExperimentStep(exp, "", "");
             }
-            ExperimentStep step = createExperimentStep(node.GetValue(TYPE_VALUE), exp);
+            int index = int.Parse(node.GetValue(INDEX_VALUE));
+            string name = node.GetValue(NAME_VALUE);
+            ExperimentStep step = createExperimentStep(node.GetValue(TYPE_VALUE), exp, name, index);
             step.load(node);
             return step;
 
@@ -80,16 +99,16 @@ namespace NE_Science
         {
         }
 
-        private static ExperimentStep createExperimentStep(string p, ExperimentData exp)
+        private static ExperimentStep createExperimentStep(string type, ExperimentData exp, string name, int index)
         {
-            switch (p)
+            switch (type)
             {
                 case "ResStep":
-                    return new ResourceExperimentStep(exp);
+                    return new ResourceExperimentStep(exp, name, index);
                 case "MEPResStep":
-                    return new MEPResourceExperimentStep(exp);
+                    return new MEPResourceExperimentStep(exp, name, index);
                 default:
-                    return new ExperimentStep(exp, "");
+                    return new ExperimentStep(exp, "", name, index);
             }
         }
 
@@ -102,6 +121,11 @@ namespace NE_Science
         {
             return exp.state == ExperimentState.INSTALLED;
         }
+
+        public virtual string getNeededResource()
+        {
+            return "";
+        }
     }
 
     public class ResourceExperimentStep : ExperimentStep
@@ -112,23 +136,23 @@ namespace NE_Science
         protected string res;
         protected float amount;
 
-        internal ResourceExperimentStep(ExperimentData exp)
-            : base(exp, "ResStep")
+        internal ResourceExperimentStep(ExperimentData exp, string name, int index = 0)
+            : this(exp, "ResStep", name, index)
         { }
 
-        internal ResourceExperimentStep(ExperimentData exp, string type)
-            : base(exp, type)
+        internal ResourceExperimentStep(ExperimentData exp, string type, string name, int index = 0)
+            : base(exp, type, name, index)
         { }
 
-        public ResourceExperimentStep(ExperimentData exp, string res, float amount)
-            : base(exp, "ResStep")
+        public ResourceExperimentStep(ExperimentData exp, string res, float amount, string name, int index = 0)
+            : base(exp, "ResStep", name, index)
         {
             this.res = res;
             this.amount = amount;
         }
 
-        internal ResourceExperimentStep(ExperimentData exp, string res, float amount, string type)
-            : base(exp, type)
+        internal ResourceExperimentStep(ExperimentData exp, string res, float amount, string type, string name, int index = 0)
+            : base(exp, type, name, index)
         {
             this.res = res;
             this.amount = amount;
@@ -188,16 +212,21 @@ namespace NE_Science
                 ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f); ;
             }
         }
+
+        public override string getNeededResource()
+        {
+            return res;
+        }
     }
 
     public class MEPResourceExperimentStep : ResourceExperimentStep
     {
-        internal MEPResourceExperimentStep(ExperimentData exp)
-            : base(exp, "MEPResStep")
+        internal MEPResourceExperimentStep(ExperimentData exp, string name, int index = 0)
+            : base(exp, "MEPResStep", name, index)
         { }
 
-        public MEPResourceExperimentStep(ExperimentData exp, string res, float amount)
-            : base(exp, res, amount, "MEPResStep")
+        public MEPResourceExperimentStep(ExperimentData exp, string res, float amount, string name, int index)
+            : base(exp, res, amount, "MEPResStep", name, index)
         {
         }
 

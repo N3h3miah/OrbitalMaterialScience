@@ -192,7 +192,6 @@ namespace NE_Science
         }
 
 
-
         internal void installed(LabEquipment rack)
         {
             state = ExperimentState.INSTALLED;
@@ -289,6 +288,10 @@ namespace NE_Science
         {
             store = labEquipment;
         }
+
+        public virtual bool isExposureExperiment(){
+            return false;
+        }
     }
 
     public class StepExperimentData : ExperimentData
@@ -369,16 +372,135 @@ namespace NE_Science
                     break;
             }
         }
+
+        public override bool isExposureExperiment()
+        {
+            return step.getNeededResource() == Resources.EXPOSURE_TIME;
+        }
     }
 
+    public class MultiStepExperimentData : ExperimentData
+    {
+        private const string ACTIVE_VALUE = "activeStep";
+        protected ExperimentStep[] steps = new ExperimentStep[1];
+        private int activeStep = 0;
 
+        protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
+            : base(id, type, name, abb, eq, mass)
+        { }
+
+        public override ConfigNode getNode()
+        {
+            ConfigNode baseNode = base.getNode();
+            baseNode.AddValue(ACTIVE_VALUE, activeStep);
+
+            if (steps != null)
+            {
+                foreach (ExperimentStep es in steps)
+                {
+                    baseNode.AddNode(es.getNode());
+                }
+            }
+            return baseNode;
+        }
+
+        protected override void load(ConfigNode node)
+        {
+            base.load(node);
+
+            activeStep = int.Parse(node.GetValue(ACTIVE_VALUE));
+
+            ConfigNode[] stepNodes = node.GetNodes(ExperimentStep.CONFIG_NODE_NAME);
+            steps = new ExperimentStep[stepNodes.Length];
+            foreach (ConfigNode stepNode in stepNodes)
+            {
+                ExperimentStep step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
+                steps[step.getIndex()] = step;
+            }
+        }
+
+        internal override bool canRunAction()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    return steps[activeStep].canStart();
+
+                case ExperimentState.RUNNING:
+                    return steps[activeStep].isResearchFinished();
+                default:
+                    return base.canRunAction();
+            }
+        }
+
+        internal override string getActionString()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    return "Start " + getAbbreviation() + " " + steps[activeStep].getName();
+
+                case ExperimentState.RUNNING:
+                    if (steps[activeStep].isResearchFinished())
+                    {
+                        return "End " + getAbbreviation() + " " + steps[activeStep].getName();
+                    }
+                    else
+                    {
+                        return "";
+                    }
+                default:
+                    return "";
+            }
+        }
+
+        public override void runLabAction()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    if (steps[activeStep].start())
+                    {
+                        state = ExperimentState.RUNNING;
+                    }
+                    break;
+                case ExperimentState.RUNNING:
+                    if (steps[activeStep].isResearchFinished())
+                    {
+                        steps[activeStep].finishStep();
+                        if (isLastStep())
+                        {
+                            state = ExperimentState.FINISHED;
+                        }
+                        else
+                        {
+                            state = ExperimentState.INSTALLED;
+                            activeStep++;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private bool isLastStep()
+        {
+            return activeStep == (steps.Length - 1);
+        }
+
+        public override bool isExposureExperiment()
+        {
+            return steps[activeStep].getNeededResource() == Resources.EXPOSURE_TIME;
+        }
+    }
 
     public class TestExperimentData : MEPExperimentData
     {
         public TestExperimentData(float mass)
             : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE, mass)
         {
-            step = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1);
+            steps = new ExperimentStep[2];
+            steps[0] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 1, "Preparation", 0);
+            steps[1] = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1, "Exposure", 1);
         }
 
     }

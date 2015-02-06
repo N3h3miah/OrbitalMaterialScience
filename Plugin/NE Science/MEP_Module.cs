@@ -332,35 +332,42 @@ namespace NE_Science
        [KSPEvent(guiActive = true, guiName = "Action Experiment", active = false)]
        public void actionExp()
        {
-           if (isSuccessfull())
+           if (exposureSlot.isExposureAction())
            {
-               exposureSlot.experimentAction();
-               ++armOps;
-               switch (MEPlabState)
+               if (isSuccessfull())
                {
-                   case MEPLabStatus.READY:
-                       playAnimation(startExpAnimName, 1f, 0f);
-                       MEPlabState = MEPLabStatus.RUNNING;
-                       break;
-                   case MEPLabStatus.RUNNING:
-                       playAnimation(startExpAnimName, -1f, 1f);
-                       MEPlabState = MEPLabStatus.READY;
-                       break;
+                   exposureSlot.experimentAction();
+                   ++armOps;
+                   switch (MEPlabState)
+                   {
+                       case MEPLabStatus.READY:
+                           playAnimation(startExpAnimName, 1f, 0f);
+                           MEPlabState = MEPLabStatus.RUNNING;
+                           break;
+                       case MEPLabStatus.RUNNING:
+                           playAnimation(startExpAnimName, -1f, 1f);
+                           MEPlabState = MEPLabStatus.READY;
+                           break;
+                   }
+
+
                }
-               
-               
+               else
+               {
+                   switch (MEPlabState)
+                   {
+                       case MEPLabStatus.READY:
+                           errorOnStart();
+                           break;
+                       case MEPLabStatus.RUNNING:
+                           errorOnStop();
+                           break;
+                   }
+               }
            }
            else
            {
-               switch (MEPlabState)
-               {
-                   case MEPLabStatus.READY:
-                       errorOnStart();
-                       break;
-                   case MEPLabStatus.RUNNING:
-                       errorOnStop();
-                       break;
-               }
+               exposureSlot.experimentAction();
            }
        }
     }
