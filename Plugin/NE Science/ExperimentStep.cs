@@ -43,7 +43,8 @@ namespace NE_Science
             return false;
         }
 
-        public virtual void start(){
+        public virtual bool start(){
+            return false;
         }
 
         public virtual void finishStep()
@@ -144,11 +145,17 @@ namespace NE_Science
             return Math.Round(numTestPoints, 2) >= amount;
         }
 
-        public override void start()
+        public override bool start()
         {
             if(exp.state == ExperimentState.INSTALLED){
-                ((LabEquipment)exp.store).createResourceInLab(res, amount);
+                Lab lab = ((LabEquipment)exp.store).getLab();
+                if (lab != null && OMSExperiment.checkBoring(lab.vessel, true))
+                {
+                    ((LabEquipment)exp.store).createResourceInLab(res, amount);
+                    return true;
+                }
             }
+            return false;
         }
 
         public override void finishStep()

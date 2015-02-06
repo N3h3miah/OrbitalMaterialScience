@@ -284,5 +284,10 @@ namespace NE_Science
             NE_Helper.log("Set AmountTo: " + p);
             lab.setResourceMaxAmount(res, p);
         }
+
+        internal Lab getLab()
+        {
+            return lab;
+        }
     }
 }

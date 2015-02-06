@@ -312,8 +312,10 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    step.start();
-                    state = ExperimentState.RUNNING;
+                    if (step.start())
+                    {
+                        state = ExperimentState.RUNNING;
+                    }
                     break;
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished()) {
