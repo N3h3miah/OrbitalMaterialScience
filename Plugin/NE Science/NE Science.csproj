@@ -61,6 +61,7 @@
     <Compile Include="ExperimentStep.cs" />
     <Compile Include="LabEquipment.cs" />
     <Compile Include="LabEquipmentSlot.cs" />
+    <Compile Include="MEP_ExperimentData.cs" />
     <Compile Include="MEP_IVA_Alarm_Animation.cs" />
     <Compile Include="MEP_Animations.cs" />
     <Compile Include="ExperimentStorage.cs" />
@@ -79,15 +80,7 @@
     <Compile Include="OMSDoExperimentParameter.cs" />
     <Compile Include="KEESExperimentContract.cs" />
     <Compile Include="OMSExperiment.cs" />
-    <Compile Include="PrinterExpPhase.cs" />
-    <Compile Include="LabTimeExpPhase.cs" />
-    <Compile Include="FfrExpPhase.cs" />
-    <Compile Include="ExposureExpPhase.cs" />
-    <Compile Include="PhaseExperimentCore.cs" />
-    <Compile Include="ExperimentPhase.cs" />
-    <Compile Include="CirExpPhase.cs" />
     <Compile Include="MEP_Module.cs" />
-    <Compile Include="NE_ExperimentPhaseParser.cs" />
     <Compile Include="NE_Helper.cs" />
     <Compile Include="Lab.cs" />
     <Compile Include="MSL_Module.cs" />

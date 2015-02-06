@@ -31,12 +31,6 @@ namespace NE_Science
 
         private static readonly string SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Resources/seetings.cfg";
         private const string DEBUG_VALUE = "Debug";
-
-        public const int MEP_NOT_READY = 0;
-        public const int MEP_READY = 1;
-        public const int MEP_RUNNING = 2;
-        public const int MEP_ERROR_ON_START = 3;
-        public const int MEP_ERROR_ON_STOP = 4;
         private static bool debug = true;
 
 

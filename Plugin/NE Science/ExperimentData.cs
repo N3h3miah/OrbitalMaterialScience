@@ -216,6 +216,11 @@ namespace NE_Science
             store = storage;
         }
 
+        internal virtual bool canRunAction()
+        {
+            return false;
+        }
+
         internal virtual string getActionString()
         {
             switch (state)
@@ -224,7 +229,7 @@ namespace NE_Science
                     return "Start " + getAbbreviation();
 
                 case ExperimentState.FINISHED:
-                    return "End " + getAbbreviation() + " Step";
+                    return "End " + getAbbreviation();
 
                 default:
                     return "";
@@ -286,6 +291,20 @@ namespace NE_Science
             step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
         }
 
+        internal override bool canRunAction()
+        {
+            switch (state)
+            {
+                case ExperimentState.INSTALLED:
+                    return step.canStart();
+
+                case ExperimentState.RUNNING:
+                    return step.isResearchFinished();
+                default:
+                    return base.canRunAction();
+            }
+        }
+
         internal override string getActionString()
         {
             switch (state)
@@ -329,12 +348,12 @@ namespace NE_Science
 
 
 
-    public class TestExperimentData : MSLExperimentData
+    public class TestExperimentData : MEPExperimentData
     {
         public TestExperimentData()
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.FFR)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE)
         {
-            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 2);
+            step = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1);
         }
 
     }

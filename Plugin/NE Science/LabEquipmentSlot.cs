@@ -176,5 +176,17 @@ namespace NE_Science
                 return "";
             }
         }
+
+        internal bool canActionRun()
+        {
+            if (equ != null)
+            {
+                return equ.canRunExperimentAction();
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

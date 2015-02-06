@@ -189,6 +189,7 @@ namespace NE_Science
 
         public void install(Lab lab)
         {
+            NE_Helper.log("Lab equipment install in " + lab.abbreviation);
             gen = createGenerator(product, productPerHour, reactant, reactantPerProduct, lab);
             lab.addGenerator(gen);
             this.lab = lab;
@@ -257,6 +258,18 @@ namespace NE_Science
         internal double getResourceAmount(string res)
         {
             return lab.getResourceAmount(res);
+        }
+
+        internal bool canRunExperimentAction()
+        {
+            if (exp != null)
+            {
+                return exp.canRunAction();
+            }
+            else
+            {
+                return false;
+            }
         }
 
         internal string getActionString()

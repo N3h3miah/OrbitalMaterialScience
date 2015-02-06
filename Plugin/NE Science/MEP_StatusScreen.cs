@@ -50,7 +50,7 @@ namespace NE_Science
         private GameDatabase.TextureInfo error;
         private Material screenMat = null;
 
-        private int lastLabStatus = -1;
+        private MEPLabStatus lastLabStatus = MEPLabStatus.NONE;
 
         public override void OnLoad(ConfigNode node)
         {
@@ -117,24 +117,24 @@ namespace NE_Science
             }
         }
 
-        private GameDatabase.TextureInfo getTextureForState(int p)
+        private GameDatabase.TextureInfo getTextureForState(MEPLabStatus p)
         {
             switch (p)
             {
-                case NE_Helper.MEP_NOT_READY:
+                case MEPLabStatus.NOT_READY:
                     if (notReady == null) notReady = getTexture(folder, notReadyTexture);
                     return notReady;
 
-                case NE_Helper.MEP_READY:
+                case MEPLabStatus.READY:
                     if (ready == null) ready = getTexture(folder, readyTexture);
                     return ready;
 
-                case NE_Helper.MEP_RUNNING:
+                case MEPLabStatus.RUNNING:
                     if (running == null) running = getTexture(folder, runningTexture);
                     return running;
 
-                case NE_Helper.MEP_ERROR_ON_START:
-                case NE_Helper.MEP_ERROR_ON_STOP:
+                case MEPLabStatus.ERROR_ON_START:
+                case MEPLabStatus.ERROR_ON_STOP:
                     if (error == null) error = getTexture(folder, errorTexture);
                     return error;
 

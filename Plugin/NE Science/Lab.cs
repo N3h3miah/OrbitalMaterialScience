@@ -68,6 +68,25 @@ namespace NE_Science
 
         }
 
+        protected LabEquipmentSlot getLabEquipmentSlot(ConfigNode configNode)
+        {
+            if (configNode != null)
+            {
+                return LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME), this);
+            }
+            else
+            {
+                NE_Helper.logError("Lab GetLabEquipmentSlotFromNode: LabEquipmentSlotNode null");
+                return new LabEquipmentSlot(EquipmentRacks.NONE);
+            }
+        }
+
+        protected ConfigNode getConfigNodeForSlot(string nodeName, LabEquipmentSlot slot)
+        {
+            ConfigNode node = new ConfigNode(nodeName);
+            node.AddNode(slot.getConfigNode());
+            return node;
+        }
 
         public double getResourceAmount(string name)
         {
@@ -88,7 +107,7 @@ namespace NE_Science
 
         protected virtual bool isActive()
         {
-            return doResearch && part.protoModuleCrew.Count >= minimumCrew && !PhaseExperimentCore.checkBoring(vessel, false);
+            return doResearch && part.protoModuleCrew.Count >= minimumCrew && !OMSExperiment.checkBoring(vessel, false);
         }
 
         protected virtual void displayStatusMessage(string s)
@@ -119,7 +138,7 @@ namespace NE_Science
             {
                 displayStatusMessage("Understaffed (" + part.protoModuleCrew.Count + "/" + minimumCrew + ")");
             }
-            else if (PhaseExperimentCore.checkBoring(vessel, false))
+            else if (OMSExperiment.checkBoring(vessel, false))
             {
                 displayStatusMessage("Go to space!");
             }

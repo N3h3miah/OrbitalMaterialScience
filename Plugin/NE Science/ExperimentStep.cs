@@ -28,9 +28,12 @@ namespace NE_Science
 
         protected ExperimentData exp;
 
-        protected ExperimentStep(ExperimentData exp)
+        private string type = "";
+
+        protected ExperimentStep(ExperimentData exp, string type)
         {
             this.exp = exp;
+            this.type = type;
         }
 
         public virtual bool ready()
@@ -65,7 +68,7 @@ namespace NE_Science
             if (node.name != CONFIG_NODE_NAME)
             {
                 NE_Helper.logError("getExperimentStepFromConfigNode: invalid Node: " + node.name);
-                return new ExperimentStep(exp);
+                return new ExperimentStep(exp, "");
             }
             ExperimentStep step = createExperimentStep(node.GetValue(TYPE_VALUE), exp);
             step.load(node);
@@ -83,14 +86,21 @@ namespace NE_Science
             {
                 case "ResStep":
                     return new ResourceExperimentStep(exp);
+                case "MEPResStep":
+                    return new MEPResourceExperimentStep(exp);
                 default:
-                    return new ExperimentStep(exp);
+                    return new ExperimentStep(exp, "");
             }
         }
 
-        protected virtual string getType()
+        protected string getType()
         {
-            return "";
+            return type;
+        }
+
+        internal virtual bool canStart()
+        {
+            return exp.state == ExperimentState.INSTALLED;
         }
     }
 
@@ -103,19 +113,25 @@ namespace NE_Science
         protected float amount;
 
         internal ResourceExperimentStep(ExperimentData exp)
-            : base(exp)
+            : base(exp, "ResStep")
+        { }
+
+        internal ResourceExperimentStep(ExperimentData exp, string type)
+            : base(exp, type)
         { }
 
         public ResourceExperimentStep(ExperimentData exp, string res, float amount)
-            : base(exp)
+            : base(exp, "ResStep")
         {
             this.res = res;
             this.amount = amount;
         }
 
-        protected override string getType()
+        internal ResourceExperimentStep(ExperimentData exp, string res, float amount, string type)
+            : base(exp, type)
         {
-            return "ResStep";
+            this.res = res;
+            this.amount = amount;
         }
 
         public override ConfigNode getNode()
@@ -147,14 +163,21 @@ namespace NE_Science
 
         public override bool start()
         {
-            if(exp.state == ExperimentState.INSTALLED){
+            NE_Helper.log("ResExppStep.start()");
+            if(canStart()){
                 Lab lab = ((LabEquipment)exp.store).getLab();
-                if (lab != null && OMSExperiment.checkBoring(lab.vessel, true))
+                if (lab != null && !OMSExperiment.checkBoring(lab.vessel, true))
                 {
+                    NE_Helper.log("ResExppStep.start(): create Resource");
                     ((LabEquipment)exp.store).createResourceInLab(res, amount);
                     return true;
                 }
+                else
+                {
+                    NE_Helper.logError("ResExppStep.start(): Lab null or boring. Boring: " + OMSExperiment.checkBoring(lab.vessel, true));
+                }
             }
+            NE_Helper.log("ResExppStep.start(): can NOT start");
             return false;
         }
 
@@ -165,6 +188,26 @@ namespace NE_Science
                 ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f); ;
             }
         }
+    }
 
+    public class MEPResourceExperimentStep : ResourceExperimentStep
+    {
+        internal MEPResourceExperimentStep(ExperimentData exp)
+            : base(exp, "MEPResStep")
+        { }
+
+        public MEPResourceExperimentStep(ExperimentData exp, string res, float amount)
+            : base(exp, res, amount, "MEPResStep")
+        {
+        }
+
+        internal override bool canStart()
+        {
+            if(base.canStart()){
+                return ((MEP_Module)((LabEquipment)exp.store).getLab()).MEPlabState == MEPLabStatus.READY;
+            }
+
+            return false; ;
+        }
     }
 }

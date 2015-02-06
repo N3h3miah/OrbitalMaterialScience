@@ -66,19 +66,6 @@ namespace NE_Science
             printerSlot = getLabEquipmentSlot(node.GetNode(DPR_CONFIG_NODE_NAME));
         }
 
-        private LabEquipmentSlot getLabEquipmentSlot(ConfigNode configNode)
-        {
-            if (configNode != null)
-            {
-                return LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME), this);
-            }
-            else
-            {
-                NE_Helper.logError("MSL onLoad: LabEquipmentSlotNode null");
-                return new LabEquipmentSlot(EquipmentRacks.NONE);
-            }
-        }
-
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
@@ -87,13 +74,6 @@ namespace NE_Science
             node.AddNode(getConfigNodeForSlot(FFR_CONFIG_NODE_NAME, ffrSlot));
             node.AddNode(getConfigNodeForSlot(DPR_CONFIG_NODE_NAME, printerSlot));
 
-        }
-
-        private ConfigNode getConfigNodeForSlot(string nodeName, LabEquipmentSlot slot)
-        {
-            ConfigNode node = new ConfigNode(nodeName);
-            node.AddNode(slot.getConfigNode());
-            return node;
         }
 
         public override void OnStart(PartModule.StartState state)
@@ -355,12 +335,13 @@ namespace NE_Science
                 {
                     Events["moveCIRExp"].guiName = "Move " + cirSlot.getExperiment().getAbbreviation();
                 }
-                string cirActionString = cirSlot.getActionString();
-                if (cirActionString.Length > 0)
+                
+                if (cirSlot.canActionRun())
                 {
+                    string cirActionString = cirSlot.getActionString();
                     Events["actionCIRExp"].guiName = cirActionString;
                 }
-                Events["actionCIRExp"].active = cirActionString.Length > 0;
+                Events["actionCIRExp"].active = cirSlot.canActionRun();
                 if (!cirSlot.experimentSlotFree())
                 {
                     cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().getStateString();
@@ -383,12 +364,12 @@ namespace NE_Science
                 {
                     Events["moveFFRExp"].guiName = "Move " + ffrSlot.getExperiment().getAbbreviation();
                 }
-                string ffrActionString = ffrSlot.getActionString();
-                if (ffrActionString.Length > 0)
+                if (ffrSlot.canActionRun())
                 {
+                    string ffrActionString = ffrSlot.getActionString();
                     Events["actionFFRExp"].guiName = ffrActionString;
                 }
-                Events["actionFFRExp"].active = ffrActionString.Length > 0;
+                Events["actionFFRExp"].active = ffrSlot.canActionRun();
                 if (!ffrSlot.experimentSlotFree())
                 {
                     ffrStatus = ffrSlot.getExperiment().getAbbreviation() + ": " + ffrSlot.getExperiment().getStateString();
@@ -411,12 +392,13 @@ namespace NE_Science
                 {
                     Events["movePRExp"].guiName = "Move " + printerSlot.getExperiment().getAbbreviation();
                 }
-                string prActionString = printerSlot.getActionString();
-                if (prActionString.Length > 0)
+                
+                if (printerSlot.canActionRun())
                 {
+                    string prActionString = printerSlot.getActionString();
                     Events["actionPRExp"].guiName = prActionString;
                 }
-                Events["actionPRExp"].active = prActionString.Length > 0;
+                Events["actionPRExp"].active = printerSlot.canActionRun();
                 if (!printerSlot.experimentSlotFree())
                 {
                     prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().getStateString();

@@ -36,7 +36,7 @@ namespace NE_Science
     public class ExperimentFactory
     {
         static readonly List<string> expRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
-            "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3" };
+            "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2" };
 
         public static List<ExperimentData> getAvailableExperiments()
         {
@@ -78,6 +78,10 @@ namespace NE_Science
                     return new MIS2_ExperimentData();
                 case "MIS3":
                     return new MIS3_ExperimentData();
+                case "MEE1":
+                    return new MEE1_ExperimentData();
+                case "MEE2":
+                    return new MEE2_ExperimentData();
                 default:
                     return ExperimentData.getNullObject();
 

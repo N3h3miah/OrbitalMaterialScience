@@ -60,7 +60,7 @@ namespace NE_Science
 
         public override void OnUpdate()
         {
-            if (lab.MEPlabState == NE_Helper.MEP_ERROR_ON_START || lab.MEPlabState == NE_Helper.MEP_ERROR_ON_STOP)
+            if (lab.MEPlabState == MEPLabStatus.ERROR_ON_START || lab.MEPlabState == MEPLabStatus.ERROR_ON_STOP)
             {
                 if (!error)
                 {

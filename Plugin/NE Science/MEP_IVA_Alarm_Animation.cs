@@ -59,7 +59,7 @@ namespace NE_Science
                     initPartObjects();
                 }
                 MEP_Module lab = part.GetComponent<MEP_Module>();
-                if (lab.MEPlabState == NE_Helper.MEP_ERROR_ON_START || lab.MEPlabState == NE_Helper.MEP_ERROR_ON_STOP)
+                if (lab.MEPlabState == MEPLabStatus.ERROR_ON_START || lab.MEPlabState == MEPLabStatus.ERROR_ON_STOP)
                 {
                     animateAlarmLight();
                     playSoundFX();

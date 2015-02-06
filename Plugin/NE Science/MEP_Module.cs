@@ -27,9 +27,10 @@ namespace NE_Science
 {
     class MEP_Module : Lab
     {
+        private const string MEP_STATE_VALUE = "Mep_State";
+        private const string SLOT_CONFIG_NODE_NAME = "EquipmentSlot";
 
-        [KSPField(isPersistant = true)]
-        public int MEPlabState = NE_Helper.MEP_NOT_READY;
+        public MEPLabStatus MEPlabState = MEPLabStatus.NOT_READY;
 
         [KSPField(isPersistant = false)]
         public float ExposureTimePerHour = 0;
@@ -41,19 +42,9 @@ namespace NE_Science
         public int failurePercentage = 1;
 
         [KSPField(isPersistant = true)]
-        [Obsolete]
-        public bool running = false;
-
-        [KSPField(isPersistant = true)]
-        public int expID = -1;
-
-        [KSPField(isPersistant = true)]
         public int armOps = 0;
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Exposure Time")]
-        public string exposureTimeStatus = "";
-
-        [KSPField(isPersistant = true, guiActive = true, guiName = "Experiment Name")]
+        [KSPField(isPersistant = true, guiActive = true, guiName = "Experiment")]
         public string experimentName = "No Experiment";
 
         private string deployAnimName = "Deploy";
@@ -61,7 +52,28 @@ namespace NE_Science
         private string errorOnStartAnimName = "ErrorOnStart";
         private string errorOnStopAnimName = "ErrorOnStop";
 
-        public Generator ExposureTimeGenerator;
+        private LabEquipmentSlot exposureSlot = new LabEquipmentSlot(EquipmentRacks.EXPOSURE);
+
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+            string stateString = node.GetValue(MEP_STATE_VALUE);
+            if (stateString != null)
+            {
+                MEPlabState = MEPLabStatusFactory.getType(stateString);
+            }
+            exposureSlot = getLabEquipmentSlot(node.GetNode(SLOT_CONFIG_NODE_NAME));
+            
+        }
+
+
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+            NE_Helper.log("MEP OnSave");
+            node.AddValue(MEP_STATE_VALUE, MEPlabState);
+            node.AddNode(getConfigNodeForSlot(SLOT_CONFIG_NODE_NAME, exposureSlot));
+        }
 
         public override void OnStart(StartState state)
         {
@@ -70,37 +82,39 @@ namespace NE_Science
             {
                 return;
             }
-
-            ExposureTimeGenerator = new Generator(this.part);
-            ExposureTimeGenerator.addRate("ExposureTime", -ExposureTimePerHour);
-            generators.Add(ExposureTimeGenerator);
+            NE_Helper.log("MEP_Module OnStart");
+            exposureSlot.onStart(this);
+            if (!exposureSlot.isEquipmentInstalled())
+            {
+                exposureSlot.install(new LabEquipment("MEP", "MEP", EquipmentRacks.EXPOSURE, 0, ExposureTimePerHour, Resources.EXPOSURE_TIME, 0, ""), this); ;
+            }
 
             switch (MEPlabState)
             {
-                case NE_Helper.MEP_NOT_READY:
+                case MEPLabStatus.NOT_READY:
                     playAnimation(deployAnimName, -1f, 0f);
                     Events["FixArm"].guiActiveUnfocused = false;
                     Events["DeployPlatform"].guiActive = true;
                     break;
-                case NE_Helper.MEP_READY:
+                case MEPLabStatus.READY:
                     playAnimation(startExpAnimName, -1f, 0f);
                     Events["FixArm"].guiActiveUnfocused = false;
                     Events["DeployPlatform"].guiActive = true;
                     break;
 
-                case NE_Helper.MEP_RUNNING:
+                case MEPLabStatus.RUNNING:
                     playAnimation(startExpAnimName, 1f, 1f);
                     Events["DeployPlatform"].guiActive = false;
                     Events["FixArm"].guiActiveUnfocused = false;
                     break;
 
-                case NE_Helper.MEP_ERROR_ON_START:
+                case MEPLabStatus.ERROR_ON_START:
                     playAnimation(errorOnStartAnimName, 1f, 1f);
                     Events["FixArm"].guiActiveUnfocused = true;
                     Events["DeployPlatform"].guiActive = false;
                     break;
 
-                case NE_Helper.MEP_ERROR_ON_STOP:
+                case MEPLabStatus.ERROR_ON_STOP:
                     playAnimation(errorOnStopAnimName, -1f, 0f);
                     Events["FixArm"].guiActiveUnfocused = true;
                     Events["DeployPlatform"].guiActive = false;
@@ -116,13 +130,13 @@ namespace NE_Science
             armOps = 0;
             switch (MEPlabState)
             {
-                case NE_Helper.MEP_ERROR_ON_START:
-                    MEPlabState = NE_Helper.MEP_RUNNING;
+                case MEPLabStatus.ERROR_ON_START:
+                    MEPlabState = MEPLabStatus.RUNNING;
                     playAnimation(errorOnStartAnimName, -1f, 1f);
                     ScreenMessages.PostScreenMessage("Robotic arm fixed. Experiment will start soon.", 2, ScreenMessageStyle.UPPER_CENTER);
                     StartCoroutine(playAninimationAfter(5.8f,startExpAnimName, 1f, 0));
                     break;
-                case NE_Helper.MEP_ERROR_ON_STOP:
+                case MEPLabStatus.ERROR_ON_STOP:
                     ScreenMessages.PostScreenMessage("Robotic arm fixed.", 2, ScreenMessageStyle.UPPER_CENTER);
                     playAnimation(errorOnStopAnimName, 1f, 0f);
                     StartCoroutine(waitForAnimation(5.8f));
@@ -139,7 +153,7 @@ namespace NE_Science
         System.Collections.IEnumerator waitForAnimation(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-            MEPlabState = NE_Helper.MEP_RUNNING;
+            MEPlabState = MEPLabStatus.RUNNING;
 
         }
 
@@ -149,190 +163,117 @@ namespace NE_Science
         {
             switch (MEPlabState)
             {
-                case NE_Helper.MEP_NOT_READY:
+                case MEPLabStatus.NOT_READY:
                     playAnimation(deployAnimName, 1f, 0);
-                    MEPlabState = NE_Helper.MEP_READY;
+                    MEPlabState = MEPLabStatus.READY;
                     Events["DeployPlatform"].guiName = "Retract Platform";
                     break;
-                case NE_Helper.MEP_READY:
+                case MEPLabStatus.READY:
                     playAnimation(deployAnimName, -1f, 1);
-                    MEPlabState = NE_Helper.MEP_NOT_READY;
+                    MEPlabState = MEPLabStatus.NOT_READY;
                     Events["DeployPlatform"].guiName = "Deploy Platform";
                     break;
             }
         }
 
-
+        public override void installExperiment(ExperimentData exp)
+        {
+            if (exp.getEquipmentNeeded() == EquipmentRacks.EXPOSURE)
+            {
+                exposureSlot.installExperiment(exp);
+                experimentName = exp.getAbbreviation() + ": " + exp.getStateString();
+            }
+        }
 
         public bool isRunning()
         {
-            return MEPlabState == NE_Helper.MEP_RUNNING;
+            return MEPlabState == MEPLabStatus.RUNNING;
         }
 
         public bool isReady()
         {
-            return MEPlabState == NE_Helper.MEP_READY;
+            return MEPlabState == MEPLabStatus.READY;
         }
 
         public bool hasError()
         {
-            return MEPlabState == NE_Helper.MEP_ERROR_ON_START || MEPlabState == NE_Helper.MEP_ERROR_ON_STOP;
+            return MEPlabState == MEPLabStatus.ERROR_ON_START || MEPlabState == MEPLabStatus.ERROR_ON_STOP;
         }
 
         protected override bool isActive()
         {
-            return doResearch && isRunning() && part.protoModuleCrew.Count >= minimumCrew && !PhaseExperimentCore.checkBoring(vessel, false);
+            return doResearch && isRunning() && part.protoModuleCrew.Count >= minimumCrew && !OMSExperiment.checkBoring(vessel, false);
         }
 
         protected override void updateLabStatus()
         {
             switch (MEPlabState)
             {
-                case NE_Helper.MEP_NOT_READY:
+                case MEPLabStatus.NOT_READY:
                     displayStatusMessage("Platform retracted");
                     break;
-                case NE_Helper.MEP_READY:
+                case MEPLabStatus.READY:
                     Events["DeployPlatform"].guiActive = true;
                     Events["FixArm"].guiActiveUnfocused = false;
                     displayStatusMessage("Idle");
                     break;
-                case NE_Helper.MEP_RUNNING:
+                case MEPLabStatus.RUNNING:
                     Fields["labStatus"].guiActive = false;
-                    Fields["exposureTimeStatus"].guiActive = true;
-                    Fields["experimentName"].guiActive = true;
                     Events["DeployPlatform"].guiActive = false;
                     Events["FixArm"].guiActiveUnfocused = false;
-                    exposureTimeStatus = "";
-                    var er = getOrDefault(ExposureTimeGenerator.rates, "ExposureTime");
-                    if (er != null)
-                    {
-                        if (er.last_available == 0)
-                            exposureTimeStatus = "No Experiments";
-                        else
-                            exposureTimeStatus = String.Format("{0:F2} per hour", -er.ratePerHour * er.rateMultiplier);
-                    }
-                    Fields["exposureTimeStatus"].guiActive = (exposureTimeStatus != "");
-                    checkStatusLabRunning();
+                    displayStatusMessage("Running");
                     break;
-                case NE_Helper.MEP_ERROR_ON_START:
-                case NE_Helper.MEP_ERROR_ON_STOP:
+                case MEPLabStatus.ERROR_ON_START:
+                case MEPLabStatus.ERROR_ON_STOP:
                     Events["DeployPlatform"].guiActive = false;
                     Events["FixArm"].guiActiveUnfocused = true;
                     displayStatusMessage("Robotic Arm Failure");
                     break;
             }
+
+            Fields["experimentName"].guiActive = !exposureSlot.experimentSlotFree();
+            experimentName = exposureSlot.getExperiment().getAbbreviation() + ": " + exposureSlot.getExperiment().getStateString();
+
+            Events["moveExp"].active = exposureSlot.canExperimentMove(part.vessel);
+            if (Events["moveExp"].active)
+            {
+                Events["moveExp"].guiName = "Move " + exposureSlot.getExperiment().getAbbreviation();
+            }
+
+            Events["actionExp"].active = exposureSlot.canActionRun();
+            if (Events["actionExp"].active)
+            {
+                Events["actionExp"].guiName = exposureSlot.getActionString();
+            }
+            
+
             Events["FixArm"].active = Events["FixArm"].guiActiveUnfocused;
         }
 
-        private void checkStatusLabRunning()
+        public void errorOnStart()
         {
-            switch (MEPlabState)
-            {
-                case NE_Helper.MEP_RUNNING:
-                    List<PhaseExperimentCore> allExps = new List<PhaseExperimentCore>(GameObject.FindObjectsOfType(typeof(PhaseExperimentCore)) as PhaseExperimentCore[]);
-                    bool expFound = false;
-                    foreach (PhaseExperimentCore exp in allExps)
-                    {
-                        if (exp.getExperimentID() == expID)
-                        {
-                            expFound = true;
-                            break;
-                        }
-                    }
-                    if (!expFound)
-                    {
-                        stopExperiment(false);
-                    }
-                    break;
-            }
-        }
-
-        protected override void displayStatusMessage(string s)
-        {
-            base.displayStatusMessage(s);
-            Fields["exposureTimeStatus"].guiActive = false;
-            Fields["experimentName"].guiActive = false;
-        }
-
-        public bool startExperiment(string name, int expIDp)
-        {
-            if (isSuccessfull())
-            {
-                MEPlabState = NE_Helper.MEP_RUNNING;
-                experimentName = name;
-                expID = expIDp;
-                playAnimation(startExpAnimName, 1f, 0f);
-                armOps++;
-                return true;
-            }
-            else
-            {
-                armOps++;
-                errorOnStart(expIDp, name);
-                return false;
-            }
-        }
-
-        public bool stopExperiment(bool finished)
-        {
-            if (finished)
-            {
-                if (isSuccessfull())
-                {
-                    armOps++;
-                    MEPlabState = NE_Helper.MEP_READY;
-                    experimentName = "No Experiment";
-                    expID = -1;
-                    playAnimation(startExpAnimName, -1f, 1f);
-                    return true;
-                }
-                else
-                {
-                    armOps++;
-                    errorOnStop();
-                    return false;
-                }
-            }
-            else
-            {
-                MEPlabState = NE_Helper.MEP_READY;
-                experimentName = "No Experiment";
-                expID = -1;
-                playAnimation(startExpAnimName, -1f, 1f);
-                    return true;
-            }
-        }
-
-        public void errorOnStart(int expIDp, string name)
-        {
-            MEPlabState = NE_Helper.MEP_RUNNING;
-            experimentName = name;
-            expID = expIDp;
+            MEPlabState = MEPLabStatus.RUNNING;
             playAnimation(errorOnStartAnimName, 1f, 0f);
-            StartCoroutine(ErrorCallback(5.8f, NE_Helper.MEP_ERROR_ON_START));
+            StartCoroutine(ErrorCallback(5.8f, MEPLabStatus.ERROR_ON_START));
         }
 
         public void errorOnStop()
         {
-            MEPlabState = NE_Helper.MEP_ERROR_ON_STOP;
             playAnimation(errorOnStopAnimName, -1f, 1);
-            StartCoroutine(ErrorCallback(5.5f, NE_Helper.MEP_ERROR_ON_STOP));
+            StartCoroutine(ErrorCallback(5.5f, MEPLabStatus.ERROR_ON_STOP));
 
         }
 
-        System.Collections.IEnumerator ErrorCallback(float seconds, int targetState)
+        System.Collections.IEnumerator ErrorCallback(float seconds, MEPLabStatus targetState)
         {
             yield return new WaitForSeconds(seconds);
             ScreenMessages.PostScreenMessage("Warning: robotic arm failure", 6, ScreenMessageStyle.UPPER_CENTER);
             MEPlabState = targetState;
         }
 
-        //private bool tempSuc = false;
         private bool isSuccessfull()
         {
-            //bool ret = tempSuc;
-            //tempSuc = !tempSuc;
-            //return ret;
+
             if (failures)
             {
                 if (failurePercentage > 100)
@@ -375,6 +316,83 @@ namespace NE_Science
             String ret = base.GetInfo();
             ret += (ret == "" ? "" : "\n") + "Exposure Time per hour: " + ExposureTimePerHour;
             return ret;
+        }
+
+       internal bool hasEquipmentFreeExperimentSlot(EquipmentRacks neededEquipment)
+       {
+           return exposureSlot.experimentSlotFree();
+       }
+
+       [KSPEvent(guiActive = true, guiName = "Move Experiment", active = false)]
+       public void moveExp()
+       {
+           exposureSlot.moveExperiment(part.vessel);
+       }
+
+       [KSPEvent(guiActive = true, guiName = "Action Experiment", active = false)]
+       public void actionExp()
+       {
+           if (isSuccessfull())
+           {
+               exposureSlot.experimentAction();
+               ++armOps;
+               switch (MEPlabState)
+               {
+                   case MEPLabStatus.READY:
+                       playAnimation(startExpAnimName, 1f, 0f);
+                       MEPlabState = MEPLabStatus.RUNNING;
+                       break;
+                   case MEPLabStatus.RUNNING:
+                       playAnimation(startExpAnimName, -1f, 1f);
+                       MEPlabState = MEPLabStatus.READY;
+                       break;
+               }
+               
+               
+           }
+           else
+           {
+               switch (MEPlabState)
+               {
+                   case MEPLabStatus.READY:
+                       errorOnStart();
+                       break;
+                   case MEPLabStatus.RUNNING:
+                       errorOnStop();
+                       break;
+               }
+           }
+       }
+    }
+
+    public enum MEPLabStatus
+    {
+        NOT_READY, READY, RUNNING, ERROR_ON_START, ERROR_ON_STOP, NONE
+    }
+
+    public class MEPLabStatusFactory
+    {
+
+        public static MEPLabStatus getType(string p)
+        {
+            switch (p)
+            {
+                case "NOT_READY":
+                    return MEPLabStatus.NOT_READY;
+                case "READY":
+                    return MEPLabStatus.READY;
+                case "RUNNING":
+                    return MEPLabStatus.RUNNING;
+                case "ERROR_ON_START":
+                    return MEPLabStatus.ERROR_ON_START;
+                case "ERROR_ON_STOP":
+                    return MEPLabStatus.ERROR_ON_STOP;
+                case "NONE":
+                    return MEPLabStatus.NONE;
+                default:
+                    return MEPLabStatus.NOT_READY;
+
+            }
         }
     }
 }
