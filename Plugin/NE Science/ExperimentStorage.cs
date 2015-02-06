@@ -35,6 +35,9 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string identifier = "";
 
+        [KSPField(isPersistant = false)]
+        public bool chanceTexture = false;
+
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "Contains")]
         public string contains = "";
 
@@ -95,8 +98,10 @@ namespace NE_Science
             collectActionName = "Collect Results";
             interactionRange = 1.2f;
             xmitDataScalar = 0.2f;
-
-            setTexture(expData);
+            if (chanceTexture)
+            {
+                setTexture(expData);
+            }
         }
 
         public override void OnSave(ConfigNode node)

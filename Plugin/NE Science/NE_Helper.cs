@@ -29,7 +29,7 @@ namespace NE_Science
     class NE_Helper : MonoBehaviour
     {
 
-        private static readonly string SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Resources/seetings.cfg";
+        private static readonly string SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Resources/settings.cfg";
         private const string DEBUG_VALUE = "Debug";
         private static bool debug = true;
 
