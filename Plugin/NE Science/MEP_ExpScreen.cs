@@ -60,7 +60,7 @@ namespace NE_Science
             if (lastUpdate + refreshInterval < Time.time)
             {
                 lastUpdate = Time.time;
-                ExposureLab lab = part.GetComponent<ExposureLab>();
+                MEP_Module lab = part.GetComponent<MEP_Module>();
 
 
                 if (lab.experimentName != lastExpName)

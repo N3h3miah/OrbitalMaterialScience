@@ -37,9 +37,9 @@ namespace NE_Science
 
         public override void checkForLabs(bool ready)
         {
-            List<PhysicsMaterialsLab> allPhysicsLabs = new List<PhysicsMaterialsLab>(exp.UnityFindObjectsOfType(typeof(PhysicsMaterialsLab)) as PhysicsMaterialsLab[]);
+            List<MSL_Module> allPhysicsLabs = new List<MSL_Module>(exp.UnityFindObjectsOfType(typeof(MSL_Module)) as MSL_Module[]);
             bool labFound = false;
-            foreach (PhysicsMaterialsLab lab in allPhysicsLabs)
+            foreach (MSL_Module lab in allPhysicsLabs)
             {
                 if (lab.vessel == exp.vessel)
                 {
@@ -67,9 +67,9 @@ namespace NE_Science
 
         public override void checkUndocked()
         {
-            List<PhysicsMaterialsLab> allPhysicsLabs = new List<PhysicsMaterialsLab>(exp.UnityFindObjectsOfType(typeof(PhysicsMaterialsLab)) as PhysicsMaterialsLab[]);
+            List<MSL_Module> allPhysicsLabs = new List<MSL_Module>(exp.UnityFindObjectsOfType(typeof(MSL_Module)) as MSL_Module[]);
             bool labFound = false;
-            foreach (PhysicsMaterialsLab lab in allPhysicsLabs)
+            foreach (MSL_Module lab in allPhysicsLabs)
             {
                 if (lab.vessel == exp.vessel)
                 {

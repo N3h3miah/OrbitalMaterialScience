@@ -36,7 +36,7 @@ namespace NE_Science
 
         public override void checkForLabs(bool ready)
         {
-            List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
+            List<MEP_Module> allExpLabs = new List<MEP_Module>(exp.UnityFindObjectsOfType(typeof(MEP_Module)) as MEP_Module[]);
             bool labFound = false;
             
             if (!ready)
@@ -55,9 +55,9 @@ namespace NE_Science
 
         public override void checkUndocked()
         {
-            List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
+            List<MEP_Module> allExpLabs = new List<MEP_Module>(exp.UnityFindObjectsOfType(typeof(MEP_Module)) as MEP_Module[]);
             bool labFound = false;
-            foreach (ExposureLab lab in allExpLabs)
+            foreach (MEP_Module lab in allExpLabs)
             {
                 if (lab.vessel == exp.vessel && lab.isRunning() && lab.expID == expID)
                 {
@@ -78,8 +78,8 @@ namespace NE_Science
 
         public override void checkLabFixed()
         {
-            List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
-            foreach (ExposureLab lab in allExpLabs)
+            List<MEP_Module> allExpLabs = new List<MEP_Module>(exp.UnityFindObjectsOfType(typeof(MEP_Module)) as MEP_Module[]);
+            foreach (MEP_Module lab in allExpLabs)
             {
                 if (lab.vessel == exp.vessel && lab.isRunning() && lab.expID == expID)
                 {
@@ -102,10 +102,10 @@ namespace NE_Science
         public override bool startExperiment()
         {
 
-            List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
+            List<MEP_Module> allExpLabs = new List<MEP_Module>(exp.UnityFindObjectsOfType(typeof(MEP_Module)) as MEP_Module[]);
             bool labFound = false;
-            ExposureLab labf = null;
-            foreach (ExposureLab lab in allExpLabs)
+            MEP_Module labf = null;
+            foreach (MEP_Module lab in allExpLabs)
             {
                 if (lab.vessel == exp.vessel && lab.isReady())
                 {
@@ -152,9 +152,9 @@ namespace NE_Science
 
         private bool stopLab(bool finished)
         {
-            List<ExposureLab> allExpLabs = new List<ExposureLab>(exp.UnityFindObjectsOfType(typeof(ExposureLab)) as ExposureLab[]);
+            List<MEP_Module> allExpLabs = new List<MEP_Module>(exp.UnityFindObjectsOfType(typeof(MEP_Module)) as MEP_Module[]);
             bool labFound = false;
-            foreach (ExposureLab lab in allExpLabs)
+            foreach (MEP_Module lab in allExpLabs)
             {
                 if (lab.expID == expID)
                 {

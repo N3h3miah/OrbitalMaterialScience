@@ -58,7 +58,7 @@ namespace NE_Science
                 {
                     initPartObjects();
                 }
-                ExposureLab lab = part.GetComponent<ExposureLab>();
+                MEP_Module lab = part.GetComponent<MEP_Module>();
                 if (lab.MEPlabState == NE_Helper.MEP_ERROR_ON_START || lab.MEPlabState == NE_Helper.MEP_ERROR_ON_STOP)
                 {
                     animateAlarmLight();
@@ -100,7 +100,6 @@ namespace NE_Science
             if (!alarmAs.isPlaying)
             {
                 alarmAs.Stop();
-                NE_Helper.log("Stop Alarm");
             }
         }
 

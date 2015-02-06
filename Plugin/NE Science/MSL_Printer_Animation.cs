@@ -69,7 +69,7 @@ namespace NE_Science
                 {
                     initPartObjects();
                 }
-                PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
+                MSL_Module lab = part.GetComponent<MSL_Module>();
                 if (lab.isEquipmentRunning(EquipmentRacks.PRINTER))
                 {
                     moveBase();

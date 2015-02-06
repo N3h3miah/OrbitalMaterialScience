@@ -56,7 +56,7 @@ namespace NE_Science
             if (lastUpdate + refreshInterval < Time.time)
             {
                 lastUpdate = Time.time;
-                PhysicsMaterialsLab lab = part.GetComponent<PhysicsMaterialsLab>();
+                MSL_Module lab = part.GetComponent<MSL_Module>();
                 if (gameObject.activeSelf != lab.hasEquipmentInstalled(EquipmentRacks.FFR))
                 {
                     gameObject.SetActive(lab.hasEquipmentInstalled(EquipmentRacks.FFR));

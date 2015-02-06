@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    class ExposureLab : Lab
+    class MEP_Module : Lab
     {
 
         [KSPField(isPersistant = true)]

@@ -25,14 +25,61 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    class NE_Helper
+    [KSPAddon(KSPAddon.Startup.EveryScene, true)]
+    class NE_Helper : MonoBehaviour
     {
+
+        private static readonly string SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Resources/seetings.cfg";
+        private const string DEBUG_VALUE = "Debug";
+
         public const int MEP_NOT_READY = 0;
         public const int MEP_READY = 1;
         public const int MEP_RUNNING = 2;
         public const int MEP_ERROR_ON_START = 3;
         public const int MEP_ERROR_ON_STOP = 4;
         private static bool debug = true;
+
+
+        void Start()
+        {
+            ConfigNode settings = getSettingsNode();
+            bool d = false;
+            try
+            {
+                d = bool.Parse(settings.GetValue(DEBUG_VALUE));
+            }
+            catch (FormatException e)
+            {
+                d = true;
+                NE_Helper.logError("Loading Settings: " + e.Message);
+            }
+            NE_Helper.debug = d;
+            DontDestroyOnLoad(this);
+        }
+
+        private ConfigNode getSettingsNode()
+        {
+            ConfigNode node = ConfigNode.Load(SETTINGS_FILE);
+            if (node == null)
+            {
+                return createSettings();
+            }
+            return node;
+        }
+
+        private ConfigNode createSettings(){
+
+            ConfigNode node = new ConfigNode();
+            node.AddValue(DEBUG_VALUE, false);
+            node.Save(SETTINGS_FILE);
+            return node;
+        }
+
+        public static bool debugging()
+        {
+            return debug;
+        }
+
 
         public static void log( string msg)
         {

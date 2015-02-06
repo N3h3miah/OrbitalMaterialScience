@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public class PhysicsMaterialsLab : Lab
+    public class MSL_Module : Lab
     {
 
         private const string CIR_CONFIG_NODE_NAME = "NE_CIR_LabEquipmentSlot";

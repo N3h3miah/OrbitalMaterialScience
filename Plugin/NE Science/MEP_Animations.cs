@@ -26,7 +26,7 @@ namespace NE_Science
     class MEP_Animations : PartModule
     {
 
-        private ExposureLab lab;
+        private MEP_Module lab;
 
         private Light warnLight;
         private Light warnPointLight;
@@ -42,7 +42,7 @@ namespace NE_Science
                 return;
             }
 
-            lab = gameObject.GetComponent<ExposureLab>();
+            lab = gameObject.GetComponent<MEP_Module>();
 
             foreach (Light child in gameObject.GetComponentsInChildren(typeof(Light)))
             {
