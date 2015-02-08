@@ -79,12 +79,12 @@ namespace NE_Science
         {
             if (debug)
             {
-                MonoBehaviour.print("[NE] " + msg);
+                Debug.Log("[NE] " + msg);
             }
         }
 
         public static void logError(string errMsg){
-            MonoBehaviour.print("[NE] Error: " + errMsg);
+            Debug.LogError("[NE] Error: " + errMsg);
         }
     }
 }
