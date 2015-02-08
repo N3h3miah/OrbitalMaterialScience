@@ -72,6 +72,7 @@
     <Compile Include="FFR_Laptop.cs" />
     <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="MEP_StatusScreen.cs" />
+    <Compile Include="NE_ExperimentComponent.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />
     <Compile Include="OMSReturnExperimentParameter.cs" />
     <Compile Include="KEESExperiment.cs" />
