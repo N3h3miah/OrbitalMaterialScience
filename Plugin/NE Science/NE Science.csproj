@@ -54,6 +54,8 @@
   <ItemGroup>
     <Compile Include="ChooseMoveTarget.cs" />
     <Compile Include="CIR_Laptop.cs" />
+    <Compile Include="MPL_ExperimentData.cs" />
+    <Compile Include="MPL_Module.cs" />
     <Compile Include="EquipmentRacks.cs" />
     <Compile Include="EquipmentRackContainer.cs" />
     <Compile Include="ExperimentData.cs" />
@@ -67,9 +69,9 @@
     <Compile Include="ExperimentStorage.cs" />
     <Compile Include="MSL_ExperimentData.cs" />
     <Compile Include="MSL_Printer_Animation.cs" />
-    <Compile Include="MSL_FFR_Animation.cs" />
+    <Compile Include="MSL_FIR_Animation.cs" />
     <Compile Include="MEP_ExpScreen.cs" />
-    <Compile Include="FFR_Laptop.cs" />
+    <Compile Include="FIR_Laptop.cs" />
     <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="MEP_StatusScreen.cs" />
     <Compile Include="OMSExperimentRecovery.cs" />

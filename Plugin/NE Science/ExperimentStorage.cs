@@ -327,6 +327,7 @@ namespace NE_Science
                 if (GUILayout.Button(e.getAbbreviation()))
                 {
                     setExperiment(e);
+                    NE_Helper.log(e.getNode().ToString());
                     part.mass += e.getMass();
                     NE_Helper.log("new mass: " + part.mass + "; fireEvent");
                     GameEvents.onVesselWasModified.Fire(part.vessel);

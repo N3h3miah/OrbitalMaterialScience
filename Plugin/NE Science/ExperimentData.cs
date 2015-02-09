@@ -493,14 +493,12 @@ namespace NE_Science
         }
     }
 
-    public class TestExperimentData : MEPExperimentData
+    public class TestExperimentData : MSLExperimentData
     {
         public TestExperimentData(float mass)
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE, mass)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.FIR, mass)
         {
-            steps = new ExperimentStep[2];
-            steps[0] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 1, "Preparation", 0);
-            steps[1] = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1, "Exposure", 1);
+            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 1, "FIR", 0);
         }
 
     }

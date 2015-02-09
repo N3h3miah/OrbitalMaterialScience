@@ -174,6 +174,11 @@ namespace NE_Science
         {
             this.exp = experimentData;
             exp.load(this);
+            GameObject ego = lab.getExperimentGO(exp.getId());
+            if (ego != null)
+            {
+                ego.SetActive(true);
+            }
         }
 
         public bool isRunning()
@@ -213,6 +218,11 @@ namespace NE_Science
         {
             this.exp = exp;
             exp.installed(this);
+            GameObject ego = lab.getExperimentGO(exp.getId());
+            if (ego != null)
+            {
+                ego.SetActive(true);
+            }
         }
 
         internal ExperimentData getExperiment()
@@ -237,6 +247,11 @@ namespace NE_Science
             if (exp != null)
             {
                 exp.move(vessel);
+            }
+            GameObject ego = lab.getExperimentGO(exp.getId());
+            if (ego != null)
+            {
+                ego.SetActive(false);
             }
         }
 

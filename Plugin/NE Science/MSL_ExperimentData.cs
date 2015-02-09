@@ -35,30 +35,12 @@ namespace NE_Science
         }
     }
 
-    public class CCF_ExperimentData : MSLExperimentData
-    {
-        public CCF_ExperimentData(float mass)
-            : base("NE_CCF", "CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR, mass)
-        {
-            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
-        }
-    }
-
-    public class CFE_ExperimentData : MSLExperimentData
-    {
-        public CFE_ExperimentData(float mass)
-            : base("NE_CFE", "CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.FFR, mass)
-        {
-            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 40);
-        }
-    }
-
     public class FLEX_ExperimentData : MSLExperimentData
     {
         public FLEX_ExperimentData(float mass)
             : base("NE_FLEX", "FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18);
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18, "", 0);
         }
     }
 
@@ -67,7 +49,7 @@ namespace NE_Science
         public CFI_ExperimentData(float mass)
             : base("NE_CFI", "CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50);
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50, "", 0);
         }
     }
 
@@ -76,7 +58,7 @@ namespace NE_Science
         public MIS1_ExperimentData(float mass)
             : base("NE_MIS1", "MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100, "", 0);
         }
     }
 
@@ -85,7 +67,7 @@ namespace NE_Science
         public MIS2_ExperimentData(float mass)
             : base("NE_MIS2", "MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200, "", 0);
         }
     }
 

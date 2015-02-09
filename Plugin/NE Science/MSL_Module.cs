@@ -29,7 +29,7 @@ namespace NE_Science
     {
 
         private const string CIR_CONFIG_NODE_NAME = "NE_CIR_LabEquipmentSlot";
-        private const string FFR_CONFIG_NODE_NAME = "NE_FFR_LabEquipmentSlot";
+        private const string FIR_CONFIG_NODE_NAME = "NE_FIR_LabEquipmentSlot";
         private const string DPR_CONFIG_NODE_NAME = "NE_DPR_LabEquipmentSlot";
 
         [KSPField(isPersistant = false)]
@@ -42,19 +42,19 @@ namespace NE_Science
 
         [KSPField(isPersistant = false, guiActive = false, guiName = "CIR")]
         public string cirStatus = "";
-        [KSPField(isPersistant = false, guiActive = false, guiName = "FFR")]
+        [KSPField(isPersistant = false, guiActive = false, guiName = "FIR")]
         public string ffrStatus = "";
         [KSPField(isPersistant = false, guiActive = false, guiName = "3PR")]
         public string prStatus = "";
 
         private GameObject cir;
-        private GameObject ffr;
+        private GameObject fir;
         private GameObject printer;
 
         public Generator labTimeGenerator;
 
         private LabEquipmentSlot cirSlot = new LabEquipmentSlot(EquipmentRacks.CIR);
-        private LabEquipmentSlot ffrSlot = new LabEquipmentSlot(EquipmentRacks.FFR);
+        private LabEquipmentSlot firSlot = new LabEquipmentSlot(EquipmentRacks.FIR);
         private LabEquipmentSlot printerSlot = new LabEquipmentSlot(EquipmentRacks.PRINTER);
 
         public override void OnLoad(ConfigNode node)
@@ -62,7 +62,7 @@ namespace NE_Science
             base.OnLoad(node);
             NE_Helper.log("MSL OnLoad");
             cirSlot = getLabEquipmentSlot(node.GetNode(CIR_CONFIG_NODE_NAME));
-            ffrSlot = getLabEquipmentSlot(node.GetNode(FFR_CONFIG_NODE_NAME));
+            firSlot = getLabEquipmentSlot(node.GetNode(FIR_CONFIG_NODE_NAME));
             printerSlot = getLabEquipmentSlot(node.GetNode(DPR_CONFIG_NODE_NAME));
         }
 
@@ -71,7 +71,7 @@ namespace NE_Science
             base.OnSave(node);
             NE_Helper.log("MSL OnSave");
             node.AddNode(getConfigNodeForSlot(CIR_CONFIG_NODE_NAME, cirSlot));
-            node.AddNode(getConfigNodeForSlot(FFR_CONFIG_NODE_NAME, ffrSlot));
+            node.AddNode(getConfigNodeForSlot(FIR_CONFIG_NODE_NAME, firSlot));
             node.AddNode(getConfigNodeForSlot(DPR_CONFIG_NODE_NAME, printerSlot));
 
         }
@@ -89,7 +89,7 @@ namespace NE_Science
             labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
             generators.Add(labTimeGenerator);
             cirSlot.onStart(this);
-            ffrSlot.onStart(this);
+            firSlot.onStart(this);
             printerSlot.onStart(this);
 
         }
@@ -112,15 +112,15 @@ namespace NE_Science
                 {
                     printer = labIVA.transform.GetChild(0).gameObject;
                     cir = labIVA.transform.GetChild(1).gameObject;
-                    ffr = labIVA.transform.GetChild(2).gameObject;
+                    fir = labIVA.transform.GetChild(2).gameObject;
 
-                    if (ffrSlot.isEquipmentInstalled())
+                    if (firSlot.isEquipmentInstalled())
                     {
-                        ffr.SetActive(true);
+                        fir.SetActive(true);
                     }
                     else
                     {
-                        ffr.SetActive(false);
+                        fir.SetActive(false);
                     }
 
                     if (cirSlot.isEquipmentInstalled())
@@ -164,16 +164,16 @@ namespace NE_Science
                         NE_Helper.logError("installExperiment, installed: " + cirSlot.isEquipmentInstalled() + "; free: " + cirSlot.experimentSlotFree());
                     }
                     break;
-                case EquipmentRacks.FFR:
-                    if (ffrSlot.isEquipmentInstalled() && ffrSlot.experimentSlotFree())
+                case EquipmentRacks.FIR:
+                    if (firSlot.isEquipmentInstalled() && firSlot.experimentSlotFree())
                     {
-                        ffrSlot.installExperiment(exp);
+                        firSlot.installExperiment(exp);
                         ffrStatus = exp.getAbbreviation();
                         Fields["ffrStatus"].guiActive = true;
                     }
                     else
                     {
-                        NE_Helper.logError("installExperiment, installed: " + ffrSlot.isEquipmentInstalled() + "; free: " + ffrSlot.experimentSlotFree());
+                        NE_Helper.logError("installExperiment, installed: " + firSlot.isEquipmentInstalled() + "; free: " + firSlot.experimentSlotFree());
                     }
                     break;
                 case EquipmentRacks.PRINTER:
@@ -196,9 +196,9 @@ namespace NE_Science
         {
             switch (le.getType())
             {
-                case EquipmentRacks.FFR:
-                    ffr.SetActive(true);
-                    ffrSlot.install(le, this);
+                case EquipmentRacks.FIR:
+                    fir.SetActive(true);
+                    firSlot.install(le, this);
                     break;
                 case EquipmentRacks.CIR:
                     cir.SetActive(true);
@@ -216,15 +216,15 @@ namespace NE_Science
         {
             switch (rack)
             {
-                case EquipmentRacks.FFR:
-                    if (ffr != null)
+                case EquipmentRacks.FIR:
+                    if (fir != null)
                     {
-                        ffr.SetActive(ffrSlot.isEquipmentInstalled());
+                        fir.SetActive(firSlot.isEquipmentInstalled());
                     }
                     else
                     {
                         initERacksActive();
-                        if(ffr != null)ffr.SetActive(ffrSlot.isEquipmentInstalled());
+                        if(fir != null)fir.SetActive(firSlot.isEquipmentInstalled());
                     }
                     break;
                 case EquipmentRacks.CIR:
@@ -259,8 +259,8 @@ namespace NE_Science
                 case EquipmentRacks.CIR:
                     return cirSlot.isEquipmentInstalled();
 
-                case EquipmentRacks.FFR:
-                    return ffrSlot.isEquipmentInstalled();
+                case EquipmentRacks.FIR:
+                    return firSlot.isEquipmentInstalled();
 
                 case EquipmentRacks.PRINTER:
                     return printerSlot.isEquipmentInstalled();
@@ -277,8 +277,8 @@ namespace NE_Science
                 case EquipmentRacks.CIR:
                     return cirSlot.experimentSlotFree();
 
-                case EquipmentRacks.FFR:
-                    return ffrSlot.experimentSlotFree();
+                case EquipmentRacks.FIR:
+                    return firSlot.experimentSlotFree();
 
                 case EquipmentRacks.PRINTER:
                     return printerSlot.experimentSlotFree();
@@ -295,8 +295,8 @@ namespace NE_Science
                 case EquipmentRacks.CIR:
                     return cirSlot.isEquipmentRunning();
 
-                case EquipmentRacks.FFR:
-                    return ffrSlot.isEquipmentRunning();
+                case EquipmentRacks.FIR:
+                    return firSlot.isEquipmentRunning();
 
                 case EquipmentRacks.PRINTER:
                     return printerSlot.isEquipmentRunning();
@@ -318,7 +318,7 @@ namespace NE_Science
             Fields["labStatus"].guiActive = false;
             Fields["equipment"].guiActive = true;
             equipment = getEquipmentString();
-            if (cir == null || ffr == null || printer == null)
+            if (cir == null || fir == null || printer == null)
             {
                 initERacksActive();
             }
@@ -352,27 +352,27 @@ namespace NE_Science
                     Fields["cirStatus"].guiActive = false;
                 }
             }
-            if (!ffrSlot.isEquipmentInstalled())
+            if (!firSlot.isEquipmentInstalled())
             {
-                Events["installFFR"].active = checkForRackModul(EquipmentRacks.FFR);
+                Events["installFIR"].active = checkForRackModul(EquipmentRacks.FIR);
             }
             else
             {
-                Events["installFFR"].active = false;
-                Events["moveFFRExp"].active = ffrSlot.canExperimentMove(part.vessel);
-                if (Events["moveFFRExp"].active)
+                Events["installFIR"].active = false;
+                Events["moveFIRExp"].active = firSlot.canExperimentMove(part.vessel);
+                if (Events["moveFIRExp"].active)
                 {
-                    Events["moveFFRExp"].guiName = "Move " + ffrSlot.getExperiment().getAbbreviation();
+                    Events["moveFIRExp"].guiName = "Move " + firSlot.getExperiment().getAbbreviation();
                 }
-                if (ffrSlot.canActionRun())
+                if (firSlot.canActionRun())
                 {
-                    string ffrActionString = ffrSlot.getActionString();
-                    Events["actionFFRExp"].guiName = ffrActionString;
+                    string ffrActionString = firSlot.getActionString();
+                    Events["actionFIRExp"].guiName = ffrActionString;
                 }
-                Events["actionFFRExp"].active = ffrSlot.canActionRun();
-                if (!ffrSlot.experimentSlotFree())
+                Events["actionFIRExp"].active = firSlot.canActionRun();
+                if (!firSlot.experimentSlotFree())
                 {
-                    ffrStatus = ffrSlot.getExperiment().getAbbreviation() + ": " + ffrSlot.getExperiment().getStateString();
+                    ffrStatus = firSlot.getExperiment().getAbbreviation() + ": " + firSlot.getExperiment().getStateString();
                     Fields["ffrStatus"].guiActive = true;
                 }
                 else
@@ -416,7 +416,7 @@ namespace NE_Science
         //{
         //    if (ffrSlot.isEquipmentInstalled())
         //    {
-        //        double last = ffrGenerator.rates[Resources.FFR_TEST_RUN].last_produced;
+        //        double last = ffrGenerator.rates[Resources.FIR_TEST_RUN].last_produced;
         //        bool state = (last < -0.0000001);
         //        if (ffrRunning != state)
         //        {
@@ -448,9 +448,9 @@ namespace NE_Science
         private string getEquipmentString()
         {
             string ret = "";
-            if (ffrSlot.isEquipmentInstalled())
+            if (firSlot.isEquipmentInstalled())
             {
-                ret += "FFR";
+                ret += "FIR";
             }
             if (cirSlot.isEquipmentInstalled())
             {
@@ -512,10 +512,10 @@ namespace NE_Science
             }
         }
 
-        [KSPEvent(guiActive = true, guiName = "Install FFR", active = false)]
-        public void installFFR()
+        [KSPEvent(guiActive = true, guiName = "Install FIR", active = false)]
+        public void installFIR()
         {
-            EquipmentRackContainer modul = getRackModul(EquipmentRacks.FFR);
+            EquipmentRackContainer modul = getRackModul(EquipmentRacks.FIR);
             if (modul != null)
             {
                 installEquipmentRack(modul.install());
@@ -540,16 +540,16 @@ namespace NE_Science
             }
         }
 
-        [KSPEvent(guiActive = true, guiName = "Move FFR Experiment", active = false)]
-        public void moveFFRExp()
+        [KSPEvent(guiActive = true, guiName = "Move FIR Experiment", active = false)]
+        public void moveFIRExp()
         {
-            ffrSlot.moveExperiment(part.vessel);
+            firSlot.moveExperiment(part.vessel);
         }
 
-        [KSPEvent(guiActive = true, guiName = "Action FFR Experiment", active = false)]
-        public void actionFFRExp()
+        [KSPEvent(guiActive = true, guiName = "Action FIR Experiment", active = false)]
+        public void actionFIRExp()
         {
-            ffrSlot.experimentAction();
+            firSlot.experimentAction();
         }
 
         [KSPEvent(guiActive = true, guiName = "Move CIR Experiment", active = false)]

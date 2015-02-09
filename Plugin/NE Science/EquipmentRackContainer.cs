@@ -42,7 +42,7 @@ namespace NE_Science
         public string CIRTexture = "ContainerCIR_Texture";
 
         [KSPField(isPersistant = false)]
-        public string FFRTexture = "ContainerFFR_Texture";
+        public string FIRTexture = "ContainerFIR_Texture";
 
         private GameDatabase.TextureInfo noEqu;
         private GameDatabase.TextureInfo printer;
@@ -154,7 +154,7 @@ namespace NE_Science
         void showAddGui(int id)
         {
             GUILayout.BeginVertical();
-            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(200), GUILayout.Height(350));
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(210), GUILayout.Height(350));
             foreach (LabEquipment e in availableRacks)
             {
                 if (GUILayout.Button(e.getName()))
@@ -233,8 +233,8 @@ namespace NE_Science
                 case EquipmentRacks.CIR:
                     if (cir == null) cir = getTexture(folder, CIRTexture);
                     return cir;
-                case EquipmentRacks.FFR:
-                    if (ffr == null) ffr = getTexture(folder, FFRTexture);
+                case EquipmentRacks.FIR:
+                    if (ffr == null) ffr = getTexture(folder, FIRTexture);
                     return ffr;
                 default:
                     if (noEqu == null) noEqu = getTexture(folder, noEquTexture);
