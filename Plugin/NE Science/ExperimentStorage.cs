@@ -41,8 +41,6 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
         public string contains = "";
 
-        private static int counter = 0;
-
         private ExperimentData expData = ExperimentData.getNullObject();
         private int count = 0;
 
