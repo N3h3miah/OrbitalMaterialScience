@@ -38,8 +38,10 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public bool chanceTexture = false;
 
-        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "Contains")]
+        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
         public string contains = "";
+
+        private static int counter = 0;
 
         private ExperimentData expData = ExperimentData.getNullObject();
         private int count = 0;
@@ -57,6 +59,7 @@ namespace NE_Science
 
         private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
         private Material contMat;
+        private int windowID;
         
 
         public override void OnLoad(ConfigNode node)
@@ -167,6 +170,7 @@ namespace NE_Science
             if (expData.getId() == "")
             {
                 availableExperiments = ExperimentFactory.getAvailableExperiments();
+                windowID = WindowCounter.getNextWindowID();
                 showGui = 1;
             }
             else
@@ -188,6 +192,7 @@ namespace NE_Science
                 }
                 else
                 {
+                    windowID = WindowCounter.getNextWindowID();
                     showGui = 3;
                 }
             }
@@ -212,6 +217,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
         public void finalize()
         {
+            windowID = WindowCounter.getNextWindowID();
             showGui = 2;
         }
 
@@ -234,7 +240,7 @@ namespace NE_Science
 
         private void showLabWindow()
         {
-            labWindowRect = GUI.ModalWindow(7909034, labWindowRect, showLabGui, "Install Experiment");
+            labWindowRect = GUI.Window(windowID, labWindowRect, showLabGui, "Install Experiment");
         }
 
         void showLabGui(int id)
@@ -315,7 +321,7 @@ namespace NE_Science
 
         private void showAddWindow()
         {
-            addWindowRect = GUI.ModalWindow(7909031, addWindowRect, showAddGUI, "Add Experiment");
+            addWindowRect = GUI.Window(windowID, addWindowRect, showAddGUI, "Add Experiment");
         }
         private void showAddGUI(int id)
         {
@@ -331,7 +337,7 @@ namespace NE_Science
                     part.mass += e.getMass();
                     NE_Helper.log("new mass: " + part.mass + "; fireEvent");
                     GameEvents.onVesselWasModified.Fire(part.vessel);
-                    Events["chooseEquipment"].guiName = "Remove Experiment";
+                    Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
                 }
             }
