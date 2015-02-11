@@ -333,8 +333,6 @@ namespace NE_Science
                     setExperiment(e);
                     NE_Helper.log(e.getNode().ToString());
                     part.mass += e.getMass();
-                    NE_Helper.log("new mass: " + part.mass + "; fireEvent");
-                    GameEvents.onVesselWasModified.Fire(part.vessel);
                     Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
                 }
