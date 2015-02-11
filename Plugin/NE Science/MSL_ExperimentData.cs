@@ -76,7 +76,16 @@ namespace NE_Science
         public MIS3_ExperimentData(float mass)
             : base("NE_MIS3", "MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300, "", 0);
+        }
+    }
+
+    public class CVB_ExperimentData : MSLExperimentData
+    {
+        public CVB_ExperimentData(float mass)
+            : base("NE_CVB", "CVB", "Made in Space: Jebediah figure", "CVB", EquipmentRacks.FIR, mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 22, "", 0);
         }
     }
 }
