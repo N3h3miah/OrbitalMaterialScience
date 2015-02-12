@@ -423,7 +423,7 @@ namespace NE_Science
         private Dictionary<string, string> textureNameReg = new Dictionary<string, string>() { { "", "ExperimentContainerTexture" },
         { "FLEX", "FlexContainerTexture" }, { "CFI", "CfiContainerTexture" }, { "CCF", "CcfContainerTexture" },
         { "CFE", "CfeContainerTexture" }, { "MIS1", "Msi1ContainerTexture" }, { "MIS2", "Msi2ContainerTexture" }, { "MIS3", "Msi3ContainerTexture" },
-        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }, { "CVB", "CvbContainerTexture" }};
+        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }, { "CVB", "CvbContainerTexture" }, { "PACE", "PACEContainerTexture" }};
 
 
         internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)

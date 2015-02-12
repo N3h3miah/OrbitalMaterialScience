@@ -83,7 +83,16 @@ namespace NE_Science
     public class CVB_ExperimentData : MSLExperimentData
     {
         public CVB_ExperimentData(float mass)
-            : base("NE_CVB", "CVB", "Made in Space: Jebediah figure", "CVB", EquipmentRacks.FIR, mass)
+            : base("NE_CVB", "CVB", "Constrained Vapor Bubble", "CVB", EquipmentRacks.FIR, mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 35, "", 0);
+        }
+    }
+
+    public class PACE_ExperimentData : MSLExperimentData
+    {
+        public PACE_ExperimentData(float mass)
+            : base("NE_PACE", "PACE", "Preliminary Advanced Colloids Experiment", "PACE", EquipmentRacks.FIR, mass)
         {
             step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 22, "", 0);
         }
