@@ -25,7 +25,8 @@ namespace NE_Science
     public class EquipmentRackRegistry
     {
         static readonly List<KeyValuePair<EquipmentRacks, String>> racks = new List<KeyValuePair<EquipmentRacks, string>> { new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.PRINTER, "NE.3PR"),
-            new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.CIR, "NE.CIR"), new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.FIR, "NE.FIR"), new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.MSG, "NE.MSG")};
+            new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.CIR, "NE.CIR"), new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.FIR, "NE.FIR"), new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.MSG, "NE.MSG"),
+            new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.USU, "NE.USU")};
 
         public static List<LabEquipment> getAvailableRacks()
         {
@@ -55,7 +56,7 @@ namespace NE_Science
 
     public enum EquipmentRacks
     {
-        CIR, FIR, PRINTER, EXPOSURE, MSG, NONE
+        CIR, FIR, PRINTER, EXPOSURE, MSG, USU, NONE
     }
 
     public class EquipmentRacksFactory{
@@ -74,6 +75,8 @@ namespace NE_Science
                     return EquipmentRacks.EXPOSURE;
                 case "MSG":
                     return EquipmentRacks.MSG;
+                case "USU":
+                    return EquipmentRacks.USU;
                 default:
                     return EquipmentRacks.NONE;
 

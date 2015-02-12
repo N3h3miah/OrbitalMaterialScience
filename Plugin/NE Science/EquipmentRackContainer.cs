@@ -211,7 +211,7 @@ namespace NE_Science
         private string folder = "NehemiahInc/Parts/LabEquipmentContainer/";
         private Dictionary<EquipmentRacks, string> textureNameReg = new Dictionary<EquipmentRacks, string>() { { EquipmentRacks.NONE, "ContainerTexture" },
         { EquipmentRacks.PRINTER, "Container3PR_Texture" }, { EquipmentRacks.CIR, "ContainerCIR_Texture" }, { EquipmentRacks.FIR, "ContainerFIR_Texture" },
-        { EquipmentRacks.MSG, "ContainerMSG_Texture" }, { EquipmentRacks.EXPOSURE, "ContainerTexture" }};
+        { EquipmentRacks.MSG, "ContainerMSG_Texture" }, { EquipmentRacks.EXPOSURE, "ContainerTexture" }, { EquipmentRacks.USU, "ContainerUSU_Texture" }};
 
 
         internal GameDatabase.TextureInfo getTextureForEquipment(EquipmentRacks type)

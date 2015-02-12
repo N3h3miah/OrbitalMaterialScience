@@ -29,6 +29,7 @@ namespace NE_Science
     {
 
         private const string MSG_CONFIG_NODE_NAME = "NE_MSG_LabEquipmentSlot";
+        private const string USU_CONFIG_NODE_NAME = "NE_USU_LabEquipmentSlot";
 
         [KSPField(isPersistant = false)]
         public float LabTimePerHour = 0;
@@ -41,19 +42,25 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = false, guiName = "MSG")]
         public string msgStatus = "";
 
+        [KSPField(isPersistant = false, guiActive = false, guiName = "USU")]
+        public string usuStatus = "";
+
         private GameObject msg;
+        private GameObject usu;
 
         private GameObject cfe;
 
         public Generator labTimeGenerator;
 
         private LabEquipmentSlot msgSlot = new LabEquipmentSlot(EquipmentRacks.MSG);
+        private LabEquipmentSlot usuSlot = new LabEquipmentSlot(EquipmentRacks.USU);
 
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
             NE_Helper.log("MPL OnLoad");
             msgSlot = getLabEquipmentSlot(node.GetNode(MSG_CONFIG_NODE_NAME));
+            usuSlot = getLabEquipmentSlot(node.GetNode(USU_CONFIG_NODE_NAME));
         }
 
         public override void OnSave(ConfigNode node)
@@ -61,7 +68,7 @@ namespace NE_Science
             base.OnSave(node);
             NE_Helper.log("MPL OnSave");
             node.AddNode(getConfigNodeForSlot(MSG_CONFIG_NODE_NAME, msgSlot));
-
+            node.AddNode(getConfigNodeForSlot(USU_CONFIG_NODE_NAME, usuSlot));
 
         }
 
@@ -78,6 +85,7 @@ namespace NE_Science
             labTimeGenerator = createGenerator(Resources.LAB_TIME, LabTimePerHour, Resources.ELECTRIC_CHARGE, ChargePerLabTime);
             generators.Add(labTimeGenerator);
             msgSlot.onStart(this);
+            usuSlot.onStart(this);
 
         }
 
@@ -100,9 +108,11 @@ namespace NE_Science
                     msg = labIVA.transform.GetChild(3).gameObject;
                     
                     cfe = msg.transform.GetChild(2).GetChild(0).gameObject;
+                    usu = labIVA.transform.GetChild(4).gameObject;
 
                     cfe.SetActive(!msgSlot.experimentSlotFree());
                     msg.SetActive(msgSlot.isEquipmentInstalled());
+                    usu.SetActive(usuSlot.isEquipmentInstalled());
 
                     NE_Helper.log("init E Racks successfull");
                 }
@@ -146,6 +156,18 @@ namespace NE_Science
                         NE_Helper.logError("installExperiment, installed: " + msgSlot.isEquipmentInstalled() + "; free: " + msgSlot.experimentSlotFree());
                     }
                     break;
+                case EquipmentRacks.USU:
+                    if (usuSlot.isEquipmentInstalled() && usuSlot.experimentSlotFree())
+                    {
+                        usuSlot.installExperiment(exp);
+                        usuStatus = exp.getAbbreviation();
+                        Fields["usuStatus"].guiActive = true;
+                    }
+                    else
+                    {
+                        NE_Helper.logError("installExperiment, installed: " + usuSlot.isEquipmentInstalled() + "; free: " + usuSlot.experimentSlotFree());
+                    }
+                    break;
             }
         }
 
@@ -159,7 +181,12 @@ namespace NE_Science
                     msgSlot.install(le, this);
                     cfe.SetActive(false);
                     break;
+                case EquipmentRacks.USU:
+                    usu.SetActive(true);
+                    usuSlot.install(le, this);
+                    break;
             }
+
             part.mass += le.getMass();
         }
 
@@ -178,6 +205,17 @@ namespace NE_Science
                         if (msg != null) msg.SetActive(msgSlot.isEquipmentInstalled());
                     }
                     break;
+                case EquipmentRacks.USU:
+                    if (usu != null)
+                    {
+                        usu.SetActive(usuSlot.isEquipmentInstalled());
+                    }
+                    else
+                    {
+                        initERacksActive();
+                        if (usu != null) usu.SetActive(usuSlot.isEquipmentInstalled());
+                    }
+                    break;
             }
         }
 
@@ -187,6 +225,8 @@ namespace NE_Science
             {
                 case EquipmentRacks.MSG:
                     return msgSlot.isEquipmentInstalled();
+                case EquipmentRacks.USU:
+                    return usuSlot.isEquipmentInstalled();
 
                 default:
                     return false;
@@ -199,6 +239,8 @@ namespace NE_Science
             {
                 case EquipmentRacks.MSG:
                     return msgSlot.experimentSlotFree();
+                case EquipmentRacks.USU:
+                    return usuSlot.experimentSlotFree();
 
                 default:
                     return false;
@@ -211,6 +253,8 @@ namespace NE_Science
             {
                 case EquipmentRacks.MSG:
                     return msgSlot.isEquipmentRunning();
+                case EquipmentRacks.USU:
+                    return usuSlot.isEquipmentRunning();
 
                 default:
                     return false;
@@ -264,6 +308,36 @@ namespace NE_Science
                 }
             }
 
+            if (!usuSlot.isEquipmentInstalled())
+            {
+                Events["installUSU"].active = checkForRackModul(EquipmentRacks.USU);
+            }
+            else
+            {
+                Events["installUSU"].active = false;
+                Events["moveUSUExp"].active = usuSlot.canExperimentMove(part.vessel);
+                if (Events["moveUSUExp"].active)
+                {
+                    Events["moveUSUExp"].guiName = "Move " + usuSlot.getExperiment().getAbbreviation();
+                }
+
+                if (usuSlot.canActionRun())
+                {
+                    string usuActionString = usuSlot.getActionString();
+                    Events["actionUSUExp"].guiName = usuActionString;
+                }
+                Events["actionUSUExp"].active = usuSlot.canActionRun();
+                if (!usuSlot.experimentSlotFree())
+                {
+                    usuStatus = usuSlot.getExperiment().getAbbreviation() + ": " + usuSlot.getExperiment().getStateString();
+                    Fields["usuStatus"].guiActive = true;
+                }
+                else
+                {
+                    Fields["usuStatus"].guiActive = false;
+                }
+            }
+
         }
 
         private string getEquipmentString()
@@ -273,6 +347,11 @@ namespace NE_Science
             {
                 if (ret.Length > 0) ret += ", ";
                 ret += "MSG";
+            }
+            if (usuSlot.isEquipmentInstalled())
+            {
+                if (ret.Length > 0) ret += ", ";
+                ret += "USU";
             }
             if (ret.Length == 0)
             {
@@ -334,6 +413,32 @@ namespace NE_Science
         public void actionMSGExp()
         {
             msgSlot.experimentAction();
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Install USU", active = false)]
+        public void installUSU()
+        {
+            EquipmentRackContainer modul = getRackModul(EquipmentRacks.USU);
+            if (modul != null)
+            {
+                installEquipmentRack(modul.install());
+            }
+            else
+            {
+                displayStatusMessage("Equipment Rack Modul not found!");
+            }
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Move USU Experiment", active = false)]
+        public void moveUSUExp()
+        {
+            usuSlot.moveExperiment(part.vessel);
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Action USU Experiment", active = false)]
+        public void actionUSUExp()
+        {
+            usuSlot.experimentAction();
         }
 
         public override string GetInfo()
