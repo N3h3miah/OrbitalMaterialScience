@@ -181,8 +181,7 @@ namespace NE_Science
         public override bool isResearchFinished()
         {
             double numTestPoints = ((LabEquipment)exp.store).getResourceAmount(res);
-
-            return Math.Round(numTestPoints, 2) >= amount;
+            return Math.Round(numTestPoints, 2) >= Math.Round(amount, 2);
         }
 
         public override bool start()

@@ -33,6 +33,36 @@ namespace NE_Science
             List<Lab> labs = getFreeLabsWithEquipment(vessel);
             return labs.Count > 0 && state == ExperimentState.STORED;
         }
+
+        public override bool canMove(Vessel vessel)
+        {
+            return state == ExperimentState.INSTALLED;
+        }
+
+        public override void runLabAction()
+        {
+            base.runLabAction();
+            if (state == ExperimentState.FINISHED)
+            {
+                ExperimentStorage[] storages = store.getPartGo().GetComponents<ExperimentStorage>();
+                foreach (ExperimentStorage es in storages)
+                {
+                    if (es.isEmpty())
+                    {
+                        moveTo(es);
+                    }
+                }
+            }
+        }
+    }
+
+    public class KeminiD5_ExperimentData : KeminiExperimentData
+    {
+        public KeminiD5_ExperimentData(float mass)
+            : base("NE_Kemini_D5", "KeminiD5", "Kemini D5: Star Occultation Navigation", "D5", mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.1f, "", 0);
+        }
     }
 
     public class KeminiD8_ExperimentData : KeminiExperimentData
@@ -40,7 +70,34 @@ namespace NE_Science
         public KeminiD8_ExperimentData(float mass)
             : base("NE_Kemini_D8", "KeminiD8", "Kemini D8: Spacecraft Radiation Level", "D8", mass)
         {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.1f, "", 0);
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.15f, "", 0);
+        }
+    }
+
+    public class KeminiMSC3_ExperimentData : KeminiExperimentData
+    {
+        public KeminiMSC3_ExperimentData(float mass)
+            : base("NE_Kemini_MSC3", "KeminiMSC3", "Kemini MSC3: Tri-Axis Magnetometer", "MSC3", mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.13f, "", 0);
+        }
+    }
+
+    public class KeminiD7_ExperimentData : KeminiExperimentData
+    {
+        public KeminiD7_ExperimentData(float mass)
+            : base("NE_Kemini_D7", "KeminiD7", "Kemini D7: Space Object Radiometry", "D7", mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.23f, "", 0);
+        }
+    }
+    
+    public class KeminiD10_ExperimentData : KeminiExperimentData
+    {
+        public KeminiD10_ExperimentData(float mass)
+            : base("NE_Kemini_D10", "KeminiD10", "Kemini D10: Ion-sensing Attitude Control", "D10", mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.21f, "", 0);
         }
     }
 

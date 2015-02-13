@@ -39,7 +39,8 @@ namespace NE_Science
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
             "NE.PACE"};
 
-        static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD8" };
+        static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD5", "NE.KeminiD8",
+            "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
 
         public static List<ExperimentData> getAvailableExperiments(string type)
         {
@@ -104,8 +105,16 @@ namespace NE_Science
                     return new CVB_ExperimentData(mass);
                 case "PACE":
                     return new PACE_ExperimentData(mass);
+                case "KeminiD5":
+                    return new KeminiD5_ExperimentData(mass);
                 case "KeminiD8":
                     return new KeminiD8_ExperimentData(mass);
+                case "KeminiMSC3":
+                    return new KeminiMSC3_ExperimentData(mass);
+                case "KeminiD7":
+                    return new KeminiD7_ExperimentData(mass);
+                case "KeminiD10":
+                    return new KeminiD10_ExperimentData(mass);
                 default:
                     return ExperimentData.getNullObject();
 
