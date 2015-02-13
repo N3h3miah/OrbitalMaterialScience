@@ -116,6 +116,7 @@ namespace NE_Science
                 case "KeminiD10":
                     return new KeminiD10_ExperimentData(mass);
                 default:
+                    NE_Helper.logError("Unknow ExperimentData Type");
                     return ExperimentData.getNullObject();
 
             }

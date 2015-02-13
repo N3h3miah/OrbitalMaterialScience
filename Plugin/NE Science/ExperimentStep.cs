@@ -107,6 +107,8 @@ namespace NE_Science
                     return new ResourceExperimentStep(exp, name, index);
                 case "MEPResStep":
                     return new MEPResourceExperimentStep(exp, name, index);
+                case "KerbalResStep":
+                    return new KerbalResearchStep(exp, name, index);
                 default:
                     return new ExperimentStep(exp, "", name, index);
             }

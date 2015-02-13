@@ -37,5 +37,7 @@ namespace NE_Science
         public const string MSG_TIME = "MSG_Time";
 
         public const string ELECTRIC_CHARGE = "ElectricCharge";
+
+        public const string ULTRASOUND_GEL = "Ultrasound_Gel";
     }
 }

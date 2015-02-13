@@ -265,7 +265,7 @@ namespace NE_Science
             
         }
 
-        internal string getStateString()
+        internal virtual string getStateString()
         {
             switch (state)
             {
@@ -454,6 +454,11 @@ namespace NE_Science
             }
         }
 
+        protected ExperimentStep getActiveStep()
+        {
+            return steps[activeStep];
+        }
+
         public override void runLabAction()
         {
             switch (state)
@@ -493,12 +498,15 @@ namespace NE_Science
         }
     }
 
-    public class TestExperimentData : MSLExperimentData
+    public class TestExperimentData : KerbalResearchExperimentData
     {
         public TestExperimentData(float mass)
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.FIR, mass)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.USU, mass, 4)
         {
-            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 1, "FIR", 0);
+            steps[0] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 0);
+            steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 1);
+            steps[2] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 2);
+            steps[3] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 3);
         }
 
     }
