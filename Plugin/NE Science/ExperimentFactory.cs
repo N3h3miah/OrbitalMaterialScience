@@ -30,19 +30,37 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string type = "";
 
-    } 
+    }
 
 
     public class ExperimentFactory
     {
-        static readonly List<string> expRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
+        static readonly List<string> omsRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
             "NE.PACE"};
 
-        public static List<ExperimentData> getAvailableExperiments()
+        static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD8" };
+
+        public static List<ExperimentData> getAvailableExperiments(string type)
         {
             List<ExperimentData> list = new List<ExperimentData>();
-            foreach (string pn in expRegistry)
+            switch (type)
+            {
+                case "OMS":
+                    addParts(omsRegistry, list);
+                    break;
+
+                case "KEMINI":
+                    addParts(keminiRegistry, list);
+                    break;
+            }
+
+            return list;
+        }
+
+        private static void addParts(List<string> partNames, List<ExperimentData> list)
+        {
+            foreach (string pn in partNames)
             {
                 AvailablePart part = PartLoader.getPartInfoByName(pn);
                 if (part != null)
@@ -56,8 +74,6 @@ namespace NE_Science
                     }
                 }
             }
-
-            return list;
         }
 
         public static ExperimentData getExperiment(string type, float mass)
@@ -88,6 +104,8 @@ namespace NE_Science
                     return new CVB_ExperimentData(mass);
                 case "PACE":
                     return new PACE_ExperimentData(mass);
+                case "KeminiD8":
+                    return new KeminiD8_ExperimentData(mass);
                 default:
                     return ExperimentData.getNullObject();
 

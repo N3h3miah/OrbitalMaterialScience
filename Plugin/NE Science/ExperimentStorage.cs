@@ -38,6 +38,9 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public bool chanceTexture = false;
 
+        [KSPField(isPersistant = false)]
+        public string type = "OMS";
+
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
         public string contains = "";
 
@@ -167,7 +170,7 @@ namespace NE_Science
         {
             if (expData.getId() == "")
             {
-                availableExperiments = ExperimentFactory.getAvailableExperiments();
+                availableExperiments = ExperimentFactory.getAvailableExperiments(type);
                 windowID = WindowCounter.getNextWindowID();
                 showGui = 1;
             }

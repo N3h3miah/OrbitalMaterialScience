@@ -56,7 +56,7 @@ namespace NE_Science
 
     public enum EquipmentRacks
     {
-        CIR, FIR, PRINTER, EXPOSURE, MSG, USU, NONE
+        CIR, FIR, PRINTER, EXPOSURE, MSG, USU, KEMINI, NONE
     }
 
     public class EquipmentRacksFactory{
@@ -77,6 +77,8 @@ namespace NE_Science
                     return EquipmentRacks.MSG;
                 case "USU":
                     return EquipmentRacks.USU;
+                case "KEMINI":
+                    return EquipmentRacks.KEMINI;
                 default:
                     return EquipmentRacks.NONE;
 
