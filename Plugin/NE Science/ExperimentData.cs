@@ -209,12 +209,12 @@ namespace NE_Science
             List<ExperimentStorage> targets = getFreeExperimentContainers(vessel);
             if ((state == ExperimentState.STORED || state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED) && targets.Count > 0)
             {
-                ChooseMoveTarget t = getGuiComponent(store);
+                ChooseMoveTarget t = getMoveGuiComponent();
                 t.showDialog(targets, this);
             }
         }
 
-        private ChooseMoveTarget getGuiComponent(ExperimentDataStorage store)
+        private ChooseMoveTarget getMoveGuiComponent()
         {
             ChooseMoveTarget t = store.getPartGo().GetComponent<ChooseMoveTarget>();
             if (t == null)
@@ -363,10 +363,7 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    if (step.start())
-                    {
-                        state = ExperimentState.RUNNING;
-                    }
+                    step.start(startCallback);
                     break;
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished()) {
@@ -377,16 +374,24 @@ namespace NE_Science
             }
         }
 
+        internal void startCallback(bool started)
+        {
+            if (started)
+            {
+                state = ExperimentState.RUNNING;
+            }
+        }
+
         public override bool isExposureExperiment()
         {
             return step.getNeededResource() == Resources.EXPOSURE_TIME;
         }
     }
 
-    public class MultiStepExperimentData : ExperimentData
+    public class MultiStepExperimentData<T>  : ExperimentData where T : ExperimentStep
     {
         private const string ACTIVE_VALUE = "activeStep";
-        protected ExperimentStep[] steps = new ExperimentStep[1];
+        protected T[] steps = new T[1];
         private int activeStep = 0;
 
         protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
@@ -415,10 +420,10 @@ namespace NE_Science
             activeStep = int.Parse(node.GetValue(ACTIVE_VALUE));
 
             ConfigNode[] stepNodes = node.GetNodes(ExperimentStep.CONFIG_NODE_NAME);
-            steps = new ExperimentStep[stepNodes.Length];
+            steps = new T[stepNodes.Length];
             foreach (ConfigNode stepNode in stepNodes)
             {
-                ExperimentStep step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
+                T step = (T)ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
                 steps[step.getIndex()] = step;
             }
         }
@@ -458,9 +463,19 @@ namespace NE_Science
             }
         }
 
-        protected ExperimentStep getActiveStep()
+        internal T getActiveStep()
         {
             return steps[activeStep];
+        }
+
+        internal List<T> getExperimentSteps()
+        {
+            return new List<T>(steps);
+        }
+
+        internal int getActiveStepIndex()
+        {
+            return activeStep;
         }
 
         public override void runLabAction()
@@ -468,10 +483,7 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    if (steps[activeStep].start())
-                    {
-                        state = ExperimentState.RUNNING;
-                    }
+                    steps[activeStep].start(startCallback);
                     break;
                 case ExperimentState.RUNNING:
                     if (steps[activeStep].isResearchFinished())
@@ -488,6 +500,14 @@ namespace NE_Science
                         }
                     }
                     break;
+            }
+        }
+
+        internal void startCallback(bool started)
+        {
+            if (started)
+            {
+                state = ExperimentState.RUNNING;
             }
         }
 

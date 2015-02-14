@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NE_Science
 {
-    public class KerbalResearchExperimentData : MultiStepExperimentData
+    public class KerbalResearchExperimentData : MultiStepExperimentData<KerbalResearchStep>
     {
         private const string TEST_SUBJECTS_NEEDED = "SubjectsNeeded";
 
@@ -43,7 +43,7 @@ namespace NE_Science
             string s = base.getStateString();
             switch(state){
                 case ExperimentState.RUNNING:
-                    s += " " + ((KerbalResearchStep) getActiveStep()).getSubjectName();
+                    s += " " + getActiveStep().getSubjectName();
                     break;
                 case ExperimentState.INSTALLED:
                     if (getAvailableLabCrewMembers().Count == 0)
@@ -61,12 +61,19 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return "Start " + getAbbreviation();
+                    if (isTestSubjectAvailable())
+                    {
+                        return "Start " + getAbbreviation();
+                    }
+                    else
+                    {
+                        return "Show " + getAbbreviation() + " Status";
+                    }
 
                 case ExperimentState.RUNNING:
                     if (getActiveStep().isResearchFinished())
                     {
-                        return "End " + getAbbreviation() + " " + ((KerbalResearchStep)getActiveStep()).getSubjectName();
+                        return "End " + getAbbreviation() + " " + getActiveStep().getSubjectName();
                     }
                     else
                     {
@@ -77,40 +84,36 @@ namespace NE_Science
             }
         }
 
-        internal override bool canRunAction()
-        {
-            switch (state)
-            {
-                case ExperimentState.INSTALLED:
-                    return base.canRunAction() && isTestSubjectAvailable();
-
-                case ExperimentState.RUNNING:
-                    return base.canRunAction();;
-                default:
-                    return base.canRunAction();
-            }
-        }
-
         internal override void updateCheck()
         {
             base.updateCheck();
             if (state == ExperimentState.RUNNING)
             {
                 List<string> crewMembers = getAllLabCrewMembers();
-                if (!crewMembers.Contains(((KerbalResearchStep)getActiveStep()).getSubjectName()))
+                if (!crewMembers.Contains(getActiveStep().getSubjectName()))
                 {
                     string debug = "";
                         foreach(string member in crewMembers){
                             debug += member + ", ";
                         }
-                    NE_Helper.log("Aborting Crew Members: " + debug + "; Subject; " + ((KerbalResearchStep)getActiveStep()).getSubjectName());
-                    ((KerbalResearchStep)getActiveStep()).abortStep();
+                    NE_Helper.log("Aborting Crew Members: " + debug + "; Subject; " + getActiveStep().getSubjectName());
+                    getActiveStep().abortStep();
                     state = ExperimentState.INSTALLED;
                 }
             }
         }
 
-        private bool isTestSubjectAvailable()
+        internal ChooseTestSubject getTestSubjectGuiComponent()
+        {
+            ChooseTestSubject t = store.getPartGo().GetComponent<ChooseTestSubject>();
+            if (t == null)
+            {
+                t = store.getPartGo().AddComponent<ChooseTestSubject>();
+            }
+            return t;
+        }
+
+        internal bool isTestSubjectAvailable()
         {
             List<string> members = getAvailableLabCrewMembers();
             return members.Count > 0;
@@ -199,17 +202,16 @@ namespace NE_Science
             return subject;
         }
 
-        public override bool start()
+        public override void start(startCallback cbMethod)
         {
-            bool basRet = base.start();
-            subject = getCrewMember();
-
-            return basRet;
+            ChooseTestSubject gui = ((KerbalResearchExperimentData)exp).getTestSubjectGuiComponent();
+            gui.showDialog(((KerbalResearchExperimentData)exp).getAvailableLabCrewMembers(), (KerbalResearchExperimentData)exp, cbMethod);
         }
 
-        private string getCrewMember()
+        internal void start(string crewMember, startCallback cbMethod)
         {
-            return ((KerbalResearchExperimentData)exp).getAvailableLabCrewMembers().FirstOrDefault();
+            base.start(cbMethod);
+            subject = crewMember;
         }
 
         internal void abortStep()

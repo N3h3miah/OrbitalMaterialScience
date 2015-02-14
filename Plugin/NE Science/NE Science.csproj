@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="ChooseMoveTarget.cs" />
     <Compile Include="CIR_Laptop.cs" />
+    <Compile Include="ChooseTestSubjectt.cs" />
     <Compile Include="Kemini_ExperimentData.cs" />
     <Compile Include="Kemini_Module.cs" />
     <Compile Include="KerbalResearchExperimentData.cs" />

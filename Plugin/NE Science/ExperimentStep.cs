@@ -61,8 +61,9 @@ namespace NE_Science
             return false;
         }
 
-        public virtual bool start(){
-            return false;
+        public delegate void startCallback(bool started);
+        public virtual void start(startCallback cbMethod){
+            cbMethod(false);
         }
 
         public virtual void finishStep()
@@ -186,7 +187,7 @@ namespace NE_Science
             return Math.Round(numTestPoints, 2) >= Math.Round(amount, 2);
         }
 
-        public override bool start()
+        public override void start(startCallback cbMethod)
         {
             NE_Helper.log("ResExppStep.start()");
             if(canStart()){
@@ -195,7 +196,8 @@ namespace NE_Science
                 {
                     NE_Helper.log("ResExppStep.start(): create Resource");
                     ((LabEquipment)exp.store).createResourceInLab(res, amount);
-                    return true;
+                    cbMethod(true);
+                    return;
                 }
                 else
                 {
@@ -203,7 +205,7 @@ namespace NE_Science
                 }
             }
             NE_Helper.log("ResExppStep.start(): can NOT start");
-            return false;
+            cbMethod(false);
         }
 
         public override void finishStep()
