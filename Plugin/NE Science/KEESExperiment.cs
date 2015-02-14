@@ -308,7 +308,7 @@ namespace NE_Science
             ScreenMessages.PostScreenMessage("Location changed mid-experiment! " + part.partInfo.title + " ruined.", 6, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
             playAnimation(deployAnimation, -1, 1);
-            state = NOT_READY;
+            state = ERROR;
         }
 
         public virtual void undockedRunningExp()
