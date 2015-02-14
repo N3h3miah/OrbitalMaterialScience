@@ -34,7 +34,7 @@ namespace NE_Science
 
         private bool docked = false;
 
-        private const string debloyAnimation = "Deploy";
+        private const string deployAnimation = "Deploy";
 
         public PartResource getResource(string name)
         {
@@ -67,7 +67,7 @@ namespace NE_Science
                     Events["DeployExperiment"].active = true;
                     break;
                 case RUNNING:
-                    playAnimation(debloyAnimation, 1f, 1f);
+                    playAnimation(deployAnimation, 1f, 1f);
                     break;
             }
             setEVAconfigForStart(true, 3);
@@ -286,7 +286,7 @@ namespace NE_Science
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Location changed mid-experiment! " + part.partInfo.title + " ruined.", 6, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
-            playAnimation(debloyAnimation, -1, 1);
+            playAnimation(deployAnimation, -1, 1);
             state = NOT_READY;
         }
 
@@ -296,7 +296,7 @@ namespace NE_Science
             Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the station without being finalized.", 2, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
-            playAnimation(debloyAnimation, -1, 1);
+            playAnimation(deployAnimation, -1, 1);
             state = NOT_READY;
         }
 
@@ -312,7 +312,7 @@ namespace NE_Science
                 Events["StartExperiment"].active = false;
                 Events["DeployExperiment"].active = false;
                 state = RUNNING;
-                playAnimation(debloyAnimation, 1, 0);
+                playAnimation(deployAnimation, 1, 0);
                 return true;
         }
 
@@ -322,7 +322,7 @@ namespace NE_Science
                 Events["DeployExperiment"].active = deployChecks(false);
                 state = FINISHED;
                 completed = (float)Planetarium.GetUniversalTime();
-                playAnimation(debloyAnimation, -1, 1);
+                playAnimation(deployAnimation, -1, 1);
         }
 
         public virtual void finalized()
