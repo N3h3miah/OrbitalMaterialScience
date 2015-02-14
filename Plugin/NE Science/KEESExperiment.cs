@@ -29,7 +29,7 @@ namespace NE_Science
     public class KEESExperiment : OMSExperiment
     {
 
-         [KSPField(isPersistant = false)]
+        [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
 
         private bool docked = false;
