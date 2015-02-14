@@ -61,8 +61,9 @@ namespace NE_Science
             return false;
         }
 
-        public virtual bool start(){
-            return false;
+        public delegate void startCallback(bool started);
+        public virtual void start(startCallback cbMethod){
+            cbMethod(false);
         }
 
         public virtual void finishStep()
@@ -107,6 +108,8 @@ namespace NE_Science
                     return new ResourceExperimentStep(exp, name, index);
                 case "MEPResStep":
                     return new MEPResourceExperimentStep(exp, name, index);
+                case "KerbalResStep":
+                    return new KerbalResearchStep(exp, name, index);
                 default:
                     return new ExperimentStep(exp, "", name, index);
             }
@@ -181,11 +184,10 @@ namespace NE_Science
         public override bool isResearchFinished()
         {
             double numTestPoints = ((LabEquipment)exp.store).getResourceAmount(res);
-
-            return Math.Round(numTestPoints, 2) >= amount;
+            return Math.Round(numTestPoints, 2) >= Math.Round(amount, 2);
         }
 
-        public override bool start()
+        public override void start(startCallback cbMethod)
         {
             NE_Helper.log("ResExppStep.start()");
             if(canStart()){
@@ -194,7 +196,8 @@ namespace NE_Science
                 {
                     NE_Helper.log("ResExppStep.start(): create Resource");
                     ((LabEquipment)exp.store).createResourceInLab(res, amount);
-                    return true;
+                    cbMethod(true);
+                    return;
                 }
                 else
                 {
@@ -202,14 +205,14 @@ namespace NE_Science
                 }
             }
             NE_Helper.log("ResExppStep.start(): can NOT start");
-            return false;
+            cbMethod(false);
         }
 
         public override void finishStep()
         {
             if (exp.state == ExperimentState.RUNNING && isResearchFinished())
             {
-                ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f); ;
+                ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f);
             }
         }
 

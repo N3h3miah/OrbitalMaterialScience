@@ -71,8 +71,8 @@ namespace NE_Science.Contracts
             if (!setTargetExperiment(getTargetExperiment())) return false;
 
             NE_Helper.log("Generate Contract: Add Parameter");
-            AddParameter(new Parameters.OMSDoExperimentParameter(targetBody, getPartForExperiment(experiment)));
-            AddParameter(new Parameters.OMSReturnExperimentParameter(targetBody, getPartForExperiment(experiment)));
+            AddParameter(new Parameters.KEESDoExperimentParameter(targetBody, getPartForExperiment(experiment)));
+            AddParameter(new Parameters.KEESReturnExperimentParameter(targetBody, getPartForExperiment(experiment)));
 
             NE_Helper.log("Generate Contract: set Values ");
             base.SetExpiry();

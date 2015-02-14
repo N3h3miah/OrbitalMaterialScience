@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NE_Science
 {
-    public class MEPExperimentData : MultiStepExperimentData
+    public class MEPExperimentData : MultiStepExperimentData<MEPResourceExperimentStep>
     {
         protected MEPExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
             : base(id, type, name, abb, eq, mass)
@@ -38,7 +38,7 @@ namespace NE_Science
             : base("NE_MEE1", "MEE1", "Material Exposure Experiment 1", "MEE1", EquipmentRacks.EXPOSURE, mass)
         {
 
-            steps = new ExperimentStep[2];
+            steps = new MEPResourceExperimentStep[2];
             steps[0] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 1, "Preparation", 0);
             steps[1] = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 20, "Exposure", 1);
 
@@ -50,7 +50,7 @@ namespace NE_Science
         public MEE2_ExperimentData(float mass)
             : base("NE_MEE2", "MEE2", "Material Exposure Experiment 2", "MEE2", EquipmentRacks.EXPOSURE, mass)
         {
-            steps = new ExperimentStep[3];
+            steps = new MEPResourceExperimentStep[3];
             steps[0] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 1, "Preparation", 0);
             steps[1] = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 40, "Exposure", 1);
             steps[2] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 2, "Store Samples", 2);

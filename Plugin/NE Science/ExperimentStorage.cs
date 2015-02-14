@@ -38,7 +38,10 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public bool chanceTexture = false;
 
-        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = true, guiName = "Contains")]
+        [KSPField(isPersistant = true)]
+        public string type = ExperimentFactory.OMS_EXPERIMENTS;
+
+        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
         public string contains = "";
 
         private ExperimentData expData = ExperimentData.getNullObject();
@@ -57,6 +60,7 @@ namespace NE_Science
 
         private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
         private Material contMat;
+        private int windowID;
         
 
         public override void OnLoad(ConfigNode node)
@@ -161,12 +165,25 @@ namespace NE_Science
 
         }
 
+        public new void DeployExperiment()
+        {
+            if (expData.canFinalize())
+            {
+                base.DeployExperiment();
+            }
+            else
+            {
+                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!" , 6, ScreenMessageStyle.UPPER_CENTER);
+            }
+        }
+
         [KSPEvent(guiActiveEditor = true, guiName = "Add Experiment", active = false)]
         public void chooseEquipment()
         {
             if (expData.getId() == "")
             {
-                availableExperiments = ExperimentFactory.getAvailableExperiments();
+                availableExperiments = ExperimentFactory.getAvailableExperiments(type);
+                windowID = WindowCounter.getNextWindowID();
                 showGui = 1;
             }
             else
@@ -188,6 +205,7 @@ namespace NE_Science
                 }
                 else
                 {
+                    windowID = WindowCounter.getNextWindowID();
                     showGui = 3;
                 }
             }
@@ -212,6 +230,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
         public void finalize()
         {
+            windowID = WindowCounter.getNextWindowID();
             showGui = 2;
         }
 
@@ -234,7 +253,7 @@ namespace NE_Science
 
         private void showLabWindow()
         {
-            labWindowRect = GUI.ModalWindow(7909034, labWindowRect, showLabGui, "Install Experiment");
+            labWindowRect = GUI.Window(windowID, labWindowRect, showLabGui, "Install Experiment");
         }
 
         void showLabGui(int id)
@@ -313,9 +332,11 @@ namespace NE_Science
             GUI.DragWindow();
         }
 
+        
+
         private void showAddWindow()
         {
-            addWindowRect = GUI.ModalWindow(7909031, addWindowRect, showAddGUI, "Add Experiment");
+            addWindowRect = GUI.Window(windowID, addWindowRect, showAddGUI, "Add Experiment");
         }
         private void showAddGUI(int id)
         {
@@ -327,10 +348,9 @@ namespace NE_Science
                 if (GUILayout.Button(e.getAbbreviation()))
                 {
                     setExperiment(e);
+                    NE_Helper.log(e.getNode().ToString());
                     part.mass += e.getMass();
-                    NE_Helper.log("new mass: " + part.mass + "; fireEvent");
-                    GameEvents.onVesselWasModified.Fire(part.vessel);
-                    Events["chooseEquipment"].guiName = "Remove Experiment";
+                    Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
                 }
             }
@@ -420,7 +440,8 @@ namespace NE_Science
         private Dictionary<string, string> textureNameReg = new Dictionary<string, string>() { { "", "ExperimentContainerTexture" },
         { "FLEX", "FlexContainerTexture" }, { "CFI", "CfiContainerTexture" }, { "CCF", "CcfContainerTexture" },
         { "CFE", "CfeContainerTexture" }, { "MIS1", "Msi1ContainerTexture" }, { "MIS2", "Msi2ContainerTexture" }, { "MIS3", "Msi3ContainerTexture" },
-        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }};
+        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }, { "CVB", "CvbContainerTexture" }, { "PACE", "PACEContainerTexture" },
+        { "ADUM", "AdumContainerTexture" }, { "SpiU", "SpiuContainerTexture" }};
 
 
         internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)

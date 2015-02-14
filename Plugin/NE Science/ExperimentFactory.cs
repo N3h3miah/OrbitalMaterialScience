@@ -30,18 +30,41 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string type = "";
 
-    } 
+    }
 
 
     public class ExperimentFactory
     {
-        static readonly List<string> expRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
-            "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2" };
+        public const string OMS_EXPERIMENTS = "OMS";
+        public const string KEMINI_EXPERIMENTS = "KEMINI";
 
-        public static List<ExperimentData> getAvailableExperiments()
+        static readonly List<string> omsRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
+            "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
+            "NE.PACE", "NE.ADUM", "NE.SpiU"};
+
+        static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD5", "NE.KeminiD8",
+            "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
+
+        public static List<ExperimentData> getAvailableExperiments(string type)
         {
             List<ExperimentData> list = new List<ExperimentData>();
-            foreach (string pn in expRegistry)
+            switch (type)
+            {
+                case OMS_EXPERIMENTS:
+                    addParts(omsRegistry, list);
+                    break;
+
+                case KEMINI_EXPERIMENTS:
+                    addParts(keminiRegistry, list);
+                    break;
+            }
+
+            return list;
+        }
+
+        private static void addParts(List<string> partNames, List<ExperimentData> list)
+        {
+            foreach (string pn in partNames)
             {
                 AvailablePart part = PartLoader.getPartInfoByName(pn);
                 if (part != null)
@@ -55,8 +78,6 @@ namespace NE_Science
                     }
                 }
             }
-
-            return list;
         }
 
         public static ExperimentData getExperiment(string type, float mass)
@@ -83,7 +104,26 @@ namespace NE_Science
                     return new MEE1_ExperimentData(mass);
                 case "MEE2":
                     return new MEE2_ExperimentData(mass);
+                case "CVB":
+                    return new CVB_ExperimentData(mass);
+                case "PACE":
+                    return new PACE_ExperimentData(mass);
+                case "KeminiD5":
+                    return new KeminiD5_ExperimentData(mass);
+                case "KeminiD8":
+                    return new KeminiD8_ExperimentData(mass);
+                case "KeminiMSC3":
+                    return new KeminiMSC3_ExperimentData(mass);
+                case "KeminiD7":
+                    return new KeminiD7_ExperimentData(mass);
+                case "KeminiD10":
+                    return new KeminiD10_ExperimentData(mass);
+                case "ADUM":
+                    return new ADUM_ExperimentData(mass);
+                case "SpiU":
+                    return new SpiU_ExperimentData(mass);
                 default:
+                    NE_Helper.logError("Unknow ExperimentData Type");
                     return ExperimentData.getNullObject();
 
             }

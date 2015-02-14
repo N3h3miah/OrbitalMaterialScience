@@ -31,6 +31,7 @@ namespace NE_Science
 
         private Rect moveWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
         private Vector2 moveScrollPos = new Vector2();
+        private int windowID;
 
         internal void showDialog(List<ExperimentStorage> targets, ExperimentData experimentData)
         {
@@ -38,6 +39,7 @@ namespace NE_Science
             this.targets = targets;
             exp = experimentData;
             NE_Helper.log("init done");
+            windowID = WindowCounter.getNextWindowID();
             showGui = true;
         }
 
@@ -52,7 +54,7 @@ namespace NE_Science
 
         void showMoveWindow()
         {
-            moveWindowRect = GUI.ModalWindow(7909033, moveWindowRect, showMoveGui, "Move Experiment");
+            moveWindowRect = GUI.Window(windowID, moveWindowRect, showMoveGui, "Move Experiment");
         }
 
         void showMoveGui(int id)

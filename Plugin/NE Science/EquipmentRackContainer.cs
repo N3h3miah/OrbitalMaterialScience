@@ -29,30 +29,11 @@ namespace NE_Science
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor= true ,guiName = "Contains")]
         public string status = "";
 
-        [KSPField(isPersistant = false)]
-        public string folder = "NehemiahInc/Parts/LabEquipmentContainer/";
-
-        [KSPField(isPersistant = false)]
-        public string noEquTexture = "ContainerTexture";
-
-        [KSPField(isPersistant = false)]
-        public string printTexture = "Container3PR_Texture";
-
-        [KSPField(isPersistant = false)]
-        public string CIRTexture = "ContainerCIR_Texture";
-
-        [KSPField(isPersistant = false)]
-        public string FFRTexture = "ContainerFFR_Texture";
-
-        private GameDatabase.TextureInfo noEqu;
-        private GameDatabase.TextureInfo printer;
-        private GameDatabase.TextureInfo cir;
-        private GameDatabase.TextureInfo ffr;
-
         private Material contMat = null;
 
         private LabEquipment leq = LabEquipment.getNullObject();
 
+        private EquipmentContainerTextureFactory texFac = new EquipmentContainerTextureFactory();
         private List<LabEquipment> availableRacks = new List<LabEquipment>();
         private bool showGui = false;
         private Rect addWindowRect = new Rect(Screen.width / 2 - 220, Screen.height / 2 - 220, 250, 400);
@@ -99,7 +80,7 @@ namespace NE_Science
 
         private void setTexture(LabEquipment type)
         {
-            GameDatabase.TextureInfo tex = getTextureForRack(type);
+            GameDatabase.TextureInfo tex = texFac.getTextureForEquipment(type.getType());
             if (tex != null)
             {
                 changeTexture(tex);
@@ -154,7 +135,7 @@ namespace NE_Science
         void showAddGui(int id)
         {
             GUILayout.BeginVertical();
-            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(200), GUILayout.Height(350));
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(210), GUILayout.Height(350));
             foreach (LabEquipment e in availableRacks)
             {
                 if (GUILayout.Button(e.getName()))
@@ -222,29 +203,55 @@ namespace NE_Science
                 return contMat;
             }
         }
+    }
 
-        private GameDatabase.TextureInfo getTextureForRack(LabEquipment type)
+    class EquipmentContainerTextureFactory
+    {
+        private Dictionary<EquipmentRacks, GameDatabase.TextureInfo> textureReg = new Dictionary<EquipmentRacks, GameDatabase.TextureInfo>();
+        private string folder = "NehemiahInc/Parts/LabEquipmentContainer/";
+        private Dictionary<EquipmentRacks, string> textureNameReg = new Dictionary<EquipmentRacks, string>() { { EquipmentRacks.NONE, "ContainerTexture" },
+        { EquipmentRacks.PRINTER, "Container3PR_Texture" }, { EquipmentRacks.CIR, "ContainerCIR_Texture" }, { EquipmentRacks.FIR, "ContainerFIR_Texture" },
+        { EquipmentRacks.MSG, "ContainerMSG_Texture" }, { EquipmentRacks.EXPOSURE, "ContainerTexture" }, { EquipmentRacks.USU, "ContainerUSU_Texture" }};
+
+
+        internal GameDatabase.TextureInfo getTextureForEquipment(EquipmentRacks type)
         {
-            switch (type.getType())
+            GameDatabase.TextureInfo tex;
+            if (textureReg.TryGetValue(type, out tex))
             {
-                case EquipmentRacks.PRINTER:
-                    if (printer == null) printer = getTexture(folder, printTexture);
-                    return printer;
-                case EquipmentRacks.CIR:
-                    if (cir == null) cir = getTexture(folder, CIRTexture);
-                    return cir;
-                case EquipmentRacks.FFR:
-                    if (ffr == null) ffr = getTexture(folder, FFRTexture);
-                    return ffr;
-                default:
-                    if (noEqu == null) noEqu = getTexture(folder, noEquTexture);
-                    return noEqu;
+                return tex;
+            }
+            else
+            {
+                NE_Helper.log("Loading Texture for experiment: " + type);
+                GameDatabase.TextureInfo newTex = getTexture(type);
+                if (newTex != null)
+                {
+                    textureReg.Add(type, newTex);
+                    return newTex;
+                }
+                else
+                {
+                    NE_Helper.logError("Texture for: " + type + " not found try to return default texture");
+                    newTex = getTexture(EquipmentRacks.NONE);
+                    return newTex;
+                }
             }
         }
 
-        private GameDatabase.TextureInfo getTexture(string folder, string textureName)
+        private GameDatabase.TextureInfo getTexture(EquipmentRacks p)
         {
-            return GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+            string textureName;
+            if (textureNameReg.TryGetValue(p, out textureName))
+            {
+                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+                if (newTex != null)
+                {
+                    return newTex;
+                }
+            }
+            NE_Helper.logError("Could not load texture for Exp: " + p);
+            return null;
         }
     }
 }

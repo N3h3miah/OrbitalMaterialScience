@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
@@ -88,6 +89,10 @@ namespace NE_Science
             return node;
         }
 
+        public virtual GameObject getExperimentGO(String id)
+        {
+            return null;
+        }
         public double getResourceAmount(string name)
         {
             return ResourceHelper.getResourceAmount(part, name);

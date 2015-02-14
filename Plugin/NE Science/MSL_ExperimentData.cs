@@ -35,30 +35,12 @@ namespace NE_Science
         }
     }
 
-    public class CCF_ExperimentData : MSLExperimentData
-    {
-        public CCF_ExperimentData(float mass)
-            : base("NE_CCF", "CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.FFR, mass)
-        {
-            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 22);
-        }
-    }
-
-    public class CFE_ExperimentData : MSLExperimentData
-    {
-        public CFE_ExperimentData(float mass)
-            : base("NE_CFE", "CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.FFR, mass)
-        {
-            step = new ResourceExperimentStep(this, Resources.FFR_TEST_RUN, 40);
-        }
-    }
-
     public class FLEX_ExperimentData : MSLExperimentData
     {
         public FLEX_ExperimentData(float mass)
             : base("NE_FLEX", "FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18);
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18, "", 0);
         }
     }
 
@@ -67,7 +49,7 @@ namespace NE_Science
         public CFI_ExperimentData(float mass)
             : base("NE_CFI", "CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50);
+            step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50, "", 0);
         }
     }
 
@@ -76,7 +58,7 @@ namespace NE_Science
         public MIS1_ExperimentData(float mass)
             : base("NE_MIS1", "MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100, "", 0);
         }
     }
 
@@ -85,7 +67,7 @@ namespace NE_Science
         public MIS2_ExperimentData(float mass)
             : base("NE_MIS2", "MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200, "", 0);
         }
     }
 
@@ -94,7 +76,25 @@ namespace NE_Science
         public MIS3_ExperimentData(float mass)
             : base("NE_MIS3", "MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER, mass)
         {
-            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300);
+            step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300, "", 0);
+        }
+    }
+
+    public class CVB_ExperimentData : MSLExperimentData
+    {
+        public CVB_ExperimentData(float mass)
+            : base("NE_CVB", "CVB", "Constrained Vapor Bubble", "CVB", EquipmentRacks.FIR, mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 35, "", 0);
+        }
+    }
+
+    public class PACE_ExperimentData : MSLExperimentData
+    {
+        public PACE_ExperimentData(float mass)
+            : base("NE_PACE", "PACE", "Preliminary Advanced Colloids Experiment", "PACE", EquipmentRacks.FIR, mass)
+        {
+            step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 22, "", 0);
         }
     }
 }

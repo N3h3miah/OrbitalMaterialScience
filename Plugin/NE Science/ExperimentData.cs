@@ -30,8 +30,8 @@ namespace NE_Science
     public class ExperimentData
     {
         public const string CONFIG_NODE_NAME = "NE_ExperimentData";
-        private const string TYPE_VALUE = "Type";
-        private const string STATE_VALUE = "State";
+        public const string TYPE_VALUE = "Type";
+        public const string STATE_VALUE = "State";
         private const string MASS_VALUE = "Mass";
 
         private string id;
@@ -209,12 +209,12 @@ namespace NE_Science
             List<ExperimentStorage> targets = getFreeExperimentContainers(vessel);
             if ((state == ExperimentState.STORED || state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED) && targets.Count > 0)
             {
-                ChooseMoveTarget t = getGuiComponent(store);
+                ChooseMoveTarget t = getMoveGuiComponent();
                 t.showDialog(targets, this);
             }
         }
 
-        private ChooseMoveTarget getGuiComponent(ExperimentDataStorage store)
+        private ChooseMoveTarget getMoveGuiComponent()
         {
             ChooseMoveTarget t = store.getPartGo().GetComponent<ChooseMoveTarget>();
             if (t == null)
@@ -265,7 +265,7 @@ namespace NE_Science
             
         }
 
-        internal string getStateString()
+        internal virtual string getStateString()
         {
             switch (state)
             {
@@ -291,6 +291,10 @@ namespace NE_Science
 
         public virtual bool isExposureExperiment(){
             return false;
+        }
+
+        internal virtual void updateCheck()
+        {
         }
     }
 
@@ -343,7 +347,7 @@ namespace NE_Science
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished())
                     {
-                        return "End " + getAbbreviation() + " Step";
+                        return "End " + getAbbreviation();
                     }
                     else
                     {
@@ -359,10 +363,7 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    if (step.start())
-                    {
-                        state = ExperimentState.RUNNING;
-                    }
+                    step.start(startCallback);
                     break;
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished()) {
@@ -373,16 +374,24 @@ namespace NE_Science
             }
         }
 
+        internal void startCallback(bool started)
+        {
+            if (started)
+            {
+                state = ExperimentState.RUNNING;
+            }
+        }
+
         public override bool isExposureExperiment()
         {
             return step.getNeededResource() == Resources.EXPOSURE_TIME;
         }
     }
 
-    public class MultiStepExperimentData : ExperimentData
+    public class MultiStepExperimentData<T>  : ExperimentData where T : ExperimentStep
     {
         private const string ACTIVE_VALUE = "activeStep";
-        protected ExperimentStep[] steps = new ExperimentStep[1];
+        protected T[] steps = new T[1];
         private int activeStep = 0;
 
         protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
@@ -411,10 +420,10 @@ namespace NE_Science
             activeStep = int.Parse(node.GetValue(ACTIVE_VALUE));
 
             ConfigNode[] stepNodes = node.GetNodes(ExperimentStep.CONFIG_NODE_NAME);
-            steps = new ExperimentStep[stepNodes.Length];
+            steps = new T[stepNodes.Length];
             foreach (ConfigNode stepNode in stepNodes)
             {
-                ExperimentStep step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
+                T step = (T)ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
                 steps[step.getIndex()] = step;
             }
         }
@@ -454,15 +463,27 @@ namespace NE_Science
             }
         }
 
+        internal T getActiveStep()
+        {
+            return steps[activeStep];
+        }
+
+        internal List<T> getExperimentSteps()
+        {
+            return new List<T>(steps);
+        }
+
+        internal int getActiveStepIndex()
+        {
+            return activeStep;
+        }
+
         public override void runLabAction()
         {
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    if (steps[activeStep].start())
-                    {
-                        state = ExperimentState.RUNNING;
-                    }
+                    steps[activeStep].start(startCallback);
                     break;
                 case ExperimentState.RUNNING:
                     if (steps[activeStep].isResearchFinished())
@@ -482,6 +503,14 @@ namespace NE_Science
             }
         }
 
+        internal void startCallback(bool started)
+        {
+            if (started)
+            {
+                state = ExperimentState.RUNNING;
+            }
+        }
+
         private bool isLastStep()
         {
             return activeStep == (steps.Length - 1);
@@ -493,14 +522,15 @@ namespace NE_Science
         }
     }
 
-    public class TestExperimentData : MEPExperimentData
+    public class TestExperimentData : KerbalResearchExperimentData
     {
         public TestExperimentData(float mass)
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.EXPOSURE, mass)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.USU, mass, 4)
         {
-            steps = new ExperimentStep[2];
-            steps[0] = new MEPResourceExperimentStep(this, Resources.LAB_TIME, 1, "Preparation", 0);
-            steps[1] = new MEPResourceExperimentStep(this, Resources.EXPOSURE_TIME, 1, "Exposure", 1);
+            steps[0] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 0);
+            steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 1);
+            steps[2] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 2);
+            steps[3] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 3);
         }
 
     }
