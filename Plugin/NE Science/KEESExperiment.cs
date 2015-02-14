@@ -28,6 +28,10 @@ namespace NE_Science
 {
     public class KEESExperiment : OMSExperiment
     {
+        /* Overload from OMSExperiment */
+        new public string notReadyStatus = "Not installed";
+        new public string readyStatus = "Ready";
+        new public string errorStatus = "Experiment Ruined";
 
          [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
