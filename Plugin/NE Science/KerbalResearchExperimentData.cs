@@ -46,7 +46,7 @@ namespace NE_Science
                     s += " " + ((KerbalResearchStep) getActiveStep()).getSubjectName();
                     break;
                 case ExperimentState.INSTALLED:
-                    if (getAvailableCrewMembers().Count == 0)
+                    if (getAvailableLabCrewMembers().Count == 0)
                     {
                         s += " No test subjects";
                     }
@@ -91,29 +91,62 @@ namespace NE_Science
             }
         }
 
+        internal override void updateCheck()
+        {
+            base.updateCheck();
+            if (state == ExperimentState.RUNNING)
+            {
+                List<string> crewMembers = getAllLabCrewMembers();
+                if (!crewMembers.Contains(((KerbalResearchStep)getActiveStep()).getSubjectName()))
+                {
+                    string debug = "";
+                        foreach(string member in crewMembers){
+                            debug += member + ", ";
+                        }
+                    NE_Helper.log("Aborting Crew Members: " + debug + "; Subject; " + ((KerbalResearchStep)getActiveStep()).getSubjectName());
+                    ((KerbalResearchStep)getActiveStep()).abortStep();
+                    state = ExperimentState.INSTALLED;
+                }
+            }
+        }
+
         private bool isTestSubjectAvailable()
         {
-            List<string> members = getAvailableCrewMembers();
+            List<string> members = getAvailableLabCrewMembers();
             return members.Count > 0;
         }
 
-        internal List<string> getAvailableCrewMembers()
+        internal List<string> getAvailableLabCrewMembers()
         {
             List<string> members = new List<string>();
             if (state == ExperimentState.INSTALLED)
             {
-                Lab lab = ((LabEquipment)store).getLab();
-                foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
+                List<string> labCrew = getAllLabCrewMembers();
+                foreach (string crewMember in labCrew)
                 {
                     bool foundInStep = false;
                     foreach (ExperimentStep s in steps)
                     {
-                        if (((KerbalResearchStep)s).getSubjectName().Trim() == crewMember.name.Trim())
+                        if (((KerbalResearchStep)s).getSubjectName() == crewMember)
                         {
                             foundInStep = true;
                         }
                     }
-                    if (!foundInStep) members.Add(crewMember.name);
+                    if (!foundInStep) members.Add(crewMember);
+                }
+            }
+            return members;
+        }
+
+        internal List<string> getAllLabCrewMembers()
+        {
+            List<string> members = new List<string>();
+            if (state == ExperimentState.INSTALLED || state == ExperimentState.RUNNING)
+            {
+                Lab lab = ((LabEquipment)store).getLab();
+                foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
+                {
+                    members.Add(crewMember.name.Trim());
                 }
             }
             return members;
@@ -176,7 +209,15 @@ namespace NE_Science
 
         private string getCrewMember()
         {
-            return ((KerbalResearchExperimentData)exp).getAvailableCrewMembers().FirstOrDefault();
+            return ((KerbalResearchExperimentData)exp).getAvailableLabCrewMembers().FirstOrDefault();
+        }
+
+        internal void abortStep()
+        {
+            NE_Helper.log("Abort Research");
+            ScreenMessages.PostScreenMessage("Test subject left lab. Research aborted!", 6, ScreenMessageStyle.UPPER_CENTER);
+            subject = "";
+            ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f);
         }
     }
 }

@@ -210,7 +210,7 @@ namespace NE_Science
         {
             if (exp.state == ExperimentState.RUNNING && isResearchFinished())
             {
-                ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f); ;
+                ((LabEquipment)exp.store).setResourceMaxAmount(res, 0f);
             }
         }
 

@@ -330,5 +330,13 @@ namespace NE_Science
                 return false;
             };
         }
+
+        internal void updateCheck()
+        {
+            if (exp != null)
+            {
+                exp.updateCheck();
+            }
+        }
     }
 }

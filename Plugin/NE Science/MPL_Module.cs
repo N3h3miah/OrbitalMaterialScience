@@ -273,6 +273,8 @@ namespace NE_Science
             Fields["labStatus"].guiActive = false;
             Fields["equipment"].guiActive = true;
             equipment = getEquipmentString();
+            msgSlot.updateCheck();
+            usuSlot.updateCheck();
             if (msg == null)
             {
                 initERacksActive();

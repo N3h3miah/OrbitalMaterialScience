@@ -292,6 +292,10 @@ namespace NE_Science
         public virtual bool isExposureExperiment(){
             return false;
         }
+
+        internal virtual void updateCheck()
+        {
+        }
     }
 
     public class StepExperimentData : ExperimentData
