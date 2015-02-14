@@ -30,8 +30,8 @@ namespace NE_Science
     public class ExperimentData
     {
         public const string CONFIG_NODE_NAME = "NE_ExperimentData";
-        private const string TYPE_VALUE = "Type";
-        private const string STATE_VALUE = "State";
+        public const string TYPE_VALUE = "Type";
+        public const string STATE_VALUE = "State";
         private const string MASS_VALUE = "Mass";
 
         private string id;
@@ -347,7 +347,7 @@ namespace NE_Science
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished())
                     {
-                        return "End " + getAbbreviation() + " Step";
+                        return "End " + getAbbreviation();
                     }
                     else
                     {

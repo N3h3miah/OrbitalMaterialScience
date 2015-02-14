@@ -26,28 +26,18 @@ using Contracts.Parameters;
 
 namespace NE_Science.Contracts.Parameters
 {
-    public class OMSReturnExperimentParameter : ContractParameter
-    {
-        static readonly Dictionary<string, OMSExperimentRecovery> recoveryStrategy =
-          new Dictionary<string, OMSExperimentRecovery> {
-              { "NE.KEES.PPMD", new KEESExperimentRecovery() },
-              { "NE.KEES.POSA1", new KEESExperimentRecovery() },
-              { "NE.KEES.POSA2", new KEESExperimentRecovery() },
-              { "NE.KEES.ODC", new KEESExperimentRecovery() },
-                            
-          };
-
-        
+    public class KEESReturnExperimentParameter : ContractParameter
+    {        
         private CelestialBody targetBody = null;
         private AvailablePart experiment = null;
 
         
 
-        public OMSReturnExperimentParameter()
+        public KEESReturnExperimentParameter()
         {
         }
 
-        public OMSReturnExperimentParameter(CelestialBody target, AvailablePart exp)
+        public KEESReturnExperimentParameter(CelestialBody target, AvailablePart exp)
             : base()
         {
             targetBody = target;
@@ -96,7 +86,7 @@ namespace NE_Science.Contracts.Parameters
             if (targetBody != null && experiment != null)
             {
                 NE_Helper.log("Lookingup stratege for " + experiment.name);
-                OMSExperimentRecovery strategy = recoveryStrategy[experiment.name];
+                OMSExperimentRecovery strategy = new KEESExperimentRecovery();
                 if(strategy.protovesselHasDoneExperiement(pv, experiment,targetBody, this.Root.DateAccepted)){
                     SetComplete();
                 }

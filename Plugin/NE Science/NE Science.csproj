@@ -55,6 +55,9 @@
     <Compile Include="ChooseMoveTarget.cs" />
     <Compile Include="CIR_Laptop.cs" />
     <Compile Include="ChooseTestSubjectt.cs" />
+    <Compile Include="ExperimentDataReturnExperimentParameter.cs" />
+    <Compile Include="ExperimentDataDoExperimentParameter.cs" />
+    <Compile Include="KeminiExperimentContract.cs" />
     <Compile Include="Kemini_ExperimentData.cs" />
     <Compile Include="Kemini_Module.cs" />
     <Compile Include="KerbalResearchExperimentData.cs" />
@@ -78,12 +81,12 @@
     <Compile Include="FIR_Laptop.cs" />
     <Compile Include="KEES_PayloadCarrier.cs" />
     <Compile Include="MEP_StatusScreen.cs" />
-    <Compile Include="OMSExperimentRecovery.cs" />
-    <Compile Include="OMSReturnExperimentParameter.cs" />
+    <Compile Include="KEESExperimentRecovery.cs" />
+    <Compile Include="KEESReturnExperimentParameter.cs" />
     <Compile Include="KEESExperiment.cs" />
     <Compile Include="KEES_Lab.cs" />
     <Compile Include="KEES_PEC.cs" />
-    <Compile Include="OMSDoExperimentParameter.cs" />
+    <Compile Include="KEESDoExperimentParameter.cs" />
     <Compile Include="KEESExperimentContract.cs" />
     <Compile Include="OMSExperiment.cs" />
     <Compile Include="MEP_Module.cs" />

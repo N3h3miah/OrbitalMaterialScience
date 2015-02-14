@@ -9,19 +9,19 @@ using Contracts.Parameters;
 
 namespace NE_Science.Contracts.Parameters
 {
-    public class OMSDoExperimentParameter : ContractParameter
+    public class KEESDoExperimentParameter : ContractParameter
     {
 
         private CelestialBody targetBody = null;
         private AvailablePart experiment = null;
 
-        public OMSDoExperimentParameter()
+        public KEESDoExperimentParameter()
         {
             //this.Enabled = true;
             //this.DisableOnStateChange = false;
         }
 
-        public OMSDoExperimentParameter(CelestialBody target, AvailablePart exp)
+        public KEESDoExperimentParameter(CelestialBody target, AvailablePart exp)
             : base()
         {
             targetBody = target;

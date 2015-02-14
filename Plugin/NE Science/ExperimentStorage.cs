@@ -38,8 +38,8 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public bool chanceTexture = false;
 
-        [KSPField(isPersistant = false)]
-        public string type = "OMS";
+        [KSPField(isPersistant = true)]
+        public string type = ExperimentFactory.OMS_EXPERIMENTS;
 
         [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
         public string contains = "";

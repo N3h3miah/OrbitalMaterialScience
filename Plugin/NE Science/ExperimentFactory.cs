@@ -35,6 +35,9 @@ namespace NE_Science
 
     public class ExperimentFactory
     {
+        public const string OMS_EXPERIMENTS = "OMS";
+        public const string KEMINI_EXPERIMENTS = "KEMINI";
+
         static readonly List<string> omsRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
             "NE.PACE", "NE.ADUM", "NE.SpiU"};
@@ -47,11 +50,11 @@ namespace NE_Science
             List<ExperimentData> list = new List<ExperimentData>();
             switch (type)
             {
-                case "OMS":
+                case OMS_EXPERIMENTS:
                     addParts(omsRegistry, list);
                     break;
 
-                case "KEMINI":
+                case KEMINI_EXPERIMENTS:
                     addParts(keminiRegistry, list);
                     break;
             }
