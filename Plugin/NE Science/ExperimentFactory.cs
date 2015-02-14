@@ -37,7 +37,7 @@ namespace NE_Science
     {
         static readonly List<string> omsRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
-            "NE.PACE"};
+            "NE.PACE", "NE.ADUM", "NE.SpiU"};
 
         static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD5", "NE.KeminiD8",
             "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
@@ -115,6 +115,10 @@ namespace NE_Science
                     return new KeminiD7_ExperimentData(mass);
                 case "KeminiD10":
                     return new KeminiD10_ExperimentData(mass);
+                case "ADUM":
+                    return new ADUM_ExperimentData(mass);
+                case "SpiU":
+                    return new SpiU_ExperimentData(mass);
                 default:
                     NE_Helper.logError("Unknow ExperimentData Type");
                     return ExperimentData.getNullObject();

@@ -52,4 +52,30 @@ namespace NE_Science
             step = new ResourceExperimentStep(this, Resources.MSG_TIME, 40, "", 0);
         }
     }
+
+    public class ADUM_ExperimentData : KerbalResearchExperimentData
+    {
+        public ADUM_ExperimentData(float mass)
+            : base("NE_ADUM", "ADUM", "Advanced Diagnostic Ultrasound in Microgravity", "ADUM", EquipmentRacks.USU, mass, 4)
+        {
+            steps[0] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 2.5f, 0);
+            steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 2.5f, 1);
+            steps[2] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 2.5f, 2);
+            steps[3] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 2.5f, 3);
+        }
+    }
+
+    public class SpiU_ExperimentData : KerbalResearchExperimentData
+    {
+        public SpiU_ExperimentData(float mass)
+            : base("NE_SpiU", "SpiU", "Sonographic Astronaut Vertebral Examination", "SpiU", EquipmentRacks.USU, mass, 6)
+        {
+            steps[0] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 0);
+            steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 1);
+            steps[2] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 2);
+            steps[3] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
+            steps[4] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
+            steps[5] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
+        }
+    }
 }
