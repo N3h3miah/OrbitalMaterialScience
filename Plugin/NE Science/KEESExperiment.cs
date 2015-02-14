@@ -56,6 +56,7 @@ namespace NE_Science
             base.OnStart(state);
             if (state == StartState.Editor) { return; }
             
+            Events["DebugDump"].active = true;
             this.part.force_activate();
             switch(this.state){
                 case READY:
@@ -72,6 +73,26 @@ namespace NE_Science
             }
             setEVAconfigForStart(true, 3);
             StartCoroutine(updateStatus());
+        }
+
+        [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
+        public void DebugDump()
+        {
+            /* Printed out in Player.log */
+            NE_Helper.log(this.ToString ());
+        }
+
+        public String ToString()
+        {
+            String ret = base.ToString () + "\n";
+            ret += "\tstate:              " + this.state + "\n";
+            ret += "\tresource Amount:    " + getResourceAmount(Resources.EXPOSURE_TIME) + "\n";
+            ret += "\tScience Amount:     " + GetScienceCount() + "\n";
+            ret += "\tdataIsCollectable:  " + dataIsCollectable + "\n";
+            ret += "\tresettable:         " + resettable + "\n";
+            ret += "\tresourceToReset:    " + resourceToReset + "\n";
+            ret += "\trerunnable:         " + rerunnable + "\n";
+            return ret;
         }
 
         public System.Collections.IEnumerator updateStatus()
