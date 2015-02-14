@@ -33,7 +33,7 @@ namespace NE_Science
         new public string readyStatus = "Ready";
         new public string errorStatus = "Experiment Ruined";
 
-         [KSPField(isPersistant = false)]
+        [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
 
         private bool docked = false;
