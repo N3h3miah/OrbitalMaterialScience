@@ -165,6 +165,18 @@ namespace NE_Science
 
         }
 
+        public new void DeployExperiment()
+        {
+            if (expData.canFinalize())
+            {
+                base.DeployExperiment();
+            }
+            else
+            {
+                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!" , 6, ScreenMessageStyle.UPPER_CENTER);
+            }
+        }
+
         [KSPEvent(guiActiveEditor = true, guiName = "Add Experiment", active = false)]
         public void chooseEquipment()
         {
@@ -319,6 +331,8 @@ namespace NE_Science
             GUILayout.EndVertical();
             GUI.DragWindow();
         }
+
+        
 
         private void showAddWindow()
         {
