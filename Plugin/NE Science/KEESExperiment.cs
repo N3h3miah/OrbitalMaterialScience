@@ -86,7 +86,10 @@ namespace NE_Science
             NE_Helper.log(this.ToString ());
         }
 
-        public String ToString()
+        /** Converts the object to a human-readble string suitable for printing.
+         * Overloads base-class implementation.
+         */
+        new public String ToString()
         {
             String ret = base.ToString () + "\n";
             ret += "\tstate:              " + this.state + "\n";
