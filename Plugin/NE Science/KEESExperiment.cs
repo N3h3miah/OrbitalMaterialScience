@@ -326,7 +326,6 @@ namespace NE_Science
                 Events["DeployExperiment"].active = deployChecks(false);
                 state = FINISHED;
                 completed = (float)Planetarium.GetUniversalTime();
-                playAnimation(deployAnimation, -1, 1);
         }
 
         public virtual void finalized()
@@ -335,6 +334,7 @@ namespace NE_Science
             Events["DeployExperiment"].active = false;
             stopResearch();
             state = FINALIZED;
+            playAnimation(deployAnimation, -1, 1);
         }
 
         public virtual void resetExp()
