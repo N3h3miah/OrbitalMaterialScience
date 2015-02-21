@@ -91,6 +91,7 @@ namespace NE_Science
 
             experimentActionName = "Results";
             resetActionName = "Throw Away Results";
+            reviewActionName = "Review " + expData.getAbbreviation() + " Results";
 
             useStaging = false;
             useActionGroups = true;
