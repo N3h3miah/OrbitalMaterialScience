@@ -102,7 +102,7 @@ namespace NE_Science
             dataIsCollectable = false;
             collectActionName = "Collect Results";
             interactionRange = 1.2f;
-            xmitDataScalar = 0.2f;
+            xmitDataScalar = 0.05f;
             if (chanceTexture)
             {
                 setTexture(expData);
