@@ -27,6 +27,8 @@ namespace NE_Science
         void removeExperimentData();
 
         GameObject getPartGo();
+
+        Part getPart();
     }
 
     public class ExperimentStorage : ModuleScienceExperiment, ExperimentDataStorage
@@ -383,6 +385,11 @@ namespace NE_Science
         public GameObject getPartGo()
         {
             return part.gameObject;
+        }
+
+        public Part getPart()
+        {
+            return part;
         }
 
         private void setTexture(ExperimentData expData)

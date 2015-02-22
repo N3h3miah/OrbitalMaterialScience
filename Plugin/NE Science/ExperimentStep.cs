@@ -122,7 +122,7 @@ namespace NE_Science
 
         internal virtual bool canStart()
         {
-            return exp.state == ExperimentState.INSTALLED;
+            return exp.state == ExperimentState.INSTALLED && !OMSExperiment.checkBoring(exp.store.getPart().vessel);
         }
 
         public virtual string getNeededResource()
