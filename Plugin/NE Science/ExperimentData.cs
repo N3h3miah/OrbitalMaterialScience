@@ -77,6 +77,45 @@ namespace NE_Science
             return neededEquipment;
         }
 
+        public virtual string getDescription()
+        {
+            string desc = "<b>" + name + "</b>\n";
+            desc += getReqString();
+            return desc;
+        }
+
+        private string getReqString()
+        {
+            
+            string reqString = "Needs: ";
+            switch (getEquipmentNeeded())
+            {
+                case EquipmentRacks.CIR:
+                    reqString += "MSL-1000 with Combustion Integrated Rack (CIR)";
+                    break;
+                case EquipmentRacks.FIR:
+                    reqString += "MSL-1000 with Fluid Integrated Rack (FIR)";
+                    break;
+                case EquipmentRacks.PRINTER:
+                    reqString += "MSL-1000 with 3D-Printer (3PR)";
+                    break;
+                case EquipmentRacks.MSG:
+                    reqString += "MPL-600 with Microgravity Science Glovebox (MSG)";
+                    break;
+                case EquipmentRacks.USU:
+                    reqString += "MPL-600 with Ultrasound Unit (USU)";
+                    break;
+                case EquipmentRacks.KEMINI:
+                    reqString += "Command Pod mk1";
+                    break;
+                case EquipmentRacks.EXPOSURE:
+                    reqString += "MEP-825 and MPL-600 or MSL-1000";
+                    break;
+            }
+            
+            return reqString;
+        }
+
         public virtual bool canFinalize()
         {
             return state == ExperimentState.FINISHED;

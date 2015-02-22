@@ -55,7 +55,7 @@ namespace NE_Science
 
         private int showGui = 0;
         private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 160, Screen.height / 4, 320, 120);
-        private Rect addWindowRect = new Rect(Screen.width / 2 - 200, Screen.height / 2 - 250, 200, 400);
+        private Rect addWindowRect = new Rect(Screen.width / 2 - 250, Screen.height / 2 - 250, 250, 550);
         private Vector2 addScrollPos = new Vector2();
         private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
         private Vector2 labScrollPos = new Vector2();
@@ -361,10 +361,10 @@ namespace NE_Science
         {
 
             GUILayout.BeginVertical();
-            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(180), GUILayout.Height(350));
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(230), GUILayout.Height(500));
             foreach (ExperimentData e in availableExperiments)
             {
-                if (GUILayout.Button(e.getAbbreviation()))
+                if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
                 {
                     setExperiment(e);
                     NE_Helper.log(e.getNode().ToString());
@@ -373,6 +373,8 @@ namespace NE_Science
                     showGui = 0;
                 }
             }
+            GUI.skin.label.wordWrap = true;
+            GUILayout.Label(GUI.tooltip, GUILayout.Height(100));
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))
             {
