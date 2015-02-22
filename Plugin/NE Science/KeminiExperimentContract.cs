@@ -45,15 +45,8 @@ namespace NE_Science.Contracts
                 return false;
             }
             targetBody = getTargetBody();
-            if (targetBody == null)
-            {
-                NE_Helper.log("Generate Contract: Body null set Kerbin as Target");
-                targetBody = Planetarium.fetch.Home;
-            }
-            else
-            {
-                NE_Helper.log("Generate Contract: Body: " + targetBody.name);
-            }
+            // Assert: targetBody != null
+            NE_Helper.log("Generate Contract: Body: " + targetBody.name);
 
             if (!setTargetExperiment(getTargetExperiment())) return false;
 
@@ -160,11 +153,18 @@ namespace NE_Science.Contracts
             return true;
         }
 
+        /** Return either Kerbin, or a random one out of a list of bodies we have reached. */
         private CelestialBody getTargetBody()
         {
+            CelestialBody ret = null;
             List<CelestialBody> bodies = Contract.GetBodies_Reached(true, false);
-            return bodies[UnityEngine.Random.Range(0, bodies.Count)];
-
+            if (bodies != null && bodies.Count > 0) {
+                ret = bodies [UnityEngine.Random.Range (0, bodies.Count - 1)];
+            } else {
+                ret = Planetarium.fetch.Home;
+            }
+            // ASSERT: ret == Kerbin, or a random planet which we have reached
+            return ret;
         }
 
         public override bool CanBeCancelled()
