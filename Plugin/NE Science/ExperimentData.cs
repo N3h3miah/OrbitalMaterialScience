@@ -42,6 +42,7 @@ namespace NE_Science
         protected EquipmentRacks neededEquipment;
         internal ExperimentState state = ExperimentState.STORED;
         internal ExperimentDataStorage store;
+        protected string storageType = ExperimentFactory.OMS_EXPERIMENTS;
 
         public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
         {
@@ -212,7 +213,7 @@ namespace NE_Science
             List<ExperimentStorage> allCont = new List<ExperimentStorage>(UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[]);
             foreach (ExperimentStorage c in allCont)
             {
-                if (c.vessel == vessel && c.isEmpty())
+                if (c.vessel == vessel && c.isEmpty() && c.type == storageType)
                 {
                     freeCont.Add(c);
                 }
