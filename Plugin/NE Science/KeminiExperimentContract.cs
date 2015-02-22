@@ -67,8 +67,7 @@ namespace NE_Science.Contracts
 
         private int getMaxContracts()
         {
-            int bonus = (int)(3f * ScenarioUpgradeableFacilities.GetFacilityLevel("SpaceCenter/MissionControl"));
-            return 3 + bonus;
+            return 2;
         }
 
         private int activeContracts(ExperimentData expData = null, CelestialBody body = null)

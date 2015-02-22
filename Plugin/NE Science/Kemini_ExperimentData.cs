@@ -12,7 +12,9 @@ namespace NE_Science
     {
         protected KeminiExperimentData(string id, string type, string name, string abb, float mass)
             : base(id, type, name, abb, EquipmentRacks.KEMINI, mass)
-        { }
+        {
+            storageType = ExperimentFactory.KEMINI_EXPERIMENTS;
+        }
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
