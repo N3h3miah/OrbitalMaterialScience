@@ -363,7 +363,10 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    step.start(startCallback);
+                    if (step.canStart())
+                    {
+                        step.start(startCallback);
+                    }
                     break;
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished()) {
@@ -483,7 +486,9 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    steps[activeStep].start(startCallback);
+                    if(steps[activeStep].canStart()){
+                        steps[activeStep].start(startCallback);
+                    }
                     break;
                 case ExperimentState.RUNNING:
                     if (steps[activeStep].isResearchFinished())

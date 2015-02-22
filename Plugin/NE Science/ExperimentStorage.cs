@@ -27,6 +27,8 @@ namespace NE_Science
         void removeExperimentData();
 
         GameObject getPartGo();
+
+        Part getPart();
     }
 
     public class ExperimentStorage : ModuleScienceExperiment, ExperimentDataStorage
@@ -91,6 +93,7 @@ namespace NE_Science
 
             experimentActionName = "Results";
             resetActionName = "Throw Away Results";
+            reviewActionName = "Review " + expData.getAbbreviation() + " Results";
 
             useStaging = false;
             useActionGroups = true;
@@ -101,7 +104,7 @@ namespace NE_Science
             dataIsCollectable = false;
             collectActionName = "Collect Results";
             interactionRange = 1.2f;
-            xmitDataScalar = 0.2f;
+            xmitDataScalar = 0.05f;
             if (chanceTexture)
             {
                 setTexture(expData);
@@ -150,16 +153,6 @@ namespace NE_Science
                     Events["finalize"].guiName = "Finalize " + expData.getAbbreviation();
                 }
                 Events["DeployExperiment"].active = false;
-                if (expData.state == ExperimentState.FINISHED && GetScienceCount() > 0)
-                {
-                    NE_Helper.log("onupdate: setState to FINALIZED");
-                    expData.state = ExperimentState.FINALIZED;
-                }
-                if (expData.state == ExperimentState.FINALIZED && GetScienceCount() == 0)
-                {
-                    NE_Helper.log("onupdate: setState to FINISHED");
-                    expData.state = ExperimentState.FINISHED;
-                }
             }
             count = (count + 1) % 3;
 
@@ -167,14 +160,40 @@ namespace NE_Science
 
         public new void DeployExperiment()
         {
+            NE_Helper.log("DeployExperiment called");
             if (expData.canFinalize())
             {
                 base.DeployExperiment();
+                expData.finalize();
             }
             else
             {
                 ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!" , 6, ScreenMessageStyle.UPPER_CENTER);
             }
+        }
+
+        public new void ResetExperiment()
+        {
+            NE_Helper.log("ResetExperiment");
+            base.ResetExperiment();
+        }
+
+        public new void ResetExperimentExternal()
+        {
+            NE_Helper.log("ResetExperimentExpernal");
+            base.ResetExperimentExternal();
+        }
+
+        public new void ResetAction(KSPActionParam p)
+        {
+            NE_Helper.log("ResetAction");
+            base.ResetAction(p);
+        }
+
+        public new void DumpData(ScienceData data)
+        {
+            NE_Helper.log("DumbData");
+            base.DumpData(data);
         }
 
         [KSPEvent(guiActiveEditor = true, guiName = "Add Experiment", active = false)]
@@ -382,6 +401,11 @@ namespace NE_Science
         public GameObject getPartGo()
         {
             return part.gameObject;
+        }
+
+        public Part getPart()
+        {
+            return part;
         }
 
         private void setTexture(ExperimentData expData)

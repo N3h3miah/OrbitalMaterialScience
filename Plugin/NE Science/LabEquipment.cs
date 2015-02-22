@@ -266,6 +266,11 @@ namespace NE_Science
             return lab.part.gameObject;
         }
 
+        public Part getPart()
+        {
+            return lab.part;
+        }
+
         internal void createResourceInLab(string res, float amount)
         {
             lab.setResourceMaxAmount(res, amount);
