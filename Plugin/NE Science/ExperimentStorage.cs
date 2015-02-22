@@ -367,7 +367,6 @@ namespace NE_Science
                 if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
                 {
                     setExperiment(e);
-                    NE_Helper.log(e.getNode().ToString());
                     part.mass += e.getMass();
                     Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
