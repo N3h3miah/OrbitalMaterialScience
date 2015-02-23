@@ -26,13 +26,13 @@ namespace NE_Science
     {
 
         [KSPField]
-        public string prMovingSound = "NehemiahInc/Sounds/3DPmove";
+        public string prMovingSound = "NehemiahInc/OMS/Sounds/3DPmove";
 
         [KSPField]
-        public string prBaseChgDirSound = "NehemiahInc/Sounds/3DPchgDir";
+        public string prBaseChgDirSound = "NehemiahInc/OMS/Sounds/3DPchgDir";
 
         [KSPField]
-        public string prHeadChgDirSound = "NehemiahInc/Sounds/3DPheadChgDir";
+        public string prHeadChgDirSound = "NehemiahInc/OMS/Sounds/3DPheadChgDir";
 
         private const float BASE_SPEED = 0.01f;
         private const float HEAD_SPEED = 0.02f;
