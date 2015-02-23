@@ -466,12 +466,21 @@ namespace NE_Science
     class ExpContainerTextureFactory
     {
         private Dictionary<string, GameDatabase.TextureInfo> textureReg = new Dictionary<string, GameDatabase.TextureInfo>();
-        private string folder = "NehemiahInc/Parts/ExperimentContainer/";
-        private Dictionary<string, string> textureNameReg = new Dictionary<string, string>() { { "", "ExperimentContainerTexture" },
-        { "FLEX", "FlexContainerTexture" }, { "CFI", "CfiContainerTexture" }, { "CCF", "CcfContainerTexture" },
-        { "CFE", "CfeContainerTexture" }, { "MIS1", "Msi1ContainerTexture" }, { "MIS2", "Msi2ContainerTexture" }, { "MIS3", "Msi3ContainerTexture" },
-        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }, { "CVB", "CvbContainerTexture" }, { "PACE", "PACEContainerTexture" },
-        { "ADUM", "AdumContainerTexture" }, { "SpiU", "SpiuContainerTexture" }};
+        private Dictionary<string, KeyValuePair<string, string>> textureNameReg = new Dictionary<string, KeyValuePair<string, string>>() { 
+        { "", new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/ExperimentContainer/","ExperimentContainerTexture")},
+        { "FLEX",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","FlexContainerTexture") },
+        { "CFI",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CfiContainerTexture") },
+        { "CCF",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CcfContainerTexture" )},
+        { "CFE",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "CfeContainerTexture" )},
+        { "MIS1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi1ContainerTexture") },
+        { "MIS2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi2ContainerTexture") }, 
+        { "MIS3",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi3ContainerTexture") },
+        { "MEE1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee1ContainerTexture" )},
+        { "MEE2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee2ContainerTexture") },
+        { "CVB",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CvbContainerTexture") },
+        { "PACE", new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "PACEContainerTexture")},
+        { "ADUM",  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/","AdumContainerTexture") },
+        { "SpiU", new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/", "SpiuContainerTexture") }};
 
 
         internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)
@@ -496,9 +505,10 @@ namespace NE_Science
 
         private GameDatabase.TextureInfo getTexture(string p)
         {
-            string textureName;
+            KeyValuePair<string,string> textureName;
             if(textureNameReg.TryGetValue(p, out textureName)){
-                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+                NE_Helper.log("Looking for Texture:" + textureName.Value + " in : " + textureName.Key);
+                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(textureName.Key, textureName.Value);
                 if (newTex != null)
                 {
                     return newTex;
