@@ -55,6 +55,7 @@
     <Compile Include="ChooseMoveTarget.cs" />
     <Compile Include="CIR_Laptop.cs" />
     <Compile Include="ChooseTestSubjectt.cs" />
+    <Compile Include="ESCStorageManifest.cs" />
     <Compile Include="ExperimentDataReturnExperimentParameter.cs" />
     <Compile Include="ExperimentDataDoExperimentParameter.cs" />
     <Compile Include="KeminiExperimentContract.cs" />
