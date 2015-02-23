@@ -43,8 +43,8 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public string type = ExperimentFactory.OMS_EXPERIMENTS;
 
-        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
-        public string contains = "";
+        //[KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
+        //public string contains = "";
 
         private ExperimentData expData = ExperimentData.getNullObject();
         private int count = 0;
@@ -85,7 +85,7 @@ namespace NE_Science
         {
             NE_Helper.log("MOVExp.setExp() id: " + experimentData.getId());
             expData = experimentData;
-            contains = expData.getAbbreviation();
+            //contains = expData.getAbbreviation();
             expData.setStorage(this);
 
             experimentID = expData.getId();
@@ -109,6 +109,11 @@ namespace NE_Science
             {
                 setTexture(expData);
             }
+        }
+
+        public ExperimentData getStoredExperimentData()
+        {
+            return expData;
         }
 
         public override void OnSave(ConfigNode node)
