@@ -131,8 +131,8 @@
     <None Include="..\..\GameData\NehemiahInc\Parts\Experiment\model.mu">
       <Link>NehemiahInc\Parts\Experiment\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiment\partTest.cfg">
-      <Link>NehemiahInc\Parts\Experiment\partTest.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\AdumContainerTexture.mbm">
+      <Link>NehemiahInc\Parts\ExperimentContainer\AdumContainerTexture.mbm</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\CcfContainerTexture.mbm">
       <Link>NehemiahInc\Parts\ExperimentContainer\CcfContainerTexture.mbm</Link>
@@ -191,6 +191,9 @@
     <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\PACEContainerTexture.mbm">
       <Link>NehemiahInc\Parts\ExperimentContainer\PACEContainerTexture.mbm</Link>
     </None>
+    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\SpiuContainerTexture.mbm">
+      <Link>NehemiahInc\Parts\ExperimentContainer\SpiuContainerTexture.mbm</Link>
+    </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc1.cfg">
       <Link>NehemiahInc\Parts\ExperimentContainer\esc1.cfg</Link>
     </None>
@@ -214,12 +217,6 @@
     </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc4.mu">
       <Link>NehemiahInc\Parts\ExperimentContainer\esc4.mu</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer_US_Wedge\KASContainer.tga">
-      <Link>NehemiahInc\Parts\ExperimentContainer_US_Wedge\KASContainer.tga</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer_US_Wedge\model.mu">
-      <Link>NehemiahInc\Parts\ExperimentContainer_US_Wedge\model.mu</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer_US_Wedge\part.cfg">
       <Link>NehemiahInc\Parts\ExperimentContainer_US_Wedge\part.cfg</Link>
@@ -295,6 +292,18 @@
     </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MSG\cfe.mu">
       <Link>NehemiahInc\Parts\Experiments_MSG\cfe.mu</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\ADUM.cfg">
+      <Link>NehemiahInc\Parts\Experiments_USU\ADUM.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\ADUMTexture.mbm">
+      <Link>NehemiahInc\Parts\Experiments_USU\ADUMTexture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\SpiU.cfg">
+      <Link>NehemiahInc\Parts\Experiments_USU\SpiU.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\SpiUTexture.mbm">
+      <Link>NehemiahInc\Parts\Experiments_USU\SpiUTexture.mbm</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Normal.mbm">
       <Link>NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Normal.mbm</Link>
@@ -589,6 +598,9 @@
     </None>
     <None Include="..\..\GameData\NehemiahInc\Resources\KEES_Experiments.cfg">
       <Link>NehemiahInc\Resources\KEES_Experiments.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Resources\KR_Experiments.cfg">
+      <Link>NehemiahInc\Resources\KR_Experiments.cfg</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\Resources\Kemini_Experiments.cfg">
       <Link>NehemiahInc\Resources\Kemini_Experiments.cfg</Link>
