@@ -30,7 +30,7 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public double maxGforce = 2.5;
 
-        private AttachNode node;
+        private AttachNode node = null;
         private KEESExperiment exp = null;
 
         public override void OnStart(PartModule.StartState state)
@@ -44,6 +44,8 @@ namespace NE_Science
                 node = part.attachNodes.First();
             }
 
+            /* Run this as a coroutine so the experiment aborts if the
+             * PEC decouples from the ship. */
             StartCoroutine(checkNode());
         }
 
@@ -63,22 +65,17 @@ namespace NE_Science
                 KEESExperiment newExp = node.attachedPart.GetComponent<KEESExperiment>();
                 if (newExp != null)
                 {
-                    if (exp != null && exp != newExp)
+                    if (exp == null)
                     {
+                        exp = newExp;
+                        exp.dockedToPEC(true);
+                    } else if (exp != newExp) {
                         exp.dockedToPEC(false);
                         exp = newExp;
                         exp.dockedToPEC(true);
                     }
-                    else if (exp == null)
-                    {
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                    }
-                    return;
                 }
-            }
-            if (exp != null)
-            {
+            } else if (exp != null) {
                 exp.dockedToPEC(false);
                 exp = null;
             }
