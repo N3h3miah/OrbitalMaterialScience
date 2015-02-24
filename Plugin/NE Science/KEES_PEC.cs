@@ -75,7 +75,8 @@ namespace NE_Science
                         exp.dockedToPEC(true);
                     }
                 }
-            } else if (exp != null) {
+            }
+            if (exp != null) {
                 exp.dockedToPEC(false);
                 exp = null;
             }
