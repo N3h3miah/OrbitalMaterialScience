@@ -69,14 +69,17 @@ namespace NE_Science
                     {
                         exp = newExp;
                         exp.dockedToPEC(true);
-                    } else if (exp != newExp) {
+                    }
+                    else if (exp != newExp)
+                    {
                         exp.dockedToPEC(false);
                         exp = newExp;
                         exp.dockedToPEC(true);
                     }
                 }
             }
-            if (exp != null) {
+            if (exp != null)
+            {
                 exp.dockedToPEC(false);
                 exp = null;
             }
@@ -85,7 +88,8 @@ namespace NE_Science
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if( vessel != null && !vessel.isEVA && vessel.geeForce > maxGforce) {
+            if( vessel != null && !vessel.isEVA && vessel.geeForce > maxGforce)
+            {
                 part.decouple ();
             }
         }
