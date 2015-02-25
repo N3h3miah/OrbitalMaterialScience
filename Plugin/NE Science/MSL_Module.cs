@@ -37,9 +37,6 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public float ChargePerLabTime = 0;
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Equipment")]
-        public string equipment = "";
-
         [KSPField(isPersistant = false, guiActive = false, guiName = "CIR")]
         public string cirStatus = "";
         [KSPField(isPersistant = false, guiActive = false, guiName = "FIR")]
@@ -316,21 +313,40 @@ namespace NE_Science
         protected override void updateLabStatus()
         {
             Fields["labStatus"].guiActive = false;
-            Fields["equipment"].guiActive = true;
-            equipment = getEquipmentString();
             if (cir == null || fir == null || printer == null)
             {
                 initERacksActive();
             }
 
+            if (cirSlot.isEquipmentRunning() || firSlot.isEquipmentRunning() || printerSlot.isEquipmentRunning())
+            {
+                Events["stopResearch"].active = doResearch;
+                Events["startResearch"].active = !doResearch;
+            }
+            else
+            {
+                if (doResearch)
+                {
+                    Events["stopResearch"].active = false;
+                    Events["startResearch"].active = false;
+                }
+                else
+                {
+                    Events["stopResearch"].active = doResearch;
+                    Events["startResearch"].active = !doResearch;
+                }
+            }
+
             if (!cirSlot.isEquipmentInstalled())
             {
                 Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
+                Fields["cirStatus"].guiActive = false;
             }
             else
             {
                 Events["installCIR"].active = false;
                 Events["moveCIRExp"].active = cirSlot.canExperimentMove(part.vessel);
+                Fields["cirStatus"].guiActive = true;
                 if (Events["moveCIRExp"].active)
                 {
                     Events["moveCIRExp"].guiName = "Move " + cirSlot.getExperiment().getAbbreviation();
@@ -344,22 +360,23 @@ namespace NE_Science
                 Events["actionCIRExp"].active = cirSlot.canActionRun();
                 if (!cirSlot.experimentSlotFree())
                 {
-                    cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().getStateString();
-                    Fields["cirStatus"].guiActive = true;
+                    cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().getStateString(); 
                 }
                 else
                 {
-                    Fields["cirStatus"].guiActive = false;
+                    cirStatus = "No Experiment";
                 }
             }
             if (!firSlot.isEquipmentInstalled())
             {
                 Events["installFIR"].active = checkForRackModul(EquipmentRacks.FIR);
+                Fields["ffrStatus"].guiActive = false;
             }
             else
             {
                 Events["installFIR"].active = false;
                 Events["moveFIRExp"].active = firSlot.canExperimentMove(part.vessel);
+                Fields["ffrStatus"].guiActive = true;
                 if (Events["moveFIRExp"].active)
                 {
                     Events["moveFIRExp"].guiName = "Move " + firSlot.getExperiment().getAbbreviation();
@@ -373,21 +390,23 @@ namespace NE_Science
                 if (!firSlot.experimentSlotFree())
                 {
                     ffrStatus = firSlot.getExperiment().getAbbreviation() + ": " + firSlot.getExperiment().getStateString();
-                    Fields["ffrStatus"].guiActive = true;
+                    
                 }
                 else
                 {
-                    Fields["ffrStatus"].guiActive = false;
+                    ffrStatus = "No Experiment";
                 }
             }
             if (!printerSlot.isEquipmentInstalled())
             {
                 Events["installPrinter"].active = checkForRackModul(EquipmentRacks.PRINTER);
+                Fields["prStatus"].guiActive = false;
             }
             else
             {
                 Events["installPrinter"].active = false;
                 Events["movePRExp"].active = printerSlot.canExperimentMove(part.vessel);
+                Fields["prStatus"].guiActive = true;
                 if (Events["movePRExp"].active)
                 {
                     Events["movePRExp"].guiName = "Move " + printerSlot.getExperiment().getAbbreviation();
@@ -401,49 +420,15 @@ namespace NE_Science
                 Events["actionPRExp"].active = printerSlot.canActionRun();
                 if (!printerSlot.experimentSlotFree())
                 {
-                    prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().getStateString();
-                    Fields["prStatus"].guiActive = true;
+                    prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().getStateString();    
                 }
                 else
                 {
-                    Fields["prStatus"].guiActive = false;
+                    prStatus = "No Experiment";
                 }
             }
 
         }
-
-        //private void updateAnimaitonState()
-        //{
-        //    if (ffrSlot.isEquipmentInstalled())
-        //    {
-        //        double last = ffrGenerator.rates[Resources.FIR_TEST_RUN].last_produced;
-        //        bool state = (last < -0.0000001);
-        //        if (ffrRunning != state)
-        //        {
-        //            ffrRunning = state;
-        //        }
-        //    }
-
-        //    if (printerSlot.isEquipmentInstalled())
-        //    {
-        //        double last = printerGenerator.rates[Resources.PRINT_LAYER].last_produced;
-        //        bool state = (last < -0.0000001);
-        //        if (printerRunning != state)
-        //        {
-        //            printerRunning = state;
-        //        }
-        //    }
-
-        //    if (cirSlot.isEquipmentInstalled())
-        //    {
-        //        double last = cirGenerator.rates[Resources.CIR_BURN_TIME].last_produced;
-        //        bool state = (last < -0.0000001);
-        //        if (cirRunning != state)
-        //        {
-        //            cirRunning = state;
-        //        }
-        //    }
-        //}
 
         private string getEquipmentString()
         {

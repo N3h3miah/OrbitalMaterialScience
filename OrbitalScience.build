@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<project name="Nehemiah KSP mods" default="pack" basedir=".">
+  
+  <description>Pack the files for the different KSP mods</description>
+
+  <property name="build.dir" value="build" />
+  <property name="OMS.dir" value="${build.dir}/OMS/" />
+  <property name="KR.dir" value="${build.dir}/KerbalResearch/" />
+  <property name="Kemini.dir" value="${build.dir}/Kemini/" />
+  <property name="KEES.dir" value="${build.dir}/KEES/" />
+  <property name="GameData.dir" value="GameData/NehemiahInc" />
+  
+  <target name="clean" description="remove all generated files">
+    <delete dir="${build.dir}" />
+  </target>
+  
+  <target name="pack" description="pack the diferent mods" depends="clean">
+    <call target="copyDll" />
+    <call target="omsZip" />
+    <call target="krZip" />
+    <call target="keminiZip" />
+    <call target="keesZip" />
+  </target>
+
+  <target name="copyDll" description="copy the dll from the plugin folder to game data" >
+    <copy todir="${GameData.dir}/NE_Science_Common/Plugins">
+      <fileset basedir="Plugin/NE Science/bin/Release">
+        <include name="NE_Science.dll"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="omsZip" description="copy the files and folders for the oms mod">
+    <mkdir dir="${OMS.dir}/NehemiahInc/NE_Science_Common" />
+    <mkdir dir="${OMS.dir}/NehemiahInc/OMS" />
+    
+    <copy todir="${OMS.dir}/NehemiahInc/NE_Science_Common" >
+      <fileset basedir="${GameData.dir}/NE_Science_Common"/>
+    </copy>
+
+    <copy todir="${OMS.dir}/NehemiahInc/OMS" >
+      <fileset basedir="${GameData.dir}/OMS"/>
+    </copy>
+
+    <copy todir="${OMS.dir}" >
+      <fileset basedir="GameData">
+        <include name="ModuleManager*.dll"/>
+      </fileset>
+    </copy>
+
+    <zip zipfile="${build.dir}/OrbitalMaterialScience.zip" ziplevel="9">
+      <fileset basedir="${OMS.dir}" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+    
+  </target>
+
+  <target name="krZip" description="copy the files and folders for the KerbalResearch mod">
+    <mkdir dir="${KR.dir}/NehemiahInc/NE_Science_Common" />
+    <mkdir dir="${KR.dir}/NehemiahInc/KerbalResearch" />
+
+    <copy todir="${KR.dir}/NehemiahInc/NE_Science_Common" >
+      <fileset basedir="${GameData.dir}/NE_Science_Common"/>
+    </copy>
+
+    <copy todir="${KR.dir}/NehemiahInc/KerbalResearch" >
+      <fileset basedir="${GameData.dir}/KR"/>
+    </copy>
+
+    <copy todir="${KR.dir}" >
+      <fileset basedir="GameData">
+        <include name="ModuleManager*.dll"/>
+      </fileset>
+    </copy>
+
+    <zip zipfile="${build.dir}/KerbalResearch.zip" ziplevel="9">
+      <fileset basedir="${KR.dir}">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+
+  </target>
+
+  <target name="keminiZip" description="copy the files and folders for the Kemini Research mod">
+      <mkdir dir="${Kemini.dir}/NehemiahInc/NE_Science_Common" />
+      <mkdir dir="${Kemini.dir}/NehemiahInc/Kemini" />
+
+      <copy todir="${Kemini.dir}/NehemiahInc/NE_Science_Common" >
+        <fileset basedir="${GameData.dir}/NE_Science_Common">
+          <include name="Icons/**"/>
+          <include name="Plugins/**"/>
+          <include name="Resources/**"/>
+        </fileset>
+      </copy>
+
+      <copy todir="${Kemini.dir}/NehemiahInc/Kemini" >
+        <fileset basedir="${GameData.dir}/Kemini"/>
+      </copy>
+
+      <copy todir="${Kemini.dir}" >
+        <fileset basedir="GameData">
+          <include name="ModuleManager*.dll"/>
+        </fileset>
+      </copy>
+
+      <zip zipfile="${build.dir}/KeminiResearch.zip" ziplevel="9">
+        <fileset basedir="${Kemini.dir}">
+          <include name="**/*" />
+        </fileset>
+      </zip>
+
+  </target>
+
+  <target name="keesZip" description="copy the files and folders for the KEES mod">
+    <mkdir dir="${KEES.dir}/NehemiahInc/NE_Science_Common" />
+    <mkdir dir="${KEES.dir}/NehemiahInc/KEES" />
+
+    <copy todir="${KEES.dir}/NehemiahInc/NE_Science_Common" >
+      <fileset basedir="${GameData.dir}/NE_Science_Common">
+        <include name="Icons/**"/>
+        <include name="Plugins/**"/>
+        <include name="Resources/**"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${KEES.dir}/NehemiahInc/KEES" >
+      <fileset basedir="${GameData.dir}/KEES"/>
+    </copy>
+
+    <copy todir="${KEES.dir}" >
+      <fileset basedir="GameData">
+        <include name="ModuleManager*.dll"/>
+      </fileset>
+    </copy>
+
+    <zip zipfile="${build.dir}/KEES.zip" ziplevel="9">
+      <fileset basedir="${KEES.dir}">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+
+  </target>
+  
+</project>

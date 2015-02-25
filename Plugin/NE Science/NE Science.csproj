@@ -11,10 +11,12 @@
     <RootNamespace>NE_Science</RootNamespace>
     <AssemblyName>NE_Science</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,15 +34,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="KAS">
       <HintPath>..\..\Lib\KAS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -47,6 +55,7 @@
     <Compile Include="ChooseMoveTarget.cs" />
     <Compile Include="CIR_Laptop.cs" />
     <Compile Include="ChooseTestSubjectt.cs" />
+    <Compile Include="ESCStorageManifest.cs" />
     <Compile Include="ExperimentDataReturnExperimentParameter.cs" />
     <Compile Include="ExperimentDataDoExperimentParameter.cs" />
     <Compile Include="KeminiExperimentContract.cs" />

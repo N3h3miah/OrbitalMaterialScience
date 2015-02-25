@@ -57,7 +57,7 @@ namespace NE_Science
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
-            if (!NE_Helper.debugging())
+            if (NE_Helper.debugging())
             {
                 return false;
             }

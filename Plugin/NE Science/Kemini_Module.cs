@@ -77,6 +77,7 @@ namespace NE_Science
                         keminiSlot.installExperiment(exp);
                         keminiStatus = exp.getAbbreviation();
                         Fields["keminiStatus"].guiActive = true;
+                        keminiSlot.experimentAction();
                     }
                     else
                     {

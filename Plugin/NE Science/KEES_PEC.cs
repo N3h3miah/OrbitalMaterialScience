@@ -30,8 +30,13 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public double maxGforce = 2.5;
 
-        private AttachNode node;
+        private AttachNode node = null;
         private KEESExperiment exp = null;
+
+        private int counter = 0;
+
+        [KSPField(isPersistant = true)]
+        public bool decoupled = false;
 
         public override void OnStart(PartModule.StartState state)
         {
@@ -43,17 +48,6 @@ namespace NE_Science
                 NE_Helper.logError("KEES PEC: AttachNode not found");
                 node = part.attachNodes.First();
             }
-
-            StartCoroutine(checkNode());
-        }
-
-        public System.Collections.IEnumerator checkNode()
-        {
-            while (true)
-            {
-                checkForExp();
-                yield return new UnityEngine.WaitForSeconds(1f);
-            }
         }
 
         private void checkForExp()
@@ -63,34 +57,44 @@ namespace NE_Science
                 KEESExperiment newExp = node.attachedPart.GetComponent<KEESExperiment>();
                 if (newExp != null)
                 {
-                    if (exp != null && exp != newExp)
+                    if (exp == null)
+                    {
+                        exp = newExp;
+                        exp.dockedToPEC(true);
+                        NE_Helper.log("New KEES Experiment installed");
+                    }
+                    else if (exp != newExp)
                     {
                         exp.dockedToPEC(false);
                         exp = newExp;
                         exp.dockedToPEC(true);
+                        NE_Helper.log("KEES Experiment switched");
                     }
-                    else if (exp == null)
-                    {
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                    }
-                    return;
+                }
+                else if (exp != null)
+                {
+                    exp.dockedToPEC(false);
+                    NE_Helper.log("KEES Experiment undocked");
+                    exp = null;
                 }
             }
-            if (exp != null)
-            {
-                exp.dockedToPEC(false);
-                exp = null;
-            }
+            
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (vessel.geeForce > maxGforce)
+            if (!decoupled && vessel != null && !vessel.isEVA && vessel.geeForce > maxGforce)
             {
+                NE_Helper.log("KEES PEC over max G, decouple");
+                decoupled = true;
                 part.decouple();
             }
+            if (counter == 0)//don't run this every frame
+            {
+                checkForExp();
+            }
+            counter = (++counter) % 6;
         }
 
     }

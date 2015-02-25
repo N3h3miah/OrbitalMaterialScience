@@ -36,7 +36,8 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public int exposureTimeRequired;
 
-        private bool docked = false;
+        [KSPField(isPersistant = true)]
+        public bool docked = false;
 
         private const string deployAnimation = "Deploy";
 

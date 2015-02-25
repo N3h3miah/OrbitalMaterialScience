@@ -43,8 +43,8 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public string type = ExperimentFactory.OMS_EXPERIMENTS;
 
-        [KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
-        public string contains = "";
+        //[KSPField(isPersistant = false, guiActive = true, guiActiveEditor = false, guiName = "Contains")]
+        //public string contains = "";
 
         private ExperimentData expData = ExperimentData.getNullObject();
         private int count = 0;
@@ -63,7 +63,7 @@ namespace NE_Science
         private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
         private Material contMat;
         private int windowID;
-        
+
 
         public override void OnLoad(ConfigNode node)
         {
@@ -85,7 +85,7 @@ namespace NE_Science
         {
             NE_Helper.log("MOVExp.setExp() id: " + experimentData.getId());
             expData = experimentData;
-            contains = expData.getAbbreviation();
+            //contains = expData.getAbbreviation();
             expData.setStorage(this);
 
             experimentID = expData.getId();
@@ -109,6 +109,11 @@ namespace NE_Science
             {
                 setTexture(expData);
             }
+        }
+
+        public ExperimentData getStoredExperimentData()
+        {
+            return expData;
         }
 
         public override void OnSave(ConfigNode node)
@@ -140,7 +145,14 @@ namespace NE_Science
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
                 if (Events["installExperiment"].active)
                 {
-                    Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                    if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
+                    {
+                        Events["installExperiment"].guiName = "Install & Run " + expData.getAbbreviation();
+                    }
+                    else
+                    {
+                        Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                    }
                 }
                 Events["moveExp"].active = expData.canMove(part.vessel);
                 if (Events["moveExp"].active)
@@ -160,7 +172,6 @@ namespace NE_Science
 
         public new void DeployExperiment()
         {
-            NE_Helper.log("DeployExperiment called");
             if (expData.canFinalize())
             {
                 base.DeployExperiment();
@@ -168,7 +179,7 @@ namespace NE_Science
             }
             else
             {
-                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!" , 6, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!", 6, ScreenMessageStyle.UPPER_CENTER);
             }
         }
 
@@ -249,8 +260,15 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
         public void finalize()
         {
-            windowID = WindowCounter.getNextWindowID();
-            showGui = 2;
+            if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
+            {
+                DeployExperiment();
+            }
+            else
+            {
+                windowID = WindowCounter.getNextWindowID();
+                showGui = 2;
+            }
         }
 
         void OnGUI()
@@ -351,7 +369,7 @@ namespace NE_Science
             GUI.DragWindow();
         }
 
-        
+
 
         private void showAddWindow()
         {
@@ -367,7 +385,6 @@ namespace NE_Science
                 if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
                 {
                     setExperiment(e);
-                    NE_Helper.log(e.getNode().ToString());
                     part.mass += e.getMass();
                     Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
@@ -462,12 +479,21 @@ namespace NE_Science
     class ExpContainerTextureFactory
     {
         private Dictionary<string, GameDatabase.TextureInfo> textureReg = new Dictionary<string, GameDatabase.TextureInfo>();
-        private string folder = "NehemiahInc/Parts/ExperimentContainer/";
-        private Dictionary<string, string> textureNameReg = new Dictionary<string, string>() { { "", "ExperimentContainerTexture" },
-        { "FLEX", "FlexContainerTexture" }, { "CFI", "CfiContainerTexture" }, { "CCF", "CcfContainerTexture" },
-        { "CFE", "CfeContainerTexture" }, { "MIS1", "Msi1ContainerTexture" }, { "MIS2", "Msi2ContainerTexture" }, { "MIS3", "Msi3ContainerTexture" },
-        { "MEE1", "Mee1ContainerTexture" }, { "MEE2", "Mee2ContainerTexture" }, { "CVB", "CvbContainerTexture" }, { "PACE", "PACEContainerTexture" },
-        { "ADUM", "AdumContainerTexture" }, { "SpiU", "SpiuContainerTexture" }};
+        private Dictionary<string, KeyValuePair<string, string>> textureNameReg = new Dictionary<string, KeyValuePair<string, string>>() { 
+        { "", new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/ExperimentContainer/","ExperimentContainerTexture")},
+        { "FLEX",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","FlexContainerTexture") },
+        { "CFI",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CfiContainerTexture") },
+        { "CCF",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CcfContainerTexture" )},
+        { "CFE",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "CfeContainerTexture" )},
+        { "MIS1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi1ContainerTexture") },
+        { "MIS2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi2ContainerTexture") }, 
+        { "MIS3",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi3ContainerTexture") },
+        { "MEE1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee1ContainerTexture" )},
+        { "MEE2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee2ContainerTexture") },
+        { "CVB",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CvbContainerTexture") },
+        { "PACE", new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "PACEContainerTexture")},
+        { "ADUM",  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/","AdumContainerTexture") },
+        { "SpiU", new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/", "SpiuContainerTexture") }};
 
 
         internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)
@@ -481,7 +507,8 @@ namespace NE_Science
             {
                 NE_Helper.log("Loading Texture for experiment: " + expData.getType());
                 GameDatabase.TextureInfo newTex = getTexture(expData.getType());
-                if(newTex != null){
+                if (newTex != null)
+                {
                     textureReg.Add(expData.getType(), newTex);
                     return newTex;
                 }
@@ -492,9 +519,11 @@ namespace NE_Science
 
         private GameDatabase.TextureInfo getTexture(string p)
         {
-            string textureName;
-            if(textureNameReg.TryGetValue(p, out textureName)){
-                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+            KeyValuePair<string, string> textureName;
+            if (textureNameReg.TryGetValue(p, out textureName))
+            {
+                NE_Helper.log("Looking for Texture:" + textureName.Value + " in : " + textureName.Key);
+                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(textureName.Key, textureName.Value);
                 if (newTex != null)
                 {
                     return newTex;

@@ -343,5 +343,23 @@ namespace NE_Science
                 exp.updateCheck();
             }
         }
+
+        internal string getDescription()
+        {
+            string desc = "<b>" + getName() +" (" + getAbbreviation()+ ")</b>\n";
+            switch (type)
+            {
+                case EquipmentRacks.CIR:
+                case EquipmentRacks.FIR:
+                case EquipmentRacks.PRINTER:
+                    desc +=  "For MSL-1000";
+                    break;
+                case EquipmentRacks.MSG:
+                case EquipmentRacks.USU:
+                    desc += "For MPL-600";
+                    break;
+            }
+            return desc;
+        }
     }
 }

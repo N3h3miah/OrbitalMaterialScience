@@ -27,7 +27,7 @@ namespace NE_Science
         private double lastUpdate = 0;
 
         [KSPField(isPersistant = false)]
-        public string folder = "NehemiahInc/Props/MEP_StatusScreen";
+        public string folder = "NehemiahInc/OMS/Props/MEP_StatusScreen/";
 
         [KSPField(isPersistant = false)]
         public string notReadyTexture = "";

@@ -78,10 +78,10 @@ namespace NE_Science
             return neededEquipment;
         }
 
-        public virtual string getDescription()
+        public virtual string getDescription(string linePrefix = "")
         {
-            string desc = "<b>" + name + "</b>\n";
-            desc += getReqString();
+            string desc =linePrefix + "<b>" + name + "</b>\n";
+            desc += linePrefix + getReqString();
             return desc;
         }
 

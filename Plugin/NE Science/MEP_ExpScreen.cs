@@ -27,7 +27,7 @@ namespace NE_Science
         private double lastUpdate = 0;
 
         [KSPField(isPersistant = false)]
-        public string folder = "NehemiahInc/Props/MEP_StatusScreen";
+        public string folder = "NehemiahInc/OMS/Props/MEP_StatusScreen/";
 
         [KSPField(isPersistant = false)]
         public string noExpTexture = "";
@@ -47,7 +47,7 @@ namespace NE_Science
 
         private Material screenMat = null;
 
-        private string lastExpName = "";
+        private string lastExpName = "empty";
 
         public override void OnLoad(ConfigNode node)
         {
@@ -62,10 +62,10 @@ namespace NE_Science
                 lastUpdate = Time.time;
                 MEP_Module lab = part.GetComponent<MEP_Module>();
 
-
-                if (lab.experimentName != lastExpName)
+                string currentExperiment = lab.getExposureSlot().getExperiment().getAbbreviation();
+                if (currentExperiment != lastExpName)
                 {
-                    GameDatabase.TextureInfo newTexture = getTextureForState(lab.experimentName);
+                    GameDatabase.TextureInfo newTexture = getTextureForState(currentExperiment);
                     if (newTexture != null)
                     {
                         changeTexture(newTexture);
@@ -73,9 +73,9 @@ namespace NE_Science
                     }
                     else
                     {
-                        NE_Helper.logError("New Texture null");
+                        NE_Helper.logError("New Texture null, Exp Name: " + currentExperiment);
                     }
-                    lastExpName = lab.experimentName;
+                    lastExpName = currentExperiment;
                 }
 
             }
@@ -120,13 +120,13 @@ namespace NE_Science
             NE_Helper.log("Experiment Name: " + name);
             switch (name)
             {
-                case "No Experiment":
+                case "empty":
                      if (noExp == null) noExp = getTexture(folder, noExpTexture);
                     return noExp;
-                case "Material Exposure Experiment 1":
+                case "MEE1":
                     if (mee1 == null) mee1 = getTexture(folder, mee1Texture);
                     return mee1;
-                case "Material Exposure Experiment 2":
+                case "MEE2":
                     if (mee2 == null) mee2 = getTexture(folder, mee2Texture);
                     return mee2;
                 default:

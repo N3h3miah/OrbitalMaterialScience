@@ -36,7 +36,7 @@ namespace NE_Science
         private EquipmentContainerTextureFactory texFac = new EquipmentContainerTextureFactory();
         private List<LabEquipment> availableRacks = new List<LabEquipment>();
         private bool showGui = false;
-        private Rect addWindowRect = new Rect(Screen.width / 2 - 220, Screen.height / 2 - 220, 250, 400);
+        private Rect addWindowRect = new Rect(Screen.width / 2 - 220, Screen.height / 2 - 220, 250, 500);
         private Vector2 addScrollPos = new Vector2();
 
         public override void OnLoad(ConfigNode node)
@@ -135,15 +135,17 @@ namespace NE_Science
         void showAddGui(int id)
         {
             GUILayout.BeginVertical();
-            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(210), GUILayout.Height(350));
+            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(210), GUILayout.Height(450));
             foreach (LabEquipment e in availableRacks)
             {
-                if (GUILayout.Button(e.getName()))
+                if (GUILayout.Button(new GUIContent(e.getName(), e.getDescription())))
                 {
                     setEquipment(e);
                     showGui = false;
                 }
             }
+            GUI.skin.label.wordWrap = true;
+            GUILayout.Label(GUI.tooltip, GUILayout.Height(100));
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))
             {
@@ -208,10 +210,14 @@ namespace NE_Science
     class EquipmentContainerTextureFactory
     {
         private Dictionary<EquipmentRacks, GameDatabase.TextureInfo> textureReg = new Dictionary<EquipmentRacks, GameDatabase.TextureInfo>();
-        private string folder = "NehemiahInc/Parts/LabEquipmentContainer/";
-        private Dictionary<EquipmentRacks, string> textureNameReg = new Dictionary<EquipmentRacks, string>() { { EquipmentRacks.NONE, "ContainerTexture" },
-        { EquipmentRacks.PRINTER, "Container3PR_Texture" }, { EquipmentRacks.CIR, "ContainerCIR_Texture" }, { EquipmentRacks.FIR, "ContainerFIR_Texture" },
-        { EquipmentRacks.MSG, "ContainerMSG_Texture" }, { EquipmentRacks.EXPOSURE, "ContainerTexture" }, { EquipmentRacks.USU, "ContainerUSU_Texture" }};
+        private Dictionary<EquipmentRacks, KeyValuePair<string, string>> textureNameReg = new Dictionary<EquipmentRacks, KeyValuePair<string, string>>() {
+        { EquipmentRacks.NONE, new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/LabEquipmentContainer/", "ContainerTexture")},
+        { EquipmentRacks.PRINTER, new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/","Container3PR_Texture") },
+        { EquipmentRacks.CIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerCIR_Texture") },
+        { EquipmentRacks.FIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerFIR_Texture") },
+        { EquipmentRacks.MSG,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerMSG_Texture") },
+        { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/LabEquipmentContainer/", "ContainerTexture") }, 
+        { EquipmentRacks.USU,  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/LabEquipmentContainer/", "ContainerUSU_Texture" )}};
 
 
         internal GameDatabase.TextureInfo getTextureForEquipment(EquipmentRacks type)
@@ -241,10 +247,10 @@ namespace NE_Science
 
         private GameDatabase.TextureInfo getTexture(EquipmentRacks p)
         {
-            string textureName;
+            KeyValuePair<string,string> textureName;
             if (textureNameReg.TryGetValue(p, out textureName))
             {
-                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(folder, textureName);
+                GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(textureName.Key, textureName.Value);
                 if (newTex != null)
                 {
                     return newTex;

@@ -26,7 +26,7 @@ namespace NE_Science
     {
 
         [KSPField]
-        public string pumpSound = "NehemiahInc/Sounds/pump";
+        public string pumpSound = "NehemiahInc/OMS/Sounds/pump";
 
         private const float PUMP1_SPEED = 10;
         private const float PUMP2_SPEED = 15;

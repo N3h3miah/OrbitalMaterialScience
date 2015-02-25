@@ -185,6 +185,11 @@ namespace NE_Science
             }
         }
 
+        public LabEquipmentSlot getExposureSlot()
+        {
+            return exposureSlot;
+        }
+
         public bool isRunning()
         {
             return MEPlabState == MEPLabStatus.RUNNING;

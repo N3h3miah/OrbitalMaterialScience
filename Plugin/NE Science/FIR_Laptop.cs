@@ -28,7 +28,7 @@ namespace NE_Science
         private const string SCREEN_PART_NAME = "LaptopScreen";
 
         [KSPField(isPersistant = false)]
-        public string folder = "NehemiahInc/Props/FIR_Laptop";
+        public string folder = "NehemiahInc/OMS/Props/FIR_Laptop/";
 
         [KSPField(isPersistant = false)]
         public string noExpTexture = "";
