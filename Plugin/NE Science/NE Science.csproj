@@ -34,20 +34,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
-    </Reference>
     <Reference Include="KAS">
       <HintPath>..\..\Lib\KAS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
       <HintPath>..\..\Lib\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -110,581 +105,587 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="NehemiahInc\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\GameData\NehemiahInc\Icons\3PR-Icon.png">
-      <Link>NehemiahInc\Icons\3PR-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_Experiment_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_Experiment_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Icons\CIR-Icon.png">
-      <Link>NehemiahInc\Icons\CIR-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_Experiment_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_Experiment_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Icons\Exp-Icon.png">
-      <Link>NehemiahInc\Icons\Exp-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_ODC_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_ODC_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Icons\FIR-Icon.png">
-      <Link>NehemiahInc\Icons\FIR-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_ODC_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_ODC_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Icons\LabTime-Icon.png">
-      <Link>NehemiahInc\Icons\LabTime-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_POSAII_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_POSAII_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Icons\MSG-Icon.png">
-      <Link>NehemiahInc\Icons\MSG-Icon.png</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_POSAII_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_POSAII_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiment\ExperimentNormalTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiment\ExperimentNormalTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_POSAI_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_POSAI_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiment\ExperimentTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiment\ExperimentTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_POSAI_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_POSAI_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiment\model.mu">
-      <Link>NehemiahInc\Parts\Experiment\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_PPMD_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_PPMD_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\AdumContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\AdumContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_PPMD_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\Experiment\KEES_PPMD_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\CcfContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\CcfContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\ODC.cfg">
+      <Link>NehemiahInc\KEES\Parts\Experiment\ODC.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\CfeContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\CfeContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\POSA1.cfg">
+      <Link>NehemiahInc\KEES\Parts\Experiment\POSA1.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\CfiContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\CfiContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\POSA2.cfg">
+      <Link>NehemiahInc\KEES\Parts\Experiment\POSA2.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\CvbContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\CvbContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\PPMD.cfg">
+      <Link>NehemiahInc\KEES\Parts\Experiment\PPMD.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC2Normal.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC2Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\model.mu">
+      <Link>NehemiahInc\KEES\Parts\Experiment\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC2Texture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC2Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PEC\KEES_PEC Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\PEC\KEES_PEC Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC3CNormal.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC3CNormal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PEC\model.mu">
+      <Link>NehemiahInc\KEES\Parts\PEC\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC3CTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC3CTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PEC\part.cfg">
+      <Link>NehemiahInc\KEES\Parts\PEC\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC4Normal.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC4Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PayloadCarrier\KEES_PC_Normal.mbm">
+      <Link>NehemiahInc\KEES\Parts\PayloadCarrier\KEES_PC_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ESC4Texture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ESC4Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PayloadCarrier\KEES_PC_Texture.mbm">
+      <Link>NehemiahInc\KEES\Parts\PayloadCarrier\KEES_PC_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ExperimentContainerNormal.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ExperimentContainerNormal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PayloadCarrier\model.mu">
+      <Link>NehemiahInc\KEES\Parts\PayloadCarrier\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\ExperimentContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\ExperimentContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Parts\PayloadCarrier\part.cfg">
+      <Link>NehemiahInc\KEES\Parts\PayloadCarrier\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\FlexContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\FlexContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KEES\Resources\KEES_Experiments.cfg">
+      <Link>NehemiahInc\KEES\Resources\KEES_Experiments.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\Mee1ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\Mee1ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\ExperimentContainer\AdumContainerTexture.mbm">
+      <Link>NehemiahInc\KR\Parts\ExperimentContainer\AdumContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\Mee2ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\Mee2ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\ExperimentContainer\SpiuContainerTexture.mbm">
+      <Link>NehemiahInc\KR\Parts\ExperimentContainer\SpiuContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\Msi1ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\Msi1ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\ADUM.cfg">
+      <Link>NehemiahInc\KR\Parts\Experiments_USU\ADUM.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\Msi2ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\Msi2ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\ADUMTexture.mbm">
+      <Link>NehemiahInc\KR\Parts\Experiments_USU\ADUMTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\Msi3ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\Msi3ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\SpiU.cfg">
+      <Link>NehemiahInc\KR\Parts\Experiments_USU\SpiU.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\PACEContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\PACEContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\SpiUTexture.mbm">
+      <Link>NehemiahInc\KR\Parts\Experiments_USU\SpiUTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\SpiuContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\ExperimentContainer\SpiuContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm">
+      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc1.cfg">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc1.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm">
+      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc1.mu">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc1.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\model.mu">
+      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc2.cfg">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc2.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\part.cfg">
+      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc2.mu">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc2.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm">
+      <Link>NehemiahInc\KR\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc3c.cfg">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc3c.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Resources\KR_Experiments.cfg">
+      <Link>NehemiahInc\KR\Resources\KR_Experiments.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc3c.mu">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc3c.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\KR\Resources\KR_Resources.cfg">
+      <Link>NehemiahInc\KR\Resources\KR_Resources.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc4.cfg">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc4.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\pod_mk1.cfg">
+      <Link>NehemiahInc\Kemini\pod_mk1.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer\esc4.mu">
-      <Link>NehemiahInc\Parts\ExperimentContainer\esc4.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\D10.cfg">
+      <Link>NehemiahInc\Kemini\Experiments\D10.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\ExperimentContainer_US_Wedge\part.cfg">
-      <Link>NehemiahInc\Parts\ExperimentContainer_US_Wedge\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\D5.cfg">
+      <Link>NehemiahInc\Kemini\Experiments\D5.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\ExperimentMIS1Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_3PR\ExperimentMIS1Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\D7.cfg">
+      <Link>NehemiahInc\Kemini\Experiments\D7.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\ExperimentMIS2Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_3PR\ExperimentMIS2Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\D8.cfg">
+      <Link>NehemiahInc\Kemini\Experiments\D8.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\ExperimentMIS3Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_3PR\ExperimentMIS3Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D10_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_D10_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\mis1.cfg">
-      <Link>NehemiahInc\Parts\Experiments_3PR\mis1.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D5_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_D5_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\mis2.cfg">
-      <Link>NehemiahInc\Parts\Experiments_3PR\mis2.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D7_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_D7_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_3PR\mis3.cfg">
-      <Link>NehemiahInc\Parts\Experiments_3PR\mis3.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D8_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_D8_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_CIR\CFITexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_CIR\CFITexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_MSC3_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_MSC3_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_CIR\FLEXTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_CIR\FLEXTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_Texure.mbm">
+      <Link>NehemiahInc\Kemini\Experiments\Kemini_Texure.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_CIR\cfi.cfg">
-      <Link>NehemiahInc\Parts\Experiments_CIR\cfi.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\MSC3.cfg">
+      <Link>NehemiahInc\Kemini\Experiments\MSC3.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_CIR\flex.cfg">
-      <Link>NehemiahInc\Parts\Experiments_CIR\flex.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\model.mu">
+      <Link>NehemiahInc\Kemini\Experiments\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_FIR\CVBTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_FIR\CVBTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Resources\Kemini_Experiments.cfg">
+      <Link>NehemiahInc\Kemini\Resources\Kemini_Experiments.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_FIR\PACETexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_FIR\PACETexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Icons\Exp-Icon.png">
+      <Link>NehemiahInc\NE_Science_Common\Icons\Exp-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_FIR\cvb.cfg">
-      <Link>NehemiahInc\Parts\Experiments_FIR\cvb.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png">
+      <Link>NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_FIR\pace.cfg">
-      <Link>NehemiahInc\Parts\Experiments_FIR\pace.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\Experiment\ExperimentNormalTexture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\Experiment\ExperimentNormalTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\MEE1Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_MEP\MEE1Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\Experiment\ExperimentTexture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\Experiment\ExperimentTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\MEE2Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_MEP\MEE2Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\Experiment\model.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\Experiment\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\MEETexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_MEP\MEETexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC2Normal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC2Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\mee1.cfg">
-      <Link>NehemiahInc\Parts\Experiments_MEP\mee1.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC2Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC2Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\mee2.cfg">
-      <Link>NehemiahInc\Parts\Experiments_MEP\mee2.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC3CNormal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC3CNormal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MEP\model.mu">
-      <Link>NehemiahInc\Parts\Experiments_MEP\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC3CTexture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC3CTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MSG\CFE_Texture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_MSG\CFE_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC4Normal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC4Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MSG\ccf.cfg">
-      <Link>NehemiahInc\Parts\Experiments_MSG\ccf.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC4Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ESC4Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MSG\cfe.cfg">
-      <Link>NehemiahInc\Parts\Experiments_MSG\cfe.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ExperimentContainerNormal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ExperimentContainerNormal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_MSG\cfe.mu">
-      <Link>NehemiahInc\Parts\Experiments_MSG\cfe.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ExperimentContainerTexture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\ExperimentContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\ADUM.cfg">
-      <Link>NehemiahInc\Parts\Experiments_USU\ADUM.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc1.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc1.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\ADUMTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_USU\ADUMTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc1.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc1.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\SpiU.cfg">
-      <Link>NehemiahInc\Parts\Experiments_USU\SpiU.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc2.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc2.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Experiments_USU\SpiUTexture.mbm">
-      <Link>NehemiahInc\Parts\Experiments_USU\SpiUTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc2.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc2.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc3c.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc3c.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_Experiment_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc3c.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc3c.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_ODC_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_ODC_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc4.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc4.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_ODC_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_ODC_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc4.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer\esc4.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_POSAII_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_POSAII_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\ExperimentContainer_US_Wedge\part.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\ExperimentContainer_US_Wedge\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_POSAII_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_POSAII_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\ContainerBump.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\ContainerBump.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_POSAI_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_POSAI_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\ContainerTexture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_POSAI_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_POSAI_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\model.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_PPMD_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_PPMD_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\part.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\LabEquipmentContainer\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\KEES_PPMD_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\Experiment\KEES_PPMD_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\NE MPL-600\MPL_Normal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\NE MPL-600\MPL_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\ODC.cfg">
-      <Link>NehemiahInc\Parts\KEES\Experiment\ODC.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\NE MPL-600\MPL_Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Parts\NE MPL-600\MPL_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\POSA1.cfg">
-      <Link>NehemiahInc\Parts\KEES\Experiment\POSA1.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\NE MPL-600\model.mu">
+      <Link>NehemiahInc\NE_Science_Common\Parts\NE MPL-600\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\POSA2.cfg">
-      <Link>NehemiahInc\Parts\KEES\Experiment\POSA2.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Parts\NE MPL-600\part.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Parts\NE MPL-600\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\PPMD.cfg">
-      <Link>NehemiahInc\Parts\KEES\Experiment\PPMD.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll">
+      <Link>NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\Experiment\model.mu">
-      <Link>NehemiahInc\Parts\KEES\Experiment\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Resources\Common_Resources.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Resources\Common_Resources.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PEC\KEES_PEC Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\PEC\KEES_PEC Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Resources\settings.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Resources\settings.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PEC\model.mu">
-      <Link>NehemiahInc\Parts\KEES\PEC\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\CFE_Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\CFE_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PEC\part.cfg">
-      <Link>NehemiahInc\Parts\KEES\PEC\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\MPL_IVA_Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\MPL_IVA_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PayloadCarrier\KEES_PC_Normal.mbm">
-      <Link>NehemiahInc\Parts\KEES\PayloadCarrier\KEES_PC_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\MSG_Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\MSG_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PayloadCarrier\KEES_PC_Texture.mbm">
-      <Link>NehemiahInc\Parts\KEES\PayloadCarrier\KEES_PC_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\UltraSound_Normal.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\UltraSound_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PayloadCarrier\model.mu">
-      <Link>NehemiahInc\Parts\KEES\PayloadCarrier\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\UltraSound_Texture.mbm">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\UltraSound_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\KEES\PayloadCarrier\part.cfg">
-      <Link>NehemiahInc\Parts\KEES\PayloadCarrier\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\internal.cfg">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\internal.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\pod_mk1.cfg">
-      <Link>NehemiahInc\Parts\Kemini\pod_mk1.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Spaces\MPL-600\model.mu">
+      <Link>NehemiahInc\NE_Science_Common\Spaces\MPL-600\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\D10.cfg">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\D10.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Icons\3PR-Icon.png">
+      <Link>NehemiahInc\OMS\Icons\3PR-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\D5.cfg">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\D5.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Icons\CIR-Icon.png">
+      <Link>NehemiahInc\OMS\Icons\CIR-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\D7.cfg">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\D7.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Icons\FIR-Icon.png">
+      <Link>NehemiahInc\OMS\Icons\FIR-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\D8.cfg">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\D8.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Icons\MSG-Icon.png">
+      <Link>NehemiahInc\OMS\Icons\MSG-Icon.png</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_D10_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_D10_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\CcfContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\CcfContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_D5_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_D5_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\CfeContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\CfeContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_D7_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_D7_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\CfiContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\CfiContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_D8_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_D8_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\CvbContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\CvbContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_MSC3_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_MSC3_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\FlexContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\FlexContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\Kemini_Texure.mbm">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\Kemini_Texure.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\Mee1ContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\Mee1ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\MSC3.cfg">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\MSC3.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\Mee2ContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\Mee2ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\Kemini\Experiments\model.mu">
-      <Link>NehemiahInc\Parts\Kemini\Experiments\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\Msi1ContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\Msi1ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\3PR\3D_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\3PR\3D_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\Msi2ContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\Msi2ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\3PR\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipment\3PR\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\Msi3ContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\Msi3ContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\3PR\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipment\3PR\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\ExperimentContainer\PACEContainerTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\ExperimentContainer\PACEContainerTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\CIR\CIR_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\CIR\CIR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS1Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS1Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\CIR\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipment\CIR\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS2Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS2Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\CIR\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipment\CIR\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS3Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\ExperimentMIS3Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\FIR\FIR_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\FIR\FIR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\mis1.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\mis1.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\FIR\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipment\FIR\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\mis2.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\mis2.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\FIR\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipment\FIR\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_3PR\mis3.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_3PR\mis3.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\MSG\MSG_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\MSG\MSG_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_CIR\CFITexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_CIR\CFITexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\MSG\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipment\MSG\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_CIR\FLEXTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_CIR\FLEXTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\MSG\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipment\MSG\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_CIR\cfi.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_CIR\cfi.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_CIR\flex.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_CIR\flex.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_FIR\CVBTexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_FIR\CVBTexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\UltraSound\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipment\UltraSound\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_FIR\PACETexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_FIR\PACETexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipment\UltraSound\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipment\UltraSound\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_FIR\cvb.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_FIR\cvb.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\Container3PR_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\Container3PR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_FIR\pace.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_FIR\pace.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerBump.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerBump.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\MEE1Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\MEE1Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerCIR_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerCIR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\MEE2Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\MEE2Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerFIR_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerFIR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\MEETexture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\MEETexture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerMSG_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerMSG_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\mee1.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\mee1.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerTexture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\mee2.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\mee2.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MEP\model.mu">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MEP\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\model.mu">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MSG\CFE_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MSG\CFE_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\LabEquipmentContainer\part.cfg">
-      <Link>NehemiahInc\Parts\LabEquipmentContainer\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MSG\ccf.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MSG\ccf.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MEP-825\NE_MEP825_NormalMap.mbm">
-      <Link>NehemiahInc\Parts\NE MEP-825\NE_MEP825_NormalMap.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MSG\cfe.cfg">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MSG\cfe.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MEP-825\NE_MEP825_Texture.mbm">
-      <Link>NehemiahInc\Parts\NE MEP-825\NE_MEP825_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\Experiments_MSG\cfe.mu">
+      <Link>NehemiahInc\OMS\Parts\Experiments_MSG\cfe.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MEP-825\model.mu">
-      <Link>NehemiahInc\Parts\NE MEP-825\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\3PR\3D_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\3PR\3D_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MEP-825\part.cfg">
-      <Link>NehemiahInc\Parts\NE MEP-825\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\3PR\model.mu">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\3PR\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MPL-600\MPL_Normal.mbm">
-      <Link>NehemiahInc\Parts\NE MPL-600\MPL_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\3PR\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\3PR\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MPL-600\MPL_Texture.mbm">
-      <Link>NehemiahInc\Parts\NE MPL-600\MPL_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\CIR\CIR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\CIR\CIR_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MPL-600\model.mu">
-      <Link>NehemiahInc\Parts\NE MPL-600\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\CIR\model.mu">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\CIR\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MPL-600\part.cfg">
-      <Link>NehemiahInc\Parts\NE MPL-600\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\CIR\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\CIR\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MSL-1000\NE_MSL_BumpMap.mbm">
-      <Link>NehemiahInc\Parts\NE MSL-1000\NE_MSL_BumpMap.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\FIR\FIR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\FIR\FIR_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MSL-1000\NE_MSL_Texture.mbm">
-      <Link>NehemiahInc\Parts\NE MSL-1000\NE_MSL_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\FIR\model.mu">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\FIR\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MSL-1000\model.mu">
-      <Link>NehemiahInc\Parts\NE MSL-1000\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\FIR\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\FIR\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Parts\NE MSL-1000\part.cfg">
-      <Link>NehemiahInc\Parts\NE MSL-1000\part.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\MSG\MSG_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\MSG\MSG_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\CIRLaptopScreenNoExp_Texture.mbm">
-      <Link>NehemiahInc\Props\CIR_Laptop\CIRLaptopScreenNoExp_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\MSG\model.mu">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\MSG\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\CIRLaptopScreenRunning_Texture.mbm">
-      <Link>NehemiahInc\Props\CIR_Laptop\CIRLaptopScreenRunning_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipment\MSG\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\LabEquipment\MSG\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\FFRLaptopScreenNoExp_Normal.mbm">
-      <Link>NehemiahInc\Props\CIR_Laptop\FFRLaptopScreenNoExp_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipmentContainer\Container3PR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipmentContainer\Container3PR_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\LaptopBase_Normal.mbm">
-      <Link>NehemiahInc\Props\CIR_Laptop\LaptopBase_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerCIR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerCIR_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\LaptopBase_Texture.mbm">
-      <Link>NehemiahInc\Props\CIR_Laptop\LaptopBase_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerFIR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerFIR_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\model.mu">
-      <Link>NehemiahInc\Props\CIR_Laptop\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerMSG_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\LabEquipmentContainer\ContainerMSG_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\CIR_Laptop\prop.cfg">
-      <Link>NehemiahInc\Props\CIR_Laptop\prop.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MEP-825\NE_MEP825_NormalMap.mbm">
+      <Link>NehemiahInc\OMS\Parts\NE MEP-825\NE_MEP825_NormalMap.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\FIRLaptopScreenExpRunning_Texture.mbm">
-      <Link>NehemiahInc\Props\FIR_Laptop\FIRLaptopScreenExpRunning_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MEP-825\NE_MEP825_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\NE MEP-825\NE_MEP825_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\FIRLaptopScreenNoExp_Texture.mbm">
-      <Link>NehemiahInc\Props\FIR_Laptop\FIRLaptopScreenNoExp_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MEP-825\model.mu">
+      <Link>NehemiahInc\OMS\Parts\NE MEP-825\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\LaptopBase_Normal.mbm">
-      <Link>NehemiahInc\Props\FIR_Laptop\LaptopBase_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MEP-825\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\NE MEP-825\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\LaptopBase_Texture.mbm">
-      <Link>NehemiahInc\Props\FIR_Laptop\LaptopBase_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MSL-1000\NE_MSL_BumpMap.mbm">
+      <Link>NehemiahInc\OMS\Parts\NE MSL-1000\NE_MSL_BumpMap.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\model.mu">
-      <Link>NehemiahInc\Props\FIR_Laptop\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MSL-1000\NE_MSL_Texture.mbm">
+      <Link>NehemiahInc\OMS\Parts\NE MSL-1000\NE_MSL_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\FIR_Laptop\prop.cfg">
-      <Link>NehemiahInc\Props\FIR_Laptop\prop.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MSL-1000\model.mu">
+      <Link>NehemiahInc\OMS\Parts\NE MSL-1000\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_Idle.mbm">
-      <Link>NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_Idle.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Parts\NE MSL-1000\part.cfg">
+      <Link>NehemiahInc\OMS\Parts\NE MSL-1000\part.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE1.mbm">
-      <Link>NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE1.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\CIRLaptopScreenNoExp_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\CIRLaptopScreenNoExp_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE2.mbm">
-      <Link>NehemiahInc\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE2.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\CIRLaptopScreenRunning_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\CIRLaptopScreenRunning_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_ExpScreen\model.mu">
-      <Link>NehemiahInc\Props\MEP_ExpScreen\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\FFRLaptopScreenNoExp_Normal.mbm">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\FFRLaptopScreenNoExp_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_ExpScreen\prop.cfg">
-      <Link>NehemiahInc\Props\MEP_ExpScreen\prop.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\LaptopBase_Normal.mbm">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\LaptopBase_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Error.mbm">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Error.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\LaptopBase_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\LaptopBase_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_NotReady.mbm">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_NotReady.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\model.mu">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Ready.mbm">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Ready.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\CIR_Laptop\prop.cfg">
+      <Link>NehemiahInc\OMS\Props\CIR_Laptop\prop.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Running.mbm">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Running.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\FIRLaptopScreenExpRunning_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\FIRLaptopScreenExpRunning_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\model.mu">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\FIRLaptopScreenNoExp_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\FIRLaptopScreenNoExp_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Props\MEP_StatusScreen\prop.cfg">
-      <Link>NehemiahInc\Props\MEP_StatusScreen\prop.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\LaptopBase_Normal.mbm">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\LaptopBase_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\ExperimentResources.cfg">
-      <Link>NehemiahInc\Resources\ExperimentResources.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\LaptopBase_Texture.mbm">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\LaptopBase_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\KEES_Experiments.cfg">
-      <Link>NehemiahInc\Resources\KEES_Experiments.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\model.mu">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\KR_Experiments.cfg">
-      <Link>NehemiahInc\Resources\KR_Experiments.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\FIR_Laptop\prop.cfg">
+      <Link>NehemiahInc\OMS\Props\FIR_Laptop\prop.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\Kemini_Experiments.cfg">
-      <Link>NehemiahInc\Resources\Kemini_Experiments.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_Idle.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_Idle.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\OMS_Experiments.cfg">
-      <Link>NehemiahInc\Resources\OMS_Experiments.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE1.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE1.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Resources\settings.cfg">
-      <Link>NehemiahInc\Resources\settings.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE2.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_ExpScreen\MEP_IVA_ExpScreen_MEE2.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Sounds\3DPchgDir.ogg">
-      <Link>NehemiahInc\Sounds\3DPchgDir.ogg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_ExpScreen\model.mu">
+      <Link>NehemiahInc\OMS\Props\MEP_ExpScreen\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Sounds\3DPheadChgDir.ogg">
-      <Link>NehemiahInc\Sounds\3DPheadChgDir.ogg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_ExpScreen\prop.cfg">
+      <Link>NehemiahInc\OMS\Props\MEP_ExpScreen\prop.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Sounds\3DPmove.ogg">
-      <Link>NehemiahInc\Sounds\3DPmove.ogg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Error.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Error.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Sounds\pump.ogg">
-      <Link>NehemiahInc\Sounds\pump.ogg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_NotReady.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_NotReady.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\MEP_IVA_Emission.mbm">
-      <Link>NehemiahInc\Spaces\MEP-825\MEP_IVA_Emission.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Ready.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Ready.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\MEP_IVA_HATCH_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MEP-825\MEP_IVA_HATCH_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Running.mbm">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\MEP_IVA_StatusScreen_Running.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\MEP_IVA_Normal.mbm">
-      <Link>NehemiahInc\Spaces\MEP-825\MEP_IVA_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\model.mu">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\MEP_IVA_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MEP-825\MEP_IVA_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Props\MEP_StatusScreen\prop.cfg">
+      <Link>NehemiahInc\OMS\Props\MEP_StatusScreen\prop.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\internal.cfg">
-      <Link>NehemiahInc\Spaces\MEP-825\internal.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Resources\OMS_Experiments.cfg">
+      <Link>NehemiahInc\OMS\Resources\OMS_Experiments.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MEP-825\model.mu">
-      <Link>NehemiahInc\Spaces\MEP-825\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Resources\OMS_Resources.cfg">
+      <Link>NehemiahInc\OMS\Resources\OMS_Resources.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\CFE_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MPL-600\CFE_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Sounds\3DPchgDir.ogg">
+      <Link>NehemiahInc\OMS\Sounds\3DPchgDir.ogg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\MPL_IVA_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MPL-600\MPL_IVA_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Sounds\3DPheadChgDir.ogg">
+      <Link>NehemiahInc\OMS\Sounds\3DPheadChgDir.ogg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\MSG_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MPL-600\MSG_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Sounds\3DPmove.ogg">
+      <Link>NehemiahInc\OMS\Sounds\3DPmove.ogg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\UltraSound_Normal.mbm">
-      <Link>NehemiahInc\Spaces\MPL-600\UltraSound_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Sounds\pump.ogg">
+      <Link>NehemiahInc\OMS\Sounds\pump.ogg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\UltraSound_Texture.mbm">
-      <Link>NehemiahInc\Spaces\MPL-600\UltraSound_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Emission.mbm">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Emission.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\internal.cfg">
-      <Link>NehemiahInc\Spaces\MPL-600\internal.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_HATCH_Texture.mbm">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_HATCH_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\MPL-600\model.mu">
-      <Link>NehemiahInc\Spaces\MPL-600\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Normal.mbm">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\NE MLS-1000\3D_FFR_Normal.mbm">
-      <Link>NehemiahInc\Spaces\NE MLS-1000\3D_FFR_Normal.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Texture.mbm">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\MEP_IVA_Texture.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\NE MLS-1000\3D_FFR_Texture.mbm">
-      <Link>NehemiahInc\Spaces\NE MLS-1000\3D_FFR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\internal.cfg">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\internal.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\NE MLS-1000\LabIVA_CIR_Texture.mbm">
-      <Link>NehemiahInc\Spaces\NE MLS-1000\LabIVA_CIR_Texture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\MEP-825\model.mu">
+      <Link>NehemiahInc\OMS\Spaces\MEP-825\model.mu</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\NE MLS-1000\internal.cfg">
-      <Link>NehemiahInc\Spaces\NE MLS-1000\internal.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\3D_FFR_Normal.mbm">
+      <Link>NehemiahInc\OMS\Spaces\NE MLS-1000\3D_FFR_Normal.mbm</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Spaces\NE MLS-1000\model.mu">
-      <Link>NehemiahInc\Spaces\NE MLS-1000\model.mu</Link>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\3D_FFR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Spaces\NE MLS-1000\3D_FFR_Texture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\LabIVA_CIR_Texture.mbm">
+      <Link>NehemiahInc\OMS\Spaces\NE MLS-1000\LabIVA_CIR_Texture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\internal.cfg">
+      <Link>NehemiahInc\OMS\Spaces\NE MLS-1000\internal.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu">
+      <Link>NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu</Link>
     </None>
   </ItemGroup>
 </Project>
