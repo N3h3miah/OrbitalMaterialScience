@@ -7,7 +7,7 @@ rm -Rf "${DST_DIR}"
 mkdir -p "${DST_DIR}/Plugins"
 	
 cp -ax "${SRC_DIR}/GameData/NehemiahInc/." "${DST_DIR}"
-cp -ax "${SRC_DIR}/Plugin/NE Science/bin/Debug/NE_Science.dll" "${DST_DIR}/Plugins/"
+cp -ax "${SRC_DIR}/Plugin/NE Science/bin/Debug/NE_Science.dll" "${DST_DIR}/NE_Science_Common/Plugins/"
 
 cd "${KSP_DIR}"
 if [ "$(uname)" == "Darwin" ]; then
