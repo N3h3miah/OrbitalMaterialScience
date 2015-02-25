@@ -86,7 +86,7 @@ namespace NE_Science
             base.OnUpdate();
             if (!decoupled && vessel != null && !vessel.isEVA && vessel.geeForce > maxGforce)
             {
-                NE_Helper.log("KEES PEC over max G, decouple");
+                NE_Helper.log ("KEES PEC over max G, decouple\n" + this.ToString ());
                 decoupled = true;
                 part.decouple();
             }
@@ -97,5 +97,23 @@ namespace NE_Science
             counter = (++counter) % 6;
         }
 
+        /** Converts the object to a human-readble string suitable for printing.
+        /** Converts the object to a human-readable string suitable for printing.
+         * Overloads base-class implementation.
+         */
+        new public String ToString()
+        {
+            String ret = base.ToString () + "\n";
+            ret += "\tnode:               " + node + "\n";
+            ret += "\texp:                " + exp + "\n";
+            ret += "\tdecoupled:          " + decoupled + "\n";
+            ret += "\tpart:               " + part + "\n";
+            ret += "\tpart.parent:        " + part.parent + "\n";
+            ret += "\tvessel:             " + vessel + "\n";
+            ret += "\tvessel.isEva:       " + vessel.isEVA + "\n";
+            ret += "\tvessel.geeForce:    " + vessel.geeForce + "\n";
+            ret += "\tmaxGforce:          " + maxGforce + "\n";
+            return ret;
+        }
     }
 }
