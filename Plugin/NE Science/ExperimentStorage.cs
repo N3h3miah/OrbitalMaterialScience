@@ -63,7 +63,7 @@ namespace NE_Science
         private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
         private Material contMat;
         private int windowID;
-        
+
 
         public override void OnLoad(ConfigNode node)
         {
@@ -145,7 +145,14 @@ namespace NE_Science
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
                 if (Events["installExperiment"].active)
                 {
-                    Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                    if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
+                    {
+                        Events["installExperiment"].guiName = "Install & Run " + expData.getAbbreviation();
+                    }
+                    else
+                    {
+                        Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                    }
                 }
                 Events["moveExp"].active = expData.canMove(part.vessel);
                 if (Events["moveExp"].active)
@@ -173,7 +180,7 @@ namespace NE_Science
             }
             else
             {
-                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!" , 6, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!", 6, ScreenMessageStyle.UPPER_CENTER);
             }
         }
 
@@ -254,8 +261,15 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
         public void finalize()
         {
-            windowID = WindowCounter.getNextWindowID();
-            showGui = 2;
+            if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
+            {
+                DeployExperiment();
+            }
+            else
+            {
+                windowID = WindowCounter.getNextWindowID();
+                showGui = 2;
+            }
         }
 
         void OnGUI()
@@ -356,7 +370,7 @@ namespace NE_Science
             GUI.DragWindow();
         }
 
-        
+
 
         private void showAddWindow()
         {
@@ -494,7 +508,8 @@ namespace NE_Science
             {
                 NE_Helper.log("Loading Texture for experiment: " + expData.getType());
                 GameDatabase.TextureInfo newTex = getTexture(expData.getType());
-                if(newTex != null){
+                if (newTex != null)
+                {
                     textureReg.Add(expData.getType(), newTex);
                     return newTex;
                 }
@@ -505,8 +520,9 @@ namespace NE_Science
 
         private GameDatabase.TextureInfo getTexture(string p)
         {
-            KeyValuePair<string,string> textureName;
-            if(textureNameReg.TryGetValue(p, out textureName)){
+            KeyValuePair<string, string> textureName;
+            if (textureNameReg.TryGetValue(p, out textureName))
+            {
                 NE_Helper.log("Looking for Texture:" + textureName.Value + " in : " + textureName.Key);
                 GameDatabase.TextureInfo newTex = GameDatabase.Instance.GetTextureInfoIn(textureName.Key, textureName.Value);
                 if (newTex != null)
