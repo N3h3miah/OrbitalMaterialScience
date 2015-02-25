@@ -84,7 +84,12 @@ namespace NE_Science
         public override void OnUpdate()
         {
             base.OnUpdate();
-            if (!decoupled && vessel != null && !vessel.isEVA && vessel.geeForce > maxGforce)
+            /* Only perform the max-G check if we are attached to a vessel.
+             * During KAS grab, vessel can be itself or a Kerbal, and we may
+             * get spurious high G's. */
+            bool isVesselShip = part.parent != null && vessel != null && !vessel.isEVA;
+
+            if (!decoupled && isVesselShip && vessel.geeForce > maxGforce)
             {
                 NE_Helper.log("KEES PEC over max G, decouple");
                 decoupled = true;
