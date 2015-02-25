@@ -36,9 +36,6 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public float ChargePerLabTime = 0;
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Equipment")]
-        public string equipment = "";
-
         [KSPField(isPersistant = false, guiActive = false, guiName = "MSG")]
         public string msgStatus = "";
 
@@ -271,8 +268,6 @@ namespace NE_Science
         protected override void updateLabStatus()
         {
             Fields["labStatus"].guiActive = false;
-            Fields["equipment"].guiActive = true;
-            equipment = getEquipmentString();
             msgSlot.updateCheck();
             usuSlot.updateCheck();
             if (msg == null)
@@ -283,11 +278,13 @@ namespace NE_Science
             if (!msgSlot.isEquipmentInstalled())
             {
                 Events["installMSG"].active = checkForRackModul(EquipmentRacks.MSG);
+                Fields["msgStatus"].guiActive = false;
             }
             else
             {
                 Events["installMSG"].active = false;
                 Events["moveMSGExp"].active = msgSlot.canExperimentMove(part.vessel);
+                Fields["msgStatus"].guiActive = true;
                 if (Events["moveMSGExp"].active)
                 {
                     Events["moveMSGExp"].guiName = "Move " + msgSlot.getExperiment().getAbbreviation();
@@ -302,22 +299,23 @@ namespace NE_Science
                 if (!msgSlot.experimentSlotFree())
                 {
                     msgStatus = msgSlot.getExperiment().getAbbreviation() + ": " + msgSlot.getExperiment().getStateString();
-                    Fields["msgStatus"].guiActive = true;
                 }
                 else
                 {
-                    Fields["msgStatus"].guiActive = false;
+                    msgStatus = "No Experiment";
                 }
             }
 
             if (!usuSlot.isEquipmentInstalled())
             {
                 Events["installUSU"].active = checkForRackModul(EquipmentRacks.USU);
+                Fields["usuStatus"].guiActive = false;
             }
             else
             {
                 Events["installUSU"].active = false;
                 Events["moveUSUExp"].active = usuSlot.canExperimentMove(part.vessel);
+                Fields["usuStatus"].guiActive = true;
                 if (Events["moveUSUExp"].active)
                 {
                     Events["moveUSUExp"].guiName = "Move " + usuSlot.getExperiment().getAbbreviation();
@@ -332,11 +330,10 @@ namespace NE_Science
                 if (!usuSlot.experimentSlotFree())
                 {
                     usuStatus = usuSlot.getExperiment().getAbbreviation() + ": " + usuSlot.getExperiment().getStateString();
-                    Fields["usuStatus"].guiActive = true;
                 }
                 else
                 {
-                    Fields["usuStatus"].guiActive = false;
+                    usuStatus = "No Experiment";
                 }
             }
 
