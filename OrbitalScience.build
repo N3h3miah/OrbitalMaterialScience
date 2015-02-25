@@ -15,10 +15,19 @@
   </target>
   
   <target name="pack" description="pack the diferent mods" depends="clean">
+    <call target="copyDll" />
     <call target="omsZip" />
     <call target="krZip" />
     <call target="keminiZip" />
     <call target="keesZip" />
+  </target>
+
+  <target name="copyDll" description="copy the dll from the plugin folder to game data" >
+    <copy todir="${GameData.dir}/NE_Science_Common/Plugins">
+      <fileset basedir="Plugin/NE Science/bin/Release">
+        <include name="NE_Science.dll"/>
+      </fileset>
+    </copy>
   </target>
 
   <target name="omsZip" description="copy the files and folders for the oms mod">
@@ -73,7 +82,7 @@
 
   </target>
 
-    <target name="keminiZip" description="copy the files and folders for the Kemini Research mod">
+  <target name="keminiZip" description="copy the files and folders for the Kemini Research mod">
       <mkdir dir="${Kemini.dir}/NehemiahInc/NE_Science_Common" />
       <mkdir dir="${Kemini.dir}/NehemiahInc/Kemini" />
 

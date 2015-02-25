@@ -172,7 +172,6 @@ namespace NE_Science
 
         public new void DeployExperiment()
         {
-            NE_Helper.log("DeployExperiment called");
             if (expData.canFinalize())
             {
                 base.DeployExperiment();
