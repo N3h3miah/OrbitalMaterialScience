@@ -270,6 +270,26 @@ namespace NE_Science
             Fields["labStatus"].guiActive = false;
             msgSlot.updateCheck();
             usuSlot.updateCheck();
+
+            if (msgSlot.isEquipmentRunning() || usuSlot.isEquipmentRunning())
+            {
+                Events["stopResearch"].active = doResearch;
+                Events["startResearch"].active = !doResearch;
+            }
+            else
+            {
+                if (doResearch)
+                {
+                    Events["stopResearch"].active = false;
+                    Events["startResearch"].active = false;
+                }
+                else
+                {
+                    Events["stopResearch"].active = doResearch;
+                    Events["startResearch"].active = !doResearch;
+                }
+            }
+
             if (msg == null)
             {
                 initERacksActive();

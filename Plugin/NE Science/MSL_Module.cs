@@ -318,6 +318,25 @@ namespace NE_Science
                 initERacksActive();
             }
 
+            if (cirSlot.isEquipmentRunning() || firSlot.isEquipmentRunning() || printerSlot.isEquipmentRunning())
+            {
+                Events["stopResearch"].active = doResearch;
+                Events["startResearch"].active = !doResearch;
+            }
+            else
+            {
+                if (doResearch)
+                {
+                    Events["stopResearch"].active = false;
+                    Events["startResearch"].active = false;
+                }
+                else
+                {
+                    Events["stopResearch"].active = doResearch;
+                    Events["startResearch"].active = !doResearch;
+                }
+            }
+
             if (!cirSlot.isEquipmentInstalled())
             {
                 Events["installCIR"].active = checkForRackModul(EquipmentRacks.CIR);
