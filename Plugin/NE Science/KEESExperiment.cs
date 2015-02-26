@@ -408,5 +408,16 @@ namespace NE_Science
             }
         }
 
+
+        internal void pecDecoupled()
+        {
+            Events["StartExperiment"].active = false;
+            Events["DeployExperiment"].active = false;
+            ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the vessel.", 2, ScreenMessageStyle.UPPER_CENTER);
+            stopResearch();
+            playAnimation(deployAnimation, -1, 1);
+            state = NOT_READY;
+            docked = false;
+        }
     }
 }

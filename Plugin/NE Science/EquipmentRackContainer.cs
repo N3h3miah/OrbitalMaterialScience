@@ -211,12 +211,12 @@ namespace NE_Science
     {
         private Dictionary<EquipmentRacks, GameDatabase.TextureInfo> textureReg = new Dictionary<EquipmentRacks, GameDatabase.TextureInfo>();
         private Dictionary<EquipmentRacks, KeyValuePair<string, string>> textureNameReg = new Dictionary<EquipmentRacks, KeyValuePair<string, string>>() {
-        { EquipmentRacks.NONE, new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/LabEquipmentContainer/", "ContainerTexture")},
+        { EquipmentRacks.NONE, new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/LabEquipmentContainer/", "ContainerTexture")},
         { EquipmentRacks.PRINTER, new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/","Container3PR_Texture") },
         { EquipmentRacks.CIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerCIR_Texture") },
         { EquipmentRacks.FIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerFIR_Texture") },
         { EquipmentRacks.MSG,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerMSG_Texture") },
-        { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/LabEquipmentContainer/", "ContainerTexture") }, 
+        { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/LabEquipmentContainer/", "ContainerTexture") }, 
         { EquipmentRacks.USU,  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/LabEquipmentContainer/", "ContainerUSU_Texture" )}};
 
 

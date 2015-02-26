@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace NE_Science
 {
@@ -88,18 +89,37 @@ namespace NE_Science
              * During KAS grab, vessel can be itself or a Kerbal, and we may
              * get spurious high G's. */
             bool isVesselShip = part.parent != null && vessel != null && !vessel.isEVA;
-
+            if (decoupled && vessel.vesselType != VesselType.Debris)
+            {
+                NE_Helper.log("Decoupled PEC recoverd");
+                decoupled = false;
+            }
             if (!decoupled && isVesselShip && vessel.geeForce > maxGforce)
             {
                 NE_Helper.log ("KEES PEC over max G, decouple\n" + this.ToString ());
-                decoupled = true;
-                part.decouple();
+                decouple(); 
             }
-            if (counter == 0)//don't run this every frame
+            //Decouple for testing
+            if (NE_Helper.debugging() && Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.D))
+            {
+                decouple();
+            }
+            if (!decoupled && counter == 0)//don't run this every frame
             {
                 checkForExp();
             }
             counter = (++counter) % 6;
+        }
+
+        private void decouple()
+        {
+            decoupled = true;
+            part.decouple();
+            if (exp != null)
+            {
+                exp.pecDecoupled();
+            }
+            exp = null;
         }
 
         [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
