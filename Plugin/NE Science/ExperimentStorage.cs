@@ -118,8 +118,17 @@ namespace NE_Science
 
         public override void OnSave(ConfigNode node)
         {
+            try{
+            if (node == null) {
+                NE_Helper.logError ("OnSave: node is NULL!");
+                //return;
+            }
             base.OnSave(node);
             node.AddNode(expData.getNode());
+            } catch(NullReferenceException nre) {
+                NE_Helper.logError ("ExperimentStorage.OnSave - NullReferenceException:\n"
+                    + nre.StackTrace);
+            }
         }
 
         public override void OnStart(PartModule.StartState state)

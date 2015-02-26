@@ -24,7 +24,7 @@ namespace NE_Science
 {
     public enum ExperimentState
     {
-        STORED, INSTALLED, RUNNING, FINISHED, FINALIZED
+        STORED, INSTALLED, RUNNING, FINISHED, FINALIZED, COMPLETED
     }
 
     public class ExperimentData
@@ -444,14 +444,29 @@ namespace NE_Science
         public override ConfigNode getNode()
         {
             ConfigNode baseNode = base.getNode();
+            try {
+            if (baseNode == null) {
+                NE_Helper.logError ("MultiStepExperimentData.getNode() - baseNode is NULL!");
+            }
             baseNode.AddValue(ACTIVE_VALUE, activeStep);
 
             if (steps != null)
             {
                 foreach (ExperimentStep es in steps)
                 {
+                    if (es == null) {
+                        NE_Helper.logError ("MultiStepExperimentData.getNode() - es is NULL!");
+                    }
+                    ConfigNode expNode = es.getNode ();
+                    if (expNode == null) {
+                        NE_Helper.logError ("MultiStepExperimentData.getNode() - expNode is NULL!");
+                    }
                     baseNode.AddNode(es.getNode());
                 }
+            }
+            } catch(NullReferenceException nre) {
+                NE_Helper.logError ("MultiStepExperimentData.getNode - NullReferenceException:\n"
+                                    + nre.StackTrace);
             }
             return baseNode;
         }
