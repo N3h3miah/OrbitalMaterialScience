@@ -392,7 +392,7 @@ namespace NE_Science
             ScreenMessages.PostScreenMessage("Warning: " + part.partInfo.title + " has detached from the vessel.", 2, ScreenMessageStyle.UPPER_CENTER);
             stopResearch();
             playAnimation(deployAnimation, -1, 1);
-            state = NOT_READY;
+            state = ERROR;
             docked = false;
         }
     }
