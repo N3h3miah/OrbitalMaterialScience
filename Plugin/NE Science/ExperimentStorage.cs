@@ -480,7 +480,7 @@ namespace NE_Science
     {
         private Dictionary<string, GameDatabase.TextureInfo> textureReg = new Dictionary<string, GameDatabase.TextureInfo>();
         private Dictionary<string, KeyValuePair<string, string>> textureNameReg = new Dictionary<string, KeyValuePair<string, string>>() { 
-        { "", new KeyValuePair<string,string>("NehemiahInc/NE_Science_Common/Parts/ExperimentContainer/","ExperimentContainerTexture")},
+        { "", new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/ExperimentContainer/","ExperimentContainerTexture")},
         { "FLEX",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","FlexContainerTexture") },
         { "CFI",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CfiContainerTexture") },
         { "CCF",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CcfContainerTexture" )},
