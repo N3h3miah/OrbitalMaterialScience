@@ -493,7 +493,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
@@ -507,7 +507,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
@@ -521,7 +521,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
