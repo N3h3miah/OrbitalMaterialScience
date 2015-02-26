@@ -308,7 +308,7 @@ namespace NE_Science
             try {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
-            Fields["equipment"].guiActive = false;
+            //Fields["equipment"].guiActive = false;
             } catch (Exception e) {
                 NE_Helper.logError("MSL_Module.displayStatusMessage(): caught exception " + e +"\n" + e.StackTrace);
             }
@@ -497,7 +497,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
@@ -511,7 +511,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
@@ -525,7 +525,7 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Modul not found!");
+                displayStatusMessage("Equipment Rack Module not found!");
             }
         }
 
