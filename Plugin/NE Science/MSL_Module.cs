@@ -305,9 +305,13 @@ namespace NE_Science
 
         protected override void displayStatusMessage(string s)
         {
+            try {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
             Fields["equipment"].guiActive = false;
+            } catch (Exception e) {
+                NE_Helper.logError("MSL_Module.displayStatusMessage(): caught exception " + e +"\n" + e.StackTrace);
+            }
         }
 
         protected override void updateLabStatus()
