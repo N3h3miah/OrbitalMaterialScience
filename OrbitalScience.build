@@ -5,7 +5,7 @@
 
   <property name="build.dir" value="build" />
   <property name="OMS.dir" value="${build.dir}/OMS/" />
-  <property name="KR.dir" value="${build.dir}/KerbalResearch/" />
+  <property name="KR.dir" value="${build.dir}/KerbalLifeScience/" />
   <property name="Kemini.dir" value="${build.dir}/Kemini/" />
   <property name="KEES.dir" value="${build.dir}/KEES/" />
   <property name="GameData.dir" value="GameData/NehemiahInc" />
@@ -19,7 +19,7 @@
   <target name="pack" description="pack the diferent mods" depends="clean">
     <call target="copyDll" />
     <call target="omsZip" />
-    <call target="krZip" />
+    <call target="klsZip" />
     <call target="keminiZip" />
     <call target="keesZip" />
   </target>
@@ -75,19 +75,19 @@
     
   </target>
 
-  <target name="krZip" description="copy the files and folders for the KerbalResearch mod">
-    <mkdir dir="${KR.dir}/NehemiahInc/KerbalResearch" />
+  <target name="klsZip" description="copy the files and folders for the KerbalLifeScience mod">
+    <mkdir dir="${KR.dir}/NehemiahInc/KerbalLifeScience" />
 
     <property name="CurrMod.dir" value="${KR.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
     <call target="copyMPParts" />
 
-    <copy todir="${KR.dir}/NehemiahInc/KerbalResearch" >
-      <fileset basedir="${GameData.dir}/KR"/>
+    <copy todir="${KR.dir}/NehemiahInc/KerbalLifeScience" >
+      <fileset basedir="${GameData.dir}/KerbalLifeScience"/>
     </copy>
 
-    <zip zipfile="${build.dir}/KerbalResearch.zip" ziplevel="9">
+    <zip zipfile="${build.dir}/KerbalLifeScience.zip" ziplevel="9">
       <fileset basedir="${KR.dir}">
         <include name="**/*" />
       </fileset>

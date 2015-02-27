@@ -492,8 +492,8 @@ namespace NE_Science
         { "MEE2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee2ContainerTexture") },
         { "CVB",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CvbContainerTexture") },
         { "PACE", new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "PACEContainerTexture")},
-        { "ADUM",  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/","AdumContainerTexture") },
-        { "SpiU", new KeyValuePair<string,string>("NehemiahInc/KR/Parts/ExperimentContainer/", "SpiuContainerTexture") }};
+        { "ADUM",  new KeyValuePair<string,string>("NehemiahInc/KerbalLifeScience/Parts/ExperimentContainer/","AdumContainerTexture") },
+        { "SpiU", new KeyValuePair<string,string>("NehemiahInc/KerbalLifeScience/Parts/ExperimentContainer/", "SpiuContainerTexture") }};
 
 
         internal GameDatabase.TextureInfo getTextureForExperiment(ExperimentData expData)

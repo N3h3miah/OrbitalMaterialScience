@@ -217,7 +217,7 @@ namespace NE_Science
         { EquipmentRacks.FIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerFIR_Texture") },
         { EquipmentRacks.MSG,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerMSG_Texture") },
         { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/LabEquipmentContainer/", "ContainerTexture") }, 
-        { EquipmentRacks.USU,  new KeyValuePair<string,string>("NehemiahInc/KR/Parts/LabEquipmentContainer/", "ContainerUSU_Texture" )}};
+        { EquipmentRacks.USU,  new KeyValuePair<string,string>("NehemiahInc/KerbalLifeScience/Parts/LabEquipmentContainer/", "ContainerUSU_Texture" )}};
 
 
         internal GameDatabase.TextureInfo getTextureForEquipment(EquipmentRacks type)
