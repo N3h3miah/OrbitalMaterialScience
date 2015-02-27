@@ -307,7 +307,6 @@ namespace NE_Science
         {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
-            //Fields["equipment"].guiActive = false;
         }
 
         protected override void updateLabStatus()
