@@ -308,7 +308,6 @@ namespace NE_Science
             try {
             labStatus = s;
             Fields["labStatus"].guiActive = true;
-            //Fields["equipment"].guiActive = false;
             } catch (Exception e) {
                 NE_Helper.logError("MSL_Module.displayStatusMessage(): caught exception " + e +"\n" + e.StackTrace);
             }
