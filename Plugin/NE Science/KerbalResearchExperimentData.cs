@@ -146,10 +146,14 @@ namespace NE_Science
             List<string> members = new List<string>();
             if (state == ExperimentState.INSTALLED || state == ExperimentState.RUNNING)
             {
-                Lab lab = ((LabEquipment)store).getLab();
-                foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
-                {
-                    members.Add(crewMember.name.Trim());
+                try {
+                    Lab lab = ((LabEquipment)store).getLab();
+                    foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
+                    {
+                        members.Add(crewMember.name.Trim());
+                    }
+                } catch(NullReferenceException nre) {
+                    NE_Helper.logError ("getAllLabCrewMembers: nullref!\n" + nre.StackTrace);
                 }
             }
             return members;
