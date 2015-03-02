@@ -147,7 +147,19 @@ namespace NE_Science
             if (state == ExperimentState.INSTALLED || state == ExperimentState.RUNNING)
             {
                 try {
+                    if(store==null) {
+                        NE_Helper.logError("getAllLabCrewMembers: store is null!");
+                    }
                     Lab lab = ((LabEquipment)store).getLab();
+                    if(lab==null) {
+                        NE_Helper.logError("getAllLabCrewMembers: lab is null!");
+                    }
+                    if(lab.part==null) {
+                        NE_Helper.logError("getAllLabCrewMembers: lab.part is null!");
+                    }
+                    if(lab.part.protoModuleCrew==null) {
+                        NE_Helper.logError("getAllLabCrewMembers: lab.part.protoModuleCrew is null!");
+                    }
                     foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
                     {
                         members.Add(crewMember.name.Trim());
