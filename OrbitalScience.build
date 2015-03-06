@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Nehemiah KSP mods" default="pack" basedir=".">
+<project name="Nehemiah KSP mods" default="all" basedir=".">
   
   <description>Pack the files for the different KSP mods</description>
 
@@ -11,19 +11,108 @@
   <property name="KEES.dir" value="${build.dir}/KEES/" />
   <property name="GameData.dir" value="GameData/NehemiahInc" />
 
+  <property name="OMS.Version" value="0.6" />
+  <property name="All.Version" value="0.1.2" />
+  <property name="KLS.Version" value="0.1" />
+  <property name="Kemini.Version" value="0.1.2" />
+  <property name="KEES.Version" value="0.2" />
+  <property name="Common.Version" value="0.1" />
+  <property name="MPP.Version" value="0.1" />
+
   <property name="CurrMod.dir" value="${build.dir}" />
   
   <target name="clean" description="remove all generated files">
     <delete dir="${build.dir}" />
   </target>
+
+  <target name="all" description="pack the diferent mods" depends="clean">
+    <call target="zips" />
+    <call target="ckan" />
+  </target>
   
-  <target name="pack" description="pack the diferent mods" depends="clean">
+  <target name="zips" description="pack the diferent mods">
     <call target="copyDll" />
     <call target="omsZip" />
     <call target="klsZip" />
     <call target="keminiZip" />
     <call target="keesZip" />
     <call target="allInOneZip" />
+  </target>
+
+  <target name="ckan" description="pack the ckan zips for all mods" depends="clean">
+    <call target="copyDll" />
+    <call target="CommonCkan" />
+    <call target="mpCkan" />
+    <call target="KEESCkan" />
+    <call target="KeminiCkan" />
+    <call target="KLSCkan" />
+    <call target="OMSCkan" />
+  </target>
+
+  <target name="CommonCkan" description="ckan common uip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_Common" />
+    <call target="copyCommon" />
+    
+    <zip zipfile="${build.dir}/NehemiahScienceCommonCKAN_${Common.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_Common" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="mpCkan" description="ckan mp parts zip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_MP_Parts" />
+    <call target="copyMPParts" />
+
+    <zip zipfile="${build.dir}/NehemiahMP_PartsCKAN_${MPP.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_MP_Parts" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="KEESCkan" description="ckan KEES zip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_KEES" />
+    <call target="copyKEES" />
+
+    <zip zipfile="${build.dir}/KEES_CKAN_${KEES.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_KEES" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="KeminiCkan" description="ckan Kemini zip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_Kemini" />
+    <call target="copyKemini" />
+
+    <zip zipfile="${build.dir}/Kemini_CKAN_${Kemini.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_Kemini" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="KLSCkan" description="ckan KLS zip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_KLS" />
+    <call target="copyKLS" />
+
+    <zip zipfile="${build.dir}/KerbalLifeScience_CKAN_${KLS.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_KLS" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
+  <target name="OMSCkan" description="ckan OMS zip">
+    <property name="CurrMod.dir" value="${build.dir}/Ckan_OMS" />
+    <call target="copyOMS" />
+
+    <zip zipfile="${build.dir}/OrbitalMaterialScience_CKAN_${OMS.Version}.zip" ziplevel="9">
+      <fileset basedir="${build.dir}/Ckan_OMS" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
   </target>
 
   <target name="copyDll" description="copy the dll from the plugin folder to game data" >
@@ -69,7 +158,7 @@
     <call target="copyKemini" />
     <call target="copyKEES" />
 
-    <zip zipfile="${build.dir}/NehemiahIncSciencePack.zip" ziplevel="9">
+    <zip zipfile="${build.dir}/NehemiahIncSciencePack_${All.Version}.zip" ziplevel="9">
       <fileset basedir="${All.dir}" >
         <include name="**/*" />
       </fileset>
@@ -85,7 +174,7 @@
 
     <call target="copyOMS" />
     
-    <zip zipfile="${build.dir}/OrbitalMaterialScience.zip" ziplevel="9">
+    <zip zipfile="${build.dir}/OrbitalMaterialScience_${OMS.Version}.zip" ziplevel="9">
       <fileset basedir="${OMS.dir}" >
         <include name="**/*" />
       </fileset>
@@ -107,7 +196,7 @@
     <call target="copyMPParts" />
     <call target="copyKLS" />
 
-    <zip zipfile="${build.dir}/KerbalLifeScience.zip" ziplevel="9">
+    <zip zipfile="${build.dir}/KerbalLifeScience_${KLS.Version}.zip" ziplevel="9">
       <fileset basedir="${KR.dir}">
         <include name="**/*" />
       </fileset>
@@ -129,7 +218,7 @@
     <call target="copyModuleManager" />
     <call target="copyKemini" />
 
-      <zip zipfile="${build.dir}/KeminiResearch.zip" ziplevel="9">
+      <zip zipfile="${build.dir}/KeminiResearch_${Kemini.Version}.zip" ziplevel="9">
         <fileset basedir="${Kemini.dir}">
           <include name="**/*" />
         </fileset>
@@ -150,7 +239,7 @@
     <call target="copyModuleManager" />
     <call target="copyKEES" />
 
-    <zip zipfile="${build.dir}/KEES.zip" ziplevel="9">
+    <zip zipfile="${build.dir}/KEES_${KEES.Version}.zip" ziplevel="9">
       <fileset basedir="${KEES.dir}">
         <include name="**/*" />
       </fileset>
