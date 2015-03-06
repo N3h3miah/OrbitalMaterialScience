@@ -5,6 +5,7 @@
 
   <property name="build.dir" value="build" />
   <property name="OMS.dir" value="${build.dir}/OMS/" />
+  <property name="All.dir" value="${build.dir}/AllInOne/" />
   <property name="KR.dir" value="${build.dir}/KerbalLifeScience/" />
   <property name="Kemini.dir" value="${build.dir}/Kemini/" />
   <property name="KEES.dir" value="${build.dir}/KEES/" />
@@ -22,6 +23,7 @@
     <call target="klsZip" />
     <call target="keminiZip" />
     <call target="keesZip" />
+    <call target="allInOneZip" />
   </target>
 
   <target name="copyDll" description="copy the dll from the plugin folder to game data" >
@@ -54,38 +56,56 @@
     </copy>
   </target>
 
+  <target name="allInOneZip" description="All mod in one zip">
+
+    <mkdir dir="${All.dir}/NehemiahInc/" />
+
+    <property name="CurrMod.dir" value="${All.dir}" />
+    <call target="copyCommon"/>
+    <call target="copyModuleManager" />
+    <call target="copyMPParts" />
+    <call target="copyOMS" />
+    <call target="copyKLS" />
+    <call target="copyKemini" />
+    <call target="copyKEES" />
+
+    <zip zipfile="${build.dir}/NehemiahIncSciencePack.zip" ziplevel="9">
+      <fileset basedir="${All.dir}" >
+        <include name="**/*" />
+      </fileset>
+    </zip>
+  </target>
+
   <target name="omsZip" description="copy the files and folders for the oms mod">
-    
-    <mkdir dir="${OMS.dir}/NehemiahInc/OMS" />
 
     <property name="CurrMod.dir" value="${OMS.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
     <call target="copyMPParts" />
-    
-    <copy todir="${OMS.dir}/NehemiahInc/OMS" >
-      <fileset basedir="${GameData.dir}/OMS"/>
-    </copy>
+
+    <call target="copyOMS" />
     
     <zip zipfile="${build.dir}/OrbitalMaterialScience.zip" ziplevel="9">
       <fileset basedir="${OMS.dir}" >
         <include name="**/*" />
       </fileset>
-    </zip>
-    
+    </zip>   
   </target>
 
+    <target name="copyOMS" description="copy the oms files">
+      <mkdir dir="${CurrMod.dir}/NehemiahInc/OMS" />
+      <copy todir="${CurrMod.dir}/NehemiahInc/OMS" >
+        <fileset basedir="${GameData.dir}/OMS"/>
+      </copy>
+    </target>
+
   <target name="klsZip" description="copy the files and folders for the KerbalLifeScience mod">
-    <mkdir dir="${KR.dir}/NehemiahInc/KerbalLifeScience" />
 
     <property name="CurrMod.dir" value="${KR.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
     <call target="copyMPParts" />
-
-    <copy todir="${KR.dir}/NehemiahInc/KerbalLifeScience" >
-      <fileset basedir="${GameData.dir}/KerbalLifeScience"/>
-    </copy>
+    <call target="copyKLS" />
 
     <zip zipfile="${build.dir}/KerbalLifeScience.zip" ziplevel="9">
       <fileset basedir="${KR.dir}">
@@ -95,16 +115,19 @@
 
   </target>
 
+    <target name="copyKLS" description="copy the oms files">
+      <mkdir dir="${CurrMod.dir}/NehemiahInc/KerbalLifeScience" />
+      <copy todir="${CurrMod.dir}/NehemiahInc/KerbalLifeScience" >
+        <fileset basedir="${GameData.dir}/KerbalLifeScience"/>
+      </copy>
+    </target>
+
   <target name="keminiZip" description="copy the files and folders for the Kemini Research mod">
-      <mkdir dir="${Kemini.dir}/NehemiahInc/Kemini" />
 
     <property name="CurrMod.dir" value="${Kemini.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
-
-      <copy todir="${Kemini.dir}/NehemiahInc/Kemini" >
-        <fileset basedir="${GameData.dir}/Kemini"/>
-      </copy>
+    <call target="copyKemini" />
 
       <zip zipfile="${build.dir}/KeminiResearch.zip" ziplevel="9">
         <fileset basedir="${Kemini.dir}">
@@ -114,17 +137,18 @@
 
   </target>
 
-  <target name="keesZip" description="copy the files and folders for the KEES mod">
-    <mkdir dir="${KEES.dir}/NehemiahInc/KEES" />
+    <target name="copyKemini" description="copy the oms files">
+      <mkdir dir="${CurrMod.dir}/NehemiahInc/Kemini" />
+      <copy todir="${CurrMod.dir}/NehemiahInc/Kemini" >
+        <fileset basedir="${GameData.dir}/Kemini"/>
+      </copy>
+    </target>
 
+  <target name="keesZip" description="copy the files and folders for the KEES mod">
     <property name="CurrMod.dir" value="${KEES.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
-
-    <copy todir="${KEES.dir}/NehemiahInc/KEES" >
-      <fileset basedir="${GameData.dir}/KEES"/>
-    </copy>
-
+    <call target="copyKEES" />
 
     <zip zipfile="${build.dir}/KEES.zip" ziplevel="9">
       <fileset basedir="${KEES.dir}">
@@ -133,5 +157,12 @@
     </zip>
 
   </target>
+
+    <target name="copyKEES" description="copy the oms files">
+      <mkdir dir="${CurrMod.dir}/NehemiahInc/KEES" />
+      <copy todir="${CurrMod.dir}/NehemiahInc/KEES" >
+        <fileset basedir="${GameData.dir}/KEES"/>
+      </copy>
+    </target>
   
 </project>
