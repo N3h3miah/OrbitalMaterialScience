@@ -27,7 +27,6 @@
 
   <target name="all" description="pack the diferent mods" depends="clean">
     <call target="zips" />
-    <call target="ckan" />
   </target>
   
   <target name="zips" description="pack the diferent mods">
@@ -37,82 +36,6 @@
     <call target="keminiZip" />
     <call target="keesZip" />
     <call target="allInOneZip" />
-  </target>
-
-  <target name="ckan" description="pack the ckan zips for all mods" depends="clean">
-    <call target="copyDll" />
-    <call target="CommonCkan" />
-    <call target="mpCkan" />
-    <call target="KEESCkan" />
-    <call target="KeminiCkan" />
-    <call target="KLSCkan" />
-    <call target="OMSCkan" />
-  </target>
-
-  <target name="CommonCkan" description="ckan common uip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_Common" />
-    <call target="copyCommon" />
-    
-    <zip zipfile="${build.dir}/NehemiahScienceCommonCKAN_${Common.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_Common" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="mpCkan" description="ckan mp parts zip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_MP_Parts" />
-    <call target="copyMPParts" />
-
-    <zip zipfile="${build.dir}/NehemiahMP_PartsCKAN_${MPP.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_MP_Parts" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="KEESCkan" description="ckan KEES zip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_KEES" />
-    <call target="copyKEES" />
-
-    <zip zipfile="${build.dir}/KEES_CKAN_${KEES.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_KEES" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="KeminiCkan" description="ckan Kemini zip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_Kemini" />
-    <call target="copyKemini" />
-
-    <zip zipfile="${build.dir}/Kemini_CKAN_${Kemini.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_Kemini" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="KLSCkan" description="ckan KLS zip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_KLS" />
-    <call target="copyKLS" />
-
-    <zip zipfile="${build.dir}/KerbalLifeScience_CKAN_${KLS.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_KLS" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="OMSCkan" description="ckan OMS zip">
-    <property name="CurrMod.dir" value="${build.dir}/Ckan_OMS" />
-    <call target="copyOMS" />
-
-    <zip zipfile="${build.dir}/OrbitalMaterialScience_CKAN_${OMS.Version}.zip" ziplevel="9">
-      <fileset basedir="${build.dir}/Ckan_OMS" >
-        <include name="**/*" />
-      </fileset>
-    </zip>
   </target>
 
   <target name="copyDll" description="copy the dll from the plugin folder to game data" >
