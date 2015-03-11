@@ -62,6 +62,7 @@ namespace NE_Science
 
             GUILayout.BeginVertical();
             moveScrollPos = GUILayout.BeginScrollView(moveScrollPos, GUILayout.Width(230), GUILayout.Height(350));
+            GUILayout.Label("Test subjects needed: " + exp.getTestSubjectsNeeded());
             if (exp.isTestSubjectAvailable())
             {
                 GUILayout.Label("Choose a Kerbal:");
