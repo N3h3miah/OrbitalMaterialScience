@@ -10,6 +10,11 @@ namespace NE_Science
  */
     public class MPLExperimentData : StepExperimentData
     {
+
+        private Guid cachedVesselID;
+        private int partCount;
+        private List<MPL_Module> physicsLabCache = null;
+
         protected MPLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
             : base(id, type, name, abb, eq, mass)
         { }
@@ -17,7 +22,19 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<MPL_Module> allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
+            List<MPL_Module> allPhysicsLabs;
+            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && physicsLabCache != null)
+            {
+                allPhysicsLabs = physicsLabCache;
+            }
+            else
+            {
+                allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
+                physicsLabCache = allPhysicsLabs;
+                cachedVesselID = vessel.id;
+                partCount = vessel.parts.Count;
+                NE_Helper.log("Lab Cache refresh");
+            }
             foreach (MPL_Module lab in allPhysicsLabs)
             {
                 if (lab.vessel == vessel && lab.hasEquipmentInstalled(neededEquipment) && lab.hasEquipmentFreeExperimentSlot(neededEquipment))

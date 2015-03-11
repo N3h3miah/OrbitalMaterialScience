@@ -26,6 +26,11 @@ namespace NE_Science
   */
     public class KeminiExperimentData : StepExperimentData
     {
+
+        private Guid cachedVesselID;
+        private int partCount;
+        private List<Kemini_Module> KeminiLabCache = null;
+        
         protected KeminiExperimentData(string id, string type, string name, string abb, float mass)
             : base(id, type, name, abb, EquipmentRacks.KEMINI, mass)
         {
@@ -35,7 +40,19 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<Kemini_Module> allKeminiLabs = new List<Kemini_Module>(UnityFindObjectsOfType(typeof(Kemini_Module)) as Kemini_Module[]);
+            List<Kemini_Module> allKeminiLabs;
+            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && KeminiLabCache != null)
+            {
+                allKeminiLabs = KeminiLabCache;
+            }
+            else
+            {
+                allKeminiLabs = new List<Kemini_Module>(UnityFindObjectsOfType(typeof(Kemini_Module)) as Kemini_Module[]);
+                KeminiLabCache = allKeminiLabs;
+                cachedVesselID = vessel.id;
+                partCount = vessel.parts.Count;
+                NE_Helper.log("Lab Cache refresh");
+            }
             foreach (Kemini_Module lab in allKeminiLabs)
             {
                 if (lab.vessel == vessel && lab.hasEquipmentInstalled(neededEquipment) && lab.hasEquipmentFreeExperimentSlot(neededEquipment))
