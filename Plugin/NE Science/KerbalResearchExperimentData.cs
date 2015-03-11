@@ -11,6 +11,10 @@ namespace NE_Science
 
         private int testSubjectsNeeded;
 
+        private Guid cachedVesselID;
+        private int partCount;
+        private List<MPL_Module> physicsLabCache = null;
+
         protected KerbalResearchExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, int testSubjectsNeeded)
             : base(id, type, name, abb, eq, mass)
         {
@@ -36,6 +40,18 @@ namespace NE_Science
         {
             List<Lab> labs = getFreeLabsWithEquipment(vessel);
             return labs.Count > 0 && state == ExperimentState.STORED;
+        }
+
+        public override string getDescription(string linePrefix = "")
+        {
+            string desc = base.getDescription(linePrefix);
+            desc += "\n" + linePrefix + "Test subjects needed: " + getTestSubjectsNeeded();
+            return desc;
+        }
+
+        public int getTestSubjectsNeeded()
+        {
+            return testSubjectsNeeded;
         }
 
         internal override string getStateString()
@@ -174,7 +190,19 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<MPL_Module> allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
+            List<MPL_Module> allPhysicsLabs;
+            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && physicsLabCache != null)
+            {
+                allPhysicsLabs = physicsLabCache;
+            }
+            else
+            {
+                allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
+                physicsLabCache = allPhysicsLabs;
+                cachedVesselID = vessel.id;
+                partCount = vessel.parts.Count;
+                NE_Helper.log("Lab Cache refresh");
+            }
             foreach (MPL_Module lab in allPhysicsLabs)
             {
                 if (lab.vessel == vessel && lab.hasEquipmentFreeExperimentSlot(neededEquipment))

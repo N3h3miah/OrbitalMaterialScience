@@ -44,6 +44,10 @@ namespace NE_Science
         internal ExperimentDataStorage store;
         protected string storageType = ExperimentFactory.OMS_EXPERIMENTS;
 
+        private Guid cachedVesselID;
+        private int partCount;
+        private List<ExperimentStorage> contCache = null;
+
         public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
         {
             this.id = id;
@@ -210,7 +214,20 @@ namespace NE_Science
         public List<ExperimentStorage> getFreeExperimentContainers(Vessel vessel)
         {
             List<ExperimentStorage> freeCont = new List<ExperimentStorage>();
-            List<ExperimentStorage> allCont = new List<ExperimentStorage>(UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[]);
+            List<ExperimentStorage> allCont;
+            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && contCache != null)
+            {
+                allCont = contCache;
+            }
+            else
+            {
+                allCont = new List<ExperimentStorage>(UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[]);
+                contCache = allCont;
+                cachedVesselID = vessel.id;
+                partCount = vessel.parts.Count;
+                NE_Helper.log("Storage Cache refresh");
+            }
+
             foreach (ExperimentStorage c in allCont)
             {
                 if (c.vessel == vessel && c.isEmpty() && c.type == storageType)
