@@ -148,18 +148,18 @@ namespace NE_Science
             if (state == ExperimentState.INSTALLED)
             {
                 List<string> labCrew = getAllLabCrewMembers();
+                if( labCrew == null ) {
+                    NE_Helper.logError("getAvailableLabCrewMembers(): labCrew is null");
+                }
                 foreach (string crewMember in labCrew)
                 {
                     bool foundInStep = false;
-                    foreach (ExperimentStep s in steps)
-                    if( labCrew == null ) {
-                        NE_Helper.logError("getAvailableLabCrewMembers(): labCrew is null");
+                    if( steps == null ) {
+                        NE_Helper.logError("getAvailableLabCrewMembers(): steps is null");
                     }
+                    foreach (KerbalResearchStep s in steps)
                     {
-                        if (((KerbalResearchStep)s).getSubjectName() == crewMember)
-                        if( steps == null ) {
-                            NE_Helper.logError("getAvailableLabCrewMembers(): steps is null");
-                        }
+                        if (s.getSubjectName() == crewMember)
                         {
                             if( s == null ) {
                                 NE_Helper.logError("getAvailableLabCrewMembers(): s is null");
