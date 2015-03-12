@@ -448,15 +448,20 @@ namespace NE_Science
         }
     }
 
-    public class MultiStepExperimentData<T>  : ExperimentData where T : ExperimentStep
+    public abstract class MultiStepExperimentData<T>  : ExperimentData where T : ExperimentStep
     {
         private const string ACTIVE_VALUE = "activeStep";
-        protected T[] steps = new T[1];
+        protected T[] steps = null; // Implementation Class must ensure this is allocated
         private int activeStep = 0;
 
-        protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
+        protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, int numSteps)
             : base(id, type, name, abb, eq, mass)
-        { }
+        {
+            if (numSteps < 1) {
+                throw new ArgumentOutOfRangeException ("numSteps", "MultiStepExperimentData must have at least 1 step.");
+            }
+            steps = new T[numSteps];
+        }
 
         public override ConfigNode getNode()
         {
@@ -465,10 +470,8 @@ namespace NE_Science
             if (baseNode == null) {
                 NE_Helper.logError ("MultiStepExperimentData.getNode() - baseNode is NULL!");
             }
-            baseNode.AddValue(ACTIVE_VALUE, activeStep);
+                baseNode.AddValue(ACTIVE_VALUE, activeStep);
 
-            if (steps != null)
-            {
                 int count = 0;
                 foreach (ExperimentStep es in steps)
                 {
@@ -485,7 +488,6 @@ namespace NE_Science
                     }
                     baseNode.AddNode(es.getNode());
                 }
-            }
             } catch(NullReferenceException nre) {
                 NE_Helper.logError ("MultiStepExperimentData.getNode - NullReferenceException:\n"
                                     + nre.StackTrace);

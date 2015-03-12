@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public class Lab : PartModule
+    public abstract class Lab : PartModule
     {
 
         [KSPField(isPersistant = false)]
