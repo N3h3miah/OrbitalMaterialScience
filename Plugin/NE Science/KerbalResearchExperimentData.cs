@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NE_Science
 {
-    public class KerbalResearchExperimentData : MultiStepExperimentData<KerbalResearchStep>
+    public abstract class KerbalResearchExperimentData : MultiStepExperimentData<KerbalResearchStep>
     {
         private const string TEST_SUBJECTS_NEEDED = "SubjectsNeeded";
 
@@ -16,10 +16,17 @@ namespace NE_Science
         private List<MPL_Module> physicsLabCache = null;
 
         protected KerbalResearchExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, int testSubjectsNeeded)
-            : base(id, type, name, abb, eq, mass)
+            : base(id, type, name, abb, eq, mass, testSubjectsNeeded)
         {
             this.testSubjectsNeeded = testSubjectsNeeded;
-            steps = new KerbalResearchStep[testSubjectsNeeded];
+        }
+
+        /** Sets up the required number of test subjects */
+        protected void setExperimentSteps(string resourceName, float resourceAmount)
+        {
+            for (int idx = 0; idx < steps.Length; idx++) {
+                steps [idx] = new KerbalResearchStep(this, resourceName, resourceAmount, idx);
+            }
         }
 
         public override ConfigNode getNode()
@@ -212,8 +219,10 @@ namespace NE_Science
         { 
         }
 
-        public KerbalResearchStep(ExperimentData exp, string name, int index):base(exp, "KerbalResStep", name, index)
-        { }
+        public KerbalResearchStep(ExperimentData exp, string name, int index)
+            : base(exp, "KerbalResStep", name, index)
+        {
+        }
 
         protected override void load(ConfigNode node)
         {
