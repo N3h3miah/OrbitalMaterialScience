@@ -469,14 +469,19 @@ namespace NE_Science
 
             if (steps != null)
             {
+                int count = 0;
                 foreach (ExperimentStep es in steps)
                 {
+                    count++;
                     if (es == null) {
-                        NE_Helper.logError ("MultiStepExperimentData.getNode() - es is NULL!");
+                        NE_Helper.logError ("MultiStepExperimentData("+getId()+").getNode() - es is NULL!\n"
+                        + "    entry "+count+" in steps["+steps.Length+"] is NULL\n");
+                        continue;
                     }
                     ConfigNode expNode = es.getNode ();
                     if (expNode == null) {
                         NE_Helper.logError ("MultiStepExperimentData.getNode() - expNode is NULL!");
+                        continue;
                     }
                     baseNode.AddNode(es.getNode());
                 }

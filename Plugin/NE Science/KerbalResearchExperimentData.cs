@@ -145,9 +145,21 @@ namespace NE_Science
                 {
                     bool foundInStep = false;
                     foreach (ExperimentStep s in steps)
+                    if( labCrew == null ) {
+                        NE_Helper.logError("getAvailableLabCrewMembers(): labCrew is null");
+                    }
                     {
                         if (((KerbalResearchStep)s).getSubjectName() == crewMember)
+                        if( steps == null ) {
+                            NE_Helper.logError("getAvailableLabCrewMembers(): steps is null");
+                        }
                         {
+                            if( s == null ) {
+                                NE_Helper.logError("getAvailableLabCrewMembers(): s is null");
+                            }
+                            if( s.getSubjectName() == null ) {
+                                NE_Helper.logError("getAvailableLabCrewMembers(): s.getSubjectName is null");
+                            }
                             foundInStep = true;
                         }
                     }
