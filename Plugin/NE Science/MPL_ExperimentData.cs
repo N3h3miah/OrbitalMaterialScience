@@ -91,8 +91,8 @@ namespace NE_Science
             steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 1);
             steps[2] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 2);
             steps[3] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
-            steps[4] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
-            steps[5] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 3);
+            steps[4] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 4);
+            steps[5] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 3f, 5);
         }
     }
 }
