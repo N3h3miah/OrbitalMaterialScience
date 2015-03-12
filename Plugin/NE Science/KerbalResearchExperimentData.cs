@@ -21,6 +21,14 @@ namespace NE_Science
             this.testSubjectsNeeded = testSubjectsNeeded;
         }
 
+        /** Sets up the required number of test subjects */
+        protected void setExperimentSteps(string resourceName, float resourceAmount)
+        {
+            for (int idx = 0; idx < steps.Length; idx++) {
+                steps [idx] = new KerbalResearchStep(this, resourceName, resourceAmount, idx);
+            }
+        }
+
         public override ConfigNode getNode()
         {
             ConfigNode node =  base.getNode();
