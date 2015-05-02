@@ -27,32 +27,27 @@ namespace NE_Science
     class KEES_PayloadCarrier : PartModule
     {
 
-        private bool kasInstalled = false;
-
-
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
 
-            if (checkedForKAS())
+            if (checkedForKIS())
             {
-                kasInstalled = true;
-                NE_Helper.log("KAS Installed");
+                NE_Helper.log("KIS Installed");
                 Events["attachPEC"].active = false;
                 Events["attachPEC"].guiActive = false;
             }
             else
             {
-                kasInstalled = false;
-                NE_Helper.log("No KAS");
+                NE_Helper.log("No KIS");
                 Events["attachPEC"].active = true;
                 Events["attachPEC"].guiActive = true;
             }
         }
 
-        private bool checkedForKAS()
+        private bool checkedForKIS()
         {
-            GameObject go = GameDatabase.Instance.GetModel("KAS/Parts/container1/container1");
+            GameObject go = GameDatabase.Instance.GetModel("KIS/Parts/container1/part");
             return (go != null);
         }
 
