@@ -39,7 +39,8 @@ namespace NE_Science
                 return ExperimentSituations.SrfSplashed;
             else if (body.atmosphere && altitude <= pars.flyingAltitudeThreshold)
                 return ExperimentSituations.FlyingLow;
-            else if (body.atmosphere && altitude <= body.atmosphereScaleHeight * 1000 * 13.8) // -ln(10^-6)
+            /* MKW - this calculation change needs testing! */
+            else if (body.atmosphere && altitude <= body.atmosphereDepth)
                 return ExperimentSituations.FlyingHigh;
             else if (altitude <= pars.spaceAltitudeThreshold)
                 return ExperimentSituations.InSpaceLow;
@@ -55,7 +56,7 @@ namespace NE_Science
             print("Landed Value: " + pars.LandedDataValue);
             print("Splashed Value: " + pars.SplashedDataValue);
             print("Fly Low: " + pars.FlyingLowDataValue + " at " + pars.flyingAltitudeThreshold);
-            print("High Low: " + pars.FlyingHighDataValue + " at " + (body.atmosphereScaleHeight * 1000 * 13.8) + " or " + body.maxAtmosphereAltitude);
+            print("High Low: " + pars.FlyingHighDataValue + " at " + body.atmosphereDepth);
             print("Orbit Low: " + pars.InSpaceLowDataValue + " at " + pars.spaceAltitudeThreshold);
             print("Orbit Low: " + pars.InSpaceHighDataValue);*/
             return getScienceMultiplier(getScienceSituation(vessel), body);
