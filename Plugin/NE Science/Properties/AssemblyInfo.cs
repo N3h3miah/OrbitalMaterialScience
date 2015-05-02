@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.6.0.0")]
-[assembly: AssemblyFileVersion("0.6.0.0")]
+[assembly: AssemblyVersion("0.6.9.0")]
+[assembly: AssemblyFileVersion("0.6.9.0")]
 
-[assembly: KSPAssembly("NE_Science", 0, 60)]
+[assembly: KSPAssembly("NE_Science", 0, 69)]

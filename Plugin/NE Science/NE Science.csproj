@@ -35,15 +35,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KAS">
-      <HintPath>..\..\Lib\KAS.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\Lib\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="KIS">
+      <HintPath>..\..\Lib\KIS.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -177,44 +180,17 @@
     <None Include="..\..\GameData\NehemiahInc\KEES\Resources\KEES_Experiments.cfg">
       <Link>NehemiahInc\KEES\Resources\KEES_Experiments.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\ExperimentContainer\AdumContainerTexture.mbm">
-      <Link>NehemiahInc\KR\Parts\ExperimentContainer\AdumContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_FASA.cfg">
+      <Link>NehemiahInc\Kemini\MM_FASA.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\ExperimentContainer\SpiuContainerTexture.mbm">
-      <Link>NehemiahInc\KR\Parts\ExperimentContainer\SpiuContainerTexture.mbm</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_HGR.cfg">
+      <Link>NehemiahInc\Kemini\MM_HGR.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\ADUM.cfg">
-      <Link>NehemiahInc\KR\Parts\Experiments_USU\ADUM.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_K2.cfg">
+      <Link>NehemiahInc\Kemini\MM_K2.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\ADUMTexture.mbm">
-      <Link>NehemiahInc\KR\Parts\Experiments_USU\ADUMTexture.mbm</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\SpiU.cfg">
-      <Link>NehemiahInc\KR\Parts\Experiments_USU\SpiU.cfg</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\Experiments_USU\SpiUTexture.mbm">
-      <Link>NehemiahInc\KR\Parts\Experiments_USU\SpiUTexture.mbm</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm">
-      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm">
-      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\model.mu">
-      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\model.mu</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipment\UltraSound\part.cfg">
-      <Link>NehemiahInc\KR\Parts\LabEquipment\UltraSound\part.cfg</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm">
-      <Link>NehemiahInc\KR\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Resources\KR_Experiments.cfg">
-      <Link>NehemiahInc\KR\Resources\KR_Experiments.cfg</Link>
-    </None>
-    <None Include="..\..\GameData\NehemiahInc\KR\Resources\KR_Resources.cfg">
-      <Link>NehemiahInc\KR\Resources\KR_Resources.cfg</Link>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_Tantares.cfg">
+      <Link>NehemiahInc\Kemini\MM_Tantares.cfg</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\Kemini\pod_mk1.cfg">
       <Link>NehemiahInc\Kemini\pod_mk1.cfg</Link>
@@ -257,6 +233,45 @@
     </None>
     <None Include="..\..\GameData\NehemiahInc\Kemini\Resources\Kemini_Experiments.cfg">
       <Link>NehemiahInc\Kemini\Resources\Kemini_Experiments.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\ExperimentContainer\AdumContainerTexture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\ExperimentContainer\AdumContainerTexture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\ExperimentContainer\SpiuContainerTexture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\ExperimentContainer\SpiuContainerTexture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\ADUM.cfg">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\ADUM.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\ADUMTexture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\ADUMTexture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\SpiU.cfg">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\SpiU.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\SpiUTexture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\Experiments_USU\SpiUTexture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\UltraSound_Normal.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\UltraSound_Texture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\model.mu">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\model.mu</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\part.cfg">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\LabEquipment\UltraSound\part.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm">
+      <Link>NehemiahInc\KerbalLifeScience\Parts\LabEquipmentContainer\ContainerUSU_Texture.mbm</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Resources\KLS_Experiments.cfg">
+      <Link>NehemiahInc\KerbalLifeScience\Resources\KLS_Experiments.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\KerbalLifeScience\Resources\KLS_Resources.cfg">
+      <Link>NehemiahInc\KerbalLifeScience\Resources\KLS_Resources.cfg</Link>
     </None>
     <None Include="..\..\GameData\NehemiahInc\MultiPurposeParts\Parts\Experiment\ExperimentNormalTexture.mbm">
       <Link>NehemiahInc\MultiPurposeParts\Parts\Experiment\ExperimentNormalTexture.mbm</Link>

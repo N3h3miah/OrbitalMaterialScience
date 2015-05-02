@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- NAnt script -->
 <project name="Nehemiah KSP mods" default="all" basedir=".">
   
   <description>Pack the files for the different KSP mods</description>
@@ -11,13 +12,13 @@
   <property name="KEES.dir" value="${build.dir}/KEES/" />
   <property name="GameData.dir" value="GameData/NehemiahInc" />
 
-  <property name="OMS.Version" value="0.6" />
-  <property name="All.Version" value="0.1.2" />
-  <property name="KLS.Version" value="0.1" />
-  <property name="Kemini.Version" value="0.1.2" />
-  <property name="KEES.Version" value="0.2" />
-  <property name="Common.Version" value="0.1" />
-  <property name="MPP.Version" value="0.1" />
+  <property name="OMS.Version" value="0.7_alpha_mw-1" />
+  <property name="All.Version" value="0.2_alpha_mw-1" />
+  <property name="KLS.Version" value="0.2_alpha_mw-1" />
+  <property name="Kemini.Version" value="0.2_alpha_mw-1" />
+  <property name="KEES.Version" value="0.3_alpha_mw-1" />
+  <property name="Common.Version" value="0.2_alpha_mw-1" />
+  <property name="MPP.Version" value="0.2_alpha_mw-1" />
 
   <property name="CurrMod.dir" value="${build.dir}" />
   
