@@ -107,7 +107,7 @@ namespace NE_Science.Contracts.Parameters
     public class KEESExperimentRecovery : OMSExperimentRecovery
     {
         protected const string KEES_PC = "NE.KEES.PC";
-        protected const string KAS_CONTAINER = "KASModuleContainer";
+        protected const string KIS_CONTAINER = "ModuleKISInventory";
         protected const string CONTENT_PART = "CONTENT_PART";
 
         public override bool protovesselHasDoneExperiment(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
@@ -126,7 +126,7 @@ namespace NE_Science.Contracts.Parameters
                     if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
                         return true;
                 }
-                else if (isKasContainerPart(part))
+                else if (isKISContainerPart(part))
                 {
                     if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
                         return true;
@@ -135,12 +135,12 @@ namespace NE_Science.Contracts.Parameters
             return false;
         }
 
-        private bool isKasContainerPart(ProtoPartSnapshot part)
+        private bool isKISContainerPart(ProtoPartSnapshot part)
         {
             foreach (ProtoPartModuleSnapshot module in part.modules)
             {
                 NE_Helper.log("ProtoVessel recovery Modulename: " + module.moduleName);
-                if (module.moduleName == KAS_CONTAINER)
+                if (module.moduleName == KIS_CONTAINER)
                 {
                     return true;
                 }
@@ -156,9 +156,9 @@ namespace NE_Science.Contracts.Parameters
             foreach (ProtoPartModuleSnapshot module in payloadCarrier.modules)
             {
                 NE_Helper.log("ProtoVessel recovery Modulename: " + module.moduleName);
-                if (module.moduleName == KAS_CONTAINER)
+                if (module.moduleName == KIS_CONTAINER)
                 {
-                    NE_Helper.log("KAS container found");
+                    NE_Helper.log("KIS container found");
                     ConfigNode partConf = findExperimentModulInPC(module, experiment);
                     if (partConf != null)
                     {
@@ -174,24 +174,80 @@ namespace NE_Science.Contracts.Parameters
             return false;
         }
 
-        private ConfigNode findExperimentModulInPC(ProtoPartModuleSnapshot kasModule, AvailablePart experiment)
+        private ConfigNode findExperimentModulInPC(ProtoPartModuleSnapshot kisModule, AvailablePart experiment)
         {
-            ConfigNode partConf = kasModule.moduleValues;
-            foreach (ConfigNode contentPart in partConf.GetNodes(CONTENT_PART))
+            ConfigNode partConf = kisModule.moduleValues;
+            foreach (ConfigNode item in partConf.GetNodes("ITEM"))
             {
-                NE_Helper.log("ContentPart: " + contentPart.GetValue("name"));
-                if (contentPart.GetValue("name") == experiment.name)
-                {
-                    foreach (ConfigNode module in contentPart.GetNodes("MODULE"))
-                    {
-                        if (module.GetValue("name") == experimentModulname[experiment.name])
-                            return module;
+                NE_Helper.log("ConfigNode ITEM: " + item.GetValue("partName"));
+                if (item.GetValue ("partName") == experiment.name) {
+                    foreach (ConfigNode part in item.GetNodes("PART")) {
+                        NE_Helper.log("ConfigNode PART: " + part.GetValue("name"));
+                        if (part.GetValue ("name") == experiment.name) {
+                            foreach (ConfigNode module in part.GetNodes("MODULE")) {
+                                if (module.GetValue ("name") == experimentModulname [experiment.name])
+                                    return module;
+                            }
+                        }
                     }
                 }
             }
             return null;
         }
 
-
+        /*
+         * Following is partial layout of KIS container containing KEES experiments: 
+            PART
+            {
+                name = NE.KEES.PC
+                cid = 4293836508
+                uid = 2650723247
+...
+                MODULE
+                {
+                    name = ModuleKISInventory
+                    isEnabled = True
+                    invName = 
+...
+                    ITEM
+                    {
+                        partName = NE.KEES.PPMD
+                        slot = 3
+                        quantity = 1
+                        equipped = False
+                        resourceMass = 0
+                        contentMass = 0
+                        contentCost = 0
+                        PART
+                        {
+                            name = NE.KEES.PPMD
+                            cid = 4294922954
+...
+                            MODULE
+                            {
+                                name = KEES_Lab
+                                isEnabled = True
+                                doResearch = True
+...
+                            MODULE
+                            {
+                                name = KEESExperiment
+                                isEnabled = True
+...
+                                ScienceData
+                                {
+                                    data = 280
+                                    subjectID = NE_KEES_PPMD@KerbinInSpaceLow
+                                    xmit = 0.2
+                                    labBoost = 1
+                                    title = Polished Plate Micrometeoroid and Debris while in space near Kerbin
+                                }
+...
+                    ITEM
+                    {
+                        partName = NE.KEES.POSA2
+                        slot = 0
+                        quantity = 1
+*/
     }
 }
