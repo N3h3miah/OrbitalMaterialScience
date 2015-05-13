@@ -39,7 +39,7 @@ namespace NE_Science
                     Part pPf = part.partPrefab;
                     LabEquipmentModule lem = pPf.GetComponent<LabEquipmentModule>();
                     if(ResearchAndDevelopment.PartTechAvailable(part)){
-                    list.Add(getLabEquipment(part.partPrefab, p.Key));
+                        list.Add(getLabEquipment(part.partPrefab, p.Key));
                     }
                 }
             }
