@@ -85,9 +85,9 @@ namespace NE_Science.Contracts.Parameters
             NE_Helper.log("Recovery ProtoVessel");
             if (targetBody != null && experiment != null)
             {
-                NE_Helper.log("Lookingup stratege for " + experiment.name);
+                NE_Helper.log("Looking up strategy for " + experiment.name);
                 OMSExperimentRecovery strategy = new KEESExperimentRecovery();
-                if(strategy.protovesselHasDoneExperiement(pv, experiment,targetBody, this.Root.DateAccepted)){
+                if(strategy.protovesselHasDoneExperiment(pv, experiment,targetBody, this.Root.DateAccepted)){
                     SetComplete();
                 }
             }

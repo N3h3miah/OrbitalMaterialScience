@@ -40,7 +40,7 @@ namespace NE_Science.Contracts.Parameters
         protected const string SCIENCE_DATA = "ScienceData";
         protected const string SUBJECT_ID = "subjectID";
 
-        public virtual bool protovesselHasDoneExperiement(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
+        public virtual bool protovesselHasDoneExperiment(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
             foreach (ProtoPartSnapshot part in pv.protoPartSnapshots)
             {
@@ -110,7 +110,7 @@ namespace NE_Science.Contracts.Parameters
         protected const string KAS_CONTAINER = "KASModuleContainer";
         protected const string CONTENT_PART = "CONTENT_PART";
 
-        public override bool protovesselHasDoneExperiement(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
+        public override bool protovesselHasDoneExperiment(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
             NE_Helper.log("KEES-Experiement stategy");
             foreach (ProtoPartSnapshot part in pv.protoPartSnapshots)

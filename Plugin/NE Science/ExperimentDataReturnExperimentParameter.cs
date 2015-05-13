@@ -85,14 +85,14 @@ namespace NE_Science.Contracts.Parameters
             NE_Helper.log("Recovery ProtoVessel");
             if (targetBody != null && experiment != null)
             {
-                if(protovesselHasDoneExperiement(pv, experiment,targetBody)){
+                if(protovesselHasDoneExperiment(pv, experiment,targetBody)){
                     SetComplete();
                 }
             }
             
         }
 
-        private bool protovesselHasDoneExperiement(ProtoVessel pv, ExperimentData experiment, CelestialBody targetBody)
+        private bool protovesselHasDoneExperiment(ProtoVessel pv, ExperimentData experiment, CelestialBody targetBody)
         {
             foreach (ProtoPartSnapshot part in pv.protoPartSnapshots)
             {
