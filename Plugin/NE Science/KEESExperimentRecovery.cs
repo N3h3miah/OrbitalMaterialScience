@@ -116,19 +116,11 @@ namespace NE_Science.Contracts.Parameters
             foreach (ProtoPartSnapshot part in pv.protoPartSnapshots)
             {
                 NE_Helper.log("KEES-Experiement stategy, Part: " + part.partName);
-                if (part.partName == experiment.name)
-                {
-                    if (experimentFound(part, experiment, targetBody, contractAccepted))
+                if (part.partName == experiment.name) {
+                    if (experimentFound (part, experiment, targetBody, contractAccepted))
                         return true;
-                }
-                else if (part.partName == KEES_PC)
-                {
-                    if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
-                        return true;
-                }
-                else if (isKISContainerPart(part))
-                {
-                    if (payloadCarrierFound(part, experiment, targetBody, contractAccepted))
+                } else if (isKISContainerPart (part)) {
+                    if (payloadCarrierFound (part, experiment, targetBody, contractAccepted))
                         return true;
                 }
             }
@@ -150,7 +142,6 @@ namespace NE_Science.Contracts.Parameters
 
         private bool payloadCarrierFound(ProtoPartSnapshot payloadCarrier, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
-
             NE_Helper.log("ProtoVessel recovery: payload carrier found");
             string experiementModuleName = experimentModulname[experiment.name];
             foreach (ProtoPartModuleSnapshot module in payloadCarrier.modules)
