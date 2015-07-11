@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F27FFBD4-9611-49CA-816E-504A1C283071}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -36,17 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Lib\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\Lib\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\Lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\Lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="KIS">
-      <HintPath>..\..\Lib\KIS.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\Lib\KIS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
