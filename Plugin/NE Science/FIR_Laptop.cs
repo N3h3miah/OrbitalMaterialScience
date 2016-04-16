@@ -93,7 +93,7 @@ namespace NE_Science
                 Transform t = internalProp.FindModelTransform(SCREEN_PART_NAME);
                 if (t != null)
                 {
-                    screenMat = t.renderer.material;
+                    screenMat = t.GetComponent<Renderer>().material;
                     return screenMat;
                 }
                 else

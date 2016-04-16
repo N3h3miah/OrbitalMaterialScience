@@ -103,7 +103,7 @@ namespace NE_Science
                 Transform t = internalProp.FindModelTransform("MEP IVA Screen");
                 if (t != null)
                 {
-                    screenMat = t.renderer.material;
+                    screenMat = t.GetComponent<Renderer>().material;
                     return screenMat;
                 }
                 else
