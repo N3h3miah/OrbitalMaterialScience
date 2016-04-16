@@ -73,6 +73,12 @@
 
     <mkdir dir="${All.dir}/NehemiahInc/" />
 
+    <copy todir="${All.dir}/NehemiahInc" >
+      <fileset basedir="${GameData.dir}/OMS">
+        <include name="NE-All.version"/>
+      </fileset>
+    </copy>
+
     <property name="CurrMod.dir" value="${All.dir}" />
     <call target="copyCommon"/>
     <call target="copyModuleManager" />
