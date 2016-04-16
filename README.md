@@ -1,8 +1,24 @@
 OrbitalMaterialScience
 ======================
 
-[Forum Thread](http://forum.kerbalspaceprogram.com/threads/81578-0-23-5-Orbital-Material-Science)
+* [Forum Thread](http://forum.kerbalspaceprogram.com/index.php?/topic/73723-090-orbital-material-science-version-06/)
 
-[Download from Kerbalstuff](https://kerbalstuff.com/mod/468/Orbital%20Material%20Science)
+  * [Unofficial Builds forum thread] (http://forum.kerbalspaceprogram.com/index.php?/topic/106924-11-n3h3mias-science-mods-unofficial-experimental-build/)
 
-[Download from Curse](http://kerbal.curseforge.com/ksp-mods/220747-orbital-material-science-lab)
+Requirements
+------------
+
+* Kemini requires the [ModuleManager] (https://github.com/sarbian/ModuleManager) mod.
+
+* KEES requires the [KIS] (https://github.com/KospY/KIS) mod.
+
+The remaining components are standalone, although may be enhanced by ModuleManager.
+
+Related and Recommended Mods
+----------------------------
+
+* [K2 Command Pod] (http://forum.kerbalspaceprogram.com/index.php?/topic/94581-104-k2-command-pod-two-kerbal-stock-alike-pod-v133/) - works very well with Kemini.
+
+* [Universal Storage] (http://www.kingtiger.co.uk/kingtiger/wordpress/universal-storage-a-mod-for-kerbal-space-program/) - when installed, additional US wedges are available for storing experiments.
+
+* [Connected Living Spaces] (https://github.com/codepoetpbowden/ConnectedLivingSpace) - various parts are compatible with CLS and allow Kerbals to move through them.
