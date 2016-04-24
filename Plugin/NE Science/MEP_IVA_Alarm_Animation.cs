@@ -126,7 +126,7 @@ namespace NE_Science
                     GameObject light = labIVA.transform.GetChild(3).GetChild(0).gameObject;
                     alarmLight = light.transform.GetChild(0).gameObject.GetComponent<Light>();
 
-                    lightMat = light.renderer.material;
+                    lightMat = light.GetComponent<Renderer>().material;
                     alarmAs = part.gameObject.GetComponent<AudioSource>();
                     if (alarmAs == null)
                     {

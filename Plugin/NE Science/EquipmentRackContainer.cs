@@ -192,7 +192,7 @@ namespace NE_Science
                 Transform t = part.FindModelTransform("Container");
                 if (t != null)
                 {
-                    contMat = t.renderer.material;
+                    contMat = t.GetComponent<Renderer>().material;
                     return contMat;
                 }
                 else

@@ -47,8 +47,7 @@ namespace NE_Science
 
         private bool checkedForKIS()
         {
-            GameObject go = GameDatabase.Instance.GetModel("KIS/Parts/container1/part");
-            return (go != null);
+            return DependancyChecker.HasKIS;
         }
 
         [KSPEvent(guiActive = false, guiName = "Attach PEC", active = false)]

@@ -76,11 +76,12 @@ namespace NE_Science.Contracts.Parameters
         {
             if (reason == "SUCCESS")
             {
-                OnRecovered(v.protoVessel);
+                // MKW TODO: Check if we have quick or normal stage recovery
+                OnRecovered(v.protoVessel, false);
             }
         }
 
-        private void OnRecovered(ProtoVessel pv)
+        private void OnRecovered(ProtoVessel pv, bool quick)
         {
             NE_Helper.log("Recovery ProtoVessel");
             if (targetBody != null && experiment != null)

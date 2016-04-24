@@ -40,8 +40,11 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Lib\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="KIS">
-      <HintPath>..\..\..\Lib\KIS.dll</HintPath>
+    <Reference Include="KSPUtil">
+      <HintPath>..\..\Lib\KSPUtil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\Lib\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +96,7 @@
     <Compile Include="ScienceHelper.cs" />
     <Compile Include="StageRecovery.cs" />
     <Compile Include="WindowCounter.cs" />
+    <Compile Include="DependancyChecker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
