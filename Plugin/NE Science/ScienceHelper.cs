@@ -85,6 +85,8 @@ namespace NE_Science
 
         public static ScienceSubject getScienceSubject(string name, Vessel vessel)
         {
+            if (name == "")
+                return null;
             ScienceExperiment experiment = ResearchAndDevelopment.GetExperiment(name);
             if (experiment == null) return null;
             ExperimentSituations situation = getScienceSituation(vessel);

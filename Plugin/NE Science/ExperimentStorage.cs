@@ -89,7 +89,11 @@ namespace NE_Science
             expData.setStorage(this);
 
             experimentID = expData.getId();
-            experiment = ResearchAndDevelopment.GetExperiment(experimentID);
+            if (expData.getId () == "") {
+                experiment = null;
+            } else {
+                experiment = ResearchAndDevelopment.GetExperiment (experimentID);
+            }
 
             experimentActionName = "Results";
             resetActionName = "Throw Away Results";
