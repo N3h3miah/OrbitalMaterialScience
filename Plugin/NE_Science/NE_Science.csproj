@@ -40,9 +40,6 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\Lib\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="KSPUtil">
-      <HintPath>..\..\Lib\KSPUtil.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\Lib\UnityEngine.UI.dll</HintPath>
     </Reference>
