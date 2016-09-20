@@ -27,10 +27,7 @@ namespace NE_Science
         public static PartResource getResource(Part part, string name)
         {
             PartResourceList resourceList = part.Resources;
-            return resourceList.list.Find(delegate(PartResource cur)
-            {
-                return (cur.resourceName == name);
-            });
+            return resourceList.Get(name);
         }
 
         public static double getResourceAmount(Part part, string name)
@@ -50,7 +47,7 @@ namespace NE_Science
                 node.AddValue("name", name);
                 node.AddValue("amount", 0);
                 node.AddValue("maxAmount", max);
-                res = part.AddResource(node);
+                res = part.Resources.Add (node);
             }
             else if (res != null && max > 0)
             {
@@ -58,7 +55,7 @@ namespace NE_Science
             }
             else if (res != null && max <= 0)
             {
-                part.Resources.list.Remove(res);
+                part.Resources.Remove (res);
             }
             return res;
         }
@@ -70,61 +67,44 @@ namespace NE_Science
                 return resDef.density;
             return 0;
         }
-        private static double sumDemand(List<PartResource> list)
-        {
-            double ret = 0;
-            foreach (PartResource pr in list)
-            {
-                if(pr.flowState)
-                    ret += (pr.maxAmount - pr.amount);
-            }
-            return ret;
-        }
 
         public static double getDemand(Part part, string name)
         {
-            var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
             if (res_def == null) return 0;
-            part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
-            if (res_set == null) return 0;
-            return sumDemand(res_set);
+            double amount;
+            double maxAmount;
+            part.vessel.GetConnectedResourceTotals(res_def.id, out amount, out maxAmount, false);
+
+            return amount;
         }
 
-        private static double sumAvailable(List<PartResource> list)
-        {
-            double ret = 0;
-            foreach (PartResource pr in list)
-            {
-                if(pr.flowState)
-                    ret += pr.amount;
-            }
-            return ret;
-        }
-
+        /** Returns the total amount of available resources connected to the current part */
         public static double getAvailable(Part part, string name)
         {
-            var res_set = new List<PartResource>();
             var res_def = PartResourceLibrary.Instance.GetDefinition(name);
             if (res_def == null) return 0;
-			part.GetConnectedResources(res_def.id, res_def.resourceFlowMode, res_set);
-            if (res_set == null) return 0;
-            return sumAvailable(res_set);
+            double amount;
+            double maxAmount;
+            //part.GetConnectedResourceTotals(res_def.id, res_def.resourceFlowMode, out amount, out maxAmount, false);
+            part.vessel.GetConnectedResourceTotals(res_def.id, out amount, out maxAmount, true);
+
+            return amount;
         }
 
         public static double requestResourcePartial(Part part, string name, double amount)
         {
             if (amount > 0)
             {
-                //UnityEngine.MonoBehaviour.print(name + " request: " + amount);
+                //NE_Helper.log(name + " request: " + amount);
                 double taken = part.RequestResource(name, amount);
-                //UnityEngine.MonoBehaviour.print(name + " request taken: " + taken);
+                //NE_Helper.log(name + " request taken: " + taken);
                 if (taken >= amount * .99999)
                     return taken;
                 double available = getAvailable(part, name);
-                //UnityEngine.MonoBehaviour.print(name + " request available: " + available);
+                //NE_Helper.log(name + " request available: " + available);
                 double new_amount = Math.Min(amount, available) * .99999;
-                //UnityEngine.MonoBehaviour.print(name + " request new_amount: " + new_amount);
+                //NE_Helper.log(name + " request new_amount: " + new_amount);
                 if (new_amount > taken)
                     return taken + part.RequestResource(name, new_amount - taken);
                 else
@@ -132,15 +112,15 @@ namespace NE_Science
             }
             else if (amount < 0)
             {
-                //UnityEngine.MonoBehaviour.print(name + " request: " + amount);
+                //NE_Helper.log(name + " request: " + amount);
                 double taken = part.RequestResource(name, amount);
-                //UnityEngine.MonoBehaviour.print(name+" request taken: " + taken);
+                //NE_Helper.log(name+" request taken: " + taken);
                 if (taken <= amount * .99999)
                     return taken;
                 double available = getDemand(part, name);
-                //UnityEngine.MonoBehaviour.print(name + " request available: " + available);
+                //NE_Helper.log(name + " request available: " + available);
                 double new_amount = Math.Max(amount, available) * .99999;
-                //UnityEngine.MonoBehaviour.print(name + " request new_amount: " + new_amount);
+                //NE_Helper.log(name + " request new_amount: " + new_amount);
                 if (new_amount < taken)
                     return taken + part.RequestResource(name, new_amount - taken);
                 else
