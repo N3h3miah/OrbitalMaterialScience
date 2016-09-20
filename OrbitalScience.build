@@ -41,7 +41,7 @@
 
   <target name="copyDll" description="copy the dll from the plugin folder to game data" >
     <copy todir="${GameData.dir}/NE_Science_Common/Plugins">
-      <fileset basedir="Plugin/NE Science/bin/Release">
+      <fileset basedir="Plugin/NE_Science/bin/Release">
         <include name="NE_Science.dll"/>
       </fileset>
     </copy>
