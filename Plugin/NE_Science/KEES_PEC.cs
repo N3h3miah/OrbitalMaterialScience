@@ -43,7 +43,7 @@ namespace NE_Science
         {
             base.OnStart(state);
 
-            node = part.findAttachNode(nodeName);
+            node = part.FindAttachNode(nodeName);
             if (node == null)
             {
                 NE_Helper.logError("KEES PEC: AttachNode not found");
