@@ -29,13 +29,16 @@ namespace NE_Science
     class NE_Helper : MonoBehaviour
     {
 
-        private static readonly string SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/NE_Science_Common/Resources/settings.cfg";
+        private static string SETTINGS_FILE;
         private const string DEBUG_VALUE = "Debug";
         private static bool debug = true;
 
 
         void Start()
         {
+            if (String.IsNullOrEmpty(SETTINGS_FILE)) {
+                SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/NE_Science_Common/Resources/settings.cfg";
+            }
             ConfigNode settings = getSettingsNode();
             bool d = false;
             try
