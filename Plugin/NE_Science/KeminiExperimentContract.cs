@@ -39,6 +39,11 @@ namespace NE_Science.Contracts
 
         protected override bool Generate()
         {
+            // Prevent generating contracts if we can't actually do them!
+            if (!DependancyChecker.HasModuleManager) {
+                return false;
+            }
+
             NE_Helper.log("Generate Contract");
             if (activeContracts() >= getMaxContracts())
             {

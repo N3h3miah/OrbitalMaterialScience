@@ -33,62 +33,92 @@ namespace NE_Science
 internal class DependancyChecker : MonoBehaviour
 {
     string currentModName = "KEES";
-    string assemblyName = "KIS";
-    int minimalVersionMajor = 1;
-    int minimalVersionMinor = 2;
-    int minimalVersionBuild = 7;
-    bool checkPresence = false;
 
-    static private bool hasKIS = false;
+   class AssemblyInfo {
+        public AssemblyInfo(int pMinMajor, int pMinMinor, int pMinBuild, bool pIsRequired = false) {
+            minimalVersionMajor = pMinMajor;
+            minimalVersionMinor = pMinMinor;
+            minimalVersionBuild = pMinBuild;
+            isRequired = pIsRequired;
+            isPresent = false;
+            assembly = null;
+        }
 
-    static public bool HasKIS { get { return hasKIS; } }
+        public int minimalVersionMajor;
+        public int minimalVersionMinor;
+        public int minimalVersionBuild;
+        public bool isRequired;
+        public bool isPresent;
+        public Assembly assembly;
+    };
+
+    static Dictionary<string, AssemblyInfo> assemblies = new Dictionary<string, AssemblyInfo> 
+    {
+        { "ModuleManager", new AssemblyInfo(2, 6, 25, false) },
+        { "KIS", new AssemblyInfo(1, 2, 7) },
+    };
+
+    static public bool HasKIS { get { return assemblies["KIS"].isPresent; } }
+
+    static public bool HasModuleManager { get { return assemblies["ModuleManager"].isPresent; } }
 
     public void Start()
-    {
-        string minimalVersion = minimalVersionMajor + "." + minimalVersionMinor + "." + minimalVersionBuild;
-        Assembly dependancyAssembly = null;
+    {        
         foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
-            if (assembly.GetName().Name == assemblyName)
+            if ( assemblies.ContainsKey( assembly.GetName().Name ) )
             {
-                dependancyAssembly = assembly;
-                break;
+                assemblies[assembly.GetName().Name].assembly = assembly;
             }
         }
-        if (dependancyAssembly != null)
+
+        foreach (KeyValuePair<string, AssemblyInfo> entry in assemblies )
         {
-            Debug.Log("Assembly : " + dependancyAssembly.GetName().Name + " | Version : " + dependancyAssembly.GetName().Version + " found !");
-            Debug.Log("Minimal version needed is : " + minimalVersion);
-            int dependancyAssemblyVersion = (dependancyAssembly.GetName().Version.Major * 100) + (dependancyAssembly.GetName().Version.Minor * 10) + (dependancyAssembly.GetName().Version.Build);
-            int minimalAssemblyVersion = (minimalVersionMajor * 100) + (minimalVersionMinor * 10) + (minimalVersionBuild);
-            Debug.Log("INT : " + dependancyAssemblyVersion + "/" + minimalAssemblyVersion);
-            if (dependancyAssemblyVersion < minimalAssemblyVersion) {
-                Debug.LogError (assemblyName + " version " + dependancyAssembly.GetName ().Version + "is not compatible with " + currentModName + "!");
-                /*
-                    var sb = new StringBuilder ();
-                    sb.AppendFormat (assemblyName + " version must be " + minimalVersion + " or greater for this version of " + currentModName + ".");
-                    sb.AppendLine ();
-                    sb.AppendFormat ("Please update " + assemblyName + " to the latest version.");
-                    sb.AppendLine ();
-                    PopupDialog.SpawnPopupDialog (currentModName + "/" + assemblyName + " Version mismatch", sb.ToString (), "OK", false, HighLogic.Skin);
-                    */
-            } else {
-                Debug.LogError(assemblyName + " found !");
-                hasKIS = true;
+            string assemblyName = entry.Key;
+            AssemblyInfo ai = entry.Value;
+            string minimalVersion = ai.minimalVersionMajor + "." + ai.minimalVersionMinor + "." + ai.minimalVersionBuild;
+
+            if (entry.Value.assembly != null)
+            {
+                Debug.Log("Assembly : " + ai.assembly.GetName().Name + " | Version : " + ai.assembly.GetName().Version + " found !");
+                Debug.Log("Minimal version needed is : " + minimalVersion);
+                int dependancyAssemblyVersion = (ai.assembly.GetName().Version.Major * 100) + (ai.assembly.GetName().Version.Minor * 10) + (ai.assembly.GetName().Version.Build);
+                int minimalAssemblyVersion = (ai.minimalVersionMajor * 100) + (ai.minimalVersionMinor * 10) + (ai.minimalVersionBuild);
+                Debug.Log("INT : " + dependancyAssemblyVersion + "/" + minimalAssemblyVersion);
+                if (dependancyAssemblyVersion >= minimalAssemblyVersion)
+                {
+                    ai.isPresent = true;
+                }
+                else
+                {
+                    Debug.LogError (assemblyName + " version " + ai.assembly.GetName ().Version + "is not compatible with " + currentModName + "!");
+                    /* TODO: If the assembly is required, pop up a dialog */
+                    /*
+                        var sb = new StringBuilder ();
+                        sb.AppendFormat (assemblyName + " version must be " + minimalVersion + " or greater for this version of " + currentModName + ".");
+                        sb.AppendLine ();
+                        sb.AppendFormat ("Please update " + assemblyName + " to the latest version.");
+                        sb.AppendLine ();
+                        PopupDialog.SpawnPopupDialog (currentModName + "/" + assemblyName + " Version mismatch", sb.ToString (), "OK", false, HighLogic.Skin);
+                        */
+                }
             }
-        }
-        else if (checkPresence)
-        {
-            Debug.LogError(assemblyName + " not found !");
-            /*
-                // MKW - the mod is actually optional..
+            else if(entry.Value.isRequired)
+            {
+                Debug.LogError(assemblyName + " reuired but not found!");
+                /* TODO: Pop up dialog warning user
                 var sb = new StringBuilder();
                 sb.AppendFormat(assemblyName + " is required for " + currentModName + "."); sb.AppendLine();
                 sb.AppendFormat("Please install " + assemblyName + " before using " + currentModName + "."); sb.AppendLine();
                 PopupDialog.SpawnPopupDialog(assemblyName + " not found !", sb.ToString(), "OK", false, HighLogic.Skin);
-*/
+                */
+            }
+            else 
+            {
+                Debug.LogError(assemblyName + " not found but optional!");
             }
         }
     }
+} // Class DependancyChecker
 
 } // Namespace NE_Science
