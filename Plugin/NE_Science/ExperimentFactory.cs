@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +22,7 @@ using System.Text;
 namespace NE_Science
 {
     /*
-    *Module used to add Experiments to the Tech tree. 
+    *Module used to add Experiments to the Tech tree.
     */
     public class NE_ExperimentModule : PartModule
     {
@@ -45,39 +45,91 @@ namespace NE_Science
         static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD5", "NE.KeminiD8",
             "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
 
-        public static List<ExperimentData> getAvailableExperiments(string type)
+        /** Returns a list of all purchased experiments.
+         * If includeExperimental is true, it includes unpurchased parts as long as the required tech is available. */
+        public static List<ExperimentData> getAvailableExperiments(string type, bool includeExperimental = false)
         {
             List<ExperimentData> list = new List<ExperimentData>();
-            switch (type)
-            {
-                case OMS_EXPERIMENTS:
-                    addParts(omsRegistry, list);
-                    break;
+            List<AvailablePart> parts = getAvailableExperimentParts(type, includeExperimental);
 
-                case KEMINI_EXPERIMENTS:
-                    addParts(keminiRegistry, list);
-                    break;
+            foreach (var part in parts)
+            {
+                Part pPf = part.partPrefab;
+                NE_ExperimentModule exp = pPf.GetComponent<NE_ExperimentModule>();
+                float mass = pPf.mass;
+                list.Add(getExperiment(exp.type, mass));
             }
 
             return list;
         }
 
-        private static void addParts(List<string> partNames, List<ExperimentData> list)
+        public static List<AvailablePart> getAvailableExperimentParts(string type, bool includeExperimental = false)
         {
-            foreach (string pn in partNames)
+            List<string> partsRegistry = null;
+            List<AvailablePart> list = new List<AvailablePart>();
+
+            switch (type)
+            {
+                case OMS_EXPERIMENTS:
+                    partsRegistry = omsRegistry;
+                    break;
+                case KEMINI_EXPERIMENTS:
+                    partsRegistry = keminiRegistry;
+                    break;
+                default:
+                    return list;
+            }
+
+            foreach (var pn in partsRegistry)
             {
                 AvailablePart part = PartLoader.getPartInfoByName(pn);
-                if (part != null)
+                if (part == null) continue;
+                /*
+                bool isPurchased = ResearchAndDevelopment.PartModelPurchased (part);
+                bool isTechAvailable = ResearchAndDevelopment.PartTechAvailable (part);
+                bool isExperimental = ResearchAndDevelopment.IsExperimentalPart (part);
+                NE_Helper.log ("Part " + part.name +
+                    " techlevel: [" + isTechAvailable + "]" +
+                    " experimental: [" + isExperimental + "]" +
+                    " purchased: [" + isPurchased + "]");
+                */
+                if (ResearchAndDevelopment.PartModelPurchased(part) ||
+                    (includeExperimental && ResearchAndDevelopment.PartTechAvailable(part)))
                 {
-                    if (ResearchAndDevelopment.PartTechAvailable(part))
+                    list.Add(part);
+                }
+            }
+
+            return list;
+        }
+
+        public static AvailablePart getPartForExperiment(string type, ExperimentData exp)
+        {
+            AvailablePart ap = null;
+            List<string> partsRegistry = null;
+
+            switch (type)
+            {
+                case OMS_EXPERIMENTS:
+                    partsRegistry = omsRegistry;
+                    break;
+                case KEMINI_EXPERIMENTS:
+                    partsRegistry = keminiRegistry;
+                    break;
+            }
+            foreach (var pn in partsRegistry)
+            {
+                ap = PartLoader.getPartInfoByName(pn);
+                if (ap != null)
+                {
+                    NE_ExperimentModule e = ap.partPrefab.GetComponent<NE_ExperimentModule>();
+                    if( e.type == exp.getType() )
                     {
-                        Part pPf = part.partPrefab;
-                        NE_ExperimentModule exp = pPf.GetComponent<NE_ExperimentModule>();
-                        float mass = pPf.mass;
-                        list.Add(getExperiment(exp.type, mass));
+                        break;
                     }
                 }
             }
+            return ap;
         }
 
         public static ExperimentData getExperiment(string type, float mass)
@@ -122,10 +174,11 @@ namespace NE_Science
                     return new ADUM_ExperimentData(mass);
                 case "SpiU":
                     return new SpiU_ExperimentData(mass);
-                default:
-                    NE_Helper.logError("Unknow ExperimentData Type");
+                case "":
                     return ExperimentData.getNullObject();
-
+                default:
+                    NE_Helper.logError("Unknown ExperimentData Type '" + type + "'.");
+                    return ExperimentData.getNullObject();
             }
         }
     }

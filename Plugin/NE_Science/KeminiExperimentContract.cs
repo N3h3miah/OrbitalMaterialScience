@@ -37,10 +37,18 @@ namespace NE_Science.Contracts
         CelestialBody targetBody = null;
         ExperimentData experiment = null;
 
+        /** Callback used to generate a contract at a particular prestige level.
+         *  this.Prestige contains the required prestige level of contract to generate.
+         *  Add any other checks and guards in here to prevent too many contracts being generated.
+         *  Return TRUE if a contract could be created, FALSE if not. */
         protected override bool Generate()
         {
             // Prevent generating contracts if we can't actually do them!
             if (!DependancyChecker.HasModuleManager) {
+                return false;
+            }
+
+            if (ExperimentFactory.getAvailableExperiments(ExperimentFactory.KEMINI_EXPERIMENTS, true).Count == 0) {
                 return false;
             }
 
@@ -129,7 +137,7 @@ namespace NE_Science.Contracts
 
         private ExperimentData getTargetExperiment()
         {
-            List<ExperimentData> unlockedExperiments = ExperimentFactory.getAvailableExperiments(ExperimentFactory.KEMINI_EXPERIMENTS);
+            List<ExperimentData> unlockedExperiments = ExperimentFactory.getAvailableExperiments(ExperimentFactory.KEMINI_EXPERIMENTS, true);
             List<ExperimentData> unlookedNoContract = new List<ExperimentData>();
             foreach (ExperimentData exp in unlockedExperiments)
             {
@@ -185,19 +193,23 @@ namespace NE_Science.Contracts
         {
             return (targetBody.bodyName + experiment.getId());
         }
+
         protected override string GetTitle()
         {
             return "Run experiment " + experiment.getAbbreviation() + " in orbit around " + targetBody.theName + " and return it to Kerbin";
         }
+
         protected override string GetDescription()
         {
             //those 3 strings appear to do nothing
             return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "science", "station", "expand knowledge", new System.Random().Next());
         }
+
         protected override string GetSynopsys()
         {
             return "Run experiment " + experiment.getName() + " in orbit around " + targetBody.theName;
         }
+
         protected override string MessageCompleted()
         {
             return "You have succesfully run the experiment " + experiment.getAbbreviation() + " in orbit around " + targetBody.theName;
@@ -213,6 +225,7 @@ namespace NE_Science.Contracts
             }
             setTargetExperiment((KeminiExperimentData)KeminiExperimentData.getExperimentDataFromNode(node.GetNode(ExperimentData.CONFIG_NODE_NAME)));
         }
+
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
@@ -221,6 +234,9 @@ namespace NE_Science.Contracts
             node.AddNode(experiment.getNode());
         }
 
+        /** Return TRUE if requirements for experiment are met, FALSE otherwise.
+         * NOTE: This is called at least once per frame, so should be performant.
+         */
         public override bool MeetRequirements()
         {
             CelestialBodySubtree kerbinProgress = null;
@@ -233,8 +249,56 @@ namespace NE_Science.Contracts
             {
                 return false;
             }
+            return ProgressTracking.Instance.NodeComplete(new string[] {Planetarium.fetch.Home.name, "ReturnFromOrbit"});
+        }
 
-            return ExperimentFactory.getAvailableExperiments(ExperimentFactory.KEMINI_EXPERIMENTS).Count > 0;
+        private void addExperimentalParts()
+        {
+            AvailablePart ap = ExperimentFactory.getPartForExperiment(ExperimentFactory.KEMINI_EXPERIMENTS, experiment);
+            if (ap != null && !ResearchAndDevelopment.PartModelPurchased(ap))
+            {
+                NE_Helper.log("Adding experimental part: " + ap.name);
+                ResearchAndDevelopment.AddExperimentalPart(ap);
+            }
+        }
+
+        /** Removes experimental part.
+         *  TODO: Check if there is another active contract using this part in which case we have to keep it! */
+        private void removeExperimentalParts()
+        {
+            AvailablePart ap = ExperimentFactory.getPartForExperiment(ExperimentFactory.KEMINI_EXPERIMENTS, experiment);
+            if (ap != null && ResearchAndDevelopment.IsExperimentalPart(ap))
+            {
+                NE_Helper.log("Removing experimental part: " + ap.name);
+                ResearchAndDevelopment.RemoveExperimentalPart(ap);
+            }
+        }
+
+        protected override void OnAccepted()
+        {
+            base.OnAccepted();
+            addExperimentalParts();
+        }
+
+        protected override void OnFinished()
+        {
+            base.OnFinished();
+            NE_Helper.log("Finished experiment " + experiment.getAbbreviation());
+            removeExperimentalParts();
+        }
+
+        protected override void OnCancelled()
+        {
+            base.OnCancelled();
+            NE_Helper.log("Cancelled experiment " + experiment.getAbbreviation());
+            removeExperimentalParts();
+        }
+
+        protected override void OnFailed()
+        {
+            base.OnFailed();
+            NE_Helper.log("Failed experiment " + experiment.getAbbreviation());
+            removeExperimentalParts();
         }
     }
 }
