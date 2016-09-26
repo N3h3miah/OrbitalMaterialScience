@@ -84,7 +84,9 @@ namespace NE_Science.Contracts
             return 2;
         }
 
-        private int activeContracts(ExperimentData expData = null, CelestialBody body = null)
+        /** Returns a count of offered and active Kemini Contracts.
+         *  NB: The original version had optional filters per type and body, but those were never used. */
+        private int activeContracts()
         {
             int ret = 0;
             if (ContractSystem.Instance == null)
@@ -95,16 +97,10 @@ namespace NE_Science.Contracts
             {
                 return 0;
             }
-            foreach (Contract con in ContractSystem.Instance.Contracts)
-            {
-                KeminiExperimentContract keminiContract = con as KeminiExperimentContract;
-                if (keminiContract != null && (keminiContract.ContractState == Contract.State.Active ||
-                    keminiContract.ContractState == Contract.State.Offered) &&
-                  (expData == null || keminiContract.experiment != null) &&
-                  (body == null || keminiContract.targetBody != null) &&
-                  ((expData == null || expData.getId() == keminiContract.experiment.getId()) &&
-                   (body == null || body.theName == keminiContract.targetBody.theName)))
-                    ret += 1;
+            foreach (var kcon in ContractSystem.Instance.GetCurrentContracts<KeminiExperimentContract>()) {
+                if (kcon.ContractState == Contract.State.Active || kcon.ContractState == Contract.State.Offered) {
+                    ret++;
+                }
             }
             return ret;
         }
