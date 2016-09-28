@@ -145,36 +145,36 @@ namespace NE_Science.Contracts
 
         private Experiment getTargetExperiment()
         {
-            List<Experiment> unlockedExperiments = getUnlookedKEESExperiments();
-            List<Experiment> unlookedNoContract = new List<Experiment>();
+            List<Experiment> unlockedExperiments = getUnlockedKEESExperiments();
+            List<Experiment> unlockedNoContract = new List<Experiment>();
             foreach (Experiment exp in unlockedExperiments)
             {
                 if (activeAndDoneContracts(exp.getPartName(), targetBody) == 0)
                 {
-                    unlookedNoContract.Add(exp);
+                    unlockedNoContract.Add(exp);
                 }
             }
-            if (unlookedNoContract.Count == 0)
+            if (unlockedNoContract.Count == 0)
             {
                 return null;
             }
             else
             {
-                return unlookedNoContract[UnityEngine.Random.Range(0, unlookedNoContract.Count)];
+                return unlockedNoContract[UnityEngine.Random.Range(0, unlockedNoContract.Count)];
             }
         }
 
-        private List<Experiment> getUnlookedKEESExperiments()
+        private List<Experiment> getUnlockedKEESExperiments()
         {
-            List<Experiment> unlookedParts = new List<Experiment>();
+            List<Experiment> unlockedParts = new List<Experiment>();
             foreach (Experiment exp in experimentParts)
             {
                 if (isPartUnlocked(exp.getPartName()))
                 {
-                    unlookedParts.Add(exp);
+                    unlockedParts.Add(exp);
                 }
             }
-            return unlookedParts;
+            return unlockedParts;
         }
 
         private bool setTargetExperiment(Experiment exp)
@@ -268,8 +268,10 @@ namespace NE_Science.Contracts
         bool isPartUnlocked(string name)
         {
             AvailablePart part = PartLoader.getPartInfoByName(name);
-            if (part != null && ResearchAndDevelopment.PartTechAvailable(part))
+            if (part != null && ResearchAndDevelopment.PartModelPurchased(part))
+            {
                 return true;
+            }
             return false;
         }
 
