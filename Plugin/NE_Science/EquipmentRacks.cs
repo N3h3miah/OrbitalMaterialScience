@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -38,7 +38,8 @@ namespace NE_Science
                 {
                     Part pPf = part.partPrefab;
                     LabEquipmentModule lem = pPf.GetComponent<LabEquipmentModule>();
-                    if(ResearchAndDevelopment.PartTechAvailable(part)){
+                    if (ResearchAndDevelopment.PartModelPurchased(part))
+                    {
                         list.Add(getLabEquipment(part.partPrefab, p.Key));
                     }
                 }
