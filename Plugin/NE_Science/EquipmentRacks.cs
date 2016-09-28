@@ -50,7 +50,9 @@ namespace NE_Science
         private static LabEquipment getLabEquipment(Part part, EquipmentRacks type)
         {
             LabEquipmentModule lem = part.GetComponent<LabEquipmentModule>();
-            return new LabEquipment(lem.abbreviation, lem.eqName, type, part.mass, lem.productPerHour, lem.product, lem.reactantPerProduct, lem.reactant);
+            float mass = part.partInfo.partPrefab.mass;
+            float cost = part.partInfo.cost;
+            return new LabEquipment(lem.abbreviation, lem.eqName, type, mass, cost, lem.productPerHour, lem.product, lem.reactantPerProduct, lem.reactant);
         }
     }
 

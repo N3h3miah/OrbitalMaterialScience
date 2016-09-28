@@ -56,6 +56,7 @@ namespace NE_Science
         private const string NAME_VALUE = "name";
         private const string TYPE_VALUE = "type";
         private const string MASS_VALUE = "mass";
+        private const string COST_VALUE = "cost";
         private const string PRODUCT_VALUE = "product";
         private const string PRODUCT_PER_HOUR_VALUE = "productPerHour";
         private const string REACTANT_VALUE = "reactant";
@@ -64,6 +65,7 @@ namespace NE_Science
         private string abb;
         private string name;
         private float mass;
+        private float cost;
         private EquipmentRacks type;
 
         private float productPerHour = 0;
@@ -77,12 +79,13 @@ namespace NE_Science
         private Lab lab;
         private ExperimentData exp;
 
-        public LabEquipment(string abb, string name, EquipmentRacks type, float mass, float productPerHour, string product, float reactantPerProduct, string reactant)
+        public LabEquipment(string abb, string name, EquipmentRacks type, float mass, float cost, float productPerHour, string product, float reactantPerProduct, string reactant)
         {
             this.abb = abb;
             this.name = name;
             this.type = type;
             this.mass = mass;
+            this.cost = cost;
 
             this.product = product;
             this.productPerHour = productPerHour;
@@ -108,12 +111,17 @@ namespace NE_Science
 
         public float getMass()
         {
-            return mass;
+            return mass + ((exp != null)? exp.getMass() : 0f);
+        }
+
+        public float getCost()
+        {
+            return cost + ((exp != null)? exp.getCost() : 0f);
         }
 
         static public LabEquipment getNullObject()
         {
-             return new LabEquipment("empty", "empty", EquipmentRacks.NONE, 0f, 0f, "", 0f, "");
+             return new LabEquipment("empty", "empty", EquipmentRacks.NONE, 0f, 0f, 0f, "", 0f, "");
         }
 
         public ConfigNode getNode()
@@ -123,6 +131,7 @@ namespace NE_Science
             node.AddValue(ABB_VALUE, abb);
             node.AddValue(NAME_VALUE, name);
             node.AddValue(MASS_VALUE, mass);
+            node.AddValue(COST_VALUE, cost);
             node.AddValue(TYPE_VALUE, type.ToString());
 
             node.AddValue(PRODUCT_VALUE, product);
@@ -150,6 +159,7 @@ namespace NE_Science
             string abb = node.GetValue(ABB_VALUE);
             string name = node.GetValue(NAME_VALUE);
             float mass = float.Parse(node.GetValue(MASS_VALUE));
+            float cost = float.Parse(node.GetValue(COST_VALUE));
 
             string product = node.GetValue(PRODUCT_VALUE);
             float productPerHour = float.Parse(node.GetValue(PRODUCT_PER_HOUR_VALUE));
@@ -159,7 +169,7 @@ namespace NE_Science
 
             EquipmentRacks type = EquipmentRacksFactory.getType(node.GetValue(TYPE_VALUE));
 
-            LabEquipment eq = new LabEquipment(abb, name, type, mass, productPerHour, product, reactantPerProduct, reactant);
+            LabEquipment eq = new LabEquipment(abb, name, type, mass, cost, productPerHour, product, reactantPerProduct, reactant);
             eq.lab = lab;
             ConfigNode expNode = node.GetNode(ExperimentData.CONFIG_NODE_NAME);
             if (expNode != null)
@@ -257,7 +267,6 @@ namespace NE_Science
 
         public void removeExperimentData()
         {
-            lab.part.mass -= exp.getMass();
             exp = null;
         }
 

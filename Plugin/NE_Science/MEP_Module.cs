@@ -86,7 +86,7 @@ namespace NE_Science
             exposureSlot.onStart(this);
             if (!exposureSlot.isEquipmentInstalled())
             {
-                exposureSlot.install(new LabEquipment("MEP", "MEP", EquipmentRacks.EXPOSURE, 0, ExposureTimePerHour, Resources.EXPOSURE_TIME, 0, ""), this); ;
+                exposureSlot.install(new LabEquipment("MEP", "MEP", EquipmentRacks.EXPOSURE, 0f, 0f, ExposureTimePerHour, Resources.EXPOSURE_TIME, 0, ""), this); ;
             }
 
             switch (MEPlabState)

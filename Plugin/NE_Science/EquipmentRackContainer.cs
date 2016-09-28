@@ -22,7 +22,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    class EquipmentRackContainer : PartModule
+    class EquipmentRackContainer : PartModule, IPartCostModifier, IPartMassModifier
     {
         private const float EMPTY_MASS = 0.4f;
 
@@ -67,14 +67,12 @@ namespace NE_Science
             if (leq.getType() == EquipmentRacks.NONE)
             {
                 Events["chooseEquipment"].guiName = "Add Lab Equipment";
-                part.mass = EMPTY_MASS;
             }
             else
             {
                 Events["chooseEquipment"].guiName = "Remove Equipment";
-                part.mass += er.getMass();
             }
-            
+            RefreshMassAndCost();
             setTexture(leq);
         }
 
@@ -204,6 +202,39 @@ namespace NE_Science
             {
                 return contMat;
             }
+        }
+
+        /// <summary>Refresh cost and mass</summary>
+        public void RefreshMassAndCost()
+        {
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                GameEvents.onEditorShipModified.Fire(EditorLogic.fetch.ship);
+            }
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public ModifierChangeWhen GetModuleMassChangeWhen()
+        {
+            return ModifierChangeWhen.CONSTANTLY;
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public float GetModuleMass(float defaultMass, ModifierStagingSituation sit)
+        {
+            return (leq != null)? leq.getMass() : 0f;
+        }
+
+        /// <summary>Overridden from IPartCostModifier</summary>
+        public ModifierChangeWhen GetModuleCostChangeWhen()
+        {
+            return ModifierChangeWhen.FIXED;
+        }
+
+        /// <summary>Overridden from IPartCostModifier</summary>
+        public float GetModuleCost(float defaultCost, ModifierStagingSituation sit)
+        {
+            return (leq != null)? leq.getCost() : 0f;
         }
     }
 
