@@ -14,8 +14,8 @@ namespace NE_Science
         private int partCount;
         private List<MSL_Module> physicsLabCache = null;
 
-        protected MSLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
-            : base(id, type, name, abb, eq, mass)
+        protected MSLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
+            : base(id, type, name, abb, eq, mass, cost)
         { }
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
@@ -50,8 +50,8 @@ namespace NE_Science
 
     public class FLEX_ExperimentData : MSLExperimentData
     {
-        public FLEX_ExperimentData(float mass)
-            : base("NE_FLEX", "FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR, mass)
+        public FLEX_ExperimentData(float mass, float cost)
+            : base("NE_FLEX", "FLEX", "Flame Extinguishment Experiment", "FLEX", EquipmentRacks.CIR, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 18, "", 0);
         }
@@ -59,8 +59,8 @@ namespace NE_Science
 
     public class CFI_ExperimentData : MSLExperimentData
     {
-        public CFI_ExperimentData(float mass)
-            : base("NE_CFI", "CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR, mass)
+        public CFI_ExperimentData(float mass, float cost)
+            : base("NE_CFI", "CFI", "Cool Flames Investigation", "CFI", EquipmentRacks.CIR, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.CIR_BURN_TIME, 50, "", 0);
         }
@@ -68,8 +68,8 @@ namespace NE_Science
 
     public class MIS1_ExperimentData : MSLExperimentData
     {
-        public MIS1_ExperimentData(float mass)
-            : base("NE_MIS1", "MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER, mass)
+        public MIS1_ExperimentData(float mass, float cost)
+            : base("NE_MIS1", "MIS1", "3D Printer Demonstration Test", "MIS-1", EquipmentRacks.PRINTER, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 100, "", 0);
         }
@@ -77,8 +77,8 @@ namespace NE_Science
 
     public class MIS2_ExperimentData : MSLExperimentData
     {
-        public MIS2_ExperimentData(float mass)
-            : base("NE_MIS2", "MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER, mass)
+        public MIS2_ExperimentData(float mass, float cost)
+            : base("NE_MIS2", "MIS2", "Made in Space: Tools", "MIS-2", EquipmentRacks.PRINTER, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 200, "", 0);
         }
@@ -86,8 +86,8 @@ namespace NE_Science
 
     public class MIS3_ExperimentData : MSLExperimentData
     {
-        public MIS3_ExperimentData(float mass)
-            : base("NE_MIS3", "MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER, mass)
+        public MIS3_ExperimentData(float mass, float cost)
+            : base("NE_MIS3", "MIS3", "Made in Space: Jebediah figure", "MIS-3", EquipmentRacks.PRINTER, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.PRINT_LAYER, 300, "", 0);
         }
@@ -95,8 +95,8 @@ namespace NE_Science
 
     public class CVB_ExperimentData : MSLExperimentData
     {
-        public CVB_ExperimentData(float mass)
-            : base("NE_CVB", "CVB", "Constrained Vapor Bubble", "CVB", EquipmentRacks.FIR, mass)
+        public CVB_ExperimentData(float mass, float cost)
+            : base("NE_CVB", "CVB", "Constrained Vapor Bubble", "CVB", EquipmentRacks.FIR, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 35, "", 0);
         }
@@ -104,8 +104,8 @@ namespace NE_Science
 
     public class PACE_ExperimentData : MSLExperimentData
     {
-        public PACE_ExperimentData(float mass)
-            : base("NE_PACE", "PACE", "Preliminary Advanced Colloids Experiment", "PACE", EquipmentRacks.FIR, mass)
+        public PACE_ExperimentData(float mass, float cost)
+            : base("NE_PACE", "PACE", "Preliminary Advanced Colloids Experiment", "PACE", EquipmentRacks.FIR, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.FIR_TEST_RUN, 22, "", 0);
         }

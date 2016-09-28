@@ -15,8 +15,8 @@ namespace NE_Science
         private int partCount;
         private List<MPL_Module> physicsLabCache = null;
 
-        protected KerbalResearchExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, int testSubjectsNeeded)
-            : base(id, type, name, abb, eq, mass, testSubjectsNeeded)
+        protected KerbalResearchExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost, int testSubjectsNeeded)
+            : base(id, type, name, abb, eq, mass, cost, testSubjectsNeeded)
         {
             this.testSubjectsNeeded = testSubjectsNeeded;
         }

@@ -31,7 +31,7 @@ namespace NE_Science
         Part getPart();
     }
 
-    public class ExperimentStorage : ModuleScienceExperiment, ExperimentDataStorage
+    public class ExperimentStorage : ModuleScienceExperiment, ExperimentDataStorage, IPartCostModifier, IPartMassModifier
     {
 
         [KSPField(isPersistant = false)]
@@ -81,6 +81,10 @@ namespace NE_Science
             }
         }
 
+        /// <summary>
+        /// Sets or clears the stored experiment
+        /// </summary>
+        /// <param name="experimentData">Experiment data.</param>
         private void setExperiment(ExperimentData experimentData)
         {
             NE_Helper.log("MOVExp.setExp() id: " + experimentData.getId());
@@ -113,6 +117,7 @@ namespace NE_Science
             {
                 setTexture(expData);
             }
+            RefreshMassAndCost();
         }
 
         public ExperimentData getStoredExperimentData()
@@ -398,7 +403,6 @@ namespace NE_Science
                 if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
                 {
                     setExperiment(e);
-                    part.mass += e.getMass();
                     Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
                     showGui = 0;
                 }
@@ -426,7 +430,6 @@ namespace NE_Science
 
         public void removeExperimentData()
         {
-            part.mass -= expData.getMass();
             setExperiment(ExperimentData.getNullObject());
         }
 
@@ -486,6 +489,39 @@ namespace NE_Science
             {
                 return contMat;
             }
+        }
+
+        /// <summary>Refresh cost and mass</summary>
+        public void RefreshMassAndCost()
+        {
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                GameEvents.onEditorShipModified.Fire(EditorLogic.fetch.ship);
+            }
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public ModifierChangeWhen GetModuleMassChangeWhen()
+        {
+            return ModifierChangeWhen.CONSTANTLY;
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public float GetModuleMass(float defaultMass, ModifierStagingSituation sit)
+        {
+            return (expData != null)? expData.getMass() : 0f;
+        }
+
+        /// <summary>Overridden from IPartCostModifier</summary>
+        public ModifierChangeWhen GetModuleCostChangeWhen()
+        {
+            return ModifierChangeWhen.FIXED;
+        }
+
+        /// <summary>Overridden from IPartCostModifier</summary>
+        public float GetModuleCost(float defaultCost, ModifierStagingSituation sit)
+        {
+            return (expData != null)? expData.getCost() : 0f;
         }
     }
 

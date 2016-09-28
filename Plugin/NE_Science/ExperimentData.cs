@@ -33,12 +33,14 @@ namespace NE_Science
         public const string TYPE_VALUE = "Type";
         public const string STATE_VALUE = "State";
         private const string MASS_VALUE = "Mass";
+        private const string COST_VALUE = "Cost";
 
         private string id;
         private string name;
         private string abb;
         private string type = "";
         private float mass = 0f;
+        private float cost = 0f;
         protected EquipmentRacks neededEquipment;
         internal ExperimentState state = ExperimentState.STORED;
         internal ExperimentDataStorage store;
@@ -48,13 +50,14 @@ namespace NE_Science
         private int partCount;
         private List<ExperimentStorage> contCache = null;
 
-        public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
+        public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
         {
             this.id = id;
             this.type = type;
             this.name = name;
             this.abb = abb;
             this.mass = mass;
+            this.cost = cost;
             neededEquipment = eq;
         }
 
@@ -75,6 +78,10 @@ namespace NE_Science
         public float getMass()
         {
             return mass;
+        }
+        public float getCost()
+        {
+            return cost;
         }
 
         public EquipmentRacks getEquipmentNeeded()
@@ -173,14 +180,15 @@ namespace NE_Science
                 NE_Helper.logError("getLabEquipmentFromNode: invalid Node: " + node.name);
                 return getNullObject();
             }
-            float mass = getMass(node.GetValue(MASS_VALUE));
+            float mass = stringToFloat(node.GetValue(MASS_VALUE));
+            float cost = stringToFloat(node.GetValue(COST_VALUE));
 
-            ExperimentData exp = ExperimentFactory.getExperiment(node.GetValue(TYPE_VALUE), mass);
+            ExperimentData exp = ExperimentFactory.getExperiment(node.GetValue(TYPE_VALUE), mass, cost);
             exp.load(node);
             return exp; ;
         }
 
-        private static float getMass(string p)
+        private static float stringToFloat(string p)
         {
             if (p != null)
             {
@@ -198,7 +206,7 @@ namespace NE_Science
 
         public static ExperimentData getNullObject()
         {
-            return new ExperimentData("", "", "null Experiment", "empty", EquipmentRacks.NONE, 0f);
+            return new ExperimentData("", "", "null Experiment", "empty", EquipmentRacks.NONE, 0f, 0f);
         }
 
         public virtual bool canInstall(Vessel vessel)
@@ -359,8 +367,8 @@ namespace NE_Science
     {
         protected ExperimentStep step;
 
-        protected StepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
-            : base(id, type, name, abb, eq, mass)
+        protected StepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
+            : base(id, type, name, abb, eq, mass, cost)
         {}
 
         public override ConfigNode getNode()
@@ -454,8 +462,8 @@ namespace NE_Science
         protected T[] steps = null; // Implementation Class must ensure this is allocated
         private int activeStep = 0;
 
-        protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, int numSteps)
-            : base(id, type, name, abb, eq, mass)
+        protected MultiStepExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost, int numSteps)
+            : base(id, type, name, abb, eq, mass, cost)
         {
             if (numSteps < 1) {
                 throw new ArgumentOutOfRangeException ("numSteps", "MultiStepExperimentData must have at least 1 step.");
@@ -608,8 +616,8 @@ namespace NE_Science
 
     public class TestExperimentData : KerbalResearchExperimentData
     {
-        public TestExperimentData(float mass)
-            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.USU, mass, 4)
+        public TestExperimentData(float mass, float cost)
+            : base("NE_Test", "Test", "Test Experiment", "Test", EquipmentRacks.USU, mass, cost, 4)
         {
             steps[0] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 0);
             steps[1] = new KerbalResearchStep(this, Resources.ULTRASOUND_GEL, 0.5f, 1);

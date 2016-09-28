@@ -15,8 +15,8 @@ namespace NE_Science
         private int partCount;
         private List<MPL_Module> physicsLabCache = null;
 
-        protected MPLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass)
-            : base(id, type, name, abb, eq, mass)
+        protected MPLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
+            : base(id, type, name, abb, eq, mass, cost)
         { }
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
@@ -54,8 +54,8 @@ namespace NE_Science
 
     public class CCF_ExperimentData : MPLExperimentData
     {
-        public CCF_ExperimentData(float mass)
-            : base("NE_CCF", "CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.MSG, mass)
+        public CCF_ExperimentData(float mass, float cost)
+            : base("NE_CCF", "CCF", "Capillary Channel Flow Experiment", "CCF", EquipmentRacks.MSG, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.MSG_TIME, 22, "", 0);
         }
@@ -63,8 +63,8 @@ namespace NE_Science
 
     public class CFE_ExperimentData : MPLExperimentData
     {
-        public CFE_ExperimentData(float mass)
-            : base("NE_CFE", "CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.MSG, mass)
+        public CFE_ExperimentData(float mass, float cost)
+            : base("NE_CFE", "CFE", "Capillary Flow Experiment", "CFE", EquipmentRacks.MSG, mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.MSG_TIME, 40, "", 0);
         }
@@ -72,8 +72,8 @@ namespace NE_Science
 
     public class ADUM_ExperimentData : KerbalResearchExperimentData
     {
-        public ADUM_ExperimentData(float mass)
-            : base("NE_ADUM", "ADUM", "Advanced Diagnostic Ultrasound in Microgravity", "ADUM", EquipmentRacks.USU, mass, 4)
+        public ADUM_ExperimentData(float mass, float cost)
+            : base("NE_ADUM", "ADUM", "Advanced Diagnostic Ultrasound in Microgravity", "ADUM", EquipmentRacks.USU, mass, cost, 4)
         {
             setExperimentSteps(Resources.ULTRASOUND_GEL, 2.5f);
         }
@@ -81,8 +81,8 @@ namespace NE_Science
 
     public class SpiU_ExperimentData : KerbalResearchExperimentData
     {
-        public SpiU_ExperimentData(float mass)
-            : base("NE_SpiU", "SpiU", "Sonographic Astronaut Vertebral Examination", "SpiU", EquipmentRacks.USU, mass, 6)
+        public SpiU_ExperimentData(float mass, float cost)
+            : base("NE_SpiU", "SpiU", "Sonographic Astronaut Vertebral Examination", "SpiU", EquipmentRacks.USU, mass, cost, 6)
         {
             setExperimentSteps(Resources.ULTRASOUND_GEL, 3f);
         }

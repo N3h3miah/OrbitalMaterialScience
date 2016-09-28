@@ -31,8 +31,8 @@ namespace NE_Science
         private int partCount;
         private List<Kemini_Module> KeminiLabCache = null;
         
-        protected KeminiExperimentData(string id, string type, string name, string abb, float mass)
-            : base(id, type, name, abb, EquipmentRacks.KEMINI, mass)
+        protected KeminiExperimentData(string id, string type, string name, string abb, float mass, float cost)
+            : base(id, type, name, abb, EquipmentRacks.KEMINI, mass, cost)
         {
             storageType = ExperimentFactory.KEMINI_EXPERIMENTS;
         }
@@ -93,8 +93,8 @@ namespace NE_Science
 
     public class KeminiD5_ExperimentData : KeminiExperimentData
     {
-        public KeminiD5_ExperimentData(float mass)
-            : base("NE_Kemini_D5", "KeminiD5", "Kemini D5: Star Occultation Navigation", "D5", mass)
+        public KeminiD5_ExperimentData(float mass, float cost)
+            : base("NE_Kemini_D5", "KeminiD5", "Kemini D5: Star Occultation Navigation", "D5", mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.1f, "", 0);
         }
@@ -102,8 +102,8 @@ namespace NE_Science
 
     public class KeminiD8_ExperimentData : KeminiExperimentData
     {
-        public KeminiD8_ExperimentData(float mass)
-            : base("NE_Kemini_D8", "KeminiD8", "Kemini D8: Spacecraft Radiation Level", "D8", mass)
+        public KeminiD8_ExperimentData(float mass, float cost)
+            : base("NE_Kemini_D8", "KeminiD8", "Kemini D8: Spacecraft Radiation Level", "D8", mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.15f, "", 0);
         }
@@ -111,8 +111,8 @@ namespace NE_Science
 
     public class KeminiMSC3_ExperimentData : KeminiExperimentData
     {
-        public KeminiMSC3_ExperimentData(float mass)
-            : base("NE_Kemini_MSC3", "KeminiMSC3", "Kemini MSC3: Tri-Axis Magnetometer", "MSC3", mass)
+        public KeminiMSC3_ExperimentData(float mass, float cost)
+            : base("NE_Kemini_MSC3", "KeminiMSC3", "Kemini MSC3: Tri-Axis Magnetometer", "MSC3", mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.13f, "", 0);
         }
@@ -120,8 +120,8 @@ namespace NE_Science
 
     public class KeminiD7_ExperimentData : KeminiExperimentData
     {
-        public KeminiD7_ExperimentData(float mass)
-            : base("NE_Kemini_D7", "KeminiD7", "Kemini D7: Space Object Radiometry", "D7", mass)
+        public KeminiD7_ExperimentData(float mass, float cost)
+            : base("NE_Kemini_D7", "KeminiD7", "Kemini D7: Space Object Radiometry", "D7", mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.23f, "", 0);
         }
@@ -129,8 +129,8 @@ namespace NE_Science
     
     public class KeminiD10_ExperimentData : KeminiExperimentData
     {
-        public KeminiD10_ExperimentData(float mass)
-            : base("NE_Kemini_D10", "KeminiD10", "Kemini D10: Ion-sensing Attitude Control", "D10", mass)
+        public KeminiD10_ExperimentData(float mass, float cost)
+            : base("NE_Kemini_D10", "KeminiD10", "Kemini D10: Ion-sensing Attitude Control", "D10", mass, cost)
         {
             step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.21f, "", 0);
         }

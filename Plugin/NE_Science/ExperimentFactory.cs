@@ -56,8 +56,9 @@ namespace NE_Science
             {
                 Part pPf = part.partPrefab;
                 NE_ExperimentModule exp = pPf.GetComponent<NE_ExperimentModule>();
-                float mass = pPf.mass;
-                list.Add(getExperiment(exp.type, mass));
+                float mass = pPf.mass;  //pPf.GetModuleMass(0);
+                float cost = part.cost; //pPf.GetModuleCosts(0);
+                list.Add(getExperiment(exp.type, mass, cost));
             }
 
             return list;
@@ -132,48 +133,48 @@ namespace NE_Science
             return ap;
         }
 
-        public static ExperimentData getExperiment(string type, float mass)
+        public static ExperimentData getExperiment(string type, float mass, float cost)
         {
             switch (type)
             {
                 case "Test":
-                    return new TestExperimentData(mass);
+                    return new TestExperimentData(mass, cost);
                 case "CCF":
-                    return new CCF_ExperimentData(mass);
+                    return new CCF_ExperimentData(mass, cost);
                 case "CFE":
-                    return new CFE_ExperimentData(mass);
+                    return new CFE_ExperimentData(mass, cost);
                 case "FLEX":
-                    return new FLEX_ExperimentData(mass);
+                    return new FLEX_ExperimentData(mass, cost);
                 case "CFI":
-                    return new CFI_ExperimentData(mass);
+                    return new CFI_ExperimentData(mass, cost);
                 case "MIS1":
-                    return new MIS1_ExperimentData(mass);
+                    return new MIS1_ExperimentData(mass, cost);
                 case "MIS2":
-                    return new MIS2_ExperimentData(mass);
+                    return new MIS2_ExperimentData(mass, cost);
                 case "MIS3":
-                    return new MIS3_ExperimentData(mass);
+                    return new MIS3_ExperimentData(mass, cost);
                 case "MEE1":
-                    return new MEE1_ExperimentData(mass);
+                    return new MEE1_ExperimentData(mass, cost);
                 case "MEE2":
-                    return new MEE2_ExperimentData(mass);
+                    return new MEE2_ExperimentData(mass, cost);
                 case "CVB":
-                    return new CVB_ExperimentData(mass);
+                    return new CVB_ExperimentData(mass, cost);
                 case "PACE":
-                    return new PACE_ExperimentData(mass);
+                    return new PACE_ExperimentData(mass, cost);
                 case "KeminiD5":
-                    return new KeminiD5_ExperimentData(mass);
+                    return new KeminiD5_ExperimentData(mass, cost);
                 case "KeminiD8":
-                    return new KeminiD8_ExperimentData(mass);
+                    return new KeminiD8_ExperimentData(mass, cost);
                 case "KeminiMSC3":
-                    return new KeminiMSC3_ExperimentData(mass);
+                    return new KeminiMSC3_ExperimentData(mass, cost);
                 case "KeminiD7":
-                    return new KeminiD7_ExperimentData(mass);
+                    return new KeminiD7_ExperimentData(mass, cost);
                 case "KeminiD10":
-                    return new KeminiD10_ExperimentData(mass);
+                    return new KeminiD10_ExperimentData(mass, cost);
                 case "ADUM":
-                    return new ADUM_ExperimentData(mass);
+                    return new ADUM_ExperimentData(mass, cost);
                 case "SpiU":
-                    return new SpiU_ExperimentData(mass);
+                    return new SpiU_ExperimentData(mass, cost);
                 case "":
                     return ExperimentData.getNullObject();
                 default:
