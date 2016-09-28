@@ -375,6 +375,17 @@ namespace NE_Science
                exposureSlot.experimentAction();
            }
        }
+
+        /// <summary>
+        /// Returns the mass of installed equipment and experiments.
+        /// </summary>
+        /// <returns>The mass.</returns>
+        protected override float getMass()
+        {
+            float mass = 0f;
+            mass += exposureSlot.getMass();
+            return mass;
+        }
     }
 
     public enum MEPLabStatus

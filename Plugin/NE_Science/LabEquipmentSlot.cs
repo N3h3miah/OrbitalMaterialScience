@@ -57,6 +57,17 @@ namespace NE_Science
             }
         }
 
+        /// <summary>
+        /// Returns the mass of installed equipment and experiments.
+        /// </summary>
+        /// <returns>The mass.</returns>
+        public float getMass()
+        {
+            float mass = 0f;
+            mass += (equ != null)? equ.getMass() : 0f;
+            return mass;
+        }
+
         public void install(LabEquipment eq, Lab lab)
         {
             if (eq != null && type == eq.getType())

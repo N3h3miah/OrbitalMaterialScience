@@ -471,5 +471,16 @@ namespace NE_Science
             return ret;
         }
 
+        /// <summary>
+        /// Returns the mass of installed equipment and experiments.
+        /// </summary>
+        /// <returns>The mass.</returns>
+        protected override float getMass()
+        {
+            float mass = 0f;
+            mass += usuSlot.getMass();
+            mass += msgSlot.getMass();
+            return mass;
+        }
     }
 }

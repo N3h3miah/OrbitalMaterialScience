@@ -25,7 +25,7 @@ using UnityEngine;
 
 namespace NE_Science
 {
-    public abstract class Lab : PartModule
+    public abstract class Lab : PartModule, IPartMassModifier
     {
 
         [KSPField(isPersistant = false)]
@@ -257,6 +257,36 @@ namespace NE_Science
                 ret += "Researchers required: " + minimumCrew;
             
             return ret;
+        }
+
+
+        /// <summary>
+        /// To be implemented by derived class; this method should return the mass of all installed equipment and experiments
+        /// </summary>
+        protected virtual float getMass()
+        {
+            return 0f;
+        }
+
+        /// <summary>Refresh cost and mass</summary>
+        public void RefreshMassAndCost()
+        {
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                GameEvents.onEditorShipModified.Fire(EditorLogic.fetch.ship);
+            }
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public ModifierChangeWhen GetModuleMassChangeWhen()
+        {
+            return ModifierChangeWhen.CONSTANTLY;
+        }
+
+        /// <summary>Overridden from IPartMassModifier</summary>
+        public float GetModuleMass(float defaultMass, ModifierStagingSituation sit)
+        {
+            return getMass();
         }
     }
 

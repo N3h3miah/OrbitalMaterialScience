@@ -109,11 +109,19 @@ namespace NE_Science
             return type;
         }
 
+        /// <summary>
+        /// Gets the mass of the equipment plus installed experiments.
+        /// </summary>
+        /// <returns>The mass.</returns>
         public float getMass()
         {
             return mass + ((exp != null)? exp.getMass() : 0f);
         }
 
+        /// <summary>
+        /// Gets the cost of the equipment plus installed experiments.
+        /// </summary>
+        /// <returns>The cost.</returns>
         public float getCost()
         {
             return cost + ((exp != null)? exp.getCost() : 0f);
