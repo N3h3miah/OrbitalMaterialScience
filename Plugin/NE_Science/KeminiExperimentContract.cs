@@ -48,6 +48,10 @@ namespace NE_Science.Contracts
                 return false;
             }
 
+            if (Prestige != ContractPrestige.Trivial) {
+                return false;
+            }
+
             if (ExperimentFactory.getAvailableExperiments(ExperimentFactory.KEMINI_EXPERIMENTS, true).Count == 0) {
                 return false;
             }
