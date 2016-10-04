@@ -166,14 +166,14 @@ namespace NE_Science
 
             string abb = node.GetValue(ABB_VALUE);
             string name = node.GetValue(NAME_VALUE);
-            float mass = float.Parse(node.GetValue(MASS_VALUE));
-            float cost = float.Parse(node.GetValue(COST_VALUE));
+            float mass = NE_Helper.GetValueAsFloat(node, MASS_VALUE);
+            float cost = NE_Helper.GetValueAsFloat(node, COST_VALUE);
 
             string product = node.GetValue(PRODUCT_VALUE);
-            float productPerHour = float.Parse(node.GetValue(PRODUCT_PER_HOUR_VALUE));
+            float productPerHour = NE_Helper.GetValueAsFloat(node, PRODUCT_PER_HOUR_VALUE);
 
             string reactant = node.GetValue(REACTANT_VALUE);
-            float reactantPerProduct = float.Parse(node.GetValue(REACTANT_PER_PRODUCT_VALUE));
+            float reactantPerProduct = NE_Helper.GetValueAsFloat(node, REACTANT_PER_PRODUCT_VALUE);
 
             EquipmentRacks type = EquipmentRacksFactory.getType(node.GetValue(TYPE_VALUE));
 

@@ -40,7 +40,7 @@ namespace NE_Science
         protected override void load(ConfigNode node)
         {
             base.load(node);
-            testSubjectsNeeded = int.Parse(node.GetValue(TEST_SUBJECTS_NEEDED));
+            testSubjectsNeeded = NE_Helper.GetValueAsInt(node, TEST_SUBJECTS_NEEDED);
         }
 
         public override bool canInstall(Vessel vessel)

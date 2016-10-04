@@ -72,11 +72,50 @@ namespace NE_Science
             return node;
         }
 
+        /// <summary>
+        /// Returns the ConfigNode's value as an int, or 0 on failure.
+        /// </summary>
+        /// <returns>The node value as int.</returns>
+        /// <param name="node">The Node from which to retrieve the Value.</param>
+        /// <param name="name">The name of the Value to retrieve.</param>
+        public static int GetValueAsInt(ConfigNode node, string name)
+        {
+            int rv = 0;
+            try {
+                if (!node.TryGetValue(name, ref rv))
+                {
+                    rv = 0;
+                }
+            } catch (Exception e) {
+                logError("GetValueAsInt - exception: " + e.Message);
+            }
+            return rv;
+        }
+
+        /// <summary>
+        /// Returns the ConfigNode's value as a float, or 0f on failure.
+        /// </summary>
+        /// <returns>The node value as float.</returns>
+        /// <param name="node">The Node from which to retrieve the Value.</param>
+        /// <param name="name">The name of the Value to retrieve.</param>
+        public static float GetValueAsFloat(ConfigNode node, string name)
+        {
+            float rv = 0f;
+            try {
+                if (!node.TryGetValue(name, ref rv))
+                {
+                    rv = 0f;
+                }
+            } catch (Exception e) {
+                logError("GetValueAsFloat - exception: " + e.Message);
+            }
+            return rv;
+        }
+
         public static bool debugging()
         {
             return debug;
         }
-
 
         public static void log( string msg)
         {

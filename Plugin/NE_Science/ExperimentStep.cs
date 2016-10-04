@@ -88,7 +88,7 @@ namespace NE_Science
                 NE_Helper.logError("getExperimentStepFromConfigNode: invalid Node: " + node.name);
                 return new ExperimentStep(exp, "", "");
             }
-            int index = int.Parse(node.GetValue(INDEX_VALUE));
+            int index = NE_Helper.GetValueAsInt(node, INDEX_VALUE);
             string name = node.GetValue(NAME_VALUE);
             ExperimentStep step = createExperimentStep(node.GetValue(TYPE_VALUE), exp, name, index);
             step.load(node);
@@ -173,7 +173,7 @@ namespace NE_Science
         {
             base.load(node);
             res = node.GetValue(RES_VALUE);
-            amount = float.Parse(node.GetValue(AMOUNT_VALUE));
+            amount = NE_Helper.GetValueAsFloat(node, AMOUNT_VALUE);
         }
 
         public override bool ready()

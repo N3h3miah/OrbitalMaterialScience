@@ -62,7 +62,7 @@ namespace NE_Science.Contracts.Parameters
                 if (module.moduleName == moduleName)
                 {
                     ConfigNode partConf = module.moduleValues;
-                    float completed = getFloatValueFromConfigNode(partConf, OMSExperiment.COMPLETED);
+                    float completed = NE_Helper.GetValueAsFloat(partConf, OMSExperiment.COMPLETED);
                     if (completed >= contractAccepted)
                     {
                         return containsDoneExperimentData(partConf, targetBody);
@@ -86,18 +86,6 @@ namespace NE_Science.Contracts.Parameters
                 }
             }
             return false;
-        }
-
-        protected float getFloatValueFromConfigNode(ConfigNode configNode, string valueName)
-        {
-            try
-            {
-                return float.Parse(configNode.GetValue(valueName));
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
         }
     }
 
@@ -154,7 +142,7 @@ namespace NE_Science.Contracts.Parameters
                     if (partConf != null)
                     {
                         NE_Helper.log("Experiment module found");
-                        float completed = getFloatValueFromConfigNode(partConf, OMSExperiment.COMPLETED);
+                        float completed = NE_Helper.GetValueAsFloat(partConf, OMSExperiment.COMPLETED);
                         if (completed >= contractAccepted)
                         {
                             return containsDoneExperimentData(partConf, targetBody);

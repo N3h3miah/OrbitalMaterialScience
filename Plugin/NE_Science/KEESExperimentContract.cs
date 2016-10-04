@@ -238,7 +238,7 @@ namespace NE_Science.Contracts
 
         protected override void OnLoad(ConfigNode node)
         {
-            int bodyID = int.Parse(node.GetValue(TARGET_BODY));
+            int bodyID = NE_Helper.GetValueAsInt(node, TARGET_BODY);
             foreach (var body in FlightGlobals.Bodies)
             {
                 if (body.flightGlobalsIndex == bodyID)

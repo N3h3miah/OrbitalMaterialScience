@@ -180,8 +180,8 @@ namespace NE_Science
                 NE_Helper.logError("getLabEquipmentFromNode: invalid Node: " + node.name);
                 return getNullObject();
             }
-            float mass = stringToFloat(node.GetValue(MASS_VALUE));
-            float cost = stringToFloat(node.GetValue(COST_VALUE));
+            float mass = NE_Helper.GetValueAsFloat(node, MASS_VALUE);
+            float cost = NE_Helper.GetValueAsFloat(node, COST_VALUE);
 
             ExperimentData exp = ExperimentFactory.getExperiment(node.GetValue(TYPE_VALUE), mass, cost);
             exp.load(node);
@@ -507,7 +507,7 @@ namespace NE_Science
         {
             base.load(node);
 
-            activeStep = int.Parse(node.GetValue(ACTIVE_VALUE));
+            activeStep = NE_Helper.GetValueAsInt(node, ACTIVE_VALUE);
 
             ConfigNode[] stepNodes = node.GetNodes(ExperimentStep.CONFIG_NODE_NAME);
             steps = new T[stepNodes.Length];
