@@ -52,6 +52,11 @@ namespace NE_Science.Contracts
 
         protected override bool Generate()
         {
+            if (!DependancyChecker.HasKIS)
+            {
+                return false;
+            }
+
             NE_Helper.log("Generate Contract");
             if (activeContracts() >= getMaxKEESContracts())
             {
@@ -88,8 +93,9 @@ namespace NE_Science.Contracts
 
         private int getMaxKEESContracts()
         {
-            int bonus = (int)(3f * ScenarioUpgradeableFacilities.GetFacilityLevel("SpaceCenter/MissionControl"));
-            return 3 + bonus;
+            //int bonus = (int)(3f * ScenarioUpgradeableFacilities.GetFacilityLevel("SpaceCenter/MissionControl"));
+            //return 3 + bonus;
+            return 2;
         }
 
         private int activeContracts(String experimentPartName = null, CelestialBody body = null)
