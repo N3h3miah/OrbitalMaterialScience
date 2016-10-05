@@ -54,8 +54,8 @@ internal class DependancyChecker : MonoBehaviour
 
     static Dictionary<string, AssemblyInfo> assemblies = new Dictionary<string, AssemblyInfo> 
     {
-        { "ModuleManager", new AssemblyInfo(2, 6, 25, false) },
-        { "KIS", new AssemblyInfo(1, 2, 7) },
+        { "ModuleManager", new AssemblyInfo(2, 7, 0, false) },
+        { "KIS", new AssemblyInfo(1, 3, 0) },
     };
 
     static public bool HasKIS { get { return assemblies["KIS"].isPresent; } }
@@ -66,7 +66,15 @@ internal class DependancyChecker : MonoBehaviour
     {        
         foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
-            if ( assemblies.ContainsKey( assembly.GetName().Name ) )
+            // Some assemblies now append a version number to their name (here's looking at YOU, ModuleManager!
+            string simpleName = assembly.GetName().Name;
+            int index = simpleName.IndexOfAny(new char[]{'.', '-'});
+            if (index > 0)
+            {
+                simpleName = simpleName.Substring(0, index);
+            }
+
+            if (assemblies.ContainsKey(simpleName))
             {
                 assemblies[assembly.GetName().Name].assembly = assembly;
             }
