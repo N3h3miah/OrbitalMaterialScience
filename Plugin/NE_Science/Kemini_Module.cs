@@ -39,14 +39,14 @@ namespace NE_Science
         public override void OnLoad(ConfigNode node)
         {
             base.OnLoad(node);
-            NE_Helper.log("MPL OnLoad");
+            NE_Helper.log("KL OnLoad");
             keminiSlot = getLabEquipmentSlot(node.GetNode(KEMINI_CONFIG_NODE_NAME));
         }
 
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
-            NE_Helper.log("MPL OnSave");
+            NE_Helper.log("KL OnSave");
             node.AddNode(getConfigNodeForSlot(KEMINI_CONFIG_NODE_NAME, keminiSlot));
         }
 
@@ -96,7 +96,6 @@ namespace NE_Science
                     keminiSlot.install(le, this);
                     break;
             }
-            part.mass += le.getMass();
         }
 
         public bool hasEquipmentInstalled(EquipmentRacks rack)
@@ -126,7 +125,7 @@ namespace NE_Science
         {
             switch (rack)
             {
-                case EquipmentRacks.MSG:
+                case EquipmentRacks.KEMINI:
                     return keminiSlot.isEquipmentRunning();
 
                 default:
