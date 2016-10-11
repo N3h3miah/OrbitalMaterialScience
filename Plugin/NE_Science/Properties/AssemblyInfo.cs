@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Orbital Material Science Plugin")]
+[assembly: AssemblyTitle("NE Orbital Science Plugin")]
 [assembly: AssemblyDescription("KSP Plugin")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Nehemiah Inc")]
-[assembly: AssemblyProduct("Orbital Material Science Plugin")]
+[assembly: AssemblyProduct("NE Orbital Science Plugin")]
 [assembly: AssemblyCopyright("GNU General Public License V3")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -29,8 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.7.1.1")]
+[assembly: AssemblyVersion("0.7.1.5")]
 [assembly: AssemblyInformationalVersion("0.7.1-pre for KSP 1.2")]
-[assembly: AssemblyFileVersion("0.7.1.1")]
+[assembly: AssemblyFileVersion("0.7.1.5")]
 
 [assembly: KSPAssembly("NE_Science", 0, 71)]
