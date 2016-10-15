@@ -60,8 +60,10 @@ namespace NE_Science
         {
             base.OnStart(state);
             if (state == StartState.Editor) { return; }
-            
+
+            #if (DEBUG)
             Events["DebugDump"].active = true;
+            #endif
             this.part.force_activate();
             switch(this.state){
                 case READY:
@@ -80,12 +82,14 @@ namespace NE_Science
             StartCoroutine(updateStatus());
         }
 
+        #if (DEBUG)
         [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
         public void DebugDump()
         {
             /* Printed out in Player.log */
             NE_Helper.log(this.ToString ());
         }
+        #endif
 
         /** Converts the object to a human-readble string suitable for printing.
          * Overloads base-class implementation.

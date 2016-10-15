@@ -122,12 +122,14 @@ namespace NE_Science
             exp = null;
         }
 
+        #if (DEBUG)
         [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
         public void DebugDump()
         {
             /* Printed out in Player.log */
             NE_Helper.log(this.ToString ());
         }
+        #endif
 
         /** Converts the object to a human-readble string suitable for printing.
         /** Converts the object to a human-readable string suitable for printing.
