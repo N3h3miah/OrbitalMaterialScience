@@ -1,6 +1,12 @@
 {
     "NAME":"NE-MPP",
-    "URL":"http://forum.kerbalspaceprogram.com/index.php?/topic/73723-090-orbital-material-science-version-06/",
+    "URL":"https://raw.githubusercontent.com/mwerle/OrbitalMaterialScience/master/GameData/NehemiahInc/MultiPurposeParts/NE-MPP.version",
+    "GITHUB":
+    {
+        "USERNAME":"mwerle",
+        "REPOSITORY":"OrbitalMaterialScience",
+        "ALLOW_PRE_RELEASE":false,
+    }
     "VERSION":
     {
         "MAJOR":0,
