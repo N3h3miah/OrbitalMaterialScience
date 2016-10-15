@@ -112,6 +112,29 @@ namespace NE_Science
             return rv;
         }
 
+        /// <summary>
+        /// Returns TRUE if the part technology is available.
+        /// </summary>
+        /// <returns><c>true</c>, if part technology available, <c>false</c> otherwise.</returns>
+        /// <param name="name">Name.</param>
+        public static bool IsPartTechAvailable(string name)
+        {
+            AvailablePart part = PartLoader.getPartInfoByName(name);
+            return (part != null && ResearchAndDevelopment.PartTechAvailable(part));
+        }
+
+        /// <summary>
+        /// Returns TRUE if the part is available, that is, the tech-node has been unlocked and
+        /// the part has been purchased or is experimental.
+        /// </summary>
+        /// <returns><c>true</c>, if part available, <c>false</c> otherwise.</returns>
+        /// <param name="name">Name.</param>
+        public static bool IsPartAvailable(string name)
+        {
+            AvailablePart part = PartLoader.getPartInfoByName(name);
+            return (part != null && ResearchAndDevelopment.PartModelPurchased(part));
+        }
+
         public static bool debugging()
         {
             return debug;

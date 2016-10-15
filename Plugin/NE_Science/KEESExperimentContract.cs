@@ -52,11 +52,6 @@ namespace NE_Science.Contracts
 
         protected override bool Generate()
         {
-            if (!DependancyChecker.HasKIS)
-            {
-                return false;
-            }
-
             NE_Helper.log("Generate Contract");
             if (activeContracts() >= getMaxKEESContracts())
             {
@@ -175,7 +170,7 @@ namespace NE_Science.Contracts
             List<Experiment> unlockedParts = new List<Experiment>();
             foreach (Experiment exp in experimentParts)
             {
-                if (isPartUnlocked(exp.getPartName()))
+                if (NE_Helper.IsPartTechAvailable(exp.getPartName()))
                 {
                     unlockedParts.Add(exp);
                 }
@@ -185,9 +180,11 @@ namespace NE_Science.Contracts
 
         private bool setTargetExperiment(Experiment exp)
         {
-            if (exp == null) {
+            if (exp == null)
+            {
                 NE_Helper.log("Generate Contract: Experiment null");
-                return false; }
+                return false;
+            }
             AvailablePart experiment = PartLoader.getPartInfoByName(exp.getPartName());
             if (experiment == null)
             {
@@ -271,34 +268,32 @@ namespace NE_Science.Contracts
             return new Experiment("", "", "", ""); //Nullobject;
         }
 
-        bool isPartUnlocked(string name)
-        {
-            AvailablePart part = PartLoader.getPartInfoByName(name);
-            if (part != null && ResearchAndDevelopment.PartModelPurchased(part))
-            {
-                return true;
-            }
-            return false;
-        }
-
         public override bool MeetRequirements()
         {
             CelestialBodySubtree kerbinProgress = null;
+
+            if (!DependancyChecker.HasKIS)
+            {
+                return false;
+            }
+
             foreach (var node in ProgressTracking.Instance.celestialBodyNodes)
             {
                 if (node.Body == Planetarium.fetch.Home)
+                {
                     kerbinProgress = node;
+                    break;
+                }
             }
             if (kerbinProgress == null)
             {
                 return false;
             }
 
-            return (kerbinProgress.orbit.IsComplete &&
-                  isPartUnlocked(KEES_PC) &&
-                  isPartUnlocked(KEES_PEC) &&
-                  isPartUnlocked(KEES_PPMD)) &&
-                  ScenarioUpgradeableFacilities.GetFacilityLevel("SpaceCenter/AstronautComplex") > 0.1f;
+            return (kerbinProgress.returnFromOrbit.IsCompleteManned &&
+                  NE_Helper.IsPartTechAvailable(KEES_PEC) &&
+                  NE_Helper.IsPartTechAvailable(KEES_PPMD) &&
+                  ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex) > 0.1f);
         }
     }
 

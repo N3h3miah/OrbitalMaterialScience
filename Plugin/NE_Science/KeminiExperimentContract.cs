@@ -43,11 +43,6 @@ namespace NE_Science.Contracts
          *  Return TRUE if a contract could be created, FALSE if not. */
         protected override bool Generate()
         {
-            // Prevent generating contracts if we can't actually do them!
-            if (!DependancyChecker.HasModuleManager) {
-                return false;
-            }
-
             if (Prestige != ContractPrestige.Trivial) {
                 return false;
             }
@@ -240,16 +235,24 @@ namespace NE_Science.Contracts
         public override bool MeetRequirements()
         {
             CelestialBodySubtree kerbinProgress = null;
+
+            if (!DependancyChecker.HasModuleManager) {
+                return false;
+            }
+
             foreach (var node in ProgressTracking.Instance.celestialBodyNodes)
             {
                 if (node.Body == Planetarium.fetch.Home)
+                {
                     kerbinProgress = node;
+                    break;
+                }
             }
             if (kerbinProgress == null)
             {
                 return false;
             }
-            return ProgressTracking.Instance.NodeComplete(new string[] {Planetarium.fetch.Home.name, "ReturnFromOrbit"});
+            return kerbinProgress.returnFromOrbit.IsCompleteManned;
         }
 
         private void addExperimentalParts()
