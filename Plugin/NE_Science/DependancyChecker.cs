@@ -32,7 +32,7 @@ namespace NE_Science
 [KSPAddon(KSPAddon.Startup.MainMenu, true)]
 internal class DependancyChecker : MonoBehaviour
 {
-    string currentModName = "KEES";
+    string currentModName = "NEOS";
 
    class AssemblyInfo {
         public AssemblyInfo(int pMinMajor, int pMinMinor, int pMinBuild, bool pIsRequired = false) {
@@ -76,7 +76,7 @@ internal class DependancyChecker : MonoBehaviour
 
             if (assemblies.ContainsKey(simpleName))
             {
-                assemblies[assembly.GetName().Name].assembly = assembly;
+                assemblies[simpleName].assembly = assembly;
             }
         }
 
@@ -113,7 +113,7 @@ internal class DependancyChecker : MonoBehaviour
             }
             else if(entry.Value.isRequired)
             {
-                Debug.LogError(assemblyName + " reuired but not found!");
+                Debug.LogError(assemblyName + " required but not found!");
                 /* TODO: Pop up dialog warning user
                 var sb = new StringBuilder();
                 sb.AppendFormat(assemblyName + " is required for " + currentModName + "."); sb.AppendLine();
