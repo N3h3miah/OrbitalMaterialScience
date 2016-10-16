@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NE_Science
@@ -29,7 +28,7 @@ namespace NE_Science
 
         private Guid cachedVesselID;
         private int partCount;
-        private List<Kemini_Module> KeminiLabCache = null;
+        private Kemini_Module[] KeminiLabCache = null;
         
         protected KeminiExperimentData(string id, string type, string name, string abb, float mass, float cost)
             : base(id, type, name, abb, EquipmentRacks.KEMINI, mass, cost)
@@ -40,21 +39,16 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<Kemini_Module> allKeminiLabs;
-            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && KeminiLabCache != null)
+            if (KeminiLabCache == null || cachedVesselID != vessel.id || partCount != vessel.parts.Count)
             {
-                allKeminiLabs = KeminiLabCache;
-            }
-            else
-            {
-                allKeminiLabs = new List<Kemini_Module>(UnityFindObjectsOfType(typeof(Kemini_Module)) as Kemini_Module[]);
-                KeminiLabCache = allKeminiLabs;
+                KeminiLabCache = UnityFindObjectsOfType(typeof(Kemini_Module)) as Kemini_Module[];
                 cachedVesselID = vessel.id;
                 partCount = vessel.parts.Count;
                 NE_Helper.log("Lab Cache refresh");
             }
-            foreach (Kemini_Module lab in allKeminiLabs)
+            for (int idx = 0, count = KeminiLabCache.Length; idx < count; idx++)
             {
+                var lab = KeminiLabCache[idx];
                 if (lab.vessel == vessel && lab.hasEquipmentInstalled(neededEquipment) && lab.hasEquipmentFreeExperimentSlot(neededEquipment))
                 {
                     ret.Add(lab);
@@ -80,8 +74,9 @@ namespace NE_Science
             if (state == ExperimentState.FINISHED)
             {
                 ExperimentStorage[] storages = store.getPartGo().GetComponents<ExperimentStorage>();
-                foreach (ExperimentStorage es in storages)
+                for (int idx = 0, count = storages.Length; idx < count; idx++)
                 {
+                    var es = storages[idx];
                     if (es.isEmpty())
                     {
                         moveTo(es);

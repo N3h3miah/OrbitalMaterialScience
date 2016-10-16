@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -63,16 +62,17 @@ namespace NE_Science
             GUILayout.BeginVertical();
             GUILayout.Label("Choose Target");
             moveScrollPos = GUILayout.BeginScrollView(moveScrollPos, GUILayout.Width(180), GUILayout.Height(320));
-            int i = 0;
-            foreach (ExperimentStorage e in targets)
+
+            for( int i = 0, count = targets.Count; i < count; i++)
             {
+                var e = targets[i];
                 if (GUILayout.Button( new GUIContent(e.identifier, i.ToString())))
                 {
                     exp.moveTo(e);
                     closeGui();
                 }
-                ++i;
             }
+
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))
             {
@@ -103,9 +103,9 @@ namespace NE_Science
 
         private void resetHighlight()
         {
-            foreach (ExperimentStorage e in targets)
+            for (int i = 0, count = targets.Count; i < count; i++)
             {
-                e.part.SetHighlightDefault();
+                targets[i].part.SetHighlightDefault();
             }
         }
     }

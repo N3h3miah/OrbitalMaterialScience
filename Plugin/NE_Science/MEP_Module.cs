@@ -302,6 +302,7 @@ namespace NE_Science
 
         private void playAnimation(string animName, float speed, float time)
         {
+            // MKW TODO - remove "FirstOrDefault" Linq statement
             Animation anim = part.FindModelAnimators(animName).FirstOrDefault();
             if (anim != null)
             {

@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace NE_Science
 {
     class ChooseTestSubject : MonoBehaviour
     {
-        private List<string> avilableSubjects = new List<string>();
+        private List<string> availableSubjects = new List<string>();
         private KerbalResearchExperimentData exp;
 
         private bool showGui = false;
@@ -36,7 +35,7 @@ namespace NE_Science
 
         internal void showDialog(List<string> avilableSubjects, KerbalResearchExperimentData experimentData, ExperimentStep.startCallback cbMethod)
         {
-            this.avilableSubjects = avilableSubjects;
+            this.availableSubjects = avilableSubjects;
             exp = experimentData;
             this.cbMethod = cbMethod;
             windowID = WindowCounter.getNextWindowID();
@@ -66,8 +65,9 @@ namespace NE_Science
             if (exp.isTestSubjectAvailable())
             {
                 GUILayout.Label("Choose a Kerbal:");
-                foreach (string s in avilableSubjects)
+                for (int i = 0, count = availableSubjects.Count; i < count; i++)
                 {
+                    var s = availableSubjects[i];
                     if (GUILayout.Button(s))
                     {
                         exp.getActiveStep().start(s, cbMethod);
@@ -79,9 +79,10 @@ namespace NE_Science
             {
                 GUILayout.Label("Already tested:");
 
-
-                foreach (KerbalResearchStep krs in exp.getExperimentSteps())
+                var expSteps = exp.getExperimentSteps();
+                for (int i = 0, count = expSteps.Count; i < count; i++)
                 {
+                    var krs = expSteps[i];
                     if (krs.getSubjectName() != "")
                     {
                         GUILayout.BeginHorizontal();
@@ -90,7 +91,6 @@ namespace NE_Science
                         GUILayout.EndHorizontal();
                     }
                 }
-
             }
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))

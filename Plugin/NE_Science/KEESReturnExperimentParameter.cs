@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP;
@@ -109,18 +108,21 @@ namespace NE_Science.Contracts.Parameters
         protected override void OnLoad(ConfigNode node)
         {
             int bodyID = NE_Helper.GetValueAsInt(node, KEESExperimentContract.TARGET_BODY);
-            foreach (var body in FlightGlobals.Bodies)
+            for (int idx = 0, count = FlightGlobals.Bodies.Count; idx < count; idx++)
             {
+                var body = FlightGlobals.Bodies[idx];
                 if (body.flightGlobalsIndex == bodyID)
+                {
                     targetBody = body;
+                }
             }
             setTargetExperiment(node.GetValue(KEESExperimentContract.EXPERIMENT_STRING));
         }
+
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue(KEESExperimentContract.TARGET_BODY, bodyID);
-
             node.AddValue(KEESExperimentContract.EXPERIMENT_STRING, experiment.name);
         }
     }

@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -47,7 +46,7 @@ namespace NE_Science
             if (node == null)
             {
                 NE_Helper.logError("KEES PEC: AttachNode not found");
-                node = part.attachNodes.First();
+                node = part.attachNodes[0];
             }
         }
 

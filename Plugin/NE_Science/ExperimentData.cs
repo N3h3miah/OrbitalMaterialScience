@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -48,7 +47,7 @@ namespace NE_Science
 
         private Guid cachedVesselID;
         private int partCount;
-        private List<ExperimentStorage> contCache = null;
+        private ExperimentStorage[] contCache = null;
 
         public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
         {
@@ -222,22 +221,17 @@ namespace NE_Science
         public List<ExperimentStorage> getFreeExperimentContainers(Vessel vessel)
         {
             List<ExperimentStorage> freeCont = new List<ExperimentStorage>();
-            List<ExperimentStorage> allCont;
-            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && contCache != null)
+            if (contCache == null || cachedVesselID != vessel.id && partCount != vessel.parts.Count)
             {
-                allCont = contCache;
-            }
-            else
-            {
-                allCont = new List<ExperimentStorage>(UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[]);
-                contCache = allCont;
+                contCache = UnityFindObjectsOfType(typeof(ExperimentStorage)) as ExperimentStorage[];
                 cachedVesselID = vessel.id;
                 partCount = vessel.parts.Count;
                 NE_Helper.log("Storage Cache refresh");
             }
 
-            foreach (ExperimentStorage c in allCont)
+            for (int idx = 0, count = contCache.Length; idx < count; idx++)
             {
+                var c = contCache[idx];
                 if (c.vessel == vessel && c.isEmpty() && c.type == storageType)
                 {
                     freeCont.Add(c);
@@ -480,13 +474,12 @@ namespace NE_Science
             }
                 baseNode.AddValue(ACTIVE_VALUE, activeStep);
 
-                int count = 0;
-                foreach (ExperimentStep es in steps)
+                for (int idx = 0, count = steps.Length; idx < count; idx++)
                 {
-                    count++;
+                    var es = steps[idx];
                     if (es == null) {
                         NE_Helper.logError ("MultiStepExperimentData("+getId()+").getNode() - es is NULL!\n"
-                        + "    entry "+count+" in steps["+steps.Length+"] is NULL\n");
+                            + "    entry "+(idx+1)+" in steps["+steps.Length+"] is NULL\n");
                         continue;
                     }
                     ConfigNode expNode = es.getNode ();
@@ -511,8 +504,9 @@ namespace NE_Science
 
             ConfigNode[] stepNodes = node.GetNodes(ExperimentStep.CONFIG_NODE_NAME);
             steps = new T[stepNodes.Length];
-            foreach (ConfigNode stepNode in stepNodes)
+            for (int idx = 0, count = stepNodes.Length; idx < count; idx++)
             {
+                var stepNode = stepNodes[idx];
                 T step = (T)ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
                 steps[step.getIndex()] = step;
             }
