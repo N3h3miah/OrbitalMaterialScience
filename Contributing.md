@@ -48,6 +48,8 @@ Models are, surprisingly, maintained in the **Models** directory.
 
 The modelling tool used to create these is [Blender][30]. For consistencies sake, any new models should also be created using Blender, but ultimately there is no requirement to actually do so.
 
+**IMPORTANT:** Models are saved (for import into Unity) in **ASCII FBX format** for ultimate interoperability and kindness to Git.
+
 [30]: https://www.blender.org/
 
 ## Unity Projects
@@ -57,8 +59,14 @@ The projects are in the process of being updated to Unity **5.4.0p4**, which can
 
 Each project contains the [PartTools][41] plugin, which must be added to any new projects. Older projects are in the process of being upgraded from PartTools 0.23.
 
+For the sake of interoperability, the *PartTools.cfg* file should be edited manually to provide a relative path to the *GameData* directory, which should be set to be the one at the root directory of NEOS.
+
+**IMPORTANT:** Ensure that each project is configured to use *"Visible Meta Files"* (Edit -> Project Settings -> Editor) and that the meta-files are added to Git.  The "Library" folder should not be added! Furthermore the *"Asset Serialisation"* setting should be set to *"Force Text"*. 
+
 ### Textures
 Model textures must be exported in the **MDM** format to ensure that they can be replaced with other formats with different file extensions.
+
+**IMPORTANT:** Only the textures which are actually attached to the model are exported by *PartTools*. As each experiment has its own texture which overwrites the default model texture, the experiment textures must be manually copied into the output directory if they have been modified.
 
 After generating the final files, textures should be converted to **DDS** format. While various utilities exist, the easiest by far is the [KSP to DDS textured converter][42] although it is currently only available for Windows.
 
