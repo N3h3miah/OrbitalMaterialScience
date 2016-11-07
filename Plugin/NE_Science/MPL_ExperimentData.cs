@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NE_Science
@@ -13,7 +12,7 @@ namespace NE_Science
 
         private Guid cachedVesselID;
         private int partCount;
-        private List<MPL_Module> physicsLabCache = null;
+        private MPL_Module[] physicsLabCache = null;
 
         protected MPLExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
             : base(id, type, name, abb, eq, mass, cost)
@@ -22,21 +21,16 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<MPL_Module> allPhysicsLabs;
-            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && physicsLabCache != null)
+            if (physicsLabCache == null || cachedVesselID != vessel.id || partCount != vessel.parts.Count)
             {
-                allPhysicsLabs = physicsLabCache;
-            }
-            else
-            {
-                allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
-                physicsLabCache = allPhysicsLabs;
+                physicsLabCache = UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[];
                 cachedVesselID = vessel.id;
                 partCount = vessel.parts.Count;
                 NE_Helper.log("Lab Cache refresh");
             }
-            foreach (MPL_Module lab in allPhysicsLabs)
+            for (int idx = 0, count = physicsLabCache.Length; idx < count; idx++)
             {
+                var lab = physicsLabCache[idx];
                 if (lab.vessel == vessel && lab.hasEquipmentInstalled(neededEquipment) && lab.hasEquipmentFreeExperimentSlot(neededEquipment))
                 {
                     ret.Add(lab);

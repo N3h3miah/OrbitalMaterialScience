@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NE_Science
@@ -38,12 +37,18 @@ namespace NE_Science
         public const string OMS_EXPERIMENTS = "OMS";
         public const string KEMINI_EXPERIMENTS = "KEMINI";
 
-        static readonly List<string> omsRegistry = new List<string>() { "NE.TEST", "NE.CCFE", "NE.CFE",
+        static readonly string[] omsRegistry = { "NE.TEST", "NE.CCFE", "NE.CFE",
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
             "NE.PACE", "NE.ADUM", "NE.SpiU"};
 
-        static readonly List<string> keminiRegistry = new List<string>() { "NE.KeminiD5", "NE.KeminiD8",
+        static readonly string[] keminiRegistry = { "NE.KeminiD5", "NE.KeminiD8",
             "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
+
+        //
+        // TODO - add experiments cache; see if we can hook into the unlock/purchase events
+        // some of these APIs get called a LOT, causing heaps of foreach() and list creation
+        // on every frame.
+        //
 
         /** Returns a list of all purchased experiments.
          * If includeExperimental is true, it includes unpurchased parts as long as the required tech is available. */
@@ -52,8 +57,9 @@ namespace NE_Science
             List<ExperimentData> list = new List<ExperimentData>();
             List<AvailablePart> parts = getAvailableExperimentParts(type, includeExperimental);
 
-            foreach (var part in parts)
+            for (int idx = 0, count = parts.Count; idx < count; idx++)
             {
+                var part = parts[idx];
                 Part pPf = part.partPrefab;
                 NE_ExperimentModule exp = pPf.GetComponent<NE_ExperimentModule>();
                 float mass = pPf.mass;  //pPf.GetModuleMass(0);
@@ -66,8 +72,8 @@ namespace NE_Science
 
         public static List<AvailablePart> getAvailableExperimentParts(string type, bool includeExperimental = false)
         {
-            List<string> partsRegistry = null;
-            List<AvailablePart> list = new List<AvailablePart>();
+            string[] partsRegistry = null;
+            List<AvailablePart> list = null;
 
             switch (type)
             {
@@ -80,10 +86,12 @@ namespace NE_Science
                 default:
                     return list;
             }
+            // Avoid multiple allocations; the collection is small enough that the memory overhead is better than the reallocation overhead
+            list = new List<AvailablePart>(partsRegistry.Length);
 
-            foreach (var pn in partsRegistry)
+            for (int idx = 0, count = partsRegistry.Length; idx < count; idx++)
             {
-                AvailablePart part = PartLoader.getPartInfoByName(pn);
+                AvailablePart part = PartLoader.getPartInfoByName(partsRegistry[idx]);
                 if (part == null) continue;
                 /*
                 bool isPurchased = ResearchAndDevelopment.PartModelPurchased (part);
@@ -107,7 +115,7 @@ namespace NE_Science
         public static AvailablePart getPartForExperiment(string type, ExperimentData exp)
         {
             AvailablePart ap = null;
-            List<string> partsRegistry = null;
+            string[] partsRegistry = null;
 
             switch (type)
             {
@@ -118,9 +126,9 @@ namespace NE_Science
                     partsRegistry = keminiRegistry;
                     break;
             }
-            foreach (var pn in partsRegistry)
+            for (int idx = 0, count = partsRegistry.Length; idx < count; idx++)
             {
-                ap = PartLoader.getPartInfoByName(pn);
+                ap = PartLoader.getPartInfoByName(partsRegistry[idx]);
                 if (ap != null)
                 {
                     NE_ExperimentModule e = ap.partPrefab.GetComponent<NE_ExperimentModule>();

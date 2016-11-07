@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -316,15 +315,14 @@ namespace NE_Science
             GUILayout.BeginVertical();
             GUILayout.Label("Choose Lab");
             labScrollPos = GUILayout.BeginScrollView(labScrollPos, GUILayout.Width(180), GUILayout.Height(320));
-            int i = 0;
-            foreach (Lab l in availableLabs)
+            for (int idx = 0, count = availableLabs.Count; idx < count; idx++)
             {
-                if (GUILayout.Button(new GUIContent(l.abbreviation, i.ToString())))
+                var l = availableLabs[idx];
+                if (GUILayout.Button(new GUIContent(l.abbreviation, idx.ToString())))
                 {
                     installExperimentInLab(l);
                     closeGui();
                 }
-                ++i;
             }
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))
@@ -356,9 +354,9 @@ namespace NE_Science
 
         private void resetHighlight()
         {
-            foreach (Lab l in availableLabs)
+            for (int idx = 0, count = availableLabs.Count; idx < count; idx++)
             {
-                l.part.SetHighlightDefault();
+                availableLabs[idx].part.SetHighlightDefault();
             }
         }
 
@@ -398,8 +396,9 @@ namespace NE_Science
 
             GUILayout.BeginVertical();
             addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(230), GUILayout.Height(500));
-            foreach (ExperimentData e in availableExperiments)
+            for (int idx = 0, count = availableExperiments.Count; idx < count; idx++)
             {
+                var e = availableExperiments[idx];
                 if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
                 {
                     setExperiment(e);

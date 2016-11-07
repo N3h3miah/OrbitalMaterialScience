@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Contracts;
 using Contracts.Parameters;
@@ -104,16 +103,19 @@ namespace NE_Science.Contracts
             {
                 return 0;
             }
-            foreach (Contract con in ContractSystem.Instance.Contracts)
+
+            var contracts = ContractSystem.Instance.GetCurrentContracts<KEESExperimentContract>();
+            for (int idx = 0, count = contracts.Length; idx < count; idx++)
             {
-                KEESExperimentContract keesCon = con as KEESExperimentContract;
-                if (keesCon != null && (keesCon.ContractState == Contract.State.Active ||
-                    keesCon.ContractState == Contract.State.Offered) &&
-                  (experimentPartName == null || keesCon.experiment != null) &&
-                  (body == null || keesCon.targetBody != null) &&
-                  ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName()) &&
-                   (body == null || body.theName == keesCon.targetBody.theName)))
+                var keesCon = contracts[idx];
+                if ((keesCon.ContractState == Contract.State.Active || keesCon.ContractState == Contract.State.Offered)
+                    && (experimentPartName == null || keesCon.experiment != null)
+                    && (body == null || keesCon.targetBody != null)
+                    && ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName())
+                    && (body == null || body.theName == keesCon.targetBody.theName)))
+                {
                     ret += 1;
+                }
             }
             return ret;
         }
@@ -129,17 +131,18 @@ namespace NE_Science.Contracts
             {
                 return 0;
             }
-            foreach (Contract con in ContractSystem.Instance.Contracts)
+            var contracts = ContractSystem.Instance.GetCurrentContracts<KEESExperimentContract>();
+            for (int idx = 0, count = contracts.Length; idx < count; idx++)
             {
-                KEESExperimentContract keesCon = con as KEESExperimentContract;
-                if (keesCon != null && (keesCon.ContractState == Contract.State.Active ||
-                    keesCon.ContractState == Contract.State.Offered ||
-                    keesCon.ContractState == Contract.State.Completed) &&
-                  (experimentPartName == null || keesCon.experiment != null) &&
-                  (body == null || keesCon.targetBody != null) &&
-                  ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName()) &&
-                   (body == null || body.theName == keesCon.targetBody.theName)))
+                var keesCon = contracts[idx];
+                if ((keesCon.ContractState == Contract.State.Active || keesCon.ContractState == Contract.State.Offered || keesCon.ContractState == Contract.State.Completed)
+                    && (experimentPartName == null || keesCon.experiment != null)
+                    && (body == null || keesCon.targetBody != null)
+                    && ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName())
+                    && (body == null || body.theName == keesCon.targetBody.theName)))
+                {
                     ret += 1;
+                }
             }
             return ret;
         }
@@ -148,8 +151,9 @@ namespace NE_Science.Contracts
         {
             List<Experiment> unlockedExperiments = getUnlockedKEESExperiments();
             List<Experiment> unlockedNoContract = new List<Experiment>();
-            foreach (Experiment exp in unlockedExperiments)
+            for (int idx = 0, count = unlockedExperiments.Count; idx < count; idx++)
             {
+                var exp = unlockedExperiments[idx];
                 if (activeAndDoneContracts(exp.getPartName(), targetBody) == 0)
                 {
                     unlockedNoContract.Add(exp);
@@ -168,8 +172,9 @@ namespace NE_Science.Contracts
         private List<Experiment> getUnlockedKEESExperiments()
         {
             List<Experiment> unlockedParts = new List<Experiment>();
-            foreach (Experiment exp in experimentParts)
+            for (int idx = 0, count = experimentParts.Count; idx < count; idx++)
             {
+                var exp = experimentParts[idx];
                 if (NE_Helper.IsPartTechAvailable(exp.getPartName()))
                 {
                     unlockedParts.Add(exp);
@@ -242,24 +247,29 @@ namespace NE_Science.Contracts
         protected override void OnLoad(ConfigNode node)
         {
             int bodyID = NE_Helper.GetValueAsInt(node, TARGET_BODY);
-            foreach (var body in FlightGlobals.Bodies)
+            for (int idx = 0, count = FlightGlobals.Bodies.Count; idx < count; idx++)
             {
+                var body = FlightGlobals.Bodies[idx];
                 if (body.flightGlobalsIndex == bodyID)
+                {
                     targetBody = body;
+                }
             }
             setTargetExperiment(getExperimentByPartName(node.GetValue(EXPERIMENT_STRING)));
         }
+
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue(TARGET_BODY, bodyID);
-
             node.AddValue(EXPERIMENT_STRING, experiment.getPartName());
         }
 
         private Experiment getExperimentByPartName(string partName)
         {
-            foreach(Experiment exp in experimentParts){
+            for (int idx = 0, count = experimentParts.Count; idx < count; idx++)
+            {
+                var exp = experimentParts[idx];
                 if (exp.getPartName() == partName)
                 {
                     return exp;
@@ -270,65 +280,63 @@ namespace NE_Science.Contracts
 
         public override bool MeetRequirements()
         {
-            CelestialBodySubtree kerbinProgress = null;
-
+            // Must have the "KIS" mod installed (otherwise Kemini is disabled anyway)
             if (!DependancyChecker.HasKIS)
             {
                 return false;
             }
 
-            foreach (var node in ProgressTracking.Instance.celestialBodyNodes)
-            {
-                if (node.Body == Planetarium.fetch.Home)
-                {
-                    kerbinProgress = node;
-                    break;
-                }
-            }
-            if (kerbinProgress == null)
+            // Must have successfully reached orbit and landed a kerballed craft
+            var progress = ProgressTracking.Instance.GetBodyTree(Planetarium.fetch.Home);
+            if (progress == null || !progress.returnFromOrbit.IsCompleteManned)
             {
                 return false;
             }
 
-            return (kerbinProgress.returnFromOrbit.IsCompleteManned &&
-                  NE_Helper.IsPartTechAvailable(KEES_PEC) &&
-                  NE_Helper.IsPartTechAvailable(KEES_PPMD) &&
-                  ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex) > 0.1f);
+            // Must be able to perform EVAs
+            if (ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex) < 0.1f)
+            {
+                return false;
+            }
+
+            // And must have unlocked the tech-tiers for the first KEES experiment and the Exposure bracket
+            return (NE_Helper.IsPartTechAvailable(KEES_PEC) && NE_Helper.IsPartTechAvailable(KEES_PPMD));
         }
     }
 
-        public class Experiment
+    public class Experiment
+    {
+
+        private string name;
+        private string shortName;
+        private string abbrev;
+        private string partName;
+
+        public Experiment(string partName, string name, string shortName, string abbrev)
         {
+            this.partName = partName;
+            this.name = name;
+            this.shortName = shortName;
+            this.abbrev = abbrev;
+        }
+        public string getPartName()
+        {
+            return partName;
+        }
 
-            private string name;
-            private string shortName;
-            private string abbrev;
-            private string partName;
+        public string getName()
+        {
+            return name;
+        }
 
-            public Experiment(string partName, string name, string shortName, string abbrev)
-            {
-                this.partName = partName;
-                this.name = name;
-                this.shortName = shortName;
-                this.abbrev = abbrev;
-            }
-            public string getPartName()
-            {
-                return partName;
-            }
+        public string getShortName()
+        {
+            return shortName;
+        }
 
-            public string getName()
-            {
-                return name;
-            }
-
-            public string getShortName()
-            {
-                return shortName;
-            }
-
-            public string getAbbreviation(){
-                return abbrev;
+        public string getAbbreviation()
+        {
+            return abbrev;
         }
     }
 }

@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -69,21 +68,25 @@ namespace NE_Science
         {
             GUILayout.BeginVertical();
             manifestScrollPos = GUILayout.BeginScrollView(manifestScrollPos, GUILayout.Width(width-20), GUILayout.Height(getHeight(storageSlots.Count)-fixedHeight));
-            string text = "";
-            foreach (ExperimentStorage e in storageSlots)
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0, count = storageSlots.Count; i < count; i++)
             {
-                text += "<b>" + e.identifier + "</b>\n";
-                if(e.isEmpty()){
-                    text += "\t empty\n";
-                }else{
-                    ExperimentData exp = e.getStoredExperimentData();
-                    text += exp.getDescription("\t ") + "\n";
-                    text += "\t State: " + exp.getStateString() + "\n";
+                var e = storageSlots[i];
+                sb.Append("<b>").Append(e.identifier).Append("</b>\n");
+                if(e.isEmpty())
+                {
+                    sb.Append("\t empty\n");
                 }
-                text += "\n";
+                else
+                {
+                    ExperimentData exp = e.getStoredExperimentData();
+                    sb.Append(exp.getDescription("\t ")).AppendLine();
+                    sb.Append("\t State: ").Append(exp.getStateString()).AppendLine();
+                }
+                sb.AppendLine();
             }
             GUI.skin.label.wordWrap = true;
-            GUILayout.Label(text, GUILayout.Height((slotHeight * storageSlots.Count)-10));
+            GUILayout.Label(sb.ToString(), GUILayout.Height((slotHeight * storageSlots.Count)-10));
             GUILayout.EndScrollView();
             if (GUILayout.Button("Close"))
             {

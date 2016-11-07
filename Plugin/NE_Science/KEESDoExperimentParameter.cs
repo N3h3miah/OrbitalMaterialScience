@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 using KSP;
@@ -56,9 +55,11 @@ namespace NE_Science.Contracts.Parameters
             }
             lastUpdate = UnityEngine.Time.realtimeSinceStartup;
             Vessel vessel = FlightGlobals.ActiveVessel;
+            // MKW TODO: cache all the vessel parts which are KEES experiments to avoid iterating over the entire vessel every update
             if (vessel != null)
-                foreach (Part part in vessel.Parts)
+                for (int idx = 0, count = vessel.Parts.Count; idx < count; idx++)
                 {
+                    var part = vessel.Parts[idx];
                     if (part.name == experiment.name)
                     {
                         OMSExperiment e = part.FindModuleImplementing<OMSExperiment>();
@@ -67,9 +68,9 @@ namespace NE_Science.Contracts.Parameters
                             if (e.completed >= this.Root.DateAccepted)
                             {
                                 ScienceData[] data = e.GetData();
-                                foreach (ScienceData datum in data)
+                                for (int dIdx = 0, dCount = data.Length; dIdx < dCount; dIdx++)
                                 {
-                                    if (datum.subjectID.ToLower().Contains("@" + targetBody.name.ToLower() + "inspace"))
+                                    if (data[dIdx].subjectID.ToLower().Contains("@" + targetBody.name.ToLower() + "inspace"))
                                     {
                                         SetComplete();
                                         return;
@@ -96,18 +97,21 @@ namespace NE_Science.Contracts.Parameters
         protected override void OnLoad(ConfigNode node)
         {
             int bodyID = NE_Helper.GetValueAsInt(node, KEESExperimentContract.TARGET_BODY);
-            foreach (var body in FlightGlobals.Bodies)
+            for (int idx = 0, count = FlightGlobals.Bodies.Count; idx < count; idx++)
             {
+                var body = FlightGlobals.Bodies[idx];
                 if (body.flightGlobalsIndex == bodyID)
+                {
                     targetBody = body;
+                }
             }
             setTargetExperiment(node.GetValue(KEESExperimentContract.EXPERIMENT_STRING));
         }
+
         protected override void OnSave(ConfigNode node)
         {
             int bodyID = targetBody.flightGlobalsIndex;
             node.AddValue(KEESExperimentContract.TARGET_BODY, bodyID);
-
             node.AddValue(KEESExperimentContract.EXPERIMENT_STRING, experiment.name);
         }
     }

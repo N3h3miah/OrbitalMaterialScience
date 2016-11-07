@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -44,17 +43,18 @@ namespace NE_Science
 
             lab = gameObject.GetComponent<MEP_Module>();
 
-            foreach (Light child in gameObject.GetComponentsInChildren(typeof(Light)))
+            var lights = gameObject.GetComponentsInChildren(typeof(Light)) as Light[];
+            for (int idx = 0, count = lights.Length; idx < count; idx++)
             {
-                if (child.name == "rotationLight")
+                var light = lights[idx];
+                if (light.name == "rotationLight")
                 {
-                    warnLight = child;
+                    warnLight = light;
                 }
-                else if (child.name == "WarnPointLlight")
+                else if (light.name == "WarnPointLlight")
                 {
-                    warnPointLight = child;
+                    warnPointLight = light;
                 }
-
             }
         }
 
@@ -77,8 +77,6 @@ namespace NE_Science
                     error = false;
                 }
             }
-
-
         }
 
         private void switchLightsOff()

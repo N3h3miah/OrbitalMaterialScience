@@ -270,8 +270,7 @@ namespace NE_Science
         public void checkBiomeChange()
         {
             double numExposureTime = getResourceAmount("ExposureTime");
-            int sciCount = GetScienceCount();
-
+            //int sciCount = GetScienceCount(); // MKW - what was this for?
 
             var subject = ScienceHelper.getScienceSubject(experimentID, vessel);
             string subjectId = ((subject == null) ? "" : subject.id);
@@ -398,6 +397,7 @@ namespace NE_Science
 
         private void playAnimation(string animName, float speed, float time)
         {
+            // MKW TODO - remove "FirstOrDefault" Linq statement
             Animation anim = part.FindModelAnimators(animName).FirstOrDefault();
             if (anim != null)
             {

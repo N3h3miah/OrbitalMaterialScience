@@ -16,7 +16,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -134,8 +133,9 @@ namespace NE_Science
         {
             GUILayout.BeginVertical();
             addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(210), GUILayout.Height(450));
-            foreach (LabEquipment e in availableRacks)
+            for (int idx = 0, count = availableRacks.Count; idx < count; idx++)
             {
+                var e = availableRacks[idx];
                 if (GUILayout.Button(new GUIContent(e.getName(), e.getDescription())))
                 {
                     setEquipment(e);

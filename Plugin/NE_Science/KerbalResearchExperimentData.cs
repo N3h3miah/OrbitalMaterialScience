@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace NE_Science
@@ -13,7 +12,7 @@ namespace NE_Science
 
         private Guid cachedVesselID;
         private int partCount;
-        private List<MPL_Module> physicsLabCache = null;
+        private MPL_Module[] physicsLabCache = null;
 
         protected KerbalResearchExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost, int testSubjectsNeeded)
             : base(id, type, name, abb, eq, mass, cost, testSubjectsNeeded)
@@ -115,11 +114,13 @@ namespace NE_Science
                 List<string> crewMembers = getAllLabCrewMembers();
                 if (!crewMembers.Contains(getActiveStep().getSubjectName()))
                 {
+                    #if DEBUG // Avoid expensive string operations in non-Debug builds
                     string debug = "";
                         foreach(string member in crewMembers){
                             debug += member + ", ";
                         }
                     NE_Helper.log("Aborting Crew Members: " + debug + "; Subject; " + getActiveStep().getSubjectName());
+                    #endif
                     getActiveStep().abortStep();
                     state = ExperimentState.INSTALLED;
                 }
@@ -142,28 +143,33 @@ namespace NE_Science
             return members.Count > 0;
         }
 
+        /// <summary>
+        /// Returns lab crew members which are not currently part of an experiment.
+        /// </summary>
+        /// <returns>A (possibly empty) list of available lab crew members.</returns>
         internal List<string> getAvailableLabCrewMembers()
         {
             List<string> members = new List<string>();
-            if (state == ExperimentState.INSTALLED)
+            if( steps == null ) {
+                NE_Helper.logError("getAvailableLabCrewMembers(): steps is null");
+            }
+            else if (state == ExperimentState.INSTALLED)
             {
                 List<string> labCrew = getAllLabCrewMembers();
-                if( labCrew == null ) {
-                    NE_Helper.logError("getAvailableLabCrewMembers(): labCrew is null");
-                }
-                foreach (string crewMember in labCrew)
+                for (int crewIdx = 0, crewCount = labCrew.Count; crewIdx < crewCount; crewIdx++)
                 {
+                    var crewMember = labCrew[crewIdx];
                     bool foundInStep = false;
-                    if( steps == null ) {
-                        NE_Helper.logError("getAvailableLabCrewMembers(): steps is null");
-                    }
-                    foreach (KerbalResearchStep s in steps)
+                    for (int rsIdx = 0, rsCount = steps.Length; rsIdx < rsCount; rsIdx++)
                     {
+                        var s = steps[rsIdx];
+                        if( s == null )
+                        {
+                            NE_Helper.logError("getAvailableLabCrewMembers(): s is null");
+                            continue;
+                        }
                         if (s.getSubjectName() == crewMember)
                         {
-                            if( s == null ) {
-                                NE_Helper.logError("getAvailableLabCrewMembers(): s is null");
-                            }
                             if( s.getSubjectName() == null ) {
                                 NE_Helper.logError("getAvailableLabCrewMembers(): s.getSubjectName is null");
                             }
@@ -176,6 +182,10 @@ namespace NE_Science
             return members;
         }
 
+        /// <summary>
+        /// Gets all lab crew members.
+        /// </summary>
+        /// <returns>A (possibly empty) list of lab crew members.</returns>
         internal List<string> getAllLabCrewMembers()
         {
             List<string> members = new List<string>();
@@ -195,8 +205,9 @@ namespace NE_Science
                     if(lab.part.protoModuleCrew==null) {
                         NE_Helper.logError("getAllLabCrewMembers: lab.part.protoModuleCrew is null!");
                     }
-                    foreach (ProtoCrewMember crewMember in lab.part.protoModuleCrew)
+                    for (int idx = 0, count = lab.part.protoModuleCrew.Count; idx < count; idx++)
                     {
+                        var crewMember = lab.part.protoModuleCrew[idx];
                         members.Add(crewMember.name.Trim());
                     }
                 } catch(NullReferenceException nre) {
@@ -209,21 +220,16 @@ namespace NE_Science
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {
             List<Lab> ret = new List<Lab>();
-            List<MPL_Module> allPhysicsLabs;
-            if (cachedVesselID == vessel.id && partCount == vessel.parts.Count && physicsLabCache != null)
+            if (physicsLabCache == null || cachedVesselID != vessel.id || partCount != vessel.parts.Count)
             {
-                allPhysicsLabs = physicsLabCache;
-            }
-            else
-            {
-                allPhysicsLabs = new List<MPL_Module>(UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[]);
-                physicsLabCache = allPhysicsLabs;
+                physicsLabCache = UnityFindObjectsOfType(typeof(MPL_Module)) as MPL_Module[];
                 cachedVesselID = vessel.id;
                 partCount = vessel.parts.Count;
                 NE_Helper.log("Lab Cache refresh");
             }
-            foreach (MPL_Module lab in allPhysicsLabs)
+            for (int idx = 0, count = physicsLabCache.Length; idx < count; idx++)
             {
+                var lab = physicsLabCache[idx];
                 if (lab.vessel == vessel && lab.hasEquipmentFreeExperimentSlot(neededEquipment))
                 {
                     ret.Add(lab);

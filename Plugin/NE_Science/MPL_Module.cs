@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -300,7 +299,7 @@ namespace NE_Science
 
             if (!msgSlot.isEquipmentInstalled())
             {
-                Events["installMSG"].active = checkForRackModul(EquipmentRacks.MSG);
+                Events["installMSG"].active = checkForRackModule(EquipmentRacks.MSG);
                 Fields["msgStatus"].guiActive = false;
             }
             else
@@ -331,7 +330,7 @@ namespace NE_Science
 
             if (!usuSlot.isEquipmentInstalled())
             {
-                Events["installUSU"].active = checkForRackModul(EquipmentRacks.USU);
+                Events["installUSU"].active = checkForRackModule(EquipmentRacks.USU);
                 Fields["usuStatus"].guiActive = false;
             }
             else
@@ -364,60 +363,49 @@ namespace NE_Science
 
         private string getEquipmentString()
         {
-            string ret = "";
+            StringBuilder sb = new StringBuilder();
             if (msgSlot.isEquipmentInstalled())
             {
-                if (ret.Length > 0) ret += ", ";
-                ret += "MSG";
+                sb.Append("MSG");
             }
             if (usuSlot.isEquipmentInstalled())
             {
-                if (ret.Length > 0) ret += ", ";
-                ret += "USU";
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append("USU");
             }
-            if (ret.Length == 0)
+            if (sb.Length == 0)
             {
-                ret = "none";
+                sb.Append("none");
             }
-            return ret;
+            return sb.ToString();
         }
 
-        private bool checkForRackModul(EquipmentRacks equipmentRack)
+        private bool checkForRackModule(EquipmentRacks equipmentRack)
         {
-            List<EquipmentRackContainer> moduls = new List<EquipmentRackContainer>(GameObject.FindObjectsOfType(typeof(EquipmentRackContainer)) as EquipmentRackContainer[]);
-            foreach (EquipmentRackContainer modul in moduls)
-            {
-                if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return getRackModule(equipmentRack) != null;
         }
 
-        private EquipmentRackContainer getRackModul(EquipmentRacks equipmentRack)
+        private EquipmentRackContainer getRackModule(EquipmentRacks equipmentRack)
         {
-            List<EquipmentRackContainer> moduls = new List<EquipmentRackContainer>(GameObject.FindObjectsOfType(typeof(EquipmentRackContainer)) as EquipmentRackContainer[]);
-
-            foreach (EquipmentRackContainer modul in moduls)
+            EquipmentRackContainer[] modules = GameObject.FindObjectsOfType(typeof(EquipmentRackContainer)) as EquipmentRackContainer[];
+            for (int idx = 0, count = modules.Length; idx < count; idx++)
             {
-                if (modul.vessel == this.vessel && modul.getRackType() == equipmentRack)
+                var module = modules[idx];
+                if (module.vessel == this.vessel && module.getRackType() == equipmentRack)
                 {
-                    return modul;
+                    return module;
                 }
             }
-
             return null;
         }
 
         [KSPEvent(guiActive = true, guiName = "Install MSG", active = false)]
         public void installMSG()
         {
-            EquipmentRackContainer modul = getRackModul(EquipmentRacks.MSG);
-            if (modul != null)
+            EquipmentRackContainer module = getRackModule(EquipmentRacks.MSG);
+            if (module != null)
             {
-                installEquipmentRack(modul.install());
+                installEquipmentRack(module.install());
             }
             else
             {
@@ -440,7 +428,7 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "Install USU", active = false)]
         public void installUSU()
         {
-            EquipmentRackContainer modul = getRackModul(EquipmentRacks.USU);
+            EquipmentRackContainer modul = getRackModule(EquipmentRacks.USU);
             if (modul != null)
             {
                 installEquipmentRack(modul.install());

@@ -19,7 +19,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -237,9 +236,9 @@ namespace NE_Science
         {
             if (isActive())
             {
-                foreach (Generator gen in generators)
+                for (int idx = 0, count = generators.Count; idx < count; idx++)
                 {
-                    gen.doTimeStep(TimeWarp.fixedDeltaTime + owed_time);
+                    generators[idx].doTimeStep(TimeWarp.fixedDeltaTime + owed_time);
                 }
                 owed_time = 0;
                 LastActive = Planetarium.GetUniversalTime();
@@ -423,7 +422,9 @@ namespace NE_Science
             public void produce(double timeStep)
             {
                 if (timeStep == 0)
+                {
                     last_produced = 0;
+                }
                 else
                 {
                     last_produced = ratePerSecond * timeStep;
@@ -445,7 +446,10 @@ namespace NE_Science
             foreach (Rate rate in rates.Values)
             {
                 double step = rate.getMaxStep();
-                if (step < ret) ret = step;
+                if (step < ret)
+                {
+                    ret = step;
+                }
             }
             return ret;
         }
