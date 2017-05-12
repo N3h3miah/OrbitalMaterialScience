@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NE_Science
 {
@@ -55,7 +56,9 @@ namespace NE_Science
         private int showGui = 0;
         private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 160, Screen.height / 4, 320, 120);
         private Rect addWindowRect = new Rect(Screen.width / 2 - 250, Screen.height / 2 - 250, 250, 550);
+#if OLD_GUI
         private Vector2 addScrollPos = new Vector2();
+#endif
         private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
         private Vector2 labScrollPos = new Vector2();
 
@@ -230,8 +233,12 @@ namespace NE_Science
             if (expData.getId() == "")
             {
                 availableExperiments = ExperimentFactory.getAvailableExperiments(type);
+#if OLD_GUI
                 windowID = WindowCounter.getNextWindowID();
                 showGui = 1;
+#else
+                showAddWindow();
+#endif
             }
             else
             {
@@ -387,6 +394,7 @@ namespace NE_Science
 
 
 
+#if OLD_GUI
         private void showAddWindow()
         {
             addWindowRect = GUI.Window(windowID, addWindowRect, showAddGUI, "Add Experiment");
@@ -415,6 +423,63 @@ namespace NE_Science
             }
             GUILayout.EndVertical();
             GUI.DragWindow();
+        }
+#else
+        // TODO: Complete implementation
+        private void showAddWindow()
+        {
+            // This is a list of content items to add to the dialog
+            List<DialogGUIBase> dialog = new List<DialogGUIBase>();
+
+            dialog.Add(new DialogGUISpace(4));
+
+            // Build a button list of all available experiments with their descriptions
+            int numExperiments = availableExperiments.Count;
+            DialogGUIBase[] scrollList = new DialogGUIBase[numExperiments + 1];
+            scrollList[0] = new DialogGUIContentSizer(ContentSizeFitter.FitMode.Unconstrained, ContentSizeFitter.FitMode.PreferredSize, true);
+            for (int idx = 0; idx < numExperiments; idx++)
+            {
+                var e = availableExperiments[idx];
+                var b = new DialogGUIButton<ExperimentData>(e.getAbbreviation(), onAddExperiment, e, true);
+                b.size = new Vector2(60, 30);
+                //var h = new DialogGUIHorizontalLayout();
+                //h.AddChild( b );
+                //h.AddChild( new DialogGUILabel(e.getDescription(), true, true) );
+                var l = new DialogGUILabel(e.getDescription(), true, true);
+                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.MiddleCenter, new DialogGUIBase[] { b, l });
+
+                scrollList[idx + 1] = h;
+            }
+
+#if true
+            dialog.Add(new DialogGUIScrollList(new Vector2(200,300), false, true, //Vector2.one, false, true,
+                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList)
+            ));
+#else
+            dialog.Add( new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList) );
+#endif
+
+            dialog.Add(new DialogGUISpace(4));
+
+            // Add a centered "Cancel" button
+            dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
+            {
+                new DialogGUIFlexibleSpace(),
+                new DialogGUIButton("Cancel", null, true),
+                new DialogGUIFlexibleSpace(),
+            }));
+
+            // Actually create and show the dialog
+            PopupDialog.SpawnPopupDialog(
+                new MultiOptionDialog("", "Add Experiment", HighLogic.UISkin, dialog.ToArray()),
+                false, HighLogic.UISkin);
+        }
+#endif
+
+        private void onAddExperiment(ExperimentData e)
+        {
+            setExperiment(e);
+            Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
         }
 
         public bool isEmpty()
@@ -527,14 +592,14 @@ namespace NE_Science
     class ExpContainerTextureFactory
     {
         private Dictionary<string, GameDatabase.TextureInfo> textureReg = new Dictionary<string, GameDatabase.TextureInfo>();
-        private Dictionary<string, KeyValuePair<string, string>> textureNameReg = new Dictionary<string, KeyValuePair<string, string>>() { 
+        private Dictionary<string, KeyValuePair<string, string>> textureNameReg = new Dictionary<string, KeyValuePair<string, string>>() {
         { "", new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/ExperimentContainer/","ExperimentContainerTexture")},
         { "FLEX",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","FlexContainerTexture") },
         { "CFI",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CfiContainerTexture") },
         { "CCF",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","CcfContainerTexture" )},
         { "CFE",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "CfeContainerTexture" )},
         { "MIS1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi1ContainerTexture") },
-        { "MIS2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi2ContainerTexture") }, 
+        { "MIS2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi2ContainerTexture") },
         { "MIS3",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/", "Msi3ContainerTexture") },
         { "MEE1",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee1ContainerTexture" )},
         { "MEE2",  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/ExperimentContainer/","Mee2ContainerTexture") },
