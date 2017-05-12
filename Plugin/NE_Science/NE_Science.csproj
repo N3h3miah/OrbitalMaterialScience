@@ -33,15 +33,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Lib\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\Lib\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\Lib\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
