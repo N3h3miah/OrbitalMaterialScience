@@ -1,8 +1,8 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Part of the code may originate from Station Science ba ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
- * 
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -149,6 +149,21 @@ namespace NE_Science
 
         public static void logError(string errMsg){
             Debug.LogError("[NE] Error: " + errMsg);
+        }
+
+        // Returns the part which is currently under the mouse cursor
+        // Thanks to KospY (http://forum.kerbalspaceprogram.com/index.php?/topic/99180-mouse-over-a-part/)
+        // <returns>Part currently under the mouse cursor
+        // <returns>null if no part is under the mouse cursor
+        public static Part GetPartUnderCursor()
+        {
+            RaycastHit hit;
+            Part part = null;
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 1000, 557059))
+            {
+                part = hit.collider.gameObject.GetComponentInParent<Part>();
+            }
+            return part;
         }
     }
 }

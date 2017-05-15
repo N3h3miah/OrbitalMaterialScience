@@ -14,20 +14,30 @@
  *   You should have received a copy of the GNU General Public License
  *   along with Orbital Material Science.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NE_Science
 {
     class ChooseMoveTarget : MonoBehaviour
     {
-        private List<ExperimentStorage> targets = null; //new List<ExperimentStorage>();
+        private List<ExperimentStorage> targets = null;
         private ExperimentData exp = null;
+        private ScreenMessage smInfo = null;
+        private ScreenMessage smError = null;
+        private Part currentPart = null;
+        private Part sourcePart = null;
+        private List<Part> destinationParts = new List<Part>();
 
-        private string lastTooltip = "";
-        private PopupDialog pd = null;
+        private static Color dullOrange = new Color (0.8f, 0.4f, 0.2f);
+        private static Color orange = new Color (1.0f, 0.9f, 0.4f);
+        private static Color dullCyan = new Color (0f, 0.5f, 0.5f);
+
+        void Awake()
+        {
+            // Disable updates until we're actually called
+            this.enabled = false;
+        }
 
         internal void showDialog(List<ExperimentStorage> targets, ExperimentData experimentData)
         {
@@ -35,115 +45,166 @@ namespace NE_Science
             this.targets = targets;
             exp = experimentData;
             NE_Helper.log("init done");
-
-            showMoveWindow();
-        }
-
-        // Even though we're using the new GUI, we still need the OnGUI event to parse tooltips
-        public void OnGUI()
-        {
-            if (Event.current.type == EventType.Repaint) {
-                updateHighlighting();
-            }
-        }
-
-        private void updateHighlighting()
-        {
-            if (GUI.tooltip == lastTooltip)
+            if(exp == null || targets == null || targets.Count == 0)
             {
+                this.enabled = false;
                 return;
             }
+            // Highlight source part
+            sourcePart = exp.store.getPart();
+            sourcePart.SetHighlightColor(dullOrange);
+            sourcePart.SetHighlightType(Part.HighlightType.AlwaysOn);
+            sourcePart.SetHighlight(true, false);
 
-            if (lastTooltip != "")
+            // Create a list of destination parts and highlight them
+            for (int i = 0, count = targets.Count; i < count; i++)
             {
-                // Event: leave control
-            }
-            if (GUI.tooltip != "")
-            {
-                // Event: enter control
-                try
+                Part p = targets[i].part;
+                if (p == sourcePart || destinationParts.Contains(p))
                 {
-                    int hoverIndex = int.Parse(GUI.tooltip);
-                    targets[hoverIndex].part.SetHighlightColor(Color.cyan);
-                    targets[hoverIndex].part.SetHighlightType(Part.HighlightType.AlwaysOn);
-                    targets[hoverIndex].part.SetHighlight(true, false);
+                    continue;
                 }
-                catch (FormatException)
+                destinationParts.Add(p);
+                p.SetHighlightColor(dullCyan);
+                p.SetHighlightType(Part.HighlightType.AlwaysOn);
+                p.SetHighlight(true, false);
+            }
+
+            smInfo = ScreenMessages.PostScreenMessage("Select a part to transfer " + /*exp.getName()*/exp.getAbbreviation() + " to\n[ESC] to cancel",
+                15, ScreenMessageStyle.UPPER_CENTER);
+            smInfo.color = Color.cyan;
+            this.enabled = true;
+        }
+
+        void Update()
+        {
+            updatePartHover();
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                closeGui();
+                // TODO: Remove this horrible hack and figure out a better way to use the Escape-key
+                if (PauseMenu.isOpen)
                 {
-                    resetHighlight();
+                    PauseMenu.Close();
                 }
             }
-            lastTooltip = GUI.tooltip;
-        }
-
-        private void showMoveWindow()
-        {
-            // This is a list of content items to add to the dialog
-            List<DialogGUIBase> dialog = new List<DialogGUIBase>();
-
-            dialog.Add(new DialogGUILabel("Choose destination experiment storage slot for " + exp.getName(), true, true));
-            dialog.Add(new DialogGUISpace(4));
-
-            // Build a button list of all available experiments with their descriptions
-            int numTargets = targets.Count;
-            DialogGUIBase[] scrollList = new DialogGUIBase[numTargets + 1];
-            scrollList[0] = new DialogGUIContentSizer(ContentSizeFitter.FitMode.Unconstrained, ContentSizeFitter.FitMode.PreferredSize, true);
-            for (int i = 0; i < numTargets; i++)
+            if (Input.GetMouseButtonDown(1))
             {
-                var e = targets[i];
-                var b = new DialogGUIButton<ExperimentStorage>(e.identifier, onSelectTarget, e, true);
-                b.tooltipText = i.ToString(); // TODO: Work out hover
-                b.size = new Vector2(120, 30);
-                //var l = new DialogGUILabel(e.getDescription(), true, true);
-                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.UpperLeft, new DialogGUIBase[] { b });
-
-                scrollList[i + 1] = h;
+                //closeGui();
             }
-
-            dialog.Add(new DialogGUIScrollList(new Vector2(200,300), false, true, //Vector2.one, false, true,
-                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.UpperLeft, scrollList)
-            ));
-            dialog.Add(new DialogGUISpace(4));
-            dialog.Add(new DialogGUILabel(getLastTooltip, true, true));
-            dialog.Add(new DialogGUISpace(4));
-            // Add a centered "Cancel" button
-            dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
+            if (Input.GetMouseButtonDown(0))
             {
-                new DialogGUIFlexibleSpace(),
-                new DialogGUIButton("Close", onCloseMoveWindow, true),
-                new DialogGUIFlexibleSpace(),
-            }));
-
-            // Actually create and show the dialog
-            pd = PopupDialog.SpawnPopupDialog(
-                new MultiOptionDialog("", "Choose Target", HighLogic.UISkin, dialog.ToArray()),
-                false, HighLogic.UISkin);
+                if (currentPart != null)
+                {
+                    onMouseClick(currentPart);
+                }
+            }
         }
 
-        private string getLastTooltip()
+        private void closeGui()
         {
-            return "Tooltip: " + lastTooltip;
-        }
-
-        void onSelectTarget(ExperimentStorage es)
-        {
-            exp.moveTo(es);
-            onCloseMoveWindow();
-        }
-
-        private void onCloseMoveWindow()
-        {
+            this.enabled = false;
             resetHighlight();
-            pd = null;
-            targets = null;
-            exp = null;
+            if (smInfo != null)
+            {
+                ScreenMessages.RemoveMessage(smInfo);
+                smInfo = null;
+            }
+            if (smError != null)
+            {
+                ScreenMessages.RemoveMessage(smError);
+                smError = null;
+            }
+            destinationParts.Clear();
+        }
+
+        private void updatePartHover()
+        {
+            Part p = NE_Helper.GetPartUnderCursor();
+            if( p == currentPart) return;
+
+            if (currentPart != null)
+            {
+                onMouseHoverExit(currentPart);
+            }
+            if (p != null)
+            {
+                onMouseHoverEnter(p);
+            }
+            currentPart = p;
+        }
+
+        private void onMouseHoverExit(Part p)
+        {
+            if (p == sourcePart)
+            {
+                p.SetHighlightColor(dullOrange);
+            }
+            if (destinationParts.Contains(p))
+            {
+                p.SetHighlightColor(dullCyan);
+            }
+        }
+
+        private void onMouseHoverEnter(Part p)
+        {
+            if (p == sourcePart)
+            {
+                p.SetHighlightColor(orange);
+            }
+            if (destinationParts.Contains(p))
+            {
+                p.SetHighlightColor(Color.cyan);
+            }
+        }
+
+        private void onMouseClick(Part p)
+        {
+            if(destinationParts.Contains(p))
+            {
+                ExperimentStorage es = getTargetForPart(p);
+                if (es != null)
+                {
+                    exp.moveTo(es);
+                    closeGui();
+                }
+            }
+            else if (p == sourcePart)
+            {
+                showError("This is the source part.");
+            }
+            else
+            {
+                showError("This is an invalid part.");
+            }
+        }
+
+        private void showError(string msg)
+        {
+            if (smError != null)
+            {
+                ScreenMessages.RemoveMessage(smError);
+            }
+            smError = ScreenMessages.PostScreenMessage(msg, 5, ScreenMessageStyle.UPPER_CENTER);
+            smError.color = orange;
+        }
+
+        private ExperimentStorage getTargetForPart(Part p)
+        {
+            for(int i = 0, count = targets.Count; i < count; i++)
+            {
+                if( targets[i].part == p)
+                    return targets[i];
+            }
+            return null;
         }
 
         private void resetHighlight()
         {
-            for (int i = 0, count = targets.Count; i < count; i++)
+            sourcePart.SetHighlightDefault();
+            for(int i = 0, count = destinationParts.Count; i < count; i++)
             {
-                targets[i].part.SetHighlightDefault();
+                destinationParts[i].SetHighlightDefault();
             }
         }
     }
