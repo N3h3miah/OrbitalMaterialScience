@@ -22,6 +22,7 @@ using UnityEngine;
 using KSP;
 using Contracts;
 using Contracts.Parameters;
+using KSP.Localization;
 
 namespace NE_Science.Contracts.Parameters
 {
@@ -49,7 +50,8 @@ namespace NE_Science.Contracts.Parameters
         }
         protected override string GetTitle()
         {
-            return "Return and recover experiment " + experiment.getAbbreviation() + " on Kerbin";
+            return Localizer.Format("#ne_return_and_recover_experiment_1_on_2",
+                experiment.getAbbreviation(), Planetarium.fetch.Home.GetDisplayName());
         }
 
         protected override void OnRegister()

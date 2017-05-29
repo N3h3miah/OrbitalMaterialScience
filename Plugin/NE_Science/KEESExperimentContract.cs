@@ -24,6 +24,7 @@ using Contracts.Parameters;
 using Contracts.Agents;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace NE_Science.Contracts
 {
@@ -112,7 +113,7 @@ namespace NE_Science.Contracts
                     && (experimentPartName == null || keesCon.experiment != null)
                     && (body == null || keesCon.targetBody != null)
                     && ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName())
-                    && (body == null || body.theName == keesCon.targetBody.theName)))
+                    && (body == null || body.bodyName == keesCon.targetBody.bodyName)))
                 {
                     ret += 1;
                 }
@@ -139,7 +140,7 @@ namespace NE_Science.Contracts
                     && (experimentPartName == null || keesCon.experiment != null)
                     && (body == null || keesCon.targetBody != null)
                     && ((experimentPartName == null || experimentPartName == keesCon.experiment.getPartName())
-                    && (body == null || body.theName == keesCon.targetBody.theName)))
+                    && (body == null || body.bodyName == keesCon.targetBody.bodyName)))
                 {
                     ret += 1;
                 }
@@ -228,20 +229,26 @@ namespace NE_Science.Contracts
         }
         protected override string GetTitle()
         {
-            return "Run " + experiment.getShortName() +" in orbit around " + targetBody.theName + " and return it to Kerbin";
+            return Localizer.Format("#ne_Run_1_in_orbit_around_2_and_return_it_to_3",
+                experiment.getShortName(), targetBody.GetDisplayName(), Planetarium.fetch.Home.GetDisplayName()
+            );
         }
         protected override string GetDescription()
         {
-            //those 3 strings appear to do nothing
-            return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "science", "station", "expand knowledge", new System.Random().Next());
+            // Topic and Subject are unused in the standard StoryDefs.cfg for "CollectScience" missions
+            return TextGen.GenerateBackStories("CollectScience", Agent.Name, "", "", MissionSeed, true, true, true);
         }
         protected override string GetSynopsys()
         {
-            return "Run " + experiment.getName() + " in orbit around " + targetBody.theName;
+            return Localizer.Format("#ne_Run_1_in_orbit_around_2",
+                experiment.getName(), targetBody.GetDisplayName()
+            );
         }
         protected override string MessageCompleted()
         {
-            return "You have succesfully run " + experiment.getShortName() +" in orbit around " + targetBody.theName;
+            return Localizer.Format("#ne_You_have_succesfully_run_1_in_orbit_around_2",
+                experiment.getShortName(), targetBody.GetDisplayName()
+            );
         }
 
         protected override void OnLoad(ConfigNode node)
