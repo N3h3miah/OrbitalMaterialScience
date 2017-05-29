@@ -110,8 +110,8 @@
   -->
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' "/>
+    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' "/>
   </Target>
   <ItemGroup>
     <None Include="..\..\GameData\NehemiahInc\NE-All.version">
@@ -754,7 +754,7 @@
   <ItemGroup>
     <Folder Include="GameData\NehemiahInc\NE_Science_Common\Localization\" />
   </ItemGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <PostBuildEvent>$(SolutionDir)..\..\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
