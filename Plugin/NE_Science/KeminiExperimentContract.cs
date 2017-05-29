@@ -24,6 +24,7 @@ using Contracts.Parameters;
 using Contracts.Agents;
 using KSP;
 using KSPAchievements;
+using KSP.Localization;
 
 namespace NE_Science.Contracts
 {
@@ -129,7 +130,7 @@ namespace NE_Science.Contracts
                   (expData == null || keminiCon.experiment != null) &&
                   (body == null || keminiCon.targetBody != null) &&
                   ((expData == null || expData.getId() == keminiCon.experiment.getId()) &&
-                   (body == null || body.theName == keminiCon.targetBody.theName)))
+                   (body == null || body.bodyName == keminiCon.targetBody.bodyName)))
                     ret += 1;
             }
             return ret;
@@ -198,23 +199,29 @@ namespace NE_Science.Contracts
 
         protected override string GetTitle()
         {
-            return "Run experiment " + experiment.getAbbreviation() + " in orbit around " + targetBody.theName + " and return it to Kerbin";
+            return Localizer.Format("#ne_Run_experiment_1_in_orbit_around_2_and_return_it_to_3",
+                experiment.getAbbreviation(), targetBody.GetDisplayName(), Planetarium.fetch.Home.GetDisplayName()
+            );
         }
 
         protected override string GetDescription()
         {
-            //those 3 strings appear to do nothing
-            return TextGen.GenerateBackStories(Agent.Name, Agent.GetMindsetString(), "science", "station", "expand knowledge", new System.Random().Next());
+            // Topic and Subject are unused in the standard StoryDefs.cfg for "CollectScience" missions
+            return TextGen.GenerateBackStories("CollectScience", Agent.Name, "", "", MissionSeed, true, true, true);
         }
 
         protected override string GetSynopsys()
         {
-            return "Run experiment " + experiment.getName() + " in orbit around " + targetBody.theName;
+            return Localizer.Format("#ne_Run_experiment_1_in_orbit_around_2",
+                experiment.getAbbreviation(), targetBody.GetDisplayName()
+            );
         }
 
         protected override string MessageCompleted()
         {
-            return "You have succesfully run the experiment " + experiment.getAbbreviation() + " in orbit around " + targetBody.theName;
+            return Localizer.Format("#ne_You_have_succesfully_run_the_experiment_1_in_orbit_around_2",
+                experiment.getAbbreviation(), targetBody.GetDisplayName()
+            );
         }
 
         protected override void OnLoad(ConfigNode node)

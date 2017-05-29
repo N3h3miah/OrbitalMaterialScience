@@ -5,6 +5,7 @@ using UnityEngine;
 using KSP;
 using Contracts;
 using Contracts.Parameters;
+using KSP.Localization;
 
 namespace NE_Science.Contracts.Parameters
 {
@@ -35,9 +36,11 @@ namespace NE_Science.Contracts.Parameters
         protected override string GetTitle()
         {
             if (targetBody == null)
-                return "Run experiment in orbit";
-            else
-                return "Run experiment in orbit around " + targetBody.theName;
+            {
+                return Localizer.Format("#ne_run_experiment_in_orbit");
+            } else {
+                return Localizer.Format("#ne_run_experiment_in_orbit_around_1", targetBody.GetDisplayName());
+            }
         }
 
         private float lastUpdate = 0;

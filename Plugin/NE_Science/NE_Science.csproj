@@ -33,15 +33,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -110,6 +110,8 @@
   -->
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
+    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
   </Target>
   <ItemGroup>
     <None Include="..\..\GameData\NehemiahInc\NE-All.version">
@@ -749,4 +751,10 @@
       <Link>GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu</Link>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameData\NehemiahInc\NE_Science_Common\Localization\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)..\..\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
