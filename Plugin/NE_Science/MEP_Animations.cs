@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- * 
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -42,8 +42,19 @@ namespace NE_Science
             }
 
             lab = gameObject.GetComponent<MEP_Module>();
+            if (lab == null)
+            {
+                NE_Helper.logError("MEP_Animation: MEP_Module not found!");
+                return;
+            }
 
             var lights = gameObject.GetComponentsInChildren(typeof(Light)) as Light[];
+            if (lights == null)
+            {
+                NE_Helper.logError("MEP_Animation: No lights found in MEP_Module!");
+                return;
+            }
+
             for (int idx = 0, count = lights.Length; idx < count; idx++)
             {
                 var light = lights[idx];
