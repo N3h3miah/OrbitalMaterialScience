@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -101,9 +102,9 @@ namespace NE_Science
                 experiment = ResearchAndDevelopment.GetExperiment (experimentID);
             }
 
-            experimentActionName = "Results";
-            resetActionName = "Throw Away Results";
-            reviewActionName = "Review " + expData.getAbbreviation() + " Results";
+            experimentActionName = Localizer.GetStringByTag("#ne_Results");
+            resetActionName = Localizer.GetStringByTag("#ne_Throw_Away_Results");
+            reviewActionName = Localizer.Format("#ne_Review_1_Results", expData.getAbbreviation());
 
             useStaging = false;
             useActionGroups = true;
@@ -112,7 +113,7 @@ namespace NE_Science
             resettableOnEVA = false;
 
             dataIsCollectable = false;
-            collectActionName = "Collect Results";
+            collectActionName = Localizer.GetStringByTag("#ne_Collect_Results");
             interactionRange = 1.2f;
             xmitDataScalar = 0.05f;
             if (chanceTexture)
@@ -165,24 +166,26 @@ namespace NE_Science
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
                 if (Events["installExperiment"].active)
                 {
+                    String s = "";
                     if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
                     {
-                        Events["installExperiment"].guiName = "Install & Run " + expData.getAbbreviation();
+                        s = Localizer.GetStringByTag("#ne_Run");
                     }
                     else
                     {
-                        Events["installExperiment"].guiName = "Install " + expData.getAbbreviation();
+                        s = Localizer.GetStringByTag("#ne_Install");
                     }
+                    Events["installExperiment"].guiName = s + " " + expData.getAbbreviation();
                 }
                 Events["moveExp"].active = expData.canMove(part.vessel);
                 if (Events["moveExp"].active)
                 {
-                    Events["moveExp"].guiName = "Move " + expData.getAbbreviation();
+                    Events["moveExp"].guiName = Localizer.GetStringByTag("#ne_Move") + " " + expData.getAbbreviation();
                 }
                 Events["finalize"].active = expData.canFinalize();
                 if (Events["installExperiment"].active)
                 {
-                    Events["finalize"].guiName = "Finalize " + expData.getAbbreviation();
+                    Events["finalize"].guiName = Localizer.GetStringByTag("#ne_Finalize") + " " + expData.getAbbreviation();
                 }
                 Events["DeployExperiment"].active = false;
             }
@@ -199,7 +202,8 @@ namespace NE_Science
             }
             else
             {
-                ScreenMessages.PostScreenMessage("Experiment " + expData.getAbbreviation() + " is not finished. Run the experiment first!!!", 6, ScreenMessageStyle.UPPER_CENTER);
+                string s = Localizer.Format("#ne_Experiment_1_is_not_finished_Run_the_experiment_first", expData.getAbbreviation());
+                ScreenMessages.PostScreenMessage(s, 6, ScreenMessageStyle.UPPER_CENTER);
             }
         }
 
@@ -223,11 +227,11 @@ namespace NE_Science
 
         public new void DumpData(ScienceData data)
         {
-            NE_Helper.log("DumbData");
+            NE_Helper.log("DumpData");
             base.DumpData(data);
         }
 
-        [KSPEvent(guiActiveEditor = true, guiName = "Add Experiment", active = false)]
+        [KSPEvent(guiActiveEditor = true, guiName = "#ne_Add_Experiment", active = false)]
         public void chooseEquipment()
         {
             if (expData.getId() == "")
@@ -243,11 +247,11 @@ namespace NE_Science
             else
             {
                 removeExperimentData();
-                Events["chooseEquipment"].guiName = "Add Experiment";
+                Events["chooseEquipment"].guiName = Localizer.GetStringByTag("#ne_Add_Experiment");
             }
         }
 
-        [KSPEvent(guiActive = true, guiName = "Install Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Install_Experiment", active = false)]
         public void installExperiment()
         {
             availableLabs = expData.getFreeLabsWithEquipment(part.vessel);
@@ -259,8 +263,12 @@ namespace NE_Science
                 }
                 else
                 {
+#if OLD_GUI
                     windowID = WindowCounter.getNextWindowID();
                     showGui = 3;
+#else
+                    showLabWindow();
+#endif
                 }
             }
             else
@@ -275,13 +283,13 @@ namespace NE_Science
             removeExperimentData();
         }
 
-        [KSPEvent(guiActive = true, guiName = "Move Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Move_Experiment", active = false)]
         public void moveExp()
         {
             expData.move(part.vessel);
         }
 
-        [KSPEvent(guiActive = true, guiName = "Finalize Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Finalize_Experiment", active = false)]
         public void finalize()
         {
             if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
@@ -290,13 +298,18 @@ namespace NE_Science
             }
             else
             {
+#if OLD_GUI
                 windowID = WindowCounter.getNextWindowID();
                 showGui = 2;
+#else
+                showFinalizeWarning();
+#endif
             }
         }
 
         void OnGUI()
         {
+#if OLD_GUI
             switch (showGui)
             {
                 case 1:
@@ -310,8 +323,10 @@ namespace NE_Science
                     break;
 
             }
+#endif
         }
 
+#if OLD_GUI
         private void showLabWindow()
         {
             labWindowRect = GUI.Window(windowID, labWindowRect, showLabGui, "Install Experiment");
@@ -352,6 +367,55 @@ namespace NE_Science
             }
             GUI.DragWindow();
         }
+#else
+        private void showLabWindow()
+        {
+            // This is a list of content items to add to the dialog
+            List<DialogGUIBase> dialog = new List<DialogGUIBase>();
+
+            dialog.Add(new DialogGUILabel("#ne_Chooose_Lab"));
+            dialog.Add(new DialogGUISpace(4));
+
+            // Build a button list of all available experiments with their descriptions
+            int numLabs = availableLabs.Count;
+            DialogGUIBase[] scrollList = new DialogGUIBase[numLabs + 1];
+            scrollList[0] = new DialogGUIContentSizer(ContentSizeFitter.FitMode.Unconstrained, ContentSizeFitter.FitMode.PreferredSize, true);
+            for (int idx = 0; idx < numLabs; idx++)
+            {
+                var lab = availableLabs[idx];
+                var button = new DialogGUIButton<Lab>(lab.abbreviation, installExperimentInLab, lab, true);
+                button.size = new Vector2(60, 30);
+                var label = new DialogGUILabel(lab.GetInfo(), true, true);
+                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.UpperLeft, new DialogGUIBase[] { button, label });
+
+                scrollList[idx + 1] = h;
+            }
+
+#if true
+            dialog.Add(new DialogGUIScrollList(new Vector2(200,300), false, true, //Vector2.one, false, true,
+                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.UpperLeft, scrollList)
+            ));
+#else
+            dialog.Add( new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList) );
+#endif
+
+            dialog.Add(new DialogGUISpace(4));
+
+            // Add a centered "Cancel" button
+            dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
+            {
+                new DialogGUIFlexibleSpace(),
+                new DialogGUIButton("#ne_Cancel", null, true),
+                new DialogGUIFlexibleSpace(),
+            }));
+
+            // Actually create and show the dialog
+            PopupDialog.SpawnPopupDialog(
+                new MultiOptionDialog("", "", "#ne_Install_Experiment", HighLogic.UISkin, dialog.ToArray()),
+                false, HighLogic.UISkin);
+
+        }
+#endif
 
         private void closeGui()
         {
@@ -367,22 +431,42 @@ namespace NE_Science
             }
         }
 
-        private void showFinalizeWaring()
+        private void showFinalizeWarning()
         {
+#if OLD_GUI
             finalizeWindowRect = GUI.ModalWindow(7909032, finalizeWindowRect, finalizeWindow, "Finalize " + expData.getAbbreviation() + " Experiment");
+#else
+            PopupDialog.SpawnPopupDialog(
+                new MultiOptionDialog(
+                    "",
+                    "#ne_You_can_no_longer_move_the_experiment_after_finalization",
+                    Localizer.Format("#ne_Finalize_1_Experiment", expData.getAbbreviation()),
+                    HighLogic.UISkin,
+                    new DialogGUISpace(4),
+                    new DialogGUIHorizontalLayout(
+                        new DialogGUIFlexibleSpace(),
+                        new DialogGUIButton("#ne_Cancel", null, 60, 30, true),
+                        new DialogGUIFlexibleSpace(),
+                        new DialogGUIButton("#ne_OK", DeployExperiment, 60, 30, true),
+                        new DialogGUIFlexibleSpace()
+                    )
+                ),
+                false,
+                HighLogic.UISkin);
+#endif
         }
 
         void finalizeWindow(int id)
         {
             GUILayout.BeginVertical();
-            GUILayout.Label("You can no longer move the experiment after finalization.");
+            GUILayout.Label("#ne_You_can_no_longer_move_the_experiment_after_finalization");
             GUILayout.Label("");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Cancel"))
+            if (GUILayout.Button("#ne_Cancel"))
             {
                 showGui = 0;
             }
-            if (GUILayout.Button("OK"))
+            if (GUILayout.Button("#ne_OK"))
             {
                 DeployExperiment();
                 showGui = 0;
@@ -446,14 +530,14 @@ namespace NE_Science
                 //h.AddChild( b );
                 //h.AddChild( new DialogGUILabel(e.getDescription(), true, true) );
                 var l = new DialogGUILabel(e.getDescription(), true, true);
-                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.MiddleCenter, new DialogGUIBase[] { b, l });
+                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.UpperLeft, new DialogGUIBase[] { b, l });
 
                 scrollList[idx + 1] = h;
             }
 
 #if true
             dialog.Add(new DialogGUIScrollList(new Vector2(200,300), false, true, //Vector2.one, false, true,
-                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList)
+                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.UpperLeft, scrollList)
             ));
 #else
             dialog.Add( new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList) );
@@ -465,13 +549,13 @@ namespace NE_Science
             dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
             {
                 new DialogGUIFlexibleSpace(),
-                new DialogGUIButton("Cancel", null, true),
+                new DialogGUIButton("#ne_Cancel", null, true),
                 new DialogGUIFlexibleSpace(),
             }));
 
             // Actually create and show the dialog
             PopupDialog.SpawnPopupDialog(
-                new MultiOptionDialog("", "Add Experiment", HighLogic.UISkin, dialog.ToArray()),
+                new MultiOptionDialog("", "", "#ne_Add_Experiment", HighLogic.UISkin, dialog.ToArray()),
                 false, HighLogic.UISkin);
         }
 #endif
@@ -479,7 +563,7 @@ namespace NE_Science
         private void onAddExperiment(ExperimentData e)
         {
             setExperiment(e);
-            Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
+            Events["chooseEquipment"].guiName = Localizer.GetStringByTag("#ne_Remove") + " " + e.getAbbreviation();
         }
 
         public bool isEmpty()

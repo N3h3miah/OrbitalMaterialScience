@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -97,8 +98,8 @@ namespace NE_Science
 
         private string getReqString()
         {
-            
-            string reqString = "Needs: ";
+            // TODO: Localise
+            string reqString = Localizer.GetStringByTag("#ne_Needs") + ": ";
             switch (getEquipmentNeeded())
             {
                 case EquipmentRacks.CIR:
@@ -123,7 +124,7 @@ namespace NE_Science
                     reqString += "MEP-825 and MPL-600 or MSL-1000";
                     break;
             }
-            
+
             return reqString;
         }
 
@@ -309,10 +310,10 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return "Start " + getAbbreviation();
+                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
 
                 case ExperimentState.FINISHED:
-                    return "End " + getAbbreviation();
+                    return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation();
 
                 default:
                     return "";
@@ -321,7 +322,7 @@ namespace NE_Science
 
         public virtual void runLabAction()
         {
-            
+
         }
 
         internal virtual string getStateString()
@@ -329,17 +330,17 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.STORED:
-                    return "Stored";
+                    return Localizer.GetStringByTag("#ne_Stored");
                 case ExperimentState.INSTALLED:
-                    return "Installed";
+                    return Localizer.GetStringByTag("#ne_Installed");
                 case ExperimentState.RUNNING:
-                    return "Running";
+                    return Localizer.GetStringByTag("#ne_Running");
                 case ExperimentState.FINISHED:
-                    return "Finished";
+                    return Localizer.GetStringByTag("#ne_Finished");
                 case ExperimentState.FINALIZED:
-                    return "Finalized";
+                    return Localizer.GetStringByTag("#ne_Finalized");
                 default:
-                    return "NullState";
+                    return Localizer.GetStringByTag("#ne_NullState");
             }
         }
 
@@ -401,12 +402,12 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return "Start " + getAbbreviation();
+                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
 
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished())
                     {
-                        return "End " + getAbbreviation();
+                        return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation();
                     }
                     else
                     {
@@ -531,12 +532,13 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return "Start " + getAbbreviation() + " " + steps[activeStep].getName();
+                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation() + " " + steps[activeStep].getName();
+
 
                 case ExperimentState.RUNNING:
                     if (steps[activeStep].isResearchFinished())
                     {
-                        return "End " + getAbbreviation() + " " + steps[activeStep].getName();
+                        return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation() + " " + steps[activeStep].getName();
                     }
                     else
                     {

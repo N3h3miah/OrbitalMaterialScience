@@ -423,6 +423,9 @@
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png">
       <Link>GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png</Link>
     </None>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg">
+      <Link>GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg</Link>
+    </None>
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Plugins\.directory">
       <Link>GameData\NehemiahInc\NE_Science_Common\Plugins\.directory</Link>
     </None>
@@ -751,9 +754,7 @@
       <Link>GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameData\NehemiahInc\NE_Science_Common\Localization\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <PostBuildEvent>$(SolutionDir)..\..\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
