@@ -53,8 +53,8 @@ internal class DependancyChecker : MonoBehaviour
 
     static Dictionary<string, AssemblyInfo> assemblies = new Dictionary<string, AssemblyInfo> 
     {
-        { "ModuleManager", new AssemblyInfo(2, 7, 0, false) },
-        { "KIS", new AssemblyInfo(1, 3, 0) },
+        { "ModuleManager", new AssemblyInfo(2, 8, 0, false) },
+        { "KIS", new AssemblyInfo(1, 5, 0) },
     };
 
     static public bool HasKIS { get { return assemblies["KIS"].isPresent; } }
