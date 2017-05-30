@@ -50,22 +50,11 @@ namespace NE_Science
         private ExperimentData expData = ExperimentData.getNullObject();
         private int count = 0;
 
-        private List<ExperimentData> availableExperiments
-            = new List<ExperimentData>();
+        private List<ExperimentData> availableExperiments = new List<ExperimentData>();
         List<Lab> availableLabs = new List<Lab>();
-
-        private int showGui = 0;
-        private Rect finalizeWindowRect = new Rect(Screen.width / 2 - 160, Screen.height / 4, 320, 120);
-        private Rect addWindowRect = new Rect(Screen.width / 2 - 250, Screen.height / 2 - 250, 250, 550);
-#if OLD_GUI
-        private Vector2 addScrollPos = new Vector2();
-#endif
-        private Rect labWindowRect = new Rect(Screen.width - 250, Screen.height / 2 - 250, 200, 400);
-        private Vector2 labScrollPos = new Vector2();
 
         private ExpContainerTextureFactory textureReg = new ExpContainerTextureFactory();
         private Material contMat;
-        private int windowID;
 
 
         public override void OnLoad(ConfigNode node)
@@ -237,12 +226,7 @@ namespace NE_Science
             if (expData.getId() == "")
             {
                 availableExperiments = ExperimentFactory.getAvailableExperiments(type);
-#if OLD_GUI
-                windowID = WindowCounter.getNextWindowID();
-                showGui = 1;
-#else
                 showAddWindow();
-#endif
             }
             else
             {
@@ -254,6 +238,9 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "#ne_Install_Experiment", active = false)]
         public void installExperiment()
         {
+            // TODO: Refactor and use the "move" logic
+            // Idea is that if the target is another storage container, the experiment is moved,
+            // and if it is a lab with suitable equipment, then it is installed
             availableLabs = expData.getFreeLabsWithEquipment(part.vessel);
             if (availableLabs.Count > 0)
             {
@@ -263,12 +250,7 @@ namespace NE_Science
                 }
                 else
                 {
-#if OLD_GUI
-                    windowID = WindowCounter.getNextWindowID();
-                    showGui = 3;
-#else
                     showLabWindow();
-#endif
                 }
             }
             else
@@ -298,83 +280,20 @@ namespace NE_Science
             }
             else
             {
-#if OLD_GUI
-                windowID = WindowCounter.getNextWindowID();
-                showGui = 2;
-#else
                 showFinalizeWarning();
-#endif
             }
         }
 
         void OnGUI()
         {
-#if OLD_GUI
-            switch (showGui)
-            {
-                case 1:
-                    showAddWindow();
-                    break;
-                case 2:
-                    showFinalizeWaring();
-                    break;
-                case 3:
-                    showLabWindow();
-                    break;
-
-            }
-#endif
         }
 
-#if OLD_GUI
-        private void showLabWindow()
-        {
-            labWindowRect = GUI.Window(windowID, labWindowRect, showLabGui, "Install Experiment");
-        }
-
-        void showLabGui(int id)
-        {
-            GUILayout.BeginVertical();
-            GUILayout.Label("Choose Lab");
-            labScrollPos = GUILayout.BeginScrollView(labScrollPos, GUILayout.Width(180), GUILayout.Height(320));
-            for (int idx = 0, count = availableLabs.Count; idx < count; idx++)
-            {
-                var l = availableLabs[idx];
-                if (GUILayout.Button(new GUIContent(l.abbreviation, idx.ToString())))
-                {
-                    installExperimentInLab(l);
-                    closeGui();
-                }
-            }
-            GUILayout.EndScrollView();
-            if (GUILayout.Button("Close"))
-            {
-                closeGui();
-            }
-            GUILayout.EndVertical();
-
-            String hover = GUI.tooltip;
-            try
-            {
-                int hoverIndex = int.Parse(hover);
-                availableLabs[hoverIndex].part.SetHighlightColor(Color.cyan);
-                availableLabs[hoverIndex].part.SetHighlightType(Part.HighlightType.AlwaysOn);
-                availableLabs[hoverIndex].part.SetHighlight(true, false);
-            }
-            catch (FormatException)
-            {
-                resetHighlight();
-            }
-            GUI.DragWindow();
-        }
-#else
         private void showLabWindow()
         {
             // This is a list of content items to add to the dialog
             List<DialogGUIBase> dialog = new List<DialogGUIBase>();
 
             dialog.Add(new DialogGUILabel("#ne_Chooose_Lab"));
-            dialog.Add(new DialogGUISpace(4));
 
             // Build a button list of all available experiments with their descriptions
             int numLabs = availableLabs.Count;
@@ -399,8 +318,6 @@ namespace NE_Science
             dialog.Add( new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList) );
 #endif
 
-            dialog.Add(new DialogGUISpace(4));
-
             // Add a centered "Cancel" button
             dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
             {
@@ -415,12 +332,10 @@ namespace NE_Science
                 false, HighLogic.UISkin);
 
         }
-#endif
 
         private void closeGui()
         {
             resetHighlight();
-            showGui = 0;
         }
 
         private void resetHighlight()
@@ -433,9 +348,6 @@ namespace NE_Science
 
         private void showFinalizeWarning()
         {
-#if OLD_GUI
-            finalizeWindowRect = GUI.ModalWindow(7909032, finalizeWindowRect, finalizeWindow, "Finalize " + expData.getAbbreviation() + " Experiment");
-#else
             PopupDialog.SpawnPopupDialog(
                 new MultiOptionDialog(
                     "",
@@ -453,97 +365,40 @@ namespace NE_Science
                 ),
                 false,
                 HighLogic.UISkin);
-#endif
         }
 
-        void finalizeWindow(int id)
-        {
-            GUILayout.BeginVertical();
-            GUILayout.Label("#ne_You_can_no_longer_move_the_experiment_after_finalization");
-            GUILayout.Label("");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("#ne_Cancel"))
-            {
-                showGui = 0;
-            }
-            if (GUILayout.Button("#ne_OK"))
-            {
-                DeployExperiment();
-                showGui = 0;
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-            GUI.DragWindow();
-        }
-
-
-
-#if OLD_GUI
-        private void showAddWindow()
-        {
-            addWindowRect = GUI.Window(windowID, addWindowRect, showAddGUI, "Add Experiment");
-        }
-        private void showAddGUI(int id)
-        {
-
-            GUILayout.BeginVertical();
-            addScrollPos = GUILayout.BeginScrollView(addScrollPos, GUILayout.Width(230), GUILayout.Height(500));
-            for (int idx = 0, count = availableExperiments.Count; idx < count; idx++)
-            {
-                var e = availableExperiments[idx];
-                if (GUILayout.Button(new GUIContent(e.getAbbreviation(), e.getDescription())))
-                {
-                    setExperiment(e);
-                    Events["chooseEquipment"].guiName = "Remove " + e.getAbbreviation();
-                    showGui = 0;
-                }
-            }
-            GUI.skin.label.wordWrap = true;
-            GUILayout.Label(GUI.tooltip, GUILayout.Height(100));
-            GUILayout.EndScrollView();
-            if (GUILayout.Button("Close"))
-            {
-                showGui = 0;
-            }
-            GUILayout.EndVertical();
-            GUI.DragWindow();
-        }
-#else
         // TODO: Complete implementation
         private void showAddWindow()
         {
             // This is a list of content items to add to the dialog
             List<DialogGUIBase> dialog = new List<DialogGUIBase>();
 
-            dialog.Add(new DialogGUISpace(4));
+            var noPad = new RectOffset();
+            DialogGUIButton b;
+            DialogGUILabel l;
+            DialogGUIHorizontalLayout hl;
+            DialogGUIVerticalLayout vl;
 
-            // Build a button list of all available experiments with their descriptions
+            // Window Contents - scroll list of all available experiments with their descriptions
+            vl = new DialogGUIVerticalLayout(true, false);
+            vl.padding = new RectOffset(6, 24, 6, 6); // Padding between border and contents - ensure we don't overlay content over scrollbar
+            vl.spacing = 4; // Spacing between elements
+            vl.AddChild(new DialogGUIContentSizer(ContentSizeFitter.FitMode.Unconstrained, ContentSizeFitter.FitMode.PreferredSize, true));
+
             int numExperiments = availableExperiments.Count;
-            DialogGUIBase[] scrollList = new DialogGUIBase[numExperiments + 1];
-            scrollList[0] = new DialogGUIContentSizer(ContentSizeFitter.FitMode.Unconstrained, ContentSizeFitter.FitMode.PreferredSize, true);
             for (int idx = 0; idx < numExperiments; idx++)
             {
                 var e = availableExperiments[idx];
-                var b = new DialogGUIButton<ExperimentData>(e.getAbbreviation(), onAddExperiment, e, true);
+                b = new DialogGUIButton<ExperimentData>(e.getAbbreviation(), onAddExperiment, e, true);
                 b.size = new Vector2(60, 30);
-                //var h = new DialogGUIHorizontalLayout();
-                //h.AddChild( b );
-                //h.AddChild( new DialogGUILabel(e.getDescription(), true, true) );
-                var l = new DialogGUILabel(e.getDescription(), true, true);
-                var h = new DialogGUIHorizontalLayout(true, false, 4, new RectOffset(), TextAnchor.UpperLeft, new DialogGUIBase[] { b, l });
+                l = new DialogGUILabel(e.getDescription(), true, false);
+                hl = new DialogGUIHorizontalLayout(false, false, 4, new RectOffset(), TextAnchor.MiddleCenter, b, l);
 
-                scrollList[idx + 1] = h;
+                vl.AddChild(hl);
             }
 
-#if true
-            dialog.Add(new DialogGUIScrollList(new Vector2(200,300), false, true, //Vector2.one, false, true,
-                new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.UpperLeft, scrollList)
-            ));
-#else
-            dialog.Add( new DialogGUIVerticalLayout(10, 100, 4, new RectOffset(6, 24, 10, 10), TextAnchor.MiddleLeft, scrollList) );
-#endif
-
-            dialog.Add(new DialogGUISpace(4));
+            hl = new DialogGUIHorizontalLayout(true, true, new DialogGUIScrollList(Vector2.one, false, true, vl));
+            dialog.Add(hl);
 
             // Add a centered "Cancel" button
             dialog.Add(new DialogGUIHorizontalLayout(new DialogGUIBase[]
@@ -554,11 +409,11 @@ namespace NE_Science
             }));
 
             // Actually create and show the dialog
+            Rect pos = new Rect(0.5f, 0.5f, 400, 400);
             PopupDialog.SpawnPopupDialog(
-                new MultiOptionDialog("", "", "#ne_Add_Experiment", HighLogic.UISkin, dialog.ToArray()),
+                new MultiOptionDialog("", "", "#ne_Add_Experiment", HighLogic.UISkin, pos, dialog.ToArray()),
                 false, HighLogic.UISkin);
         }
-#endif
 
         private void onAddExperiment(ExperimentData e)
         {
