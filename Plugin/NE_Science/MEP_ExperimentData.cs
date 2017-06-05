@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -54,8 +54,8 @@ namespace NE_Science
         public MEE1_ExperimentData(float mass, float cost)
             : base("NE_MEE1", "MEE1", "Material Exposure Experiment 1", "MEE1", EquipmentRacks.EXPOSURE, mass, cost, 2)
         {
-            setExperimentStep(Resources.LAB_TIME, 1, "Preparation", 0);
-            setExperimentStep(Resources.EXPOSURE_TIME, 20, "Exposure", 1);
+            setExperimentStep(Resources.LAB_TIME, 1, Localizer.GetStringByTag("#ne_Preparation"), 0);
+            setExperimentStep(Resources.EXPOSURE_TIME, 20, Localizer.GetStringByTag("#ne_Exposure"), 1);
         }
     }
 
@@ -64,9 +64,9 @@ namespace NE_Science
         public MEE2_ExperimentData(float mass, float cost)
             : base("NE_MEE2", "MEE2", "Material Exposure Experiment 2", "MEE2", EquipmentRacks.EXPOSURE, mass, cost, 3)
         {
-            setExperimentStep(Resources.LAB_TIME, 1, "Preparation", 0);
-            setExperimentStep(Resources.EXPOSURE_TIME, 40, "Exposure", 1);
-            setExperimentStep(Resources.LAB_TIME, 2, "Store Samples", 2);
+            setExperimentStep(Resources.LAB_TIME, 1, Localizer.GetStringByTag("#ne_Preparation"), 0);
+            setExperimentStep(Resources.EXPOSURE_TIME, 40, Localizer.GetStringByTag("#ne_Exposure"), 1);
+            setExperimentStep(Resources.LAB_TIME, 2, Localizer.GetStringByTag("#ne_Store_Samples"), 2);
         }
     }
 }

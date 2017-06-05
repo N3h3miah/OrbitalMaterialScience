@@ -310,10 +310,10 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
+                    return Localizer.Format("#ne_Start_1", getAbbreviation());
 
                 case ExperimentState.FINISHED:
-                    return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation();
+                    return Localizer.Format("#ne_End_1", getAbbreviation());
 
                 default:
                     return "";
@@ -325,7 +325,29 @@ namespace NE_Science
 
         }
 
+        /** Returns the status of the experiment as an english string. */
         internal virtual string getStateString()
+        {
+            switch (state)
+            {
+                case ExperimentState.STORED:
+                    return "Stored";
+                case ExperimentState.INSTALLED:
+                    return "Installed";
+                case ExperimentState.RUNNING:
+                    return "Running";
+                case ExperimentState.FINISHED:
+                    return "Finished";
+                case ExperimentState.FINALIZED:
+                    return "Finalized";
+                default:
+                    return "NullState";
+            }
+        }
+
+
+        /** Returns the status of the experiment as a localized string. */
+        internal virtual string getStateDisplayString()
         {
             switch (state)
             {
@@ -402,12 +424,12 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
+                    return Localizer.Format("#ne_Start_1", getAbbreviation());
 
                 case ExperimentState.RUNNING:
                     if (step.isResearchFinished())
                     {
-                        return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation();
+                        return Localizer.Format("#ne_End_1", getAbbreviation());
                     }
                     else
                     {
@@ -532,13 +554,13 @@ namespace NE_Science
             switch (state)
             {
                 case ExperimentState.INSTALLED:
-                    return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation() + " " + steps[activeStep].getName();
+                    return Localizer.Format("#ne_Start_1_step_2", getAbbreviation(), steps[activeStep].getName());
 
 
                 case ExperimentState.RUNNING:
                     if (steps[activeStep].isResearchFinished())
                     {
-                        return Localizer.GetStringByTag("#ne_End") + " " + getAbbreviation() + " " + steps[activeStep].getName();
+                        return Localizer.Format("#ne_End_1_step_2", getAbbreviation(), steps[activeStep].getName());
                     }
                     else
                     {

@@ -33,8 +33,7 @@ namespace NE_Science
         private Rect manifestWindowRect = new Rect(Screen.width / 2 - 300, Screen.height / 2 - 250, 250, 550);
         List<ExperimentStorage> storageSlots = new List<ExperimentStorage>();
 
-        // TODO: How to localise guiName ?
-        [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "Storage Manifest", active = true)]
+        [KSPEvent(guiActiveEditor = true, guiActive = true, guiName = "#ne_Storage_Manifest", active = true)]
         public void storageManifest()
         {
             storageSlots = new List<ExperimentStorage>(part.GetComponents<ExperimentStorage>());
@@ -87,7 +86,7 @@ namespace NE_Science
                 {
                     ExperimentData exp = e.getStoredExperimentData();
                     sb.Append(exp.getDescription("\t ")).AppendLine();
-                    sb.Append("\t ").Append(Localizer.Format("#ne_Status")).Append(": ").Append(exp.getStateString()).AppendLine();
+                    sb.Append("\t ").Append(Localizer.Format("#ne_Status")).Append(": ").Append(exp.getStateDisplayString()).AppendLine();
                 }
 
                 var label = new DialogGUILabel(sb.ToString(), true, true);

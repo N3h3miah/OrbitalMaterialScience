@@ -423,6 +423,9 @@
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png">
       <Link>GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png</Link>
     </None>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_de.cfg">
+      <Link>GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_de.cfg</Link>
+    </None>
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg">
       <Link>GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg</Link>
     </None>

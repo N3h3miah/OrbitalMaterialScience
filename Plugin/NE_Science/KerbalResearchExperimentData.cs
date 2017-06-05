@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -51,7 +51,7 @@ namespace NE_Science
         public override string getDescription(string linePrefix = "")
         {
             string desc = base.getDescription(linePrefix);
-            desc += "\n" + linePrefix + "Test subjects needed: " + getTestSubjectsNeeded();
+            desc += "\n" + linePrefix + Localizer.Format("#ne_Test_subjects_needed_1", getTestSubjectsNeeded());
             return desc;
         }
 
@@ -70,11 +70,11 @@ namespace NE_Science
                 case ExperimentState.INSTALLED:
                     if (getAvailableLabCrewMembers().Count == 0)
                     {
-                        s += " No test subjects";
+                        s += " " + Localizer.GetStringByTag("#ne_No_test_subjects");
                     }
                     break;
             }
-            
+
             return s;
         }
 
@@ -85,17 +85,17 @@ namespace NE_Science
                 case ExperimentState.INSTALLED:
                     if (isTestSubjectAvailable())
                     {
-                        return "Start " + getAbbreviation();
+                        return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
                     }
                     else
                     {
-                        return "Show " + getAbbreviation() + " Status";
+                        return Localizer.Format("#ne_Show_1_Status", getAbbreviation());
                     }
 
                 case ExperimentState.RUNNING:
                     if (getActiveStep().isResearchFinished())
                     {
-                        return "End " + getAbbreviation() + " " + getActiveStep().getSubjectName();
+                        return Localizer.GetStringByTag("#ne_End") + getAbbreviation() + " " + getActiveStep().getSubjectName();
                     }
                     else
                     {
@@ -246,7 +246,7 @@ namespace NE_Science
 
         internal KerbalResearchStep(ExperimentData exp, string resName, float amount, int index)
             : base(exp, resName, amount, "KerbalResStep",  "name", index)
-        { 
+        {
         }
 
         public KerbalResearchStep(ExperimentData exp, string name, int index)

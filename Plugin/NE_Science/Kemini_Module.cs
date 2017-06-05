@@ -1,8 +1,8 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Part of the code may originate from Station Science ba ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
- * 
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,9 +18,7 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -30,7 +28,7 @@ namespace NE_Science
         private const string KEMINI_CONFIG_NODE_NAME = "NE_KEMINI_LabEquipmentSlot";
 
 
-        [KSPField(isPersistant = false, guiActive = false, guiName = "Lab")]
+        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Lab")]
         public string keminiStatus = "";
 
         private LabEquipmentSlot keminiSlot = new LabEquipmentSlot(EquipmentRacks.KEMINI);
@@ -147,7 +145,7 @@ namespace NE_Science
                 Events["moveKeminiExp"].active = keminiSlot.canExperimentMove(part.vessel);
                 if (Events["moveKeminiExp"].active)
                 {
-                    Events["moveKeminiExp"].guiName = "Move " + keminiSlot.getExperiment().getAbbreviation();
+                    Events["moveKeminiExp"].guiName = Localizer.Format("#ne_Move_1", keminiSlot.getExperiment().getAbbreviation());
                 }
 
                 if (keminiSlot.canActionRun())
@@ -169,13 +167,13 @@ namespace NE_Science
 
         }
 
-        [KSPEvent(guiActive = true, guiName = "Move Kemini Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Move_Kemini_Experiment", active = false)]
         public void moveKeminiExp()
         {
             keminiSlot.moveExperiment(part.vessel);
         }
 
-        [KSPEvent(guiActive = true, guiName = "Action Kemini Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Action_Kemini_Experiment", active = false)]
         public void actionKeminiExp()
         {
             keminiSlot.experimentAction();

@@ -155,26 +155,24 @@ namespace NE_Science
                 Events["installExperiment"].active = expData.canInstall(part.vessel);
                 if (Events["installExperiment"].active)
                 {
-                    String s = "";
                     if (type == ExperimentFactory.KEMINI_EXPERIMENTS)
                     {
-                        s = Localizer.GetStringByTag("#ne_Run");
+                        Events["installExperiment"].guiName = Localizer.Format("#ne_Run_1", expData.getAbbreviation());
                     }
                     else
                     {
-                        s = Localizer.GetStringByTag("#ne_Install");
+                        Events["installExperiment"].guiName = Localizer.Format("#ne_Install_1", expData.getAbbreviation());
                     }
-                    Events["installExperiment"].guiName = s + " " + expData.getAbbreviation();
                 }
                 Events["moveExp"].active = expData.canMove(part.vessel);
                 if (Events["moveExp"].active)
                 {
-                    Events["moveExp"].guiName = Localizer.GetStringByTag("#ne_Move") + " " + expData.getAbbreviation();
+                    Events["moveExp"].guiName = Localizer.Format("#ne_Move_1", expData.getAbbreviation());
                 }
                 Events["finalize"].active = expData.canFinalize();
                 if (Events["installExperiment"].active)
                 {
-                    Events["finalize"].guiName = Localizer.GetStringByTag("#ne_Finalize") + " " + expData.getAbbreviation();
+                    Events["finalize"].guiName = Localizer.Format("#ne_Finalize_1", expData.getAbbreviation());
                 }
                 Events["DeployExperiment"].active = false;
             }
@@ -418,7 +416,7 @@ namespace NE_Science
         private void onAddExperiment(ExperimentData e)
         {
             setExperiment(e);
-            Events["chooseEquipment"].guiName = Localizer.GetStringByTag("#ne_Remove") + " " + e.getAbbreviation();
+            Events["chooseEquipment"].guiName = Localizer.Format("#ne_Remove_1", e.getAbbreviation());
         }
 
         public bool isEmpty()

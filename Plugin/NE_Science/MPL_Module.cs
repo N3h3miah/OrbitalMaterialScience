@@ -1,8 +1,8 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Part of the code may originate from Station Science ba ether net http://forum.kerbalspaceprogram.com/threads/54774-0-23-5-Station-Science-(fourth-alpha-low-tech-docking-port-experiment-pod-models)
- * 
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -18,9 +18,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -102,7 +102,7 @@ namespace NE_Science
                 if (labIVA.GetComponent<MeshFilter>().name == "MPL_IVA")
                 {
                     msg = labIVA.transform.GetChild(3).gameObject;
-                    
+
                     cfe = msg.transform.GetChild(2).GetChild(0).gameObject;
                     usu = labIVA.transform.GetChild(4).gameObject;
 
@@ -116,7 +116,7 @@ namespace NE_Science
                 {
                     NE_Helper.logError("MPL mesh not found");
                 }
-                
+
             }
             else {
                 NE_Helper.log("init E Racks internal model null");
@@ -309,9 +309,9 @@ namespace NE_Science
                 Fields["msgStatus"].guiActive = true;
                 if (Events["moveMSGExp"].active)
                 {
-                    Events["moveMSGExp"].guiName = "Move " + msgSlot.getExperiment().getAbbreviation();
+                    Events["moveMSGExp"].guiName = Localizer.Format("#ne_Move_1", msgSlot.getExperiment().getAbbreviation());
                 }
-                
+
                 if (msgSlot.canActionRun())
                 {
                     string cirActionString = msgSlot.getActionString();
@@ -324,7 +324,7 @@ namespace NE_Science
                 }
                 else
                 {
-                    msgStatus = "No Experiment";
+                    msgStatus = Localizer.GetStringByTag("#ne_No_Experiment");
                 }
             }
 
@@ -340,7 +340,7 @@ namespace NE_Science
                 Fields["usuStatus"].guiActive = true;
                 if (Events["moveUSUExp"].active)
                 {
-                    Events["moveUSUExp"].guiName = "Move " + usuSlot.getExperiment().getAbbreviation();
+                    Events["moveUSUExp"].guiName = Localizer.Format("#ne_Move_1", usuSlot.getExperiment().getAbbreviation());
                 }
 
                 if (usuSlot.canActionRun())
@@ -355,7 +355,7 @@ namespace NE_Science
                 }
                 else
                 {
-                    usuStatus = "No Experiment";
+                    usuStatus = Localizer.GetStringByTag("#ne_No_Experiment");
                 }
             }
 
@@ -375,7 +375,7 @@ namespace NE_Science
             }
             if (sb.Length == 0)
             {
-                sb.Append("none");
+                sb.Append(Localizer.GetStringByTag("#ne_none"));
             }
             return sb.ToString();
         }
@@ -399,7 +399,7 @@ namespace NE_Science
             return null;
         }
 
-        [KSPEvent(guiActive = true, guiName = "Install MSG", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Install_MSG", active = false)]
         public void installMSG()
         {
             EquipmentRackContainer module = getRackModule(EquipmentRacks.MSG);
@@ -409,23 +409,23 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Module not found!");
+                displayStatusMessage(Localizer.GetStringByTag("#ne_Equipment_Rack_Module_not_found"));
             }
         }
 
-        [KSPEvent(guiActive = true, guiName = "Move MSG Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Move_MSG_Experiment", active = false)]
         public void moveMSGExp()
         {
             msgSlot.moveExperiment(part.vessel);
         }
 
-        [KSPEvent(guiActive = true, guiName = "Action MSG Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Action_MSG_Experiment", active = false)]
         public void actionMSGExp()
         {
             msgSlot.experimentAction();
         }
 
-        [KSPEvent(guiActive = true, guiName = "Install USU", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Install_USU", active = false)]
         public void installUSU()
         {
             EquipmentRackContainer modul = getRackModule(EquipmentRacks.USU);
@@ -435,17 +435,17 @@ namespace NE_Science
             }
             else
             {
-                displayStatusMessage("Equipment Rack Module not found!");
+                displayStatusMessage(Localizer.GetStringByTag("#ne_Equipment_Rack_Module_not_found"));
             }
         }
 
-        [KSPEvent(guiActive = true, guiName = "Move USU Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Move_USU_Experiment", active = false)]
         public void moveUSUExp()
         {
             usuSlot.moveExperiment(part.vessel);
         }
 
-        [KSPEvent(guiActive = true, guiName = "Action USU Experiment", active = false)]
+        [KSPEvent(guiActive = true, guiName = "#ne_Action_USU_Experiment", active = false)]
         public void actionUSUExp()
         {
             usuSlot.experimentAction();
@@ -454,8 +454,9 @@ namespace NE_Science
         public override string GetInfo()
         {
             String ret = base.GetInfo();
-            ret += (ret == "" ? "" : "\n") + "Lab Time per hour: " + LabTimePerHour;
-            ret += "\nYou can install equipment racks in this lab to run experiments.";
+            ret += (ret == "" ? "" : "\n") + Localizer.Format("#ne_Lab_Time_per_hour_1", LabTimePerHour);
+            ret += "\n";
+            ret += Localizer.GetStringByTag("#ne_You_can_install_equipment_racks_in_this_lab_to_run_experiments");
             return ret;
         }
 
