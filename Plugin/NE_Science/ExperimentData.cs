@@ -326,7 +326,7 @@ namespace NE_Science
         }
 
         /** Returns the status of the experiment as an english string. */
-        internal virtual string getStateString()
+        internal virtual string stateString()
         {
             switch (state)
             {
@@ -347,7 +347,7 @@ namespace NE_Science
 
 
         /** Returns the status of the experiment as a localized string. */
-        internal virtual string getStateDisplayString()
+        internal virtual string displayStateString()
         {
             switch (state)
             {

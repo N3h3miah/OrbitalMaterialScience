@@ -180,7 +180,7 @@ namespace NE_Science
             if (exp.getEquipmentNeeded() == EquipmentRacks.EXPOSURE)
             {
                 exposureSlot.installExperiment(exp);
-                experimentName = exp.getAbbreviation() + ": " + exp.getStateString();
+                experimentName = exp.getAbbreviation() + ": " + exp.stateString();
             }
         }
 
@@ -236,7 +236,7 @@ namespace NE_Science
             }
 
             Fields["experimentName"].guiActive = !exposureSlot.experimentSlotFree();
-            experimentName = exposureSlot.getExperiment().getAbbreviation() + ": " + exposureSlot.getExperiment().getStateString();
+            experimentName = exposureSlot.getExperiment().getAbbreviation() + ": " + exposureSlot.getExperiment().stateString();
 
             Events["moveExp"].active = exposureSlot.canExperimentMove(part.vessel);
             if (Events["moveExp"].active)

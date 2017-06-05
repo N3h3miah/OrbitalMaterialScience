@@ -27,8 +27,10 @@ namespace NE_Science
 
         private const string KEMINI_CONFIG_NODE_NAME = "NE_KEMINI_LabEquipmentSlot";
 
-
-        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Lab")]
+        /// <summary>
+        /// Field to display the Kemini lab status in the popup menu
+        /// </summary>
+        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Kemini_Lab")]
         public string keminiStatus = "";
 
         private LabEquipmentSlot keminiSlot = new LabEquipmentSlot(EquipmentRacks.KEMINI);
@@ -71,7 +73,7 @@ namespace NE_Science
                     if (keminiSlot.isEquipmentInstalled() && keminiSlot.experimentSlotFree())
                     {
                         keminiSlot.installExperiment(exp);
-                        keminiStatus = exp.getAbbreviation();
+                        keminiStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().displayStateString();
                         Fields["keminiStatus"].guiActive = true;
                         keminiSlot.experimentAction();
                     }
@@ -156,7 +158,7 @@ namespace NE_Science
                 Events["actionKeminiExp"].active = keminiSlot.canActionRun();
                 if (!keminiSlot.experimentSlotFree())
                 {
-                    keminiStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().getStateString();
+                    keminiStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().displayStateString();
                     Fields["keminiStatus"].guiActive = true;
                 }
                 else
@@ -164,7 +166,6 @@ namespace NE_Science
                     Fields["keminiStatus"].guiActive = false;
                 }
             }
-
         }
 
         [KSPEvent(guiActive = true, guiName = "#ne_Move_Kemini_Experiment", active = false)]

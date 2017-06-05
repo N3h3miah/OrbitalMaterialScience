@@ -361,7 +361,7 @@ namespace NE_Science
                 Events["actionCIRExp"].active = cirSlot.canActionRun();
                 if (!cirSlot.experimentSlotFree())
                 {
-                    cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().getStateString();
+                    cirStatus = cirSlot.getExperiment().getAbbreviation() + ": " + cirSlot.getExperiment().stateString();
                 }
                 else
                 {
@@ -390,7 +390,7 @@ namespace NE_Science
                 Events["actionFIRExp"].active = firSlot.canActionRun();
                 if (!firSlot.experimentSlotFree())
                 {
-                    ffrStatus = firSlot.getExperiment().getAbbreviation() + ": " + firSlot.getExperiment().getStateString();
+                    ffrStatus = firSlot.getExperiment().getAbbreviation() + ": " + firSlot.getExperiment().stateString();
 
                 }
                 else
@@ -421,7 +421,7 @@ namespace NE_Science
                 Events["actionPRExp"].active = printerSlot.canActionRun();
                 if (!printerSlot.experimentSlotFree())
                 {
-                    prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().getStateString();
+                    prStatus = printerSlot.getExperiment().getAbbreviation() + ": " + printerSlot.getExperiment().stateString();
                 }
                 else
                 {

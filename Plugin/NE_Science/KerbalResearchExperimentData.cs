@@ -60,9 +60,9 @@ namespace NE_Science
             return testSubjectsNeeded;
         }
 
-        internal override string getStateString()
+        internal override string stateString()
         {
-            string s = base.getStateString();
+            string s = base.stateString();
             switch(state){
                 case ExperimentState.RUNNING:
                     s += " " + getActiveStep().getSubjectName();

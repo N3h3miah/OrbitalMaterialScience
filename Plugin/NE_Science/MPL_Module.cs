@@ -320,7 +320,7 @@ namespace NE_Science
                 Events["actionMSGExp"].active = msgSlot.canActionRun();
                 if (!msgSlot.experimentSlotFree())
                 {
-                    msgStatus = msgSlot.getExperiment().getAbbreviation() + ": " + msgSlot.getExperiment().getStateString();
+                    msgStatus = msgSlot.getExperiment().getAbbreviation() + ": " + msgSlot.getExperiment().stateString();
                 }
                 else
                 {
@@ -351,7 +351,7 @@ namespace NE_Science
                 Events["actionUSUExp"].active = usuSlot.canActionRun();
                 if (!usuSlot.experimentSlotFree())
                 {
-                    usuStatus = usuSlot.getExperiment().getAbbreviation() + ": " + usuSlot.getExperiment().getStateString();
+                    usuStatus = usuSlot.getExperiment().getAbbreviation() + ": " + usuSlot.getExperiment().stateString();
                 }
                 else
                 {

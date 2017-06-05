@@ -86,7 +86,7 @@ namespace NE_Science
                 {
                     ExperimentData exp = e.getStoredExperimentData();
                     sb.Append(exp.getDescription("\t ")).AppendLine();
-                    sb.Append("\t ").Append(Localizer.Format("#ne_Status")).Append(": ").Append(exp.getStateDisplayString()).AppendLine();
+                    sb.Append("\t ").Append(Localizer.Format("#ne_Status")).Append(": ").Append(exp.displayStateString()).AppendLine();
                 }
 
                 var label = new DialogGUILabel(sb.ToString(), true, true);
