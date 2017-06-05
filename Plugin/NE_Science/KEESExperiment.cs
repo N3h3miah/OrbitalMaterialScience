@@ -135,7 +135,7 @@ namespace NE_Science
             if (experimentStarted())
             {
                 createResources();
-                ScreenMessages.PostScreenMessage("#ne_Started_experiment!", 6, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage("#ne_Started_experiment", 6, ScreenMessageStyle.UPPER_CENTER);
             }
         }
 
