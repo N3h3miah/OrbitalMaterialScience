@@ -41,11 +41,14 @@ namespace NE_Science.Contracts
         public const string KEES_POSAI = "NE.KEES.POSA1";
         public const string KEES_POSAII = "NE.KEES.POSA2";
 
+        // MKW TODO: Localize the experiment names for the contract generator
         static readonly List<Experiment> experimentParts =
-          new List<Experiment> { new Experiment(KEES_PPMD, "KEES Polished Plate Micrometeoroid and Debris (PPMD)", "KEES PPMD Experiment", "KEES PPMD"),
-              new Experiment(KEES_POSAI, "KEES Passive Optical Sample Assemblies I (POSA I)", "KEES POSA I Experiment", "KEES POSA I"),
-               new Experiment(KEES_ODC, "KEES Orbital Debris Collector", "KEES ODC Experiment (ODC)", "KEES ODC"),
-               new Experiment(KEES_POSAII, "KEES Passive Optical Sample Assemblies II(POSA II)", "KEES POSA II Experiment", "KEES POSA II") };
+          new List<Experiment> {
+              new Experiment(KEES_PPMD, "KEES Polished Plate Micrometeoroid and Debris", "KEES PPMD", "PPMD"),
+              new Experiment(KEES_POSAI, "KEES Passive Optical Sample Assemblies I", "KEES POSA I", "POSA I"),
+              new Experiment(KEES_ODC, "KEES Orbital Debris Collector", "KEES ODC", "ODC"),
+              new Experiment(KEES_POSAII, "KEES Passive Optical Sample Assemblies II", "KEES POSA II", "POSA II")
+          };
 
         CelestialBody targetBody = null;
         Experiment experiment = null;
@@ -229,7 +232,7 @@ namespace NE_Science.Contracts
         }
         protected override string GetTitle()
         {
-            return Localizer.Format("#ne_Run_1_in_orbit_around_2_and_return_it_to_3",
+            return Localizer.Format("#ne_Run_experiment_1_in_orbit_around_2_and_return_it_to_3",
                 experiment.getShortName(), targetBody.GetDisplayName(), Planetarium.fetch.Home.GetDisplayName()
             );
         }
@@ -240,13 +243,13 @@ namespace NE_Science.Contracts
         }
         protected override string GetSynopsys()
         {
-            return Localizer.Format("#ne_Run_1_in_orbit_around_2",
+            return Localizer.Format("#ne_Run_experiment_1_in_orbit_around_2",
                 experiment.getName(), targetBody.GetDisplayName()
             );
         }
         protected override string MessageCompleted()
         {
-            return Localizer.Format("#ne_You_have_succesfully_run_1_in_orbit_around_2",
+            return Localizer.Format("#ne_You_have_succesfully_run_the_experiment_1_in_orbit_around_2",
                 experiment.getShortName(), targetBody.GetDisplayName()
             );
         }

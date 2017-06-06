@@ -58,9 +58,9 @@ namespace NE_Science.Contracts.Parameters
         {
             if (targetBody == null)
             {
-                return Localizer.Format("#ne_run_experiment_1_in_orbit", experiment.getAbbreviation());
+                return Localizer.Format("#ne_Run_experiment_1_in_orbit", experiment.getAbbreviation());
             } else {
-                return Localizer.Format("#ne_run_experiment_1_in_orbit_around_2", experiment.getAbbreviation(), targetBody.GetDisplayName());
+                return Localizer.Format("#ne_Run_experiment_1_in_orbit_around_2", experiment.getAbbreviation(), targetBody.GetDisplayName());
             }
         }
 

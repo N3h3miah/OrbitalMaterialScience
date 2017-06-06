@@ -367,11 +367,11 @@ namespace NE_Science
                 case EquipmentRacks.CIR:
                 case EquipmentRacks.FIR:
                 case EquipmentRacks.PRINTER:
-                    desc +=  Localizer.Format("#For_1", "MSL-1000");
+                    desc +=  Localizer.Format("#ne_For_1", "MSL-1000");
                     break;
                 case EquipmentRacks.MSG:
                 case EquipmentRacks.USU:
-                    desc +=  Localizer.Format("#For_1", "MPL-600");
+                    desc +=  Localizer.Format("#ne_For_1", "MPL-600");
                     break;
             }
             return desc;
