@@ -92,7 +92,7 @@ namespace NE_Science
             }
 
             experimentActionName = Localizer.GetStringByTag("#ne_Results");
-            resetActionName = Localizer.GetStringByTag("#ne_Throw_Away_Results");
+            resetActionName = Localizer.GetStringByTag("#ne_Discard_Results");
             reviewActionName = Localizer.Format("#ne_Review_1_Results", expData.getAbbreviation());
 
             useStaging = false;
