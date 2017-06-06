@@ -14,8 +14,11 @@
  *   You should have received a copy of the GNU General Public License
  *   along with Orbital Material Science.  If not, see <http://www.gnu.org/licenses/>.
  */
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -70,10 +73,11 @@ namespace NE_Science
                 p.SetHighlight(true, false);
             }
 
-            smInfo = ScreenMessages.PostScreenMessage("Select a part to transfer " + /*exp.getName()*/exp.getAbbreviation() + " to\n[ESC] to cancel",
+            smInfo = ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Select_a_part_to_transfer_1_to_ESC_to_cancel", exp.getAbbreviation()),
                 15, ScreenMessageStyle.UPPER_CENTER);
             smInfo.color = Color.cyan;
             this.enabled = true;
+            NE_Helper.LockUI();
         }
 
         void Update()
@@ -82,11 +86,6 @@ namespace NE_Science
             if (Input.GetKeyUp(KeyCode.Escape))
             {
                 closeGui();
-                // TODO: Remove this horrible hack and figure out a better way to use the Escape-key
-                if (PauseMenu.isOpen)
-                {
-                    PauseMenu.Close();
-                }
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -116,6 +115,8 @@ namespace NE_Science
                 smError = null;
             }
             destinationParts.Clear();
+            // Delay unlocking UI to end of frame to prevent KSP from handling ESC key
+            NE_Helper.RunOnEndOfFrame(this, NE_Helper.UnlockUI);
         }
 
         private void updatePartHover()
@@ -171,11 +172,11 @@ namespace NE_Science
             }
             else if (p == sourcePart)
             {
-                showError("This is the source part.");
+                showError("#ne_This_is_the_source_part");
             }
             else
             {
-                showError("This is an invalid part.");
+                showError("#ne_This_is_an_invalid_part");
             }
         }
 

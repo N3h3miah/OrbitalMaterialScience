@@ -18,8 +18,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace NE_Science
@@ -165,5 +163,44 @@ namespace NE_Science
             }
             return part;
         }
+
+
+        /// <summary>Acquires NEOS input lock on UI interactions.</summary>
+        public static void LockUI()
+        {
+            InputLockManager.SetControlLock(ControlTypes.ALLBUTCAMERAS, "NEOS");
+            NE_Helper.log("NEOS UI lock acquired");
+        }
+
+        /// <summary>Releases KIS input lock on UI interactions.</summary>
+        public static void UnlockUI()
+        {
+            InputLockManager.RemoveControlLock("NEOS");
+            NE_Helper.log("NEOS UI lock released");
+        }
+
+        /// <summary>
+        /// Blocks until end of frame and then runs <em>action</em>.
+        /// </summary>
+        /// Ideally this should be called as a coroutine to allow the main logic to continue running.
+        /// <param name="action">The action to run.</param>
+        /// <returns></returns>
+        private static System.Collections.IEnumerator _runAtEndOfFrame(Action action)
+        {
+            yield return null;
+            action();
+        }
+
+        /// <summary>
+        /// Schedule an action to be executed at the end of the frame.
+        /// </summary>
+        /// Note that the action will run as a coroutine, so any shared state must be protected by a lock.
+        /// <param name="behaviour">The context in which to run the action.</param>
+        /// <param name="action">The action to run at the end of the frame.</param>
+        public static void RunOnEndOfFrame(MonoBehaviour behaviour, Action action)
+        {
+            behaviour.StartCoroutine(_runAtEndOfFrame(action));
+        }
+
     }
 }
