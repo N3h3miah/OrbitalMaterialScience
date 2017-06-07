@@ -85,7 +85,7 @@ namespace NE_Science
                 case ExperimentState.INSTALLED:
                     if (isTestSubjectAvailable())
                     {
-                        return Localizer.GetStringByTag("#ne_Start") + " " + getAbbreviation();
+                        return Localizer.Format("#ne_Start_1", getAbbreviation());
                     }
                     else
                     {
@@ -95,7 +95,7 @@ namespace NE_Science
                 case ExperimentState.RUNNING:
                     if (getActiveStep().isResearchFinished())
                     {
-                        return Localizer.GetStringByTag("#ne_End") + getAbbreviation() + " " + getActiveStep().getSubjectName();
+                        return Localizer.Format("#ne_End_1_step_2", getAbbreviation(), getActiveStep().getSubjectName());
                     }
                     else
                     {

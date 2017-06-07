@@ -50,11 +50,24 @@ namespace NE_Science
         private int partCount;
         private ExperimentStorage[] contCache = null;
 
+        /// <summary>
+        /// Creates a new Experiment data object
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <param name="name">This should be a localisation tag for the "display name".</param>
+        /// <param name="abb"></param>
+        /// <param name="eq"></param>
+        /// <param name="mass"></param>
+        /// <param name="cost"></param>
         public ExperimentData(string id, string type, string name, string abb, EquipmentRacks eq, float mass, float cost)
         {
             this.id = id;
             this.type = type;
-            this.name = name;
+            if (!Localizer.TryGetStringByTag(name, out this.name))
+            {
+                this.name = name;
+            }
             this.abb = abb;
             this.mass = mass;
             this.cost = cost;

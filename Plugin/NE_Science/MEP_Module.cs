@@ -219,7 +219,7 @@ namespace NE_Science
                 case MEPLabStatus.READY:
                     Events["DeployPlatform"].guiActive = true;
                     Events["FixArm"].guiActiveUnfocused = false;
-                    displayStatusMessage("Idle");
+                    displayStatusMessage("#ne_Idle");
                     break;
                 case MEPLabStatus.RUNNING:
                     Fields["labStatus"].guiActive = false;
