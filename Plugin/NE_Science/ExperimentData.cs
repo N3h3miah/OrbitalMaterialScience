@@ -111,30 +111,35 @@ namespace NE_Science
 
         private string getReqString()
         {
-            // TODO: Localise
-            string reqString = Localizer.GetStringByTag("#ne_Needs") + ": ";
+            string reqString = "";// = Localizer.GetStringByTag("#ne_Needs") + ": ";
             switch (getEquipmentNeeded())
             {
                 case EquipmentRacks.CIR:
-                    reqString += "MSL-1000 with Combustion Integrated Rack (CIR)";
+                    reqString = Localizer.Format("#ne_Needs_1_with_2", "MSL-1000", "#ne_oms_eq_cir_title");
+                    //reqString += "MSL-1000 with Combustion Integrated Rack (CIR)";
                     break;
                 case EquipmentRacks.FIR:
-                    reqString += "MSL-1000 with Fluid Integrated Rack (FIR)";
+                    reqString = Localizer.Format("#ne_Needs_1_with_2", "MSL-1000", "#ne_oms_eq_fir_title");
+                    //reqString += "MSL-1000 with Fluid Integrated Rack (FIR)";
                     break;
                 case EquipmentRacks.PRINTER:
-                    reqString += "MSL-1000 with 3D-Printer (3PR)";
+                    reqString = Localizer.Format("#ne_Needs_1_with_2", "MSL-1000", "#ne_oms_eq_3dp_title");
+                    //reqString += "MSL-1000 with 3D-Printer (3PR)";
                     break;
                 case EquipmentRacks.MSG:
-                    reqString += "MPL-600 with Microgravity Science Glovebox (MSG)";
+                    reqString = Localizer.Format("#ne_Needs_1_with_2", "MPL-600", "#ne_oms_eq_msg_title");
+                    //reqString += "MPL-600 with Microgravity Science Glovebox (MSG)";
                     break;
                 case EquipmentRacks.USU:
-                    reqString += "MPL-600 with Ultrasound Unit (USU)";
+                    reqString = Localizer.Format("#ne_Needs_1_with_2", "MPL-600", "#ne_kls_eq_usu_title");
+                    //reqString += "MPL-600 with Ultrasound Unit (USU)";
                     break;
                 case EquipmentRacks.KEMINI:
-                    reqString += "Command Pod mk1";
+                    reqString = Localizer.Format("#ne_Needs_1", "Command Pod mk1");
                     break;
                 case EquipmentRacks.EXPOSURE:
-                    reqString += "MEP-825 and MPL-600 or MSL-1000";
+                    reqString = Localizer.Format("#ne_Needs_1_and_2_or_3", "MEP-825", "MPL-600", "MSL-1000");
+                    //reqString += "MEP-825 and MPL-600 or MSL-1000";
                     break;
             }
 

@@ -44,10 +44,10 @@ namespace NE_Science.Contracts
         // MKW TODO: Localize the experiment names for the contract generator
         static readonly List<Experiment> experimentParts =
           new List<Experiment> {
-              new Experiment(KEES_PPMD, "KEES Polished Plate Micrometeoroid and Debris", "KEES PPMD", "PPMD"),
-              new Experiment(KEES_POSAI, "KEES Passive Optical Sample Assemblies I", "KEES POSA I", "POSA I"),
-              new Experiment(KEES_ODC, "KEES Orbital Debris Collector", "KEES ODC", "ODC"),
-              new Experiment(KEES_POSAII, "KEES Passive Optical Sample Assemblies II", "KEES POSA II", "POSA II")
+              new Experiment(KEES_PPMD, Localizer.GetStringByTag("#ne_kees_ppmd_title"), "KEES PPMD", "PPMD"),
+              new Experiment(KEES_POSAI, Localizer.GetStringByTag("#ne_kees_posa1_title"), "KEES POSA I", "POSA I"),
+              new Experiment(KEES_ODC, Localizer.GetStringByTag("#ne_kees_odc_title"), "KEES ODC", "ODC"),
+              new Experiment(KEES_POSAII, Localizer.GetStringByTag("#ne_kees_posa2_title"), "KEES POSA II", "POSA II")
           };
 
         CelestialBody targetBody = null;

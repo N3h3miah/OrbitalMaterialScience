@@ -76,7 +76,7 @@ namespace NE_Science
     public class SpiU_ExperimentData : KerbalResearchExperimentData
     {
         public SpiU_ExperimentData(float mass, float cost)
-            : base("NE_SpiU", "SpiU", "ne_kls_spiu_title", "SpiU", EquipmentRacks.USU, mass, cost, 6)
+            : base("NE_SpiU", "SpiU", "#ne_kls_spiu_title", "SpiU", EquipmentRacks.USU, mass, cost, 6)
         {
             setExperimentSteps(Resources.ULTRASOUND_GEL, 3f);
         }

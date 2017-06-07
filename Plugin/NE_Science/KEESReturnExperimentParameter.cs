@@ -50,7 +50,7 @@ namespace NE_Science.Contracts.Parameters
         }
         protected override string GetTitle()
         {
-            return Localizer.Format("ne_Return_and_recover_experiment_at_1", Planetarium.fetch.Home.GetDisplayName());
+            return Localizer.Format("#ne_Return_and_recover_experiment_at_1", Planetarium.fetch.Home.GetDisplayName());
         }
 
         protected override void OnRegister()
