@@ -97,9 +97,7 @@ namespace NE_Science.Contracts.Parameters
      */
     public class KEESExperimentRecovery : OMSExperimentRecovery
     {
-        protected const string KEES_PC = "NE.KEES.PC";
         protected const string KIS_CONTAINER = "ModuleKISInventory";
-        protected const string CONTENT_PART = "CONTENT_PART";
 
         public override bool protovesselHasDoneExperiment(ProtoVessel pv, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
@@ -111,22 +109,7 @@ namespace NE_Science.Contracts.Parameters
                 if (part.partName == experiment.name) {
                     if (experimentFound (part, experiment, targetBody, contractAccepted))
                         return true;
-                } else if (isKISContainerPart (part)) {
-                    if (payloadCarrierFound (part, experiment, targetBody, contractAccepted))
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        private bool isKISContainerPart(ProtoPartSnapshot part)
-        {
-            for (int i = 0, count = part.modules.Count; i < count; i++)
-            {
-                var module = part.modules[i];
-                NE_Helper.log("ProtoVessel recovery Modulename: " + module.moduleName);
-                if (module.moduleName == KIS_CONTAINER)
-                {
+                } else if (payloadCarrierFound (part, experiment, targetBody, contractAccepted)) {
                     return true;
                 }
             }
@@ -136,7 +119,6 @@ namespace NE_Science.Contracts.Parameters
         private bool payloadCarrierFound(ProtoPartSnapshot payloadCarrier, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
             NE_Helper.log("ProtoVessel recovery: payload carrier found");
-            string experiementModuleName = experimentModulname[experiment.name];
             for (int i = 0, count = payloadCarrier.modules.Count; i < count; i++)
             {
                 var module = payloadCarrier.modules[i];
@@ -182,7 +164,7 @@ namespace NE_Science.Contracts.Parameters
                         continue;
                     }
 
-                    var moduleNodes = part.GetNodes("MODULES");
+                    var moduleNodes = part.GetNodes("MODULE");
                     for (int moduleIdx = 0, moduleCount = moduleNodes.Length; moduleIdx < moduleCount; moduleIdx++)
                     {
                         var module = moduleNodes[moduleIdx];
