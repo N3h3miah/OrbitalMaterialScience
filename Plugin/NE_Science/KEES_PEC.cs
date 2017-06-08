@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -25,7 +25,7 @@ namespace NE_Science
     {
 
         [KSPField(isPersistant = false)]
-        public string nodeName;
+        public string nodeName = "top";
 
         [KSPField(isPersistant = false)]
         public double maxGforce = 2.5;
@@ -78,7 +78,7 @@ namespace NE_Science
                     exp = null;
                 }
             }
-            
+
         }
 
         public override void OnUpdate()
@@ -96,7 +96,7 @@ namespace NE_Science
             if (!decoupled && isVesselShip && vessel.geeForce > maxGforce)
             {
                 NE_Helper.log ("KEES PEC over max G, decouple\n" + this.ToString ());
-                decouple(); 
+                decouple();
             }
             //Decouple for testing
             if (NE_Helper.debugging() && Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.D))
