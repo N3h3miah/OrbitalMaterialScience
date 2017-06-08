@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -173,7 +173,7 @@ namespace NE_Science
             // Actually create and show the dialog
             Rect pos = new Rect(0.5f, 0.5f, 400, 400);
             PopupDialog.SpawnPopupDialog(
-                new MultiOptionDialog("", "", "#ne_Add_Equipment", HighLogic.UISkin, pos, dialog.ToArray()),
+                new MultiOptionDialog("", "", "#ne_Add_Lab_Equipment", HighLogic.UISkin, pos, dialog.ToArray()),
                 false, HighLogic.UISkin);
         }
 
@@ -276,7 +276,7 @@ namespace NE_Science
         { EquipmentRacks.CIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerCIR_Texture") },
         { EquipmentRacks.FIR,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerFIR_Texture") },
         { EquipmentRacks.MSG,  new KeyValuePair<string,string>("NehemiahInc/OMS/Parts/LabEquipmentContainer/", "ContainerMSG_Texture") },
-        { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/LabEquipmentContainer/", "ContainerTexture") }, 
+        { EquipmentRacks.EXPOSURE, new KeyValuePair<string,string>("NehemiahInc/MultiPurposeParts/Parts/LabEquipmentContainer/", "ContainerTexture") },
         { EquipmentRacks.USU,  new KeyValuePair<string,string>("NehemiahInc/KerbalLifeScience/Parts/LabEquipmentContainer/", "ContainerUSU_Texture" )}};
 
 
