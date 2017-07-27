@@ -300,6 +300,9 @@
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg">
       <Link>GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_en.cfg</Link>
     </None>
+    <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_es.cfg">
+      <Link>GameData\NehemiahInc\NE_Science_Common\Localization\dictionary_es.cfg</Link>
+    </None>
     <None Include="..\..\GameData\NehemiahInc\NE_Science_Common\NE-Common.version">
       <Link>GameData\NehemiahInc\NE_Science_Common\NE-Common.version</Link>
     </None>
