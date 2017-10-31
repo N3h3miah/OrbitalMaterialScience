@@ -145,6 +145,25 @@ namespace NE_Science
         {
             switch (type)
             {
+                //
+                // KEMINI Experiments
+                // MKW TODO: Load from file
+                //
+                case "KeminiD5":
+                    return new KeminiExperimentData("NE_Kemini_D5", "KeminiD5", "#ne_kemini_d5_title", "D5", mass, cost, 0.1f);
+                case "KeminiD8":
+                    return new KeminiExperimentData("NE_Kemini_D8", "KeminiD8", "#ne_kemini_d8_title", "D8", mass, cost, 0.15f);
+                case "KeminiMSC3":
+                    return new KeminiExperimentData("NE_Kemini_MSC3", "KeminiMSC3", "#ne_kemini_msc3_title", "MSC3", mass, cost, 0.13f);
+                case "KeminiD7":
+                    return new KeminiExperimentData("NE_Kemini_D7", "KeminiD7", "#ne_kemini_d7_title", "D7", mass, cost, 0.23f);
+                case "KeminiD10":
+                    return new KeminiExperimentData("NE_Kemini_D10", "KeminiD10", "#ne_kemini_d10_title", "D10", mass, cost, 0.21f);
+
+
+                //
+                // OMS/KLS Experiments
+                //
                 case "Test":
                     return new TestExperimentData(mass, cost);
                 case "CCF":
@@ -169,16 +188,7 @@ namespace NE_Science
                     return new CVB_ExperimentData(mass, cost);
                 case "PACE":
                     return new PACE_ExperimentData(mass, cost);
-                case "KeminiD5":
-                    return new KeminiD5_ExperimentData(mass, cost);
-                case "KeminiD8":
-                    return new KeminiD8_ExperimentData(mass, cost);
-                case "KeminiMSC3":
-                    return new KeminiMSC3_ExperimentData(mass, cost);
-                case "KeminiD7":
-                    return new KeminiD7_ExperimentData(mass, cost);
-                case "KeminiD10":
-                    return new KeminiD10_ExperimentData(mass, cost);
+
                 case "ADUM":
                     return new ADUM_ExperimentData(mass, cost);
                 case "SpiU":

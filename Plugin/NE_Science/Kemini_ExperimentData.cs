@@ -21,19 +21,19 @@ using System.Text;
 namespace NE_Science
 {
     /*
-  * Experiments for the Kemini Research Program
-  */
+    * Experiments for the Kemini Research Program
+    */
     public class KeminiExperimentData : StepExperimentData
     {
-
         private Guid cachedVesselID;
         private int partCount;
         private Kemini_Module[] KeminiLabCache = null;
 
-        protected KeminiExperimentData(string id, string type, string name, string abb, float mass, float cost)
+        public KeminiExperimentData(string id, string type, string name, string abb, float mass, float cost, float labTime)
             : base(id, type, name, abb, EquipmentRacks.KEMINI, mass, cost)
         {
             storageType = ExperimentFactory.KEMINI_EXPERIMENTS;
+            step = new ResourceExperimentStep(this, Resources.LAB_TIME, labTime, "", 0);
         }
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
@@ -85,50 +85,4 @@ namespace NE_Science
             }
         }
     }
-
-    public class KeminiD5_ExperimentData : KeminiExperimentData
-    {
-        public KeminiD5_ExperimentData(float mass, float cost)
-            : base("NE_Kemini_D5", "KeminiD5", "#ne_kemini_d5_title", "D5", mass, cost)
-        {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.1f, "", 0);
-        }
-    }
-
-    public class KeminiD8_ExperimentData : KeminiExperimentData
-    {
-        public KeminiD8_ExperimentData(float mass, float cost)
-            : base("NE_Kemini_D8", "KeminiD8", "#ne_kemini_d8_title", "D8", mass, cost)
-        {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.15f, "", 0);
-        }
-    }
-
-    public class KeminiMSC3_ExperimentData : KeminiExperimentData
-    {
-        public KeminiMSC3_ExperimentData(float mass, float cost)
-            : base("NE_Kemini_MSC3", "KeminiMSC3", "#ne_kemini_msc3_title", "MSC3", mass, cost)
-        {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.13f, "", 0);
-        }
-    }
-
-    public class KeminiD7_ExperimentData : KeminiExperimentData
-    {
-        public KeminiD7_ExperimentData(float mass, float cost)
-            : base("NE_Kemini_D7", "KeminiD7", "#ne_kemini_d7_title", "D7", mass, cost)
-        {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.23f, "", 0);
-        }
-    }
-
-    public class KeminiD10_ExperimentData : KeminiExperimentData
-    {
-        public KeminiD10_ExperimentData(float mass, float cost)
-            : base("NE_Kemini_D10", "KeminiD10", "#ne_kemini_d10_title", "D10", mass, cost)
-        {
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, 0.21f, "", 0);
-        }
-    }
-
 }
