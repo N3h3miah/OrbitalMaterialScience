@@ -183,6 +183,15 @@
     <None Include="..\..\GameData\NehemiahInc\Kemini\Localization\kemini_dictionary_en.cfg">
       <Link>GameData\NehemiahInc\Kemini\Localization\kemini_dictionary_en.cfg</Link>
     </None>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\Localization\kemini_dictionary_es.cfg">
+      <Link>GameData\NehemiahInc\Kemini\Localization\kemini_dictionary_es.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_Bluedog.cfg">
+      <Link>GameData\NehemiahInc\Kemini\MM_Bluedog.cfg</Link>
+    </None>
+    <None Include="..\..\GameData\NehemiahInc\Kemini\MM_Brumby.cfg">
+      <Link>GameData\NehemiahInc\Kemini\MM_Brumby.cfg</Link>
+    </None>
     <None Include="..\..\GameData\NehemiahInc\Kemini\MM_Corvus.cfg">
       <Link>GameData\NehemiahInc\Kemini\MM_Corvus.cfg</Link>
     </None>
@@ -499,6 +508,9 @@
     </Content>
     <Content Include="..\..\GameData\NehemiahInc\KEES\Parts\PEC\KEES_PEC Texture.dds">
       <Link>GameData\NehemiahInc\KEES\Parts\PEC\KEES_PEC Texture.dds</Link>
+    </Content>
+    <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D10_Texure.dds">
+      <Link>GameData\NehemiahInc\Kemini\Experiments\Kemini_D10_Texure.dds</Link>
     </Content>
     <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_D5_Texure.dds">
       <Link>GameData\NehemiahInc\Kemini\Experiments\Kemini_D5_Texure.dds</Link>
