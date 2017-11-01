@@ -25,7 +25,7 @@ namespace NE_Science
     public class Kemini_Module : Lab
     {
 
-        private const string KEMINI_CONFIG_NODE_NAME = "NE_KEMINI_LabEquipmentSlot";
+        private const string KEMINI_LAB_EQUIPMENT_TYPE = "KEMINI";
 
         /// <summary>
         /// Field to display the Kemini lab status in the popup menu
@@ -39,7 +39,7 @@ namespace NE_Science
         {
             base.OnLoad(node);
             NE_Helper.log("KL OnLoad");
-            keminiSlot = getLabEquipmentSlotByType(node, "KEMINI");
+            keminiSlot = getLabEquipmentSlotByType(node, KEMINI_LAB_EQUIPMENT_TYPE);
         }
 
         public override void OnSave(ConfigNode node)

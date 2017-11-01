@@ -27,29 +27,13 @@ namespace NE_Science
     {
 
         private static string SETTINGS_FILE;
-        private static string KEMINI_EXPERIMENT_REGISTER_FILE;
         private const string DEBUG_VALUE = "Debug";
         private static bool debug = true;
-
-        private static ConfigNode keminiRegister = null;
 
         void Start()
         {
             loadOrCreateSettings();
             DontDestroyOnLoad(this);
-        }
-
-        public static ConfigNode getKeminiRegister()
-        {
-            if (keminiRegister == null)
-            {
-                if (String.IsNullOrEmpty(KEMINI_EXPERIMENT_REGISTER_FILE)) {
-                    KEMINI_EXPERIMENT_REGISTER_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Kemini/Experiments/ExperimentRegister.cfg";
-                }
-                keminiRegister = ConfigNode.Load(KEMINI_EXPERIMENT_REGISTER_FILE);
-                log("Loaded Kemini Experiment register; it contains " + keminiRegister.GetNode("ExperimentRegister").GetNodes().Length + "experiment definitions.");
-            }
-            return keminiRegister.GetNode("ExperimentRegister");
         }
 
         private void loadOrCreateSettings()
