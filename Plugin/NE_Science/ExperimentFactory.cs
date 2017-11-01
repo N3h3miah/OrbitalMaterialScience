@@ -41,9 +41,10 @@ namespace NE_Science
             "NE.FLEX", "NE.CFI", "NE.MIS1", "NE.MIS2", "NE.MIS3", "NE.ExpExp1", "NE.ExpExp2", "NE.CVB",
             "NE.PACE", "NE.ADUM", "NE.SpiU"};
 
+#if false
         static readonly string[] keminiRegistry = { "NE.KeminiD5", "NE.KeminiD8",
             "NE.KeminiMSC3", "NE.KeminiD7", "NE.KeminiD10"};
-
+#endif
         //
         // TODO - add experiments cache; see if we can hook into the unlock/purchase events
         // some of these APIs get called a LOT, causing heaps of foreach() and list creation
@@ -70,6 +71,18 @@ namespace NE_Science
             return list;
         }
 
+        private static string[] getKeminiRegistry()
+        {
+            // MKW TOOD: Refactor!
+            ConfigNode kr = NE_Helper.getKeminiRegister();
+            List<string> experiments = new List<string>();
+            foreach (ConfigNode n in kr.nodes)
+            {
+                experiments.Add(n.GetValue("id"));
+            }
+            return experiments.ToArray();
+        }
+
         public static List<AvailablePart> getAvailableExperimentParts(string type, bool includeExperimental = false)
         {
             string[] partsRegistry = null;
@@ -81,7 +94,8 @@ namespace NE_Science
                     partsRegistry = omsRegistry;
                     break;
                 case KEMINI_EXPERIMENTS:
-                    partsRegistry = keminiRegistry;
+                    //partsRegistry = keminiRegistry;
+                    partsRegistry = getKeminiRegistry();
                     break;
                 default:
                     return list;
@@ -123,7 +137,8 @@ namespace NE_Science
                     partsRegistry = omsRegistry;
                     break;
                 case KEMINI_EXPERIMENTS:
-                    partsRegistry = keminiRegistry;
+                    //partsRegistry = keminiRegistry;
+                    partsRegistry = getKeminiRegistry();
                     break;
             }
             for (int idx = 0, count = partsRegistry.Length; idx < count; idx++)
@@ -143,8 +158,29 @@ namespace NE_Science
 
         public static ExperimentData getExperiment(string type, float mass, float cost)
         {
+            // First try to find in Kemini Register
+            ConfigNode kr = NE_Helper.getKeminiRegister();
+            if (kr != null)
+            {
+                foreach(ConfigNode n in kr.nodes)
+                {
+                    if (n.GetValue("type") == type)
+                    {
+                        return new KeminiExperimentData(
+                            n.GetValue("id"), 
+                            n.GetValue("type"), 
+                            n.GetValue("name"), 
+                            n.GetValue("abbreviation"), 
+                            mass, 
+                            cost, 
+                            NE_Helper.GetValueAsFloat(n, "labTime"));
+                    }
+                }
+            }
+
             switch (type)
             {
+#if false
                 //
                 // KEMINI Experiments
                 // MKW TODO: Load from file
@@ -159,7 +195,7 @@ namespace NE_Science
                     return new KeminiExperimentData("NE_Kemini_D7", "KeminiD7", "#ne_kemini_d7_title", "D7", mass, cost, 0.23f);
                 case "KeminiD10":
                     return new KeminiExperimentData("NE_Kemini_D10", "KeminiD10", "#ne_kemini_d10_title", "D10", mass, cost, 0.21f);
-
+#endif
 
                 //
                 // OMS/KLS Experiments

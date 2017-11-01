@@ -27,46 +27,54 @@ namespace NE_Science
     {
 
         private static string SETTINGS_FILE;
+        private static string KEMINI_EXPERIMENT_REGISTER_FILE;
         private const string DEBUG_VALUE = "Debug";
         private static bool debug = true;
 
+        private static ConfigNode keminiRegister = null;
 
         void Start()
         {
-            if (String.IsNullOrEmpty(SETTINGS_FILE)) {
-                SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/NE_Science_Common/Resources/settings.cfg";
+            loadOrCreateSettings();
+            DontDestroyOnLoad(this);
+        }
+
+        public static ConfigNode getKeminiRegister()
+        {
+            if (keminiRegister == null)
+            {
+                if (String.IsNullOrEmpty(KEMINI_EXPERIMENT_REGISTER_FILE)) {
+                    KEMINI_EXPERIMENT_REGISTER_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Kemini/Experiments/ExperimentRegister.cfg";
+                }
+                keminiRegister = ConfigNode.Load(KEMINI_EXPERIMENT_REGISTER_FILE);
+                log("Loaded Kemini Experiment register; it contains " + keminiRegister.GetNode("ExperimentRegister").GetNodes().Length + "experiment definitions.");
             }
-            ConfigNode settings = getSettingsNode();
+            return keminiRegister.GetNode("ExperimentRegister");
+        }
+
+        private void loadOrCreateSettings()
+        {
             bool d = false;
             try
             {
-                d = bool.Parse(settings.GetValue(DEBUG_VALUE));
+                if (String.IsNullOrEmpty(SETTINGS_FILE)) {
+                    SETTINGS_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/NE_Science_Common/Resources/settings.cfg";
+                }
+                ConfigNode settings = ConfigNode.Load(SETTINGS_FILE);
+                if (settings == null)
+                {
+                    settings.AddValue(DEBUG_VALUE, false);
+                    settings.Save(SETTINGS_FILE);
+                } else {
+                    d = bool.Parse(settings.GetValue(DEBUG_VALUE));
+                }
             }
-            catch (FormatException e)
+            catch (Exception e)
             {
                 d = true;
                 NE_Helper.logError("Loading Settings: " + e.Message);
             }
             NE_Helper.debug = d;
-            DontDestroyOnLoad(this);
-        }
-
-        private ConfigNode getSettingsNode()
-        {
-            ConfigNode node = ConfigNode.Load(SETTINGS_FILE);
-            if (node == null)
-            {
-                return createSettings();
-            }
-            return node;
-        }
-
-        private ConfigNode createSettings(){
-
-            ConfigNode node = new ConfigNode();
-            node.AddValue(DEBUG_VALUE, false);
-            node.Save(SETTINGS_FILE);
-            return node;
         }
 
         /// <summary>

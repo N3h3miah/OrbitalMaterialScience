@@ -453,6 +453,7 @@
     <None Include="..\..\GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu">
       <Link>GameData\NehemiahInc\OMS\Spaces\NE MLS-1000\model.mu</Link>
     </None>
+    <None Include="GameData\NehemiahInc\Kemini\Experiments\ExperimentRegister.cfg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\GameData\NehemiahInc\KEES\Parts\Experiment\KEES_Experiment_Normal.dds">
