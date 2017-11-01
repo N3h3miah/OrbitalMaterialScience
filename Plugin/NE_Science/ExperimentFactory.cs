@@ -78,7 +78,8 @@ namespace NE_Science
             List<string> experiments = new List<string>();
             foreach (ConfigNode n in kr.nodes)
             {
-                experiments.Add(n.GetValue("id"));
+                // MKW HACK/TODO: Part names can't contain underscores; refactor in a future release. For now we can use wildcard.
+                experiments.Add(n.GetValue("id").Replace('_', '.'));
             }
             return experiments.ToArray();
         }
@@ -167,12 +168,12 @@ namespace NE_Science
                     if (n.GetValue("type") == type)
                     {
                         return new KeminiExperimentData(
-                            n.GetValue("id"), 
-                            n.GetValue("type"), 
-                            n.GetValue("name"), 
-                            n.GetValue("abbreviation"), 
-                            mass, 
-                            cost, 
+                            n.GetValue("id"),
+                            n.GetValue("type"),
+                            n.GetValue("name"),
+                            n.GetValue("abbreviation"),
+                            mass,
+                            cost,
                             NE_Helper.GetValueAsFloat(n, "labTime"));
                     }
                 }
