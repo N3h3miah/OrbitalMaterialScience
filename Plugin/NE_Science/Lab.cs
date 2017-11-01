@@ -68,6 +68,42 @@ namespace NE_Science
 
         }
 
+        protected LabEquipmentSlot getLabEquipmentSlotByType(ConfigNode configNode, string type)
+        {
+            LabEquipmentSlot rv = null;
+
+            if (configNode == null)
+            {
+                NE_Helper.logError("Lab getLabEquipmentSlotByType: parent node null");
+                goto done;
+            }
+
+            // Find a NE_LabEquipmentSlot of the correct type
+            ConfigNode cn = configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME, "type", type);
+            if (cn == null)
+            {
+                // Pre-Kemini-0.3 savegames have another level of nesting of ConfigNodes so let's recursively look into the child-nodes
+                foreach(ConfigNode child in configNode.nodes)
+                {
+                    rv = getLabEquipmentSlotByType(child, type);
+                    if (rv != null)
+                    {
+                        goto done;
+                    }
+                }
+
+                // Not found, so let's raise an error
+                NE_Helper.logError("Lab getLabEquipmentSlotByType: node " + configNode.name
+                    + " does not contain a " + LabEquipmentSlot.CONFIG_NODE_NAME
+                    + " node of type " + type);
+                goto done;
+            }
+            rv = LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(cn, this);
+
+        done:
+            return rv != null? rv : new LabEquipmentSlot(EquipmentRacks.NONE);
+        }
+
         protected LabEquipmentSlot getLabEquipmentSlot(ConfigNode configNode)
         {
             if (configNode != null)

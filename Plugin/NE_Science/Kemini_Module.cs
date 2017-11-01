@@ -39,14 +39,14 @@ namespace NE_Science
         {
             base.OnLoad(node);
             NE_Helper.log("KL OnLoad");
-            keminiSlot = getLabEquipmentSlot(node.GetNode(KEMINI_CONFIG_NODE_NAME));
+            keminiSlot = getLabEquipmentSlotByType(node, "KEMINI");
         }
 
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
             NE_Helper.log("KL OnSave");
-            node.AddNode(getConfigNodeForSlot(KEMINI_CONFIG_NODE_NAME, keminiSlot));
+            node.AddNode(keminiSlot.getConfigNode());
         }
 
         public override void OnStart(PartModule.StartState state)
