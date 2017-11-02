@@ -101,17 +101,19 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  -->
-  <!--
-  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-  </Target>
-  -->
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
     <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' " />
     <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' " />
+  </Target>
+  -->
+  <ItemGroup>
+    <TargetFiles Include="$(TargetPath)" />
+    <TargetFiles Include="$(TargetDir)$(TargetName).pdb" Condition=" '$(Configuration)' == 'Debug' " />
+    <TargetFiles Include="$(TargetDir)$(TargetFileName).mdb" Condition=" '$(Configuration)' == 'Debug' " />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(TargetFiles)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
   </Target>
   <ItemGroup>
     <None Include="..\..\GameData\NehemiahInc\KEES\Localization\kees_dictionary_de.cfg">
@@ -524,7 +526,9 @@
     <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_MSC3_Texure.dds">
       <Link>GameData\NehemiahInc\Kemini\Experiments\Kemini_MSC3_Texure.dds</Link>
     </Content>
-    <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_TEST_Texture.dds" />
+    <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_TEST_Texture.dds">
+      <Link>GameData\NehemiahInc\Kemini\Experiments\Kemini_TEST_Texture.dds</Link>
+    </Content>
     <Content Include="..\..\GameData\NehemiahInc\Kemini\Experiments\Kemini_Texure.dds">
       <Link>GameData\NehemiahInc\Kemini\Experiments\Kemini_Texure.dds</Link>
     </Content>
@@ -617,16 +621,6 @@
     </Content>
     <Content Include="..\..\GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png">
       <Link>GameData\NehemiahInc\NE_Science_Common\Icons\LabTime-Icon.png</Link>
-    </Content>
-    <Content Include="..\..\GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll">
-      <Link>GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll</Link>
-    </Content>
-    <Content Include="..\..\GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll.mdb">
-      <Link>GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.dll.mdb</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.pdb">
-      <Link>GameData\NehemiahInc\NE_Science_Common\Plugins\NE_Science.pdb</Link>
     </Content>
     <Content Include="..\..\GameData\NehemiahInc\OMS\Icons\3PR-Icon.png">
       <Link>GameData\NehemiahInc\OMS\Icons\3PR-Icon.png</Link>
@@ -813,9 +807,6 @@
     </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <PostBuildEvent>$(SolutionDir)..\..\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PostBuildEvent>$(SolutionDir)..\..\..\bin\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
