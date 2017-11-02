@@ -27,7 +27,7 @@ namespace NE_Science
     class MEP_Module : Lab
     {
         private const string MEP_STATE_VALUE = "Mep_State";
-        private const string SLOT_CONFIG_NODE_NAME = "EquipmentSlot";
+        private const string EXPOSURE_LAB_EQUIPMENT_TYPE = "EXPOSURE";
 
         public MEPLabStatus MEPlabState = MEPLabStatus.NOT_READY;
 
@@ -61,8 +61,7 @@ namespace NE_Science
             {
                 MEPlabState = MEPLabStatusFactory.getType(stateString);
             }
-            exposureSlot = getLabEquipmentSlot(node.GetNode(SLOT_CONFIG_NODE_NAME));
-
+            exposureSlot = getLabEquipmentSlotByType(node, EXPOSURE_LAB_EQUIPMENT_TYPE);
         }
 
 
@@ -71,7 +70,7 @@ namespace NE_Science
             base.OnSave(node);
             NE_Helper.log("MEP OnSave");
             node.AddValue(MEP_STATE_VALUE, MEPlabState);
-            node.AddNode(getConfigNodeForSlot(SLOT_CONFIG_NODE_NAME, exposureSlot));
+            node.AddNode(exposureSlot.getConfigNode());
         }
 
         public override void OnStart(StartState state)
@@ -119,7 +118,6 @@ namespace NE_Science
                     Events["DeployPlatform"].guiActive = false;
                     break;
             }
-
         }
 
         [KSPEvent(guiName = "#ne_Fix_robotic_arm", externalToEVAOnly = true, guiActiveUnfocused = true, unfocusedRange = 3.0f)]
@@ -153,7 +151,6 @@ namespace NE_Science
         {
             yield return new WaitForSeconds(seconds);
             MEPlabState = MEPLabStatus.RUNNING;
-
         }
 
 
@@ -265,7 +262,6 @@ namespace NE_Science
         {
             playAnimation(errorOnStopAnimName, -1f, 1);
             StartCoroutine(ErrorCallback(5.5f, MEPLabStatus.ERROR_ON_STOP));
-
         }
 
         System.Collections.IEnumerator ErrorCallback(float seconds, MEPLabStatus targetState)
@@ -277,7 +273,6 @@ namespace NE_Science
 
         private bool isSuccessfull()
         {
-
             if (failures)
             {
                 if (failurePercentage > 100)
@@ -354,8 +349,6 @@ namespace NE_Science
                            MEPlabState = MEPLabStatus.READY;
                            break;
                    }
-
-
                }
                else
                {
@@ -395,7 +388,6 @@ namespace NE_Science
 
     public class MEPLabStatusFactory
     {
-
         public static MEPLabStatus getType(string p)
         {
             switch (p)
@@ -414,7 +406,6 @@ namespace NE_Science
                     return MEPLabStatus.NONE;
                 default:
                     return MEPLabStatus.NOT_READY;
-
             }
         }
     }

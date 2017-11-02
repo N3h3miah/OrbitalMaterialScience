@@ -26,9 +26,9 @@ namespace NE_Science
     public class MSL_Module : Lab
     {
 
-        private const string CIR_CONFIG_NODE_NAME = "NE_CIR_LabEquipmentSlot";
-        private const string FIR_CONFIG_NODE_NAME = "NE_FIR_LabEquipmentSlot";
-        private const string DPR_CONFIG_NODE_NAME = "NE_DPR_LabEquipmentSlot";
+        private const string CIR_LAB_EQUIPMENT_TYPE = "CIR";
+        private const string FIR_LAB_EQUIPMENT_TYPE = "FIR";
+        private const string PRINTER_LAB_EQUIPMENT_TYPE = "PRINTER";
 
         [KSPField(isPersistant = false)]
         public float LabTimePerHour = 0;
@@ -56,18 +56,18 @@ namespace NE_Science
         {
             base.OnLoad(node);
             NE_Helper.log("MSL OnLoad");
-            cirSlot = getLabEquipmentSlot(node.GetNode(CIR_CONFIG_NODE_NAME));
-            firSlot = getLabEquipmentSlot(node.GetNode(FIR_CONFIG_NODE_NAME));
-            printerSlot = getLabEquipmentSlot(node.GetNode(DPR_CONFIG_NODE_NAME));
+            cirSlot = getLabEquipmentSlotByType(node, CIR_LAB_EQUIPMENT_TYPE);
+            firSlot = getLabEquipmentSlotByType(node, FIR_LAB_EQUIPMENT_TYPE);
+            printerSlot = getLabEquipmentSlotByType(node, PRINTER_LAB_EQUIPMENT_TYPE);
         }
 
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
             NE_Helper.log("MSL OnSave");
-            node.AddNode(getConfigNodeForSlot(CIR_CONFIG_NODE_NAME, cirSlot));
-            node.AddNode(getConfigNodeForSlot(FIR_CONFIG_NODE_NAME, firSlot));
-            node.AddNode(getConfigNodeForSlot(DPR_CONFIG_NODE_NAME, printerSlot));
+            node.AddNode(cirSlot.getConfigNode());
+            node.AddNode(firSlot.getConfigNode());
+            node.AddNode(printerSlot.getConfigNode());
 
         }
 

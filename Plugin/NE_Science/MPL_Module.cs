@@ -27,8 +27,8 @@ namespace NE_Science
     public class MPL_Module : Lab
     {
 
-        private const string MSG_CONFIG_NODE_NAME = "NE_MSG_LabEquipmentSlot";
-        private const string USU_CONFIG_NODE_NAME = "NE_USU_LabEquipmentSlot";
+        private const string MSG_LAB_EQUIPMENT_TYPE = "MSG";
+        private const string USU_LAB_EQUIPMENT_TYPE = "USU";
 
         [KSPField(isPersistant = false)]
         public float LabTimePerHour = 0;
@@ -55,16 +55,16 @@ namespace NE_Science
         {
             base.OnLoad(node);
             NE_Helper.log("MPL OnLoad");
-            msgSlot = getLabEquipmentSlot(node.GetNode(MSG_CONFIG_NODE_NAME));
-            usuSlot = getLabEquipmentSlot(node.GetNode(USU_CONFIG_NODE_NAME));
+            msgSlot = getLabEquipmentSlotByType(node, MSG_LAB_EQUIPMENT_TYPE);
+            usuSlot = getLabEquipmentSlotByType(node, USU_LAB_EQUIPMENT_TYPE);
         }
 
         public override void OnSave(ConfigNode node)
         {
             base.OnSave(node);
             NE_Helper.log("MPL OnSave");
-            node.AddNode(getConfigNodeForSlot(MSG_CONFIG_NODE_NAME, msgSlot));
-            node.AddNode(getConfigNodeForSlot(USU_CONFIG_NODE_NAME, usuSlot));
+            node.AddNode(msgSlot.getConfigNode());
+            node.AddNode(usuSlot.getConfigNode());
 
         }
 
