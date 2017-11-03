@@ -21,7 +21,18 @@ Every attempt has been made to keep the project file platform-agnostic. Please k
 
 The post-build script is using Xbuild commands; if you need to edit or add to this, you must edit the project file directly as there is no IDE support for this.
 
-The KSP references use a relative path to "KSP_Dev" at the same level as the root directory of this mod's source code. This could either be a complete copy of the latest version of KSP, or a symlink to it.
+### Project User Macros
+There are two user-macros which define some paths, they are:
+* KSP_DIR - the root-directory of the target KSP install you wish to compile against
+* PDB2MDB_TOOL - the full path to the [pd2mdb.exe utility][15]
+
+Both of these macros are defined in the project file; PLEASE DO NOT EDIT THESE!
+
+To override these macros to suit your own build environment, copy or merge the
+"NE_Science.csproj.user.template" to "NE_Science.csproj.user" and edit it
+before loading the solution.
+
+[15]: https://forum.kerbalspaceprogram.com/index.php?showtopic=102909
 
 
 ### Source code formatting

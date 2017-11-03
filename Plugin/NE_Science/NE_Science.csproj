@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Configuration Defaults; can be overridden in the .user file -->
+  <PropertyGroup>
+    <KSP_DIR>$(SolutionDir)..\..\KSP_Dev\</KSP_DIR>
+    <PDB2MDB_TOOL>$(SolutionDir)..\..\pdb2mdb.exe</PDB2MDB_TOOL>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -33,15 +38,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\KSP_Dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -807,6 +812,6 @@
     </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <PostBuildEvent>$(SolutionDir)..\..\..\bin\pdb2mdb.exe "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>$(PDB2MDB_TOOL) "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
