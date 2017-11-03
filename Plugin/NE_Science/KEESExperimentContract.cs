@@ -42,16 +42,35 @@ namespace NE_Science.Contracts
         public const string KEES_POSAII = "NE.KEES.POSA2";
 
         // MKW TODO: Localize the experiment names for the contract generator
-        static readonly List<Experiment> experimentParts =
-          new List<Experiment> {
-              new Experiment(KEES_PPMD, Localizer.GetStringByTag("#ne_kees_ppmd_title"), "KEES PPMD", "PPMD"),
-              new Experiment(KEES_POSAI, Localizer.GetStringByTag("#ne_kees_posa1_title"), "KEES POSA I", "POSA I"),
-              new Experiment(KEES_ODC, Localizer.GetStringByTag("#ne_kees_odc_title"), "KEES ODC", "ODC"),
-              new Experiment(KEES_POSAII, Localizer.GetStringByTag("#ne_kees_posa2_title"), "KEES POSA II", "POSA II")
-          };
+        private static Experiment[] experimentParts = null;
 
         CelestialBody targetBody = null;
         Experiment experiment = null;
+
+        private static Experiment[] ExperimentParts
+        {
+            get
+            {
+                if (experimentParts == null )
+                {
+                    try
+                    {
+                        experimentParts = new Experiment[] {
+                                      new Experiment(KEES_PPMD, Localizer.GetStringByTag("#ne_kees_ppmd_title"), "KEES PPMD", "PPMD"),
+                                      new Experiment(KEES_POSAI, Localizer.GetStringByTag("#ne_kees_posa1_title"), "KEES POSA I", "POSA I"),
+                                      new Experiment(KEES_ODC, Localizer.GetStringByTag("#ne_kees_odc_title"), "KEES ODC", "ODC"),
+                                      new Experiment(KEES_POSAII, Localizer.GetStringByTag("#ne_kees_posa2_title"), "KEES POSA II", "POSA II")
+                                  };
+                    } catch ( Exception e )
+                    {
+                        NE_Helper.logError("Could not initialize list of KEES Experiments for the Contract Engine: " + e.Message );
+                        experimentParts = new Experiment[0];
+                    }
+
+                }
+                return experimentParts;
+            }
+        }
 
         protected override bool Generate()
         {
@@ -176,9 +195,9 @@ namespace NE_Science.Contracts
         private List<Experiment> getUnlockedKEESExperiments()
         {
             List<Experiment> unlockedParts = new List<Experiment>();
-            for (int idx = 0, count = experimentParts.Count; idx < count; idx++)
+            for (int idx = 0, count = ExperimentParts.Length; idx < count; idx++)
             {
-                var exp = experimentParts[idx];
+                var exp = ExperimentParts[idx];
                 if (NE_Helper.IsPartTechAvailable(exp.getPartName()))
                 {
                     unlockedParts.Add(exp);
@@ -277,9 +296,9 @@ namespace NE_Science.Contracts
 
         private Experiment getExperimentByPartName(string partName)
         {
-            for (int idx = 0, count = experimentParts.Count; idx < count; idx++)
+            for (int idx = 0, count = ExperimentParts.Length; idx < count; idx++)
             {
-                var exp = experimentParts[idx];
+                var exp = ExperimentParts[idx];
                 if (exp.getPartName() == partName)
                 {
                     return exp;
