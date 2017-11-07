@@ -36,16 +36,36 @@ namespace NE_Science.Contracts
 
         public const string KEES_PC = "NE.KEES.PC";
         public const string KEES_PEC = "NE.KEES.PEC";
+        /*
         public const string KEES_PPMD = "NE.KEES.PPMD";
         public const string KEES_ODC = "NE.KEES.OCD";
         public const string KEES_POSAI = "NE.KEES.POSA1";
         public const string KEES_POSAII = "NE.KEES.POSA2";
+        */
 
         // MKW TODO: Localize the experiment names for the contract generator
         private static Experiment[] experimentParts = null;
 
         CelestialBody targetBody = null;
         Experiment experiment = null;
+
+        private static ConfigNode findExperiment(string experimentId)
+        {
+            if (experimentId == null || experimentId.Length == 0)
+            {
+                return null;
+            }
+            string searchValue = experimentId.Replace('_', '.');
+            foreach(ConfigNode ed in GameDatabase.Instance.GetConfigNodes("EXPERIMENT_DEFINITION"))
+            {
+                string edId = ed.GetValue("id")?.Replace('_', '.');
+                if (edId == searchValue)
+                {
+                    return ed;
+                }
+            }
+            return null;
+        }
 
         private static Experiment[] ExperimentParts
         {
@@ -55,12 +75,49 @@ namespace NE_Science.Contracts
                 {
                     try
                     {
+#if false
                         experimentParts = new Experiment[] {
                                       new Experiment(KEES_PPMD, Localizer.GetStringByTag("#ne_kees_ppmd_title"), "KEES PPMD", "PPMD"),
                                       new Experiment(KEES_POSAI, Localizer.GetStringByTag("#ne_kees_posa1_title"), "KEES POSA I", "POSA I"),
                                       new Experiment(KEES_ODC, Localizer.GetStringByTag("#ne_kees_odc_title"), "KEES ODC", "ODC"),
                                       new Experiment(KEES_POSAII, Localizer.GetStringByTag("#ne_kees_posa2_title"), "KEES POSA II", "POSA II")
                                   };
+#elif false
+                        List<Experiment> el = new List<Experiment>();
+                        foreach (AvailablePart p in PartLoader.LoadedPartsList)
+                        {
+                            ConfigNode ke = p.partConfig?.GetNode("MODULE", "name", "KEESExperiment");
+                            if (ke != null)
+                            {
+                                string experimentId = ke.GetValue("experimentID")?.Replace('_','.');
+                                string experimentTitle = findExperiment(experimentId)?.GetValue("title");
+                                //string experimentShortName = experimentId?.Substring(3)?.Replace('.', ' ');
+                                string experimentShortName = ke.GetValue("shortDisplayName");
+                                if (experimentShortName == null)
+                                {
+                                    experimentShortName = experimentId?.Substring(3)?.Replace('.', ' ');
+                                }
+                                el.Add(new Experiment(experimentId, experimentTitle, experimentShortName, experimentShortName));
+                            }
+                        }
+#else
+                        List<Experiment> el = new List<Experiment>();
+                        ConfigNode[] experiments = GameDatabase.Instance.GetConfigNodes("EXPERIMENT_DEFINITION");
+                        for( int idx = 0; idx < experiments.Length; idx++)
+                        {
+                            ConfigNode ed = experiments[idx];
+                            string experimentId = ed.GetValue("id");
+                            if (experimentId != null && experimentId.StartsWith("NE_KEES"))
+                            {
+                                string experimentTitle = ed.GetValue("title");
+                                string experimentPartName = experimentId.Replace('_','.');
+                                string experimentShortName = ed.GetValue("shortDisplayName");
+                                string experimentAbbreviation = ed.GetValue("abbreviation");
+                                el.Add(new Experiment(experimentPartName, experimentTitle, experimentShortName, experimentAbbreviation));
+                            }
+                        }
+#endif
+                        experimentParts = el.ToArray();
                     } catch ( Exception e )
                     {
                         NE_Helper.logError("Could not initialize list of KEES Experiments for the Contract Engine: " + e.Message );
@@ -329,7 +386,7 @@ namespace NE_Science.Contracts
             }
 
             // And must have unlocked the tech-tiers for the first KEES experiment and the Exposure bracket
-            return (NE_Helper.IsPartTechAvailable(KEES_PEC) && NE_Helper.IsPartTechAvailable(KEES_PPMD));
+            return (NE_Helper.IsPartTechAvailable(KEES_PEC)); // && NE_Helper.IsPartTechAvailable(KEES_PPMD));
         }
     }
 
