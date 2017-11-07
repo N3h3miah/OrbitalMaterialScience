@@ -53,33 +53,43 @@ namespace NE_Science
         /// allowing users to easily add additional Kemini experiments to the
         /// game.
         /// </summary>
-        private static string KEMINI_EXPERIMENT_REGISTER_FILE;
-        private static string NE_EXPERIMENT_REGISTER_NODE = "NEExperimentRegister";
-        private static string NE_EXPERIMENT_NODE = "NEExperiment";
-        private static ConfigNode keminiRegister = null;
+        private static List<ConfigNode> keminiRegister = null;
 
-        /// <summary>
-        /// Returns the Kemini Experiment Register, loading it if necessary.
-        /// </summary>
-        /// <returns>ConfigNode containing the Kemini Experiment Register</returns>
-        private static ConfigNode loadKeminiRegister()
+        private static List<ConfigNode> KeminiRegister
         {
-            if (keminiRegister == null)
+            /// <summary>
+            /// Returns the Kemini Experiment Register, loading it if necessary.
+            /// </summary>
+            /// <returns>ConfigNode containing the Kemini Experiment Register</returns>
+            get
             {
-                if (String.IsNullOrEmpty(KEMINI_EXPERIMENT_REGISTER_FILE)) {
-                    KEMINI_EXPERIMENT_REGISTER_FILE = KSPUtil.ApplicationRootPath + "GameData/NehemiahInc/Kemini/Experiments/ExperimentRegister.cfg";
-                }
-                // NB: ConfigNodes loaded from a file have a "root" node so we need to get the actual node we want
-                keminiRegister = ConfigNode.Load(KEMINI_EXPERIMENT_REGISTER_FILE);
-                keminiRegister = keminiRegister?.GetNode(NE_EXPERIMENT_REGISTER_NODE); // NB: Only reason this is two lines of code is for debugging purposes..
                 if (keminiRegister == null)
                 {
-                    NE_Helper.logError("Kemini Experiment register file " + KEMINI_EXPERIMENT_REGISTER_FILE + " does not exist or is invalid.");
-                    keminiRegister = new ConfigNode(NE_EXPERIMENT_REGISTER_NODE);
+                    /* Find all Kemini experiments and add them to our registry. */
+                    keminiRegister = new List<ConfigNode>();
+                    ConfigNode[] experiments = GameDatabase.Instance.GetConfigNodes("EXPERIMENT_DEFINITION");
+                    for( int idx = 0; idx < experiments.Length; idx++)
+                    {
+                        ConfigNode ed = experiments[idx];
+                        string experimentId = ed.GetValue("id");
+                        if (experimentId != null && experimentId.StartsWith("NE_Kemini"))
+                        {
+                            string experimentPartName = experimentId.Replace('_','.');
+                            if ( PartLoader.getPartInfoByName(experimentPartName) != null )
+                            {
+                                string experimentTitle = ed.GetValue("title");
+                                string experimentShortName = ed.GetValue("shortDisplayName");
+                                string experimentAbbreviation = ed.GetValue("abbreviation");
+                                keminiRegister.Add(ed);
+                            } else {
+                                NE_Helper.logError("Kemini Configuration mismatch - experiment " + experimentId + " defined, but no matching part found.");
+                            }
+                        }
+                    }
+                    NE_Helper.log("Loaded Kemini Experiment register; it contains " + keminiRegister?.Count + " experiment definitions.");
                 }
-                NE_Helper.log("Loaded Kemini Experiment register; it contains " + keminiRegister?.GetNode(NE_EXPERIMENT_REGISTER_NODE)?.GetNodes(NE_EXPERIMENT_NODE)?.Length + "experiment definitions.");
+                return keminiRegister;
             }
-            return keminiRegister;
         }
 
         /** Returns a list of all purchased experiments.
@@ -109,15 +119,10 @@ namespace NE_Science
         /// <returns>string array containing all Kemini parts</returns>
         private static string[] getKeminiRegister()
         {
-            ConfigNode kr = loadKeminiRegister();
-            string[] experiments = new string[kr.CountNodes];
-            for (int idx = 0; idx < kr.CountNodes; idx++)
+            string[] experiments = new string[KeminiRegister.Count];
+            for (int idx = 0; idx < KeminiRegister.Count; idx++)
             {
-                ConfigNode n = kr.nodes[idx];
-                if (n.name != NE_EXPERIMENT_NODE)
-                {
-                    continue;
-                }
+                ConfigNode n = KeminiRegister[idx];
                 // MKW HACK/TODO: Part names can't contain underscores; refactor in a future release. For now we can use wildcard.
                 experiments[idx] = n.GetValue("id").Replace('_', '.');
             }
@@ -198,20 +203,6 @@ namespace NE_Science
 
         public static ExperimentData getExperiment(string type, float mass, float cost)
         {
-            // First try to find in Kemini Register
-            ConfigNode n = loadKeminiRegister()?.GetNode(NE_EXPERIMENT_NODE, "type", type);
-            if (n != null)
-            {
-                return new KeminiExperimentData(
-                    n.GetValue("id"),
-                    n.GetValue("type"),
-                    n.GetValue("name"),
-                    n.GetValue("abbreviation"),
-                    mass,
-                    cost,
-                    NE_Helper.GetValueAsFloat(n, "labTime"));
-            }
-
             switch (type)
             {
                 //
@@ -248,10 +239,27 @@ namespace NE_Science
                     return new SpiU_ExperimentData(mass, cost);
                 case "":
                     return ExperimentData.getNullObject();
-                default:
-                    NE_Helper.logError("Unknown ExperimentData Type '" + type + "'.");
-                    return ExperimentData.getNullObject();
             }
+
+            // Try to find in Kemini Register
+            for (int idx = 0; idx < KeminiRegister.Count; idx++)
+            {
+                if (KeminiRegister[idx].GetValue("type") == type)
+                {
+                    ConfigNode n = KeminiRegister[idx];
+                    return new KeminiExperimentData(
+                        n.GetValue("id"),
+                        n.GetValue("type"),
+                        n.GetValue("title"),
+                        n.GetValue("abbreviation"),
+                        mass,
+                        cost,
+                        NE_Helper.GetValueAsFloat(n, "labTime"));
+                }
+            }
+
+            NE_Helper.logError("Unknown ExperimentData Type '" + type + "'.");
+            return ExperimentData.getNullObject();
         }
     }
 }

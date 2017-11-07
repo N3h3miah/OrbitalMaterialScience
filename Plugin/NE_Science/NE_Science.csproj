@@ -175,9 +175,6 @@
     <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\D8.cfg">
       <Link>GameData\NehemiahInc\Kemini\Experiments\D8.cfg</Link>
     </None>
-    <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\ExperimentRegister.cfg">
-      <Link>GameData\NehemiahInc\Kemini\Experiments\ExperimentRegister.cfg</Link>
-    </None>
     <None Include="..\..\GameData\NehemiahInc\Kemini\Experiments\model.mu">
       <Link>GameData\NehemiahInc\Kemini\Experiments\model.mu</Link>
     </None>
