@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -101,6 +101,7 @@ namespace NE_Science.Contracts
                             }
                         }
 #else
+                        /* Find all KEES experiments and add them to our registry for generating contracts. */
                         List<Experiment> el = new List<Experiment>();
                         ConfigNode[] experiments = GameDatabase.Instance.GetConfigNodes("EXPERIMENT_DEFINITION");
                         for( int idx = 0; idx < experiments.Length; idx++)
@@ -109,11 +110,16 @@ namespace NE_Science.Contracts
                             string experimentId = ed.GetValue("id");
                             if (experimentId != null && experimentId.StartsWith("NE_KEES"))
                             {
-                                string experimentTitle = ed.GetValue("title");
                                 string experimentPartName = experimentId.Replace('_','.');
-                                string experimentShortName = ed.GetValue("shortDisplayName");
-                                string experimentAbbreviation = ed.GetValue("abbreviation");
-                                el.Add(new Experiment(experimentPartName, experimentTitle, experimentShortName, experimentAbbreviation));
+                                if ( PartLoader.getPartInfoByName(experimentPartName) != null )
+                                {
+                                    string experimentTitle = ed.GetValue("title");
+                                    string experimentShortName = ed.GetValue("shortDisplayName");
+                                    string experimentAbbreviation = ed.GetValue("abbreviation");
+                                    el.Add(new Experiment(experimentPartName, experimentTitle, experimentShortName, experimentAbbreviation));
+                                } else {
+                                    NE_Helper.logError("KEES Configuration mismatch - experiment " + experimentId + " defined, but no matching part found.");
+                                }
                             }
                         }
 #endif
@@ -123,7 +129,6 @@ namespace NE_Science.Contracts
                         NE_Helper.logError("Could not initialize list of KEES Experiments for the Contract Engine: " + e.Message );
                         experimentParts = new Experiment[0];
                     }
-
                 }
                 return experimentParts;
             }
