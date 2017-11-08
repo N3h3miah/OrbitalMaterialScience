@@ -48,7 +48,7 @@ namespace NE_Science
                 return;
             }
 
-            var lights = gameObject.GetComponentsInChildren(typeof(Light)) as Light[];
+            var lights = gameObject.GetComponentsInChildren<Light>();
             if (lights == null)
             {
                 NE_Helper.logError("MEP_Animation: No lights found in MEP_Module!");
@@ -78,7 +78,7 @@ namespace NE_Science
                     switchLightsOn();
                     error = true;
                 }
-                warnLight.transform.Rotate(Time.deltaTime * 180, 0, 0);
+                warnLight?.transform.Rotate(Time.deltaTime * 180, 0, 0);
             }
             else
             {
