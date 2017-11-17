@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586906645734940462">
+  <Categories>
+    <Category Name="NEOS">
+      <Title>NEOS</Title>
+      <TitleScreen>NEOS Titlepage</TitleScreen>
+      <Screens />
+      <Subcategories>
+        <Subcategory Name="Kemini">
+          <Title>Kemini</Title>
+          <TitleScreen>Kemini Titlepage</TitleScreen>
+          <Screens />
+          <Subcategories />
+        </Subcategory>
+        <Subcategory Name="KEES">
+          <Title>KEES</Title>
+          <TitleScreen>Template.Blue</TitleScreen>
+          <Screens />
+          <Subcategories />
+        </Subcategory>
+        <Subcategory Name="OMS">
+          <Title>OMS</Title>
+          <TitleScreen>Template.Blue</TitleScreen>
+          <Screens />
+          <Subcategories />
+        </Subcategory>
+        <Subcategory Name="KLS">
+          <Title>KLS</Title>
+          <TitleScreen>Template.Blue</TitleScreen>
+          <Screens />
+          <Subcategories />
+        </Subcategory>
+      </Subcategories>
+    </Category>
+  </Categories>
+  <Screens>
+    <Screen Name="Template.Blue">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/Template.Blue.prefab</AssetPath>
+      <Title />
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Add Heading Here</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Add Sub-Heading Here</Text>
+        </Text>
+        <Text Name="Body Paragraph Heading">
+          <Text>Paragraph Heading</Text>
+        </Text>
+        <Text Name="Body Paragraph Heading/Body Paragraph">
+          <Text>Paragraph text.
+Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
+        </Text>
+        <Text Name="Body Normal">
+          <Text>Body text.
+
+This is the standard body text used for writing KSPedia articles.</Text>
+        </Text>
+        <Text Name="Body Notes or Captions">
+          <Text>Body note/caption text.
+It can be used for annotating images.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="Template.Black">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/Template.Black.prefab</AssetPath>
+      <Title />
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Add Heading Here</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Add Sub-Heading Here</Text>
+        </Text>
+        <Text Name="Body Paragraph Heading">
+          <Text>Paragraph Heading</Text>
+        </Text>
+        <Text Name="Body Paragraph Heading/Body Paragraph">
+          <Text>Paragraph text.
+Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
+        </Text>
+        <Text Name="Body Normal">
+          <Text>Body text.
+
+This is the standard body text used for writing KSPedia articles.</Text>
+        </Text>
+        <Text Name="Body Notes or Captions">
+          <Text>Body note/caption text.
+It can be used for annotating images.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="NEOS Titlepage">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/NEOS Titlepage.prefab</AssetPath>
+      <Title />
+      <Background />
+      <Text>
+        <Text Name="NEOS Heading">
+          <Text>NEOS</Text>
+        </Text>
+        <Text Name="NEOS Heading/NEOS Name">
+          <Text>Nehemiah Engineering Orbital Science</Text>
+        </Text>
+        <Text Name="Authors Heading">
+          <Text>NEOS By:</Text>
+        </Text>
+        <Text Name="Authors Heading/Authors List">
+          <Text>Nehemiah
+Micha</Text>
+        </Text>
+        <Text Name="Components">
+          <Text>• Kemini
+• KEES
+• OMS
+• KLS</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="Kemini Titlepage">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/Kemini Titlepage.prefab</AssetPath>
+      <Title />
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Kemini</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Kemini Research Program</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+  </Screens>
+</KSPedia>

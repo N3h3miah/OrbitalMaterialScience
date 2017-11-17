@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586906638008951641">
+  <Author />
+  <Info />
+  <Assets>
+    <Asset Name="KLS_Logo_big" Path="Assets/KSPedia Assets/KLS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/KLS_Logo_big" AutoLoad="false" />
+    <Asset Name="Kemini Titlepage" Path="Assets/KSPedia Assets/Kemini Titlepage.prefab" Type="GameObject" Url="KSPedia Assets/Kemini Titlepage" AutoLoad="false" />
+    <Asset Name="Kemini" Path="Assets/KSPedia Assets/Kemini.png" Type="Texture2D" Url="KSPedia Assets/Kemini" AutoLoad="false" />
+    <Asset Name="NEOS Titlepage" Path="Assets/KSPedia Assets/NEOS Titlepage.prefab" Type="GameObject" Url="KSPedia Assets/NEOS Titlepage" AutoLoad="false" />
+    <Asset Name="NEOS_Logo_big" Path="Assets/KSPedia Assets/NEOS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/NEOS_Logo_big" AutoLoad="false" />
+    <Asset Name="Template.Black" Path="Assets/KSPedia Assets/Template.Black.prefab" Type="GameObject" Url="KSPedia Assets/Template" AutoLoad="false" />
+    <Asset Name="Template.Blue" Path="Assets/KSPedia Assets/Template.Blue.prefab" Type="GameObject" Url="KSPedia Assets/Template" AutoLoad="false" />
+    <Asset Name="neos_kspedia" Path="Assets/XML/neos_kspedia.xml" Type="TextAsset" Url="XML/neos_kspedia" AutoLoad="false" />
+  </Assets>
+  <Dependencies>
+    <Dependency>squadcore</Dependency>
+  </Dependencies>
+</KSPBundleDefinition>
