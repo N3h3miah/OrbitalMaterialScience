@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos_kemini" Name="neos_kemini" CreatedTime="-8586905927129388592">
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos_kemini" Name="neos_kemini" CreatedTime="-8586905759323899882">
   <Author>Micha</Author>
   <Info>NEOS KSPedia for Kemini</Info>
   <Assets>
-    <Asset Name="Kemini - Add Experiment to Capsule" Path="Assets/KSPedia Assets/Kemini/Kemini - Add Experiment to Capsule.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Add Experiment to Capsule" AutoLoad="false" />
-    <Asset Name="Kemini - Run Test 1" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 1.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 1" AutoLoad="false" />
-    <Asset Name="Kemini - Run Test 2 - crop" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 2 - crop.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 2 - crop" AutoLoad="false" />
-    <Asset Name="Kemini - Run Test 3 - crop" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 3 - crop.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 3 - crop" AutoLoad="false" />
-    <Asset Name="Kemini - Run Test 4 - crop" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 4 - crop.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 4 - crop" AutoLoad="false" />
-    <Asset Name="Kemini - Run Test 5" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 5.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 5" AutoLoad="false" />
-    <Asset Name="Kemini - Unlock Experiment Parts" Path="Assets/KSPedia Assets/Kemini/Kemini - Unlock Experiment Parts.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Unlock Experiment Parts" AutoLoad="false" />
-    <Asset Name="kemini_0_titlepage" Path="Assets/KSPedia Assets/Kemini/kemini_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_0_titlepage" AutoLoad="false" />
-    <Asset Name="kemini_1_unlock_experiment" Path="Assets/KSPedia Assets/Kemini/kemini_1_unlock_experiment.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_1_unlock_experiment" AutoLoad="false" />
-    <Asset Name="kemini_2_run_experiment" Path="Assets/KSPedia Assets/Kemini/kemini_2_run_experiment.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_2_run_experiment" AutoLoad="false" />
     <Asset Name="neos_kemini_kspedia" Path="Assets/XML/neos_kemini_kspedia.xml" Type="TextAsset" Url="XML/neos_kemini_kspedia" AutoLoad="false" />
   </Assets>
   <Dependencies />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos_oms" CreatedTime="-8586905927182873137">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos_oms" CreatedTime="-8586905891613577353">
   <Categories>
     <Category Name="NEOS">
       <Title>NEOS</Title>
@@ -8,43 +8,12 @@
       <Subcategories>
         <Subcategory Name="OMS">
           <Title>Orbital Material Science</Title>
-          <TitleScreen>oms_0_titlepage</TitleScreen>
+          <TitleScreen />
           <Screens />
           <Subcategories />
         </Subcategory>
       </Subcategories>
     </Category>
   </Categories>
-  <Screens>
-    <Screen Name="oms_0_titlepage">
-      <BundleName>neos_oms</BundleName>
-      <AssetPath>Assets/KSPedia Assets/OMS/oms_0_titlepage.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>OMS</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>&lt;color=#68721EFF&gt;O&lt;/color&gt;rbital &lt;color=#68721EFF&gt;M&lt;/color&gt;aterial &lt;color=#68721EFF&gt;S&lt;/color&gt;cience</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About OMS</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Orbital Material Science&lt;/i&gt; experiments are based on some real-life experiments carried out aboard the ISS.
-
-These experiments are aimed at the end-game and require a major orbital station and multiple launches to support the experiments.
-
-The basic concepts are:
-  • &lt;b&gt;Science Labs&lt;/b&gt; - these are orbital modules which provide room for researchers and Lab Equipemnt.
-  • &lt;b&gt;Lab Equipment&lt;/b&gt; - these must be installed in a Lab and support multiple experiments.
-  • &lt;b&gt;Experiments&lt;/b&gt; - these must be installed in specific Equipment Racks.
-
-Once an experiment is installed in a Lab, it can be run, which takes time. On completion, the experiment must be returned to Kerbin for detailed results analysis.</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-  </Screens>
+  <Screens />
 </KSPedia>

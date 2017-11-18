@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos_kls" CreatedTime="-8586905909869847679">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos_kls" CreatedTime="-8586905891616590251">
   <Categories>
     <Category Name="NEOS">
       <Title>NEOS</Title>
@@ -8,38 +8,12 @@
       <Subcategories>
         <Subcategory Name="KLS">
           <Title>Kerbal Life Science</Title>
-          <TitleScreen>kls_0_titlepage</TitleScreen>
+          <TitleScreen />
           <Screens />
           <Subcategories />
         </Subcategory>
       </Subcategories>
     </Category>
   </Categories>
-  <Screens>
-    <Screen Name="kls_0_titlepage">
-      <BundleName>neos_kls</BundleName>
-      <AssetPath>Assets/KSPedia Assets/KLS/kls_0_titlepage.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>KLS</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>&lt;color=#68721EFF&gt;K&lt;/color&gt;erbal &lt;color=#68721EFF&gt;L&lt;/color&gt;ife &lt;color=#68721EFF&gt;S&lt;/color&gt;cience</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About KLS</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Kerbal Life Science&lt;/i&gt; experiments are based on some real-life experiments carried out aboard the ISS.
-
-The concept and execution is largely the same as for the OMS experiments, except that the science is carried out on Kerbals themselves!
-
-Each experiment requires one or more Kerbals as test subjects so be prepared to ship up plenty of victims, err, volunteers to your station!</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-  </Screens>
+  <Screens />
 </KSPedia>
