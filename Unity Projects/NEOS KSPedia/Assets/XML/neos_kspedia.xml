@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586906336505048518">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905909936731707">
   <Categories>
     <Category Name="NEOS">
-      <Title>NEOS</Title>
-      <TitleScreen />
-      <Screens>
-        <Screen>neos_titlepage</Screen>
-      </Screens>
+      <Title>Nehemiah Engineering Orbital Science</Title>
+      <TitleScreen>neos_titlepage</TitleScreen>
+      <Screens />
       <Subcategories />
     </Category>
   </Categories>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos_kls" Name="neos_kls" CreatedTime="-8586905927128748797">
+  <Author>Micha</Author>
+  <Info>KSPedia for NEOS Kerbal Life Science</Info>
+  <Assets>
+    <Asset Name="KLS_Logo_big" Path="Assets/KSPedia Assets/KLS/KLS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Logo_big" AutoLoad="false" />
+    <Asset Name="kls_0_titlepage" Path="Assets/KSPedia Assets/KLS/kls_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/KLS/kls_0_titlepage" AutoLoad="false" />
+    <Asset Name="neos_kls_kspedia" Path="Assets/XML/neos_kls_kspedia.xml" Type="TextAsset" Url="XML/neos_kls_kspedia" AutoLoad="false" />
+  </Assets>
+  <Dependencies />
+</KSPBundleDefinition>

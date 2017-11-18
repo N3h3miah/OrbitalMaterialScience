@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos_kees" CreatedTime="-8586905927172683886">
+  <Categories>
+    <Category Name="NEOS">
+      <Title>NEOS</Title>
+      <TitleScreen />
+      <Screens />
+      <Subcategories>
+        <Subcategory Name="KEES">
+          <Title>KEES</Title>
+          <TitleScreen>kees_0_titlepage</TitleScreen>
+          <Screens>
+            <Screen>kees_1_building_craft</Screen>
+          </Screens>
+          <Subcategories />
+        </Subcategory>
+      </Subcategories>
+    </Category>
+  </Categories>
+  <Screens>
+    <Screen Name="kees_1_building_craft">
+      <BundleName>neos_kees</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KEES/kees_1_building_craft.prefab</AssetPath>
+      <Title>Building a Vessel</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Add Heading Here</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Add Sub-Heading Here</Text>
+        </Text>
+        <Text Name="Paragraph">
+          <Text>Paragraph Heading</Text>
+        </Text>
+        <Text Name="Paragraph/Text">
+          <Text>Paragraph text.
+Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
+        </Text>
+        <Text Name="Text">
+          <Text>Body text.
+
+This is the standard body text used for writing KSPedia articles.</Text>
+        </Text>
+        <Text Name="Note or Caption">
+          <Text>Body note/caption text.
+It can be used for annotating images.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="kees_0_titlepage">
+      <BundleName>neos_kees</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KEES/kees_0_titlepage.prefab</AssetPath>
+      <Title />
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>KEES</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>&lt;color=#68721EFF&gt;K&lt;/color&gt;erbal &lt;color=#68721EFF&gt;E&lt;/color&gt;nvironmental &lt;color=#68721EFF&gt;E&lt;/color&gt;ffects &lt;color=#68721EFF&gt;S&lt;/color&gt;tudies</Text>
+        </Text>
+        <Text Name="Paragraph_about">
+          <Text>About KEES</Text>
+        </Text>
+        <Text Name="Paragraph_about/text">
+          <Text>The &lt;i&gt;Kemini Environmental Effects Studies&lt;/i&gt; experiments are based on some real-life experiments carried out during the MIR missions.
+
+These experiments are aimed at the mid-game and require some basic orbital construction using KIS. The experiments are deployed on a Passive Experiment Carrier (PEC) which must be attached to the outside of your spacecraft, which requires an Engineer.
+
+Once the PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments.
+
+The basic idea is to launch a minimal spacestation and attach a PEC to it, then run resupply missions to swap experiments.
+
+This mod benefits greatly from 2-Kerbal command pods such as the K2 or Corvus.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+  </Screens>
+</KSPedia>
