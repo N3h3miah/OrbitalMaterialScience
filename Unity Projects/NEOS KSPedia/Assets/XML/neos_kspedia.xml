@@ -1,108 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586906370085413515">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586906336505048518">
   <Categories>
     <Category Name="NEOS">
       <Title>NEOS</Title>
-      <TitleScreen>NEOS Titlepage</TitleScreen>
-      <Screens />
-      <Subcategories>
-        <Subcategory Name="Kemini">
-          <Title>Kemini</Title>
-          <TitleScreen>kemini_0_titlepage</TitleScreen>
-          <Screens>
-            <Screen>kemini_1_unlock_experiment</Screen>
-            <Screen>kemini_2_run_experiment</Screen>
-          </Screens>
-          <Subcategories />
-        </Subcategory>
-        <Subcategory Name="KEES">
-          <Title>KEES</Title>
-          <TitleScreen />
-          <Screens />
-          <Subcategories />
-        </Subcategory>
-        <Subcategory Name="OMS">
-          <Title>OMS</Title>
-          <TitleScreen />
-          <Screens />
-          <Subcategories />
-        </Subcategory>
-        <Subcategory Name="KLS">
-          <Title>KLS</Title>
-          <TitleScreen />
-          <Screens />
-          <Subcategories />
-        </Subcategory>
-      </Subcategories>
+      <TitleScreen />
+      <Screens>
+        <Screen>neos_titlepage</Screen>
+      </Screens>
+      <Subcategories />
     </Category>
   </Categories>
   <Screens>
-    <Screen Name="Template.Canvas Blue">
+    <Screen Name="neos_titlepage">
       <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/Template.Canvas Blue.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Add Heading Here</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Add Sub-Heading Here</Text>
-        </Text>
-        <Text Name="Body Paragraph Heading">
-          <Text>Paragraph Heading</Text>
-        </Text>
-        <Text Name="Body Paragraph Heading/Body Paragraph">
-          <Text>Paragraph text.
-Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
-        </Text>
-        <Text Name="Body Normal">
-          <Text>Body text.
-
-This is the standard body text used for writing KSPedia articles.</Text>
-        </Text>
-        <Text Name="Body Notes or Captions">
-          <Text>Body note/caption text.
-It can be used for annotating images.</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-    <Screen Name="Template.Canvas Black">
-      <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/Template.Canvas Black.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Add Heading Here</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Add Sub-Heading Here</Text>
-        </Text>
-        <Text Name="Body Paragraph Heading">
-          <Text>Paragraph Heading</Text>
-        </Text>
-        <Text Name="Body Paragraph Heading/Body Paragraph">
-          <Text>Paragraph text.
-Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
-        </Text>
-        <Text Name="Body Normal">
-          <Text>Body text.
-
-This is the standard body text used for writing KSPedia articles.</Text>
-        </Text>
-        <Text Name="Body Notes or Captions">
-          <Text>Body note/caption text.
-It can be used for annotating images.</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-    <Screen Name="NEOS Titlepage">
-      <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/NEOS Titlepage.prefab</AssetPath>
-      <Title />
+      <AssetPath>Assets/KSPedia Assets/neos_titlepage.prefab</AssetPath>
+      <Title>Nehemiah Engineering Orbital Science</Title>
       <Background />
       <Text>
         <Text Name="NEOS Heading">
@@ -123,132 +35,6 @@ Micha</Text>
 • KEES
 • OMS
 • KLS</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-    <Screen Name="kemini_2_run_experiment">
-      <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/Kemini/kemini_2_run_experiment.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Run Kemini Experiment</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Kemini Experiments must be run in Orbit</Text>
-        </Text>
-        <Text Name="Fig1_run_test/caption">
-          <Text>Fig1. Run Experiment</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/text">
-          <Text>Right-click on Command Pod and select "Run &lt;Experiment&gt;".</Text>
-        </Text>
-        <Text Name="Fig2_experiment_running/caption">
-          <Text>Fig2. Experiment running</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/text">
-          <Text>While the experiment is running, "Lab Time" slowly accrues.</Text>
-        </Text>
-        <Text Name="Fig3_experiment_finished/caption">
-          <Text>Fig3. Experiment finished.</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/text">
-          <Text>When "Lab Time" is full, the experiment can be finished.</Text>
-        </Text>
-        <Text Name="Fig4_experiment_finalize/caption">
-          <Text>Fig4. Finalize Experiment</Text>
-        </Text>
-        <Text Name="Point4">
-          <Text>4.  </Text>
-        </Text>
-        <Text Name="Point4/text">
-          <Text>And finalized.</Text>
-        </Text>
-        <Text Name="Fig5_experiment_finalized/caption">
-          <Text>Fig5. Experiment Finalized</Text>
-        </Text>
-        <Text Name="Point5">
-          <Text>5.  </Text>
-        </Text>
-        <Text Name="Point5/text">
-          <Text>Which opens the "Review Experiment" window.
-
-&lt;b&gt;Note:&lt;/b&gt; Kemini experiments cannot be reset.</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-    <Screen Name="kemini_1_unlock_experiment">
-      <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/Kemini/kemini_1_unlock_experiment.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Adding Kemini Experiments to your Craft</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>You to unlock Kemini experiment parts before you can add them to your Craft</Text>
-        </Text>
-        <Text Name="Fig1-RD/Caption_Fig1">
-          <Text>Fig 1. Research and Development Centre</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text2">
-          <Text>Unlock the Kemini Part(s) you want.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text1">
-          <Text>Research the node(s) which hold the Kemini parts.</Text>
-        </Text>
-        <Text Name="Fig2-VAB/Caption_Fig2">
-          <Text>Fig 2. Vehicle Assembly Building</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text3">
-          <Text>Right-click on a Command Pod and select "Add Experiment" from the menu.
-
-&lt;i&gt;&lt;b&gt;Note:&lt;/b&gt; Not all Command Pods support Kemini.&lt;/i&gt;</Text>
-        </Text>
-        <Text Name="Point4">
-          <Text>4.  </Text>
-        </Text>
-        <Text Name="Point4/Text4">
-          <Text>A menu of available Kemin experiments will open.
-
-Select the experiment you want to add to the Command Pod.</Text>
-        </Text>
-      </Text>
-      <Tooltips />
-    </Screen>
-    <Screen Name="kemini_0_titlepage">
-      <BundleName>neos</BundleName>
-      <AssetPath>Assets/KSPedia Assets/Kemini/kemini_0_titlepage.prefab</AssetPath>
-      <Title />
-      <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Kemini</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Kemini Research Program</Text>
         </Text>
       </Text>
       <Tooltips />
