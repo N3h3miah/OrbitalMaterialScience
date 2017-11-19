@@ -549,7 +549,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'The <i>Passive Experiment Carrier</i> must be attached to the outside of
-    your vessel before <color=olive>KEES</color> Experiments can be deployed.
+    your vessel before KEES Experiments can be deployed.
 
 
     You will need an <b>Engineer</b> and a <b>KIS Tool</b> to do so.'

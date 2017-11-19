@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905171877590435">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586904803261816038">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
@@ -49,29 +49,7 @@
       <AssetPath>Assets/KSPedia Assets/OMS/oms_0_titlepage.prefab</AssetPath>
       <Title>Orbital Material Science</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>OMS</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>&lt;color=olive&gt;O&lt;/color&gt;rbital &lt;color=olive&gt;M&lt;/color&gt;aterial &lt;color=olive&gt;S&lt;/color&gt;cience</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About OMS</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Orbital Material Science&lt;/i&gt; experiments are based on some real-life experiments carried out aboard the ISS.
-
-These experiments are aimed at the end-game and require a major orbital station and multiple launches to support the experiments.
-
-The basic concepts are:
-  • &lt;b&gt;Science Labs&lt;/b&gt; - these are orbital modules which provide room for researchers and Lab Equipemnt.
-  • &lt;b&gt;Lab Equipment&lt;/b&gt; - these must be installed in a Lab and support multiple experiments.
-  • &lt;b&gt;Experiments&lt;/b&gt; - these must be installed in specific Equipment Racks.
-
-Once an experiment is installed in a Lab, it can be run, which takes time. On completion, the experiment must be returned to Kerbin for detailed results analysis.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="neos_titlepage">
@@ -79,27 +57,7 @@ Once an experiment is installed in a Lab, it can be run, which takes time. On co
       <AssetPath>Assets/KSPedia Assets/neos_titlepage.prefab</AssetPath>
       <Title>Nehemiah Engineering Orbital Science</Title>
       <Background />
-      <Text>
-        <Text Name="NEOS Heading">
-          <Text>NEOS</Text>
-        </Text>
-        <Text Name="NEOS Heading/NEOS Name">
-          <Text>Nehemiah Engineering Orbital Science</Text>
-        </Text>
-        <Text Name="Authors Heading">
-          <Text>NEOS By:</Text>
-        </Text>
-        <Text Name="Authors Heading/Authors List">
-          <Text>Nehemiah
-Micha</Text>
-        </Text>
-        <Text Name="Components">
-          <Text>• Kemini
-• KEES
-• OMS
-• KLS</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="neos_1_introduction">
@@ -107,60 +65,15 @@ Micha</Text>
       <AssetPath>Assets/KSPedia Assets/neos_1_introduction.prefab</AssetPath>
       <Title>Introduction</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Introduction</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>General information about the NEOS experiments.</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>Real-life Science</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>All experiments comprising &lt;i&gt;NEOS&lt;/i&gt; are based on real-life experiments.
-
-&lt;b&gt;Kemini&lt;/b&gt; is based on Gemini experiments.
-&lt;b&gt;KEES&lt;/b&gt; is based on MIR experiments.
-&lt;b&gt;OMS&lt;/b&gt; and &lt;b&gt;KLS&lt;/b&gt; are based on ISS experiments.</Text>
-        </Text>
-        <Text Name="Paragraph_about (1)">
-          <Text>Running the Experiments</Text>
-        </Text>
-        <Text Name="Paragraph_about (1)/text">
-          <Text>The experiments contained in &lt;i&gt;NEOS&lt;/i&gt; require multiple steps to perform. In general, the stages are:
-
-1. Preparing the experiment
-2. Running the experiment
-3. Finalizing the experiment
-4. Recovering the experiment</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kls_0_titlepage">
       <BundleName>neos</BundleName>
       <AssetPath>Assets/KSPedia Assets/KLS/kls_0_titlepage.prefab</AssetPath>
-      <Title>Kerbal Life Science</Title>
+      <Title />
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>KLS</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>&lt;color=olive&gt;K&lt;/color&gt;erbal &lt;color=olive&gt;L&lt;/color&gt;ife &lt;color=olive&gt;S&lt;/color&gt;cience</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About KLS</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Kerbal Life Science&lt;/i&gt; experiments are based on some real-life experiments carried out aboard the ISS.
-
-The concept and execution is largely the same as for the OMS experiments, except that the science is carried out on Kerbals themselves!
-
-Each experiment requires one or more Kerbals as test subjects so be prepared to ship up plenty of victims, err, volunteers to your station!</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kemini_2_run_experiment">
@@ -168,61 +81,7 @@ Each experiment requires one or more Kerbals as test subjects so be prepared to 
       <AssetPath>Assets/KSPedia Assets/Kemini/kemini_2_run_experiment.prefab</AssetPath>
       <Title>Run Experiment</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Run Kemini Experiment</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Kemini Experiments must be run in Orbit</Text>
-        </Text>
-        <Text Name="Fig1_run_test/caption">
-          <Text>Fig1. Run Experiment</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/text">
-          <Text>Right-click on Command Pod and select "Run &lt;Experiment&gt;".</Text>
-        </Text>
-        <Text Name="Fig2_experiment_running/caption">
-          <Text>Fig2. Experiment running</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/text">
-          <Text>While the experiment is running, "Lab Time" slowly accrues.</Text>
-        </Text>
-        <Text Name="Fig3_experiment_finished/caption">
-          <Text>Fig3. Experiment finished.</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/text">
-          <Text>When "Lab Time" is full, the experiment can be finished.</Text>
-        </Text>
-        <Text Name="Fig4_experiment_finalize/caption">
-          <Text>Fig4. Finalize Experiment</Text>
-        </Text>
-        <Text Name="Point4">
-          <Text>4.  </Text>
-        </Text>
-        <Text Name="Point4/text">
-          <Text>And finalized.</Text>
-        </Text>
-        <Text Name="Fig5_experiment_finalized/caption">
-          <Text>Fig5. Experiment Finalized</Text>
-        </Text>
-        <Text Name="Point5">
-          <Text>5.  </Text>
-        </Text>
-        <Text Name="Point5/text">
-          <Text>Which opens the "Review Experiment" window.
-
-&lt;b&gt;Note:&lt;/b&gt; Kemini experiments cannot be reset.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kemini_1_unlock_experiment">
@@ -230,48 +89,7 @@ Each experiment requires one or more Kerbals as test subjects so be prepared to 
       <AssetPath>Assets/KSPedia Assets/Kemini/kemini_1_unlock_experiment.prefab</AssetPath>
       <Title>Unlock Experiment</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Adding Kemini Experiments to your Craft</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>You need to unlock Kemini experiment parts before you can add them to your Craft</Text>
-        </Text>
-        <Text Name="Fig1-RD/Caption_Fig1">
-          <Text>Fig 1. Research and Development Centre</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text2">
-          <Text>Unlock the Kemini Part(s) you want.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text1">
-          <Text>Research the node(s) which hold the Kemini parts.</Text>
-        </Text>
-        <Text Name="Fig2-VAB/Caption_Fig2">
-          <Text>Fig 2. Vehicle Assembly Building</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text3">
-          <Text>Right-click on a Command Pod and select "Add Experiment" from the menu.
-
-&lt;i&gt;&lt;b&gt;Note:&lt;/b&gt; Not all Command Pods support Kemini.&lt;/i&gt;</Text>
-        </Text>
-        <Text Name="Point4">
-          <Text>4.  </Text>
-        </Text>
-        <Text Name="Point4/Text4">
-          <Text>A menu of available Kemin experiments will open.
-
-Select the experiment you want to add to the Command Pod.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kemini_0_titlepage">
@@ -279,24 +97,7 @@ Select the experiment you want to add to the Command Pod.</Text>
       <AssetPath>Assets/KSPedia Assets/Kemini/kemini_0_titlepage.prefab</AssetPath>
       <Title>Kemini</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Kemini</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Kemini Research Program</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About Kemini</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Kemini Research Program&lt;/i&gt; is based on some real-life experiments carried out during the Gemini missions.
-
-It is aimed at the early game and only requires the "Mk1 Command Pod". After unlocking experiemnts in the Research and Development Centre, you can add them to your capsule and carry out experiments in orbit.
-
-Look out for Kemini missions too!</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kees_4_run_experiment">
@@ -304,34 +105,7 @@ Look out for Kemini missions too!</Text>
       <AssetPath>Assets/KSPedia Assets/KEES/kees_4_run_experiment.prefab</AssetPath>
       <Title>Run Experiment</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Running Experiments</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Once an Experiment has been mounted, there are a few steps required to run one.</Text>
-        </Text>
-        <Text Name="Fig1_attach_pec/Caption">
-          <Text>Fig 3.1 - Mounting an Experiment on a PEC.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>Drag an Experiment from a KIS Inventory onto the PEC.
-
-Any Kerbal can do this, and you don't even need to EVA!</Text>
-        </Text>
-        <Text Name="Fig2_pec_attached/Caption">
-          <Text>Fig 3.2 - Experiment mounted.</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>Experiment mounted and ready to be run.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kees_3_mount_experiment">
@@ -339,34 +113,7 @@ Any Kerbal can do this, and you don't even need to EVA!</Text>
       <AssetPath>Assets/KSPedia Assets/KEES/kees_3_mount_experiment.prefab</AssetPath>
       <Title>Mount Experiment</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Experiment Deployment</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Individual KEES Experiments have to be mounted on a PEC attached to a vessel.</Text>
-        </Text>
-        <Text Name="Fig1_attach_pec/Caption">
-          <Text>Fig 3.1 - Mounting an Experiment on a PEC.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>Drag an Experiment from a KIS Inventory onto the PEC.
-
-Any Kerbal can do this, and you don't even need to EVA!</Text>
-        </Text>
-        <Text Name="Fig2_pec_attached/Caption">
-          <Text>Fig 3.2 - Experiment mounted.</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>Experiment mounted and ready to be run.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kees_2_orbital_assembly">
@@ -374,39 +121,7 @@ Any Kerbal can do this, and you don't even need to EVA!</Text>
       <AssetPath>Assets/KSPedia Assets/KEES/kees_2_orbital_assembly.prefab</AssetPath>
       <Title>Orbital Assembly</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Orbital Assembly</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Once in orbit, you need to perform some assembly before running the experiments.</Text>
-        </Text>
-        <Text Name="Fig1_RnD_Centre/Caption">
-          <Text>Fig 2.1 - Research and Development Centre</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>Unlock the research nodes containing the KEES parts.</Text>
-        </Text>
-        <Text Name="Fig2_VAB/Caption">
-          <Text>Fig 2.2 - Vehicle Assembly Building</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>Build your vessel in the VAB.
-Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KEES Payload Carrier&lt;/i&gt;.</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text">
-          <Text>Don't forget to take a spanner!</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kees_1_building_craft">
@@ -414,39 +129,7 @@ Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KE
       <AssetPath>Assets/KSPedia Assets/KEES/kees_1_building_craft.prefab</AssetPath>
       <Title>Building your Vessel</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Building your Vessel</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Add unlocked KEES parts to your vessel's KIS containers</Text>
-        </Text>
-        <Text Name="Fig1_RnD_Centre/Caption">
-          <Text>Fig 2.1 - Research and Development Centre</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>Unlock the research nodes containing the KEES parts.</Text>
-        </Text>
-        <Text Name="Fig2_VAB/Caption">
-          <Text>Fig 2.2 - Vehicle Assembly Building</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>Build your vessel in the VAB.
-Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KEES Payload Carrier&lt;/i&gt;.</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text">
-          <Text>Don't forget to take a spanner!</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="kees_0_titlepage">
@@ -454,28 +137,7 @@ Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KE
       <AssetPath>Assets/KSPedia Assets/KEES/kees_0_titlepage.prefab</AssetPath>
       <Title>KEES</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>KEES</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>Kerbal Environmental Effects Studies</Text>
-        </Text>
-        <Text Name="Paragraph_about">
-          <Text>About KEES</Text>
-        </Text>
-        <Text Name="Paragraph_about/text">
-          <Text>The &lt;i&gt;Kemini Environmental Effects Studies&lt;/i&gt; experiments are based on some real-life experiments carried out during the MIR missions.
-
-These experiments are aimed at the mid-game and require some basic orbital construction using KIS. The experiments are deployed on a Passive Experiment Carrier (PEC) which must be attached to the outside of your spacecraft, which requires an Engineer.
-
-Once the PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments.
-
-The basic idea is to launch a minimal spacestation and attach a PEC to it, then run resupply missions to swap experiments.
-
-This mod benefits greatly from 2-Kerbal command pods such as the K2 or Corvus.</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
   </Screens>
