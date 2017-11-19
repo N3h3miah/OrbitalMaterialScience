@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905757726194897">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905530405549582">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
@@ -261,30 +261,39 @@ Look out for Kemini missions too!</Text>
     <Screen Name="kees_1_building_craft">
       <BundleName>neos</BundleName>
       <AssetPath>Assets/KSPedia Assets/KEES/kees_1_building_craft.prefab</AssetPath>
-      <Title>Building Vessels</Title>
+      <Title>Building your Vessel</Title>
       <Background />
       <Text>
         <Text Name="Page Heading">
-          <Text>Add Heading Here</Text>
+          <Text>Building your Vessel</Text>
         </Text>
         <Text Name="Page Heading/Page Subheading">
-          <Text>Add Sub-Heading Here</Text>
+          <Text>Add unlocked KEES parts to your vessel's KIS containers</Text>
         </Text>
-        <Text Name="Paragraph">
-          <Text>Paragraph Heading</Text>
+        <Text Name="Fig1_RnD_Centre/Caption">
+          <Text>Fig 2.1 - Research and Development Centre</Text>
         </Text>
-        <Text Name="Paragraph/Text">
-          <Text>Paragraph text.
-Again, this can be wrapped over multiple lines, especially when the text is longer.</Text>
+        <Text Name="Point1">
+          <Text>1.  </Text>
         </Text>
-        <Text Name="Text">
-          <Text>Body text.
-
-This is the standard body text used for writing KSPedia articles.</Text>
+        <Text Name="Point1/Text">
+          <Text>Unlock the research nodes containing the KEES parts.</Text>
         </Text>
-        <Text Name="Note or Caption">
-          <Text>Body note/caption text.
-It can be used for annotating images.</Text>
+        <Text Name="Fig2_VAB/Caption">
+          <Text>Fig 2.2 - Vehicle Assembly Building</Text>
+        </Text>
+        <Text Name="Point2">
+          <Text>2.  </Text>
+        </Text>
+        <Text Name="Point2/Text">
+          <Text>Build your vessel in the VAB.
+Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KEES Payload Carrier&lt;/i&gt;.</Text>
+        </Text>
+        <Text Name="Point3">
+          <Text>3.  </Text>
+        </Text>
+        <Text Name="Point3/Text">
+          <Text>Don't forget to take a spanner!</Text>
         </Text>
       </Text>
       <Tooltips />
