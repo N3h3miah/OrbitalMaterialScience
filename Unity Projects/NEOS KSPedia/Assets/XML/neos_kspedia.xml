@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905530405549582">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586905171877590435">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
       <TitleScreen>neos_titlepage</TitleScreen>
-      <Screens />
+      <Screens>
+        <Screen>neos_1_introduction</Screen>
+      </Screens>
       <Subcategories>
         <Subcategory Name="Kemini">
           <Title>Kemini</Title>
@@ -20,6 +22,9 @@
           <TitleScreen>kees_0_titlepage</TitleScreen>
           <Screens>
             <Screen>kees_1_building_craft</Screen>
+            <Screen>kees_2_orbital_assembly</Screen>
+            <Screen>kees_3_mount_experiment</Screen>
+            <Screen>kees_4_run_experiment</Screen>
           </Screens>
           <Subcategories />
         </Subcategory>
@@ -93,6 +98,42 @@ Micha</Text>
 • KEES
 • OMS
 • KLS</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="neos_1_introduction">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/neos_1_introduction.prefab</AssetPath>
+      <Title>Introduction</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Introduction</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>General information about the NEOS experiments.</Text>
+        </Text>
+        <Text Name="Paragraph_about">
+          <Text>Real-life Science</Text>
+        </Text>
+        <Text Name="Paragraph_about/text">
+          <Text>All experiments comprising &lt;i&gt;NEOS&lt;/i&gt; are based on real-life experiments.
+
+&lt;b&gt;Kemini&lt;/b&gt; is based on Gemini experiments.
+&lt;b&gt;KEES&lt;/b&gt; is based on MIR experiments.
+&lt;b&gt;OMS&lt;/b&gt; and &lt;b&gt;KLS&lt;/b&gt; are based on ISS experiments.</Text>
+        </Text>
+        <Text Name="Paragraph_about (1)">
+          <Text>Running the Experiments</Text>
+        </Text>
+        <Text Name="Paragraph_about (1)/text">
+          <Text>The experiments contained in &lt;i&gt;NEOS&lt;/i&gt; require multiple steps to perform. In general, the stages are:
+
+1. Preparing the experiment
+2. Running the experiment
+3. Finalizing the experiment
+4. Recovering the experiment</Text>
         </Text>
       </Text>
       <Tooltips />
@@ -254,6 +295,116 @@ Select the experiment you want to add to the Command Pod.</Text>
 It is aimed at the early game and only requires the "Mk1 Command Pod". After unlocking experiemnts in the Research and Development Centre, you can add them to your capsule and carry out experiments in orbit.
 
 Look out for Kemini missions too!</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="kees_4_run_experiment">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KEES/kees_4_run_experiment.prefab</AssetPath>
+      <Title>Run Experiment</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Running Experiments</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Once an Experiment has been mounted, there are a few steps required to run one.</Text>
+        </Text>
+        <Text Name="Fig1_attach_pec/Caption">
+          <Text>Fig 3.1 - Mounting an Experiment on a PEC.</Text>
+        </Text>
+        <Text Name="Point1">
+          <Text>1.  </Text>
+        </Text>
+        <Text Name="Point1/Text">
+          <Text>Drag an Experiment from a KIS Inventory onto the PEC.
+
+Any Kerbal can do this, and you don't even need to EVA!</Text>
+        </Text>
+        <Text Name="Fig2_pec_attached/Caption">
+          <Text>Fig 3.2 - Experiment mounted.</Text>
+        </Text>
+        <Text Name="Point2">
+          <Text>2.  </Text>
+        </Text>
+        <Text Name="Point2/Text">
+          <Text>Experiment mounted and ready to be run.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="kees_3_mount_experiment">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KEES/kees_3_mount_experiment.prefab</AssetPath>
+      <Title>Mount Experiment</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Experiment Deployment</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Individual KEES Experiments have to be mounted on a PEC attached to a vessel.</Text>
+        </Text>
+        <Text Name="Fig1_attach_pec/Caption">
+          <Text>Fig 3.1 - Mounting an Experiment on a PEC.</Text>
+        </Text>
+        <Text Name="Point1">
+          <Text>1.  </Text>
+        </Text>
+        <Text Name="Point1/Text">
+          <Text>Drag an Experiment from a KIS Inventory onto the PEC.
+
+Any Kerbal can do this, and you don't even need to EVA!</Text>
+        </Text>
+        <Text Name="Fig2_pec_attached/Caption">
+          <Text>Fig 3.2 - Experiment mounted.</Text>
+        </Text>
+        <Text Name="Point2">
+          <Text>2.  </Text>
+        </Text>
+        <Text Name="Point2/Text">
+          <Text>Experiment mounted and ready to be run.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
+    <Screen Name="kees_2_orbital_assembly">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KEES/kees_2_orbital_assembly.prefab</AssetPath>
+      <Title>Orbital Assembly</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Orbital Assembly</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Once in orbit, you need to perform some assembly before running the experiments.</Text>
+        </Text>
+        <Text Name="Fig1_RnD_Centre/Caption">
+          <Text>Fig 2.1 - Research and Development Centre</Text>
+        </Text>
+        <Text Name="Point1">
+          <Text>1.  </Text>
+        </Text>
+        <Text Name="Point1/Text">
+          <Text>Unlock the research nodes containing the KEES parts.</Text>
+        </Text>
+        <Text Name="Fig2_VAB/Caption">
+          <Text>Fig 2.2 - Vehicle Assembly Building</Text>
+        </Text>
+        <Text Name="Point2">
+          <Text>2.  </Text>
+        </Text>
+        <Text Name="Point2/Text">
+          <Text>Build your vessel in the VAB.
+Add the KEES parts to any KIS containers on your vessel, such as the &lt;i&gt;KEES Payload Carrier&lt;/i&gt;.</Text>
+        </Text>
+        <Text Name="Point3">
+          <Text>3.  </Text>
+        </Text>
+        <Text Name="Point3/Text">
+          <Text>Don't forget to take a spanner!</Text>
         </Text>
       </Text>
       <Tooltips />

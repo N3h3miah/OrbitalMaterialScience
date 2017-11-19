@@ -386,7 +386,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<b>KEES Experiments:</b>\n  1. ODC\n  2. PPMD\n  3. POS 1\n  4. POSA 2"
+  m_Text: "<b>KEES Experiments:</b>\n  1. ODC\n  2. PPMD\n  3. POSA I\n  4. POSA II"
 --- !u!114 &114000010685362940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -728,7 +728,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: fe4ec52a50fdc2946803da7fa6287a78, type: 3}
+  m_Texture: {fileID: 2800000, guid: d7f21c44bcd3b09438a1717aad46ce29, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -919,13 +919,13 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "The <i>Kemini Environmental Effects Studies</i> experiments are based on
     some real-life experiments carried out during the MIR missions.\r\n\r\nThese experiments
-    are aimed at the mid-game and require some basic orbital construction using KIS.
-    The experiments are deployed on a Passive Experiment Carrier (PEC) which must
-    be attached to the outside of your spacecraft, which requires an Engineer.\r\n\r\nOnce
-    the PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments.\r\n\r\nThe
+    are aimed at the mid-game and require some basic orbital construction using <b>KIS</b>.
+    The experiments are deployed on a <i>Passive Experiment Carrier</i> (PEC) which
+    must be attached to the outside of your spacecraft, which requires an Engineer.\r\n\r\nOnce
+    a PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments.\r\n\r\nThe
     basic idea is to launch a minimal spacestation and attach a PEC to it, then run
     resupply missions to swap experiments.\r\n\r\nThis mod benefits greatly from 2-Kerbal
-    command pods such as the K2 or Corvus."
+    command pods such as the <b>K2</b> or <b>Corvus</b>."
 --- !u!222 &222000010582381656
 CanvasRenderer:
   m_ObjectHideFlags: 1
