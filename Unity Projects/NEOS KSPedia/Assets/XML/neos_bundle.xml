@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586904804195948490">
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586904047103806111">
   <Author>Micha</Author>
   <Info>NEOS KSPedia</Info>
   <Assets>
@@ -41,6 +41,7 @@
     <Asset Name="kemini_0_titlepage" Path="Assets/KSPedia Assets/Kemini/kemini_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_0_titlepage" AutoLoad="false" />
     <Asset Name="kemini_1_unlock_experiment" Path="Assets/KSPedia Assets/Kemini/kemini_1_unlock_experiment.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_1_unlock_experiment" AutoLoad="false" />
     <Asset Name="kemini_2_run_experiment" Path="Assets/KSPedia Assets/Kemini/kemini_2_run_experiment.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_2_run_experiment" AutoLoad="false" />
+    <Asset Name="NEOS_Background_Blue" Path="Assets/KSPedia Assets/NEOS_Background_Blue.jpg" Type="Texture2D" Url="KSPedia Assets/NEOS_Background_Blue" AutoLoad="false" />
     <Asset Name="NEOS_Logo_big" Path="Assets/KSPedia Assets/NEOS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/NEOS_Logo_big" AutoLoad="false" />
     <Asset Name="OMS_Equipment" Path="Assets/KSPedia Assets/OMS/OMS_Equipment.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Equipment" AutoLoad="false" />
     <Asset Name="OMS_Experiment-CFE1" Path="Assets/KSPedia Assets/OMS/OMS_Experiment-CFE1.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment-CFE1" AutoLoad="false" />
