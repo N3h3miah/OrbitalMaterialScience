@@ -41,6 +41,8 @@ Please see the [Contribution Guidelines for this project](Contributing.md) which
 
 Also make sure you agree with the [Project License](LICENSE) before starting any work.
 
+A list of contributors can be [found here](CONTRIBUTORS.md).
+
 Resources
 ---------
 
