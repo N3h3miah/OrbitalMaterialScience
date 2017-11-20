@@ -131,15 +131,18 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
+############### merge backups (git merge / kdiff3 / ...)#############*.orig
+
 #############
 ## Unity
 #############
-Unity Projects/**/[Ll]ibrary/
-Unity Projects/**/[Tt]emp/
-Unity Projects/**/[Oo]bj/
-Unity Projects/**/[Bb]uild/
-Unity Projects/**/[Bb]uilds/
-Unity Projects/**/Assets/AssetStoreTools*
+Unity\ Projects/**/[Ll]ibrary/
+Unity\ Projects/**/[Tt]emp/
+Unity\ Projects/**/[Oo]bj/
+Unity\ Projects/**/[Bb]uild/
+Unity\ Projects/**/[Bb]uilds/
+Unity\ Projects/**/Assets/AssetStoreTools*
+!Unity\ Projects/**/*.meta
 
 #############
 ## Windows detritus
