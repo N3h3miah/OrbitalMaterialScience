@@ -1,50 +1,54 @@
 # NEOS - Contributors
-The following is an (incomplete) list of people who contributed to the development and release of NEOS.
 
 This mod was originally designed and developed by **Nehemiah**, and is currently being maintained by **Micha**.
 
-Please let the maintainer know of any omissions.
+A huge thank you to everybody who has, in any way, contributed to NEOS - whether by raising bug reports, contributing configurations or bug-fixes, or just playing and enjoying this mod. It wouldn't be alive if it wasn't for you!
+
+The following is an (incomplete) list of people who have contributed to the development and release of NEOS.
 
 **Note:** these lists are in alphabetical order.
 
 ## Development
-* Arne Peirs
+* **Arne Peirs**
   * CKAN configuration
-* chucksterock
+* **chucksterock**
   * pictures of the real CFE flight hardware
-* [freesfx][1]:
+* **[freesfx][1]**
   * sound effects
-* Hayoo:
+* **Hayoo**
   * KSP Space Agency logo
-* Kerbas-ad-astra
+* **Kerbas-ad-astra**
   * Bug-fixes
   * Add bulkhead profiles
   * Extraplanetary Launchpad support for labs
-* Cobaltwolf
+* **@Cobaltwolf**
   * Kemini configuration for BlueDog Gemini capsule
-* Mercelo Silveira:
+* **Mercelo Silveira**
   * FASA support
-* Micha
+* **@Micha**
   * current maintainer
   * Connected Living Space configurations
   * Bug fixes
-* Nehemiah
+* **@Nehemiah**
   * original author
   * original design, development, and release
   * most assets (models, textures, animations, etc)
-* Sudragon
+* **Sudragon**
   * Kemini configurations for the Brumby pod and backseat
-* The Yellow Dart
+* **The Yellow Dart**
   * Flags for Nehemiah Engineering and Kerbal Life Science
-* whiteout1911
+* **whiteout1911**
   * stage recovery support for contracts
 
 # Localisation
-* fitiales
+* **fitiales**
   * spanish translation
 
-## Testing
+## Official Testing Team
 * Sangrias
 * volkkeslate
+
+..And many many more individuals who have contributed via the forum threads, raising issues, making feature requests, and playing the pre-releases.
+
 
 [1]: http://www.freesfx.co.uk/
