@@ -9,8 +9,6 @@ The following is an (incomplete) list of people who have contributed to the deve
 **Note:** these lists are in alphabetical order.
 
 ## Development
-* **Arne Peirs**
-  * CKAN configuration
 * **chucksterock**
   * pictures of the real CFE flight hardware
 * **[freesfx][1]**
@@ -21,7 +19,7 @@ The following is an (incomplete) list of people who have contributed to the deve
   * Bug-fixes
   * Add bulkhead profiles
   * Extraplanetary Launchpad support for labs
-* **@Cobaltwolf**
+* **Cobaltwolf**
   * Kemini configuration for BlueDog Gemini capsule
 * **Mercelo Silveira**
   * FASA support
@@ -33,6 +31,8 @@ The following is an (incomplete) list of people who have contributed to the deve
   * original author
   * original design, development, and release
   * most assets (models, textures, animations, etc)
+* **Olympic1*
+  * CKAN configuration
 * **Sudragon**
   * Kemini configurations for the Brumby pod and backseat
 * **The Yellow Dart**
