@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586904047220948032">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586903816158151472">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
@@ -31,7 +31,9 @@
         <Subcategory Name="OMS">
           <Title>Orbital Material Science</Title>
           <TitleScreen>oms_0_titlepage</TitleScreen>
-          <Screens />
+          <Screens>
+            <Screen>oms_1_building_your_station</Screen>
+          </Screens>
           <Subcategories />
         </Subcategory>
         <Subcategory Name="KLS">
@@ -44,6 +46,14 @@
     </Category>
   </Categories>
   <Screens>
+    <Screen Name="oms_1_building_your_station">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/OMS/oms_1_building_your_station.prefab</AssetPath>
+      <Title>Building your Station</Title>
+      <Background />
+      <Text />
+      <Tooltips />
+    </Screen>
     <Screen Name="oms_0_titlepage">
       <BundleName>neos</BundleName>
       <AssetPath>Assets/KSPedia Assets/OMS/oms_0_titlepage.prefab</AssetPath>

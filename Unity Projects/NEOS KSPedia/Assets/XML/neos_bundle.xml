@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586904047103806111">
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586903823302610966">
   <Author>Micha</Author>
   <Info>NEOS KSPedia</Info>
   <Assets>
@@ -47,6 +47,8 @@
     <Asset Name="OMS_Experiment-CFE1" Path="Assets/KSPedia Assets/OMS/OMS_Experiment-CFE1.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment-CFE1" AutoLoad="false" />
     <Asset Name="OMS_Lab-MSL1000" Path="Assets/KSPedia Assets/OMS/OMS_Lab-MSL1000.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Lab-MSL1000" AutoLoad="false" />
     <Asset Name="oms_0_titlepage" Path="Assets/KSPedia Assets/OMS/oms_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_0_titlepage" AutoLoad="false" />
+    <Asset Name="oms_1_building_your_station" Path="Assets/KSPedia Assets/OMS/oms_1_building_your_station.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_1_building_your_station" AutoLoad="false" />
+    <Asset Name="oms_lab_equipment_container" Path="Assets/KSPedia Assets/OMS/oms_lab_equipment_container.png" Type="Texture2D" Url="KSPedia Assets/OMS/oms_lab_equipment_container" AutoLoad="false" />
     <Asset Name="neos_1_introduction" Path="Assets/KSPedia Assets/neos_1_introduction.prefab" Type="GameObject" Url="KSPedia Assets/neos_1_introduction" AutoLoad="false" />
     <Asset Name="neos_titlepage" Path="Assets/KSPedia Assets/neos_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/neos_titlepage" AutoLoad="false" />
     <Asset Name="neos_kspedia" Path="Assets/XML/neos_kspedia.xml" Type="TextAsset" Url="XML/neos_kspedia" AutoLoad="false" />
