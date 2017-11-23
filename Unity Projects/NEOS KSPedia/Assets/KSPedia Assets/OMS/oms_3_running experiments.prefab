@@ -39,7 +39,7 @@ GameObject:
   - 222: {fileID: 222000013603314844}
   - 114: {fileID: 114000010137999450}
   m_Layer: 5
-  m_Name: Fig2.1_experiment_storage_container
+  m_Name: Fig3.1_completed_experiment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ GameObject:
   - 222: {fileID: 222000013269157440}
   - 114: {fileID: 114000010296865448}
   m_Layer: 5
-  m_Name: Fig2.4_experiments_in_iva
+  m_Name: Fig3.3_finalized_experiment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -181,7 +181,7 @@ GameObject:
   - 222: {fileID: 222000011373000736}
   - 114: {fileID: 114000011537022528}
   m_Layer: 5
-  m_Name: Fig2.2_installing_an_experiment (1)
+  m_Name: Fig3.4_return_to_kerbin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,7 +305,7 @@ GameObject:
   - 222: {fileID: 222000013597801602}
   - 114: {fileID: 114000012611757808}
   m_Layer: 5
-  m_Name: Fig2.2_installing_an_experiment
+  m_Name: Fig3.2_finalizing_experiment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1279,7 +1279,7 @@ RectTransform:
   m_RootOrder: 7
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -35, y: -181}
+  m_AnchoredPosition: {x: -35, y: -150}
   m_SizeDelta: {x: 440, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000012462295844
@@ -1298,7 +1298,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1104, y: 0}
+  m_SizeDelta: {x: 1211, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224000012515752540
 RectTransform:
@@ -1334,7 +1334,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 336, y: -1261}
+  m_AnchoredPosition: {x: 371, y: -1344}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224000012608548336

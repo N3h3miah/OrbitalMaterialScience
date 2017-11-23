@@ -595,7 +595,8 @@ MonoBehaviour:
     <b>C</b>ontainers (ESC).
 
 
-    The ESC-3 is a self-contained command pod for automated station resupply missions.'
+    <b>Note:</b> The ESC-3 is an automated command pod and can be used for uncrewed
+    station resupply missions.'
 --- !u!114 &114000011789092628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1359,7 +1360,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 851, y: 0}
+  m_SizeDelta: {x: 1138, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224000013593372434
 RectTransform:

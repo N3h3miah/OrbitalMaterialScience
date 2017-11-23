@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586901279078390429">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586901263858473798">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
@@ -53,46 +53,7 @@
       <AssetPath>Assets/KSPedia Assets/OMS/oms_3_running experiments.prefab</AssetPath>
       <Title>Running Experiments cont.</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Running OMS Experiments cont.</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>There are various stages to running OMS Experiments.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>When the experiment has filled its resource bar, it is finished and you can "End" it.
-Finished experiments can be moved between the Lab and the ESC which will be used to return the experiment to Kerbin.</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>In the ESC the experiment can be "Finalized". After finalization the experiment can no longer be moved.
-Finalizing an experiment brings up the experiment results page.</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text">
-          <Text>Now it's time to return the Experiment to Kerbin for detailed analysis and the Science!</Text>
-        </Text>
-        <Text Name="Fig2.1_experiment_storage_container/Caption">
-          <Text>Fig 3.1 Completed Experiment</Text>
-        </Text>
-        <Text Name="Fig2.2_installing_an_experiment/Caption">
-          <Text>Fig 3.2 Finalizing an Experiment</Text>
-        </Text>
-        <Text Name="Fig2.4_experiments_in_iva/Caption">
-          <Text>Fig 3.4 Return to Kerbin</Text>
-        </Text>
-        <Text Name="Fig2.2_installing_an_experiment (1)/Caption">
-          <Text>Fig 3.3 Experiment Finalized</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="oms_2_running experiments">
@@ -100,52 +61,7 @@ Finalizing an experiment brings up the experiment results page.</Text>
       <AssetPath>Assets/KSPedia Assets/OMS/oms_2_running experiments.prefab</AssetPath>
       <Title>Running Experiments</Title>
       <Background />
-      <Text>
-        <Text Name="Page Heading">
-          <Text>Running OMS Experiments</Text>
-        </Text>
-        <Text Name="Page Heading/Page Subheading">
-          <Text>There are various stages to running OMS Experiments.</Text>
-        </Text>
-        <Text Name="Point1">
-          <Text>1.  </Text>
-        </Text>
-        <Text Name="Point1/Text">
-          <Text>Launch experiments to station using one of the &lt;b&gt;E&lt;/b&gt;xperiment &lt;b&gt;S&lt;/b&gt;torage &lt;b&gt;C&lt;/b&gt;ontainers (ESC).
-
-The ESC-3 is a self-contained command pod for automated station resupply missions.</Text>
-        </Text>
-        <Text Name="Point2">
-          <Text>2.  </Text>
-        </Text>
-        <Text Name="Point2/Text">
-          <Text>Once an ESC is docked with your station, you can install the experiments.
-
-You will need to have the correct lab and lab-equipment for the experiment installed.
-
-Right-click on the ESC and select "Install &lt;Experiment&gt;".</Text>
-        </Text>
-        <Text Name="Point3">
-          <Text>3.  </Text>
-        </Text>
-        <Text Name="Point3/Text">
-          <Text>Once installed, right-click on the lab to start the experiment. An experiment-specific resource will start to accrue.
-
-You can even watch the experiment running from within the IVA!</Text>
-        </Text>
-        <Text Name="Fig2.1_experiment_storage_container/Caption">
-          <Text>Fig 2.1 Experiment Storage Containers</Text>
-        </Text>
-        <Text Name="Fig2.2_installing_an_experiment/Caption">
-          <Text>Fig 2.2 Installing an Experiment</Text>
-        </Text>
-        <Text Name="Fig2.3_experiment_running/Caption">
-          <Text>Fig 2.3 Experiment Running</Text>
-        </Text>
-        <Text Name="Fig2.4_experiments_in_iva/Caption">
-          <Text>Fig 2.4 Experiments in IVA</Text>
-        </Text>
-      </Text>
+      <Text />
       <Tooltips />
     </Screen>
     <Screen Name="oms_1_building_your_station">
