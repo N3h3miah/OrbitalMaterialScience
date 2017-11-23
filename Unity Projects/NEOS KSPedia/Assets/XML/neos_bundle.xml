@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586903823302610966">
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586901277931325864">
   <Author>Micha</Author>
   <Info>NEOS KSPedia</Info>
   <Assets>
@@ -43,11 +43,23 @@
     <Asset Name="kemini_2_run_experiment" Path="Assets/KSPedia Assets/Kemini/kemini_2_run_experiment.prefab" Type="GameObject" Url="KSPedia Assets/Kemini/kemini_2_run_experiment" AutoLoad="false" />
     <Asset Name="NEOS_Background_Blue" Path="Assets/KSPedia Assets/NEOS_Background_Blue.jpg" Type="Texture2D" Url="KSPedia Assets/NEOS_Background_Blue" AutoLoad="false" />
     <Asset Name="NEOS_Logo_big" Path="Assets/KSPedia Assets/NEOS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/NEOS_Logo_big" AutoLoad="false" />
+    <Asset Name="KLS_ESC" Path="Assets/KSPedia Assets/OMS/KLS_ESC.png" Type="Texture2D" Url="KSPedia Assets/OMS/KLS_ESC" AutoLoad="false" />
+    <Asset Name="OMS_Crewed_Resupply_Shuttle" Path="Assets/KSPedia Assets/OMS/OMS_Crewed_Resupply_Shuttle.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Crewed_Resupply_Shuttle" AutoLoad="false" />
     <Asset Name="OMS_Equipment" Path="Assets/KSPedia Assets/OMS/OMS_Equipment.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Equipment" AutoLoad="false" />
     <Asset Name="OMS_Experiment-CFE1" Path="Assets/KSPedia Assets/OMS/OMS_Experiment-CFE1.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment-CFE1" AutoLoad="false" />
+    <Asset Name="OMS_Experiment_Finalized_info" Path="Assets/KSPedia Assets/OMS/OMS_Experiment_Finalized_info.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment_Finalized_info" AutoLoad="false" />
+    <Asset Name="OMS_Experiment_Finished_info" Path="Assets/KSPedia Assets/OMS/OMS_Experiment_Finished_info.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment_Finished_info" AutoLoad="false" />
+    <Asset Name="OMS_Experiment_Running_info" Path="Assets/KSPedia Assets/OMS/OMS_Experiment_Running_info.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Experiment_Running_info" AutoLoad="false" />
+    <Asset Name="OMS_Finalization_Warning" Path="Assets/KSPedia Assets/OMS/OMS_Finalization_Warning.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Finalization_Warning" AutoLoad="false" />
+    <Asset Name="OMS_Inside_Lab" Path="Assets/KSPedia Assets/OMS/OMS_Inside_Lab.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Inside_Lab" AutoLoad="false" />
+    <Asset Name="OMS_Install_Experiment" Path="Assets/KSPedia Assets/OMS/OMS_Install_Experiment.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Install_Experiment" AutoLoad="false" />
+    <Asset Name="OMS_Install_Lab_Equipment" Path="Assets/KSPedia Assets/OMS/OMS_Install_Lab_Equipment.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Install_Lab_Equipment" AutoLoad="false" />
+    <Asset Name="OMS_Lab-MPL" Path="Assets/KSPedia Assets/OMS/OMS_Lab-MPL.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Lab-MPL" AutoLoad="false" />
     <Asset Name="OMS_Lab-MSL1000" Path="Assets/KSPedia Assets/OMS/OMS_Lab-MSL1000.png" Type="Texture2D" Url="KSPedia Assets/OMS/OMS_Lab-MSL1000" AutoLoad="false" />
     <Asset Name="oms_0_titlepage" Path="Assets/KSPedia Assets/OMS/oms_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_0_titlepage" AutoLoad="false" />
     <Asset Name="oms_1_building_your_station" Path="Assets/KSPedia Assets/OMS/oms_1_building_your_station.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_1_building_your_station" AutoLoad="false" />
+    <Asset Name="oms_2_running experiments" Path="Assets/KSPedia Assets/OMS/oms_2_running experiments.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_2_running experiments" AutoLoad="false" />
+    <Asset Name="oms_3_running experiments" Path="Assets/KSPedia Assets/OMS/oms_3_running experiments.prefab" Type="GameObject" Url="KSPedia Assets/OMS/oms_3_running experiments" AutoLoad="false" />
     <Asset Name="oms_lab_equipment_container" Path="Assets/KSPedia Assets/OMS/oms_lab_equipment_container.png" Type="Texture2D" Url="KSPedia Assets/OMS/oms_lab_equipment_container" AutoLoad="false" />
     <Asset Name="neos_1_introduction" Path="Assets/KSPedia Assets/neos_1_introduction.prefab" Type="GameObject" Url="KSPedia Assets/neos_1_introduction" AutoLoad="false" />
     <Asset Name="neos_titlepage" Path="Assets/KSPedia Assets/neos_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/neos_titlepage" AutoLoad="false" />
