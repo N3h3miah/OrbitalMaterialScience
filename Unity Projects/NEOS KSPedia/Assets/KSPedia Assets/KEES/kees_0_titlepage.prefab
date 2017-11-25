@@ -921,11 +921,11 @@ MonoBehaviour:
     some real-life experiments carried out during the MIR missions.\r\n\r\nThese experiments
     are aimed at the mid-game and require some basic orbital construction using <b>KIS</b>.
     The experiments are deployed on a <i>Passive Experiment Carrier</i> (PEC) which
-    must be attached to the outside of your spacecraft, which requires an Engineer.\r\n\r\nOnce
-    a PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments.\r\n\r\nThe
-    basic idea is to launch a minimal spacestation and attach a PEC to it, then run
-    resupply missions to swap experiments.\r\n\r\nThis mod benefits greatly from 2-Kerbal
-    command pods such as the <b>K2</b> or <b>Corvus</b>."
+    must be attached to the outside of your spacecraft by an Engineer.\r\n\r\nOnce
+    a PEC is attached to your craft, any Kerbal can deploy and retrieve the experiments
+    while on EVA.\r\n\r\nThe basic idea is to launch a minimal spacestation and attach
+    a PEC to it, then run resupply missions to swap experiments.\r\n\r\nThis mod benefits
+    greatly from 2-Kerbal command pods such as the <b>K2</b> or <b>Corvus</b>."
 --- !u!222 &222000010582381656
 CanvasRenderer:
   m_ObjectHideFlags: 1
