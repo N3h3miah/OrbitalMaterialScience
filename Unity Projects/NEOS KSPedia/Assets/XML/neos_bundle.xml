@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586901263828279741">
+<KSPBundleDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" UrlName="neos" Name="neos" CreatedTime="-8586899732115861302">
   <Author>Micha</Author>
   <Info>NEOS KSPedia</Info>
   <Assets>
@@ -23,9 +23,13 @@
     <Asset Name="kees_fig3.1_mount_experiment" Path="Assets/KSPedia Assets/KEES/kees_fig3.1_mount_experiment.png" Type="Texture2D" Url="KSPedia Assets/KEES/kees_fig3" AutoLoad="false" />
     <Asset Name="kees_fig3.2_experiment_mounted" Path="Assets/KSPedia Assets/KEES/kees_fig3.2_experiment_mounted.png" Type="Texture2D" Url="KSPedia Assets/KEES/kees_fig3" AutoLoad="false" />
     <Asset Name="kees_vab_add_parts" Path="Assets/KSPedia Assets/KEES/kees_vab_add_parts.png" Type="Texture2D" Url="KSPedia Assets/KEES/kees_vab_add_parts" AutoLoad="false" />
+    <Asset Name="KLS_Choose_Test_Subject2" Path="Assets/KSPedia Assets/KLS/KLS_Choose_Test_Subject2.png" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Choose_Test_Subject2" AutoLoad="false" />
     <Asset Name="KLS_Equipment_USU" Path="Assets/KSPedia Assets/KLS/KLS_Equipment_USU.png" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Equipment_USU" AutoLoad="false" />
+    <Asset Name="KLS_Finalize_Experiment_Move_Warning2" Path="Assets/KSPedia Assets/KLS/KLS_Finalize_Experiment_Move_Warning2.png" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Finalize_Experiment_Move_Warning2" AutoLoad="false" />
+    <Asset Name="KLS_Install_Equipment2" Path="Assets/KSPedia Assets/KLS/KLS_Install_Equipment2.png" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Install_Equipment2" AutoLoad="false" />
     <Asset Name="KLS_Logo_big" Path="Assets/KSPedia Assets/KLS/KLS_Logo_big.jpg" Type="Texture2D" Url="KSPedia Assets/KLS/KLS_Logo_big" AutoLoad="false" />
     <Asset Name="kls_0_titlepage" Path="Assets/KSPedia Assets/KLS/kls_0_titlepage.prefab" Type="GameObject" Url="KSPedia Assets/KLS/kls_0_titlepage" AutoLoad="false" />
+    <Asset Name="kls_1_running experiments" Path="Assets/KSPedia Assets/KLS/kls_1_running experiments.prefab" Type="GameObject" Url="KSPedia Assets/KLS/kls_1_running experiments" AutoLoad="false" />
     <Asset Name="Kemini - Run Test 1" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 1.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 1" AutoLoad="false" />
     <Asset Name="Kemini - Run Test 2 - crop" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 2 - crop.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 2 - crop" AutoLoad="false" />
     <Asset Name="Kemini - Run Test 3 - crop" Path="Assets/KSPedia Assets/Kemini/Kemini - Run Test 3 - crop.png" Type="Texture2D" Url="KSPedia Assets/Kemini/Kemini - Run Test 3 - crop" AutoLoad="false" />

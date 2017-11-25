@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586901263858473798">
+<KSPedia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="neos" CreatedTime="-8586899732158800399">
   <Categories>
     <Category Name="NEOS">
       <Title>Nehemiah Engineering Orbital Science</Title>
@@ -41,7 +41,9 @@
         <Subcategory Name="KLS">
           <Title>Kerbal Life Science</Title>
           <TitleScreen>kls_0_titlepage</TitleScreen>
-          <Screens />
+          <Screens>
+            <Screen>kls_1_running experiments</Screen>
+          </Screens>
           <Subcategories />
         </Subcategory>
       </Subcategories>
@@ -96,10 +98,89 @@
       <Text />
       <Tooltips />
     </Screen>
+    <Screen Name="kls_1_running experiments">
+      <BundleName>neos</BundleName>
+      <AssetPath>Assets/KSPedia Assets/KLS/kls_1_running experiments.prefab</AssetPath>
+      <Title>Run Experiments</Title>
+      <Background />
+      <Text>
+        <Text Name="Page Heading">
+          <Text>Running KLS Experiments</Text>
+        </Text>
+        <Text Name="Page Heading/Page Subheading">
+          <Text>Running KLS experiments is largely the same as OMS experiments:</Text>
+        </Text>
+        <Text Name="Text.Points1-3">
+          <Text>&lt;b&gt;1.&lt;/b&gt; Launch Lab, Lab Equipment, and Experiments and build your station.
+&lt;b&gt;2.&lt;/b&gt; Install Lab Equipment into your Lab.
+&lt;b&gt;3.&lt;/b&gt; Install Experiment into your Lab Equipment.</Text>
+        </Text>
+        <Text Name="Text.Points4-7">
+          <Text>&lt;b&gt;4.&lt;/b&gt; Run the experiment for every Kerbal.
+&lt;b&gt;5.&lt;/b&gt; End the experiment and move it to an ESC.
+&lt;b&gt;6.&lt;/b&gt; Finalize the experiment.
+&lt;b&gt;7.&lt;/b&gt; Return it to Kerbin.</Text>
+        </Text>
+        <Text Name="Point1">
+          <Text>1.  </Text>
+        </Text>
+        <Text Name="Point1/Text">
+          <Text>Launch an MPL-600 and attach it to your orbital station.</Text>
+        </Text>
+        <Text Name="Point1/Point2">
+          <Text>2.  </Text>
+        </Text>
+        <Text Name="Point1/Point2/Text">
+          <Text>Install Lab Equipment into your Lab.</Text>
+        </Text>
+        <Text Name="Point1/Point2/Point3">
+          <Text>3.  </Text>
+        </Text>
+        <Text Name="Point1/Point2/Point3/Text">
+          <Text>Install Experiment into your Lab Equipment.</Text>
+        </Text>
+        <Text Name="Fig1_installing_equipment/Caption">
+          <Text>Fig 2 Choosing a Test Subject</Text>
+        </Text>
+        <Text Name="Fig2_choosing_test_subject/Caption">
+          <Text>Fig 1 Install Equipment</Text>
+        </Text>
+        <Text Name="Fig3_finalizing_experiment/Caption">
+          <Text>Fig 3 Finalizing Experiment</Text>
+        </Text>
+        <Text Name="Point4">
+          <Text>4.  </Text>
+        </Text>
+        <Text Name="Point4/Text">
+          <Text>Run the experiment for each Test Subject.
+
+Test Subjects can be launched to the station on separate missions.</Text>
+        </Text>
+        <Text Name="Point5">
+          <Text>5.  </Text>
+        </Text>
+        <Text Name="Point5/Text">
+          <Text>End the experiment and move it to an ESC.</Text>
+        </Text>
+        <Text Name="Point5/Point6">
+          <Text>6.  </Text>
+        </Text>
+        <Text Name="Point5/Point6/Text">
+          <Text>Finalize the experiment.</Text>
+        </Text>
+        <Text Name="Point5/Point6/Point7">
+          <Text>7.  </Text>
+        </Text>
+        <Text Name="Point5/Point6/Point7/Text">
+          <Text>Return it to Kerbin.</Text>
+        </Text>
+      </Text>
+      <Tooltips />
+    </Screen>
     <Screen Name="kls_0_titlepage">
       <BundleName>neos</BundleName>
       <AssetPath>Assets/KSPedia Assets/KLS/kls_0_titlepage.prefab</AssetPath>
-      <Title />
+      <Title>Kerbal Life Science</Title>
       <Background />
       <Text />
       <Tooltips />
