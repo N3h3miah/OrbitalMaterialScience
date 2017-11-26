@@ -81,6 +81,10 @@
         <include name="NehemiahInc/NEOS.version" />
         <exclude name="**/*.mdb" />
       </fileset>
+      <fileset>
+        <include name="README.md" />
+        <include name="LICENSE" />
+      </fileset>
     </zip>
   </target>
 
@@ -92,9 +96,11 @@
         <include name="NehemiahInc/NE_Science_Common/**" />
         <include name="NehemiahInc/OMS/**" />
         <include name="NehemiahInc/NE-OSS.version" />
-        <include name="NehemiahInc/README.md" />
-        <include name="NehemiahInc/LICENSE" />
         <exclude name="**/*.mdb" />
+      </fileset>
+      <fileset>
+        <include name="README.md" />
+        <include name="LICENSE" />
       </fileset>
     </zip>   
   </target>
@@ -105,11 +111,11 @@
         <include name="NehemiahInc/Kemini/**" />
         <include name="NehemiahInc/NE_Science_Common/**" />
         <include name="NehemiahInc/NE-KRP.version" />
-        <include name="NehemiahInc/README.md" />
-        <include name="NehemiahInc/LICENSE" />
-        <include name="NehemiahInc/README.md" />
-        <include name="NehemiahInc/LICENSE" />
         <exclude name="**/*.mdb" />
+      </fileset>
+      <fileset>
+        <include name="README.md" />
+        <include name="LICENSE" />
       </fileset>
     </zip>
   </target>
@@ -120,11 +126,11 @@
         <include name="NehemiahInc/KEES/**" />
         <include name="NehemiahInc/NE_Science_Common/**" />
         <include name="NehemiahInc/NE-KEES.version" />
-        <include name="NehemiahInc/README.md" />
-        <include name="NehemiahInc/LICENSE" />
-        <include name="NehemiahInc/README.md" />
-        <include name="NehemiahInc/LICENSE" />
         <exclude name="**/*.mdb" />
+      </fileset>
+      <fileset>
+        <include name="README.md" />
+        <include name="LICENSE" />
       </fileset>
     </zip>
   </target>
