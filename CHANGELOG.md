@@ -120,7 +120,7 @@ Major features are **bolded**, contributors are *emphasized*.
 * Disable KEES debug menu in release builds
 
 
-0.7a0-mw7 (Unofficial release) - 2016.10.11
+0.7a0-mw7 (PRE-RELEASE) (Unofficial release) - 2016.10.11
 -----------------------------------------------------------
 
 ### GENERAL:
@@ -139,39 +139,39 @@ Major features are **bolded**, contributors are *emphasized*.
 * Add ModuleDataTransmitter to ESC3 automated pod
 
 
-0.7a0-mw6 (Unofficial release)
+0.7a0-mw6 (PRE-RELEASE) (Unofficial release) - 2016.04.29
 -----------------------------------------------------------
 
 * **Recompile for KSP 1.1.1**
 * Merge in *Kerbas_ad_astra*'s fixes for empty experiment names
 
 
-0.7a0-mw5 (Unofficial release)
+0.7a0-mw5 (PRE-RELEASE) (Unofficial release) - 2016.04.16
 -----------------------------------------------------------
 
 * Recompile and fix up for KSP 1.1-pre
 
 
-0.7a0-mw4 (Unofficial release)
+0.7a0-mw4 (PRE-RELEASE) (Unofficial release) - 2015.07.01
 -----------------------------------------------------------
 * **Recompile for KSP 1.04**
 * Minor tweak when recovering KEES experiments which may or may not be required to successfully trigger completion of KEES contracts.
 
 
-0.7a0-mw3 (Unofficial release)
+0.7a0-mw3 (PRE-RELEASE) (Unofficial release) - 2015.05.13
 -----------------------------------------------------------
 * Fix KEES contract completion when recovering experiments
 * Remove KIS "carry" flag from KEES items; instead bump up their size so only 1 can be in a Kerbal inventory at a time, and only 2 can be stored in the KEES PEC.
 * Fix UniversalStorage wedge to reference US's KIS wedge instead of the no-longer existing KAS wedge
 
 
-0.7a0-mw2 (Unofficial release)
+0.7a0-mw2 (PRE-RELEASE) (Unofficial release) - 2015.05.03
 -----------------------------------------------------------
 * Convert textures to DDS
 * Move KEES Payload Carrier to "Basic Science" node
 
 
-0.7a0-mw1 (Unofficial release)
+0.7a0-mw1 (PRE-RELEASE) (Unofficial release) - 2015.05.02
 -----------------------------------------------------------
 * **Recompiled using KSP v1.0.2 and KIS 1.1** (minor API fixes to replace deprecated functions)
 * Converted KEES experiments from KAS to KIS
