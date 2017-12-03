@@ -9,10 +9,10 @@
 
 	<!-- Build directories -->
 	<property name="build.dir" value="build" />
-	<property name="NEOS.dir" value="${build.dir}/NEOS/" />
-	<property name="OSS.dir" value="${build.dir}/OSS/" />
-	<property name="KRP.dir" value="${build.dir}/KRP/" />
-	<property name="KEES.dir" value="${build.dir}/KEES/" />
+	<property name="NEOS.dir" value="${build.dir}/NEOS" />
+	<property name="OSS.dir" value="${build.dir}/OSS" />
+	<property name="KRP.dir" value="${build.dir}/KRP" />
+	<property name="KEES.dir" value="${build.dir}/KEES" />
 	<property name="GameData.dir" value="GameData/NehemiahInc" />
 
 	<!--
@@ -35,6 +35,8 @@
 
 	<target name="clean" description="remove all generated files">
 		<delete dir="${CurrMod.dir}" />
+		<!-- work around bug in nant 0.92 which doesn't perform a proper fileset copy if the directory doesn't exist. -->
+		<mkdir dir="${CurrMod.dir}" />
 	</target>
 
 	<target name="all" description="pack the diferent mods">
@@ -115,7 +117,7 @@
 				<include name="KerbalLifeScience/**" />
 				<include name="MultiPurposeParts/**" />
 				<include name="OMS/**" />
-				<include name="OSS.version" />
+				<include name="NE-OSS.version" />
 			</fileset>
 		</copy>
 	</target>
@@ -128,7 +130,7 @@
 		<copy todir="${CurrMod.dir}/NehemiahInc">
 			<fileset basedir="GameData/NehemiahInc" >
 				<include name="Kemini/**" />
-				<include name="KRP.version" />
+				<include name="NE-KRP.version" />
 			</fileset>
 		</copy>
 	</target>
@@ -140,7 +142,7 @@
 		<copy todir="${CurrMod.dir}/NehemiahInc">
 			<fileset basedir="GameData/NehemiahInc" >
 				<include name="KEES/**" />
-				<include name="KEES.version" />
+				<include name="NE-KEES.version" />
 			</fileset>
 		</copy>
 	</target>
