@@ -27,14 +27,19 @@ namespace NE_Science.Contracts.Parameters
      */
     public class OMSExperimentRecovery
     {
-        protected static readonly Dictionary<string, string> experimentModulname =
-          new Dictionary<string, string> {
-              { "NE.KEES.PPMD", "KEESExperiment" },
-              { "NE.KEES.POSA1", "KEESExperiment" },
-              { "NE.KEES.POSA2", "KEESExperiment" },
-              { "NE.KEES.ODC", "KEESExperiment" },
-              
-          };
+        /** Returns the experiment module name given a part name.
+         * Checks the KEES and OMS/KLS experiment registers for a matching experiment part. */
+        protected string getExperimentModuleName(string experimentPartName)
+        {
+            /* First check KEES registry */
+            var keesExperiments = KEESExperimentRegister.getExperimentPartNames();
+            if(keesExperiments.Contains(experimentPartName))
+            {
+                return KEESExperimentRegister.getExperimentModuleName();
+            }
+            /* TODO: check OMS/KLS registry */
+            return null;
+        }
 
         protected const string SCIENCE_DATA = "ScienceData";
         protected const string SUBJECT_ID = "subjectID";
@@ -55,7 +60,7 @@ namespace NE_Science.Contracts.Parameters
         protected bool experimentFound(ProtoPartSnapshot part, AvailablePart experiment, CelestialBody targetBody, double contractAccepted)
         {
             NE_Helper.log("ProtoVessel recovery: Experiment found");
-            string moduleName = experimentModulname[experiment.name];
+            string moduleName = getExperimentModuleName(experiment.name);
             for (int i = 0, count = part.modules.Count; i < count; i++)
             {
                 var module = part.modules[i];
@@ -165,10 +170,13 @@ namespace NE_Science.Contracts.Parameters
                     }
 
                     var moduleNodes = part.GetNodes("MODULE");
+                    var experimentModuleName = getExperimentModuleName(experiment.name);
                     for (int moduleIdx = 0, moduleCount = moduleNodes.Length; moduleIdx < moduleCount; moduleIdx++)
                     {
                         var module = moduleNodes[moduleIdx];
-                        if (module.GetValue ("name") == experimentModulname [experiment.name])
+                        // TODO: MKW - if experiment is a custom-defined one, this line will throw an exception!
+                        // experiment.name will not be a valid index into the experimentModulname array.
+                        if (module.GetValue("name") == experimentModuleName)
                         {
                             return module;
                         }
