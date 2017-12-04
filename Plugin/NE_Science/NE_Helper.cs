@@ -19,6 +19,7 @@
 
 using System;
 using UnityEngine;
+using NE_Science_KACWrapper;
 
 namespace NE_Science
 {
@@ -34,6 +35,10 @@ namespace NE_Science
         {
             loadOrCreateSettings();
             DontDestroyOnLoad(this);
+            if (!KACWrapper.APIReady)
+            {
+                KACWrapper.InitKACWrapper();
+            }
         }
 
         private void loadOrCreateSettings()
@@ -194,5 +199,40 @@ namespace NE_Science
             behaviour.StartCoroutine(_runAtEndOfFrame(action));
         }
 
+        /** Adds a Kerbal ALarm Clock alarm for the Experiment. */
+        public static bool AddAlarm(ExperimentData e)
+        {
+            bool rv = false;
+
+            if (!KACWrapper.APIReady)
+            {
+                /* NB: Re-try initialization here because Start() seems to get called too early.. */
+                if(!KACWrapper.InitKACWrapper())
+                {
+                    goto done;
+                }
+            }
+            
+            /* TODO: Figure out how long the alarm should go for.
+             * Nominally, it's the amount of resource required divided by how quickly the lab can generate the resource. */
+            String aID = KACWrapper.KAC.CreateAlarm(
+                KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, "NEOS Alarm", Planetarium.GetUniversalTime() + 900);
+            if (aID == "")
+            {
+                /* Unable to create alarm */
+                goto done;
+            }
+            /* Set some additional alarm parameters */
+            KACWrapper.KACAPI.KACAlarm a = KACWrapper.KAC.Alarms.Find(z=>z.ID==aID);
+            a.Notes = "Alarm for " + e.getName();
+            a.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
+            a.AlarmMargin = 3*60; /* Fire 3 minutes before due time */
+            a.VesselID = e.store.getPart().vessel.id.ToString();
+
+            rv = true;
+
+        done:
+            return rv;
+        }
     }
 }

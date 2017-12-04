@@ -482,6 +482,8 @@ namespace NE_Science
             if (started)
             {
                 state = ExperimentState.RUNNING;
+                /* TODO: configuration whether to auto-create alarms */
+                NE_Helper.AddAlarm(this);
             }
         }
 
