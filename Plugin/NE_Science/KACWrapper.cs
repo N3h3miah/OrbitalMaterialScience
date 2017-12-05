@@ -9,7 +9,7 @@ using System.Text;
 // TODO: Change this namespace to something specific to your plugin here.
 //EG:
 // namespace MyPlugin_KACWrapper
-namespace NE_Science_KACWrapper
+namespace NE_Science.KAC
 {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // BELOW HERE SHOULD NOT BE EDITED - this links to the loaded KAC module without requiring a Hard Dependancy

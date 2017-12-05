@@ -396,6 +396,7 @@ namespace NE_Science
         internal virtual void updateCheck()
         {
         }
+
     }
 
     public class StepExperimentData : ExperimentData
@@ -490,6 +491,24 @@ namespace NE_Science
         public override bool isExposureExperiment()
         {
             return step.getNeededResource() == Resources.EXPOSURE_TIME;
+        }
+
+        /** Returns the amount of time remaining to complete this experiment step in seconds. */
+        public float getTimeRemaining()
+        {
+            LabEquipment le = store as LabEquipment;
+
+            // Experiment can be finished when resources have accumulated
+            // Resources accumulate in the lab
+            // Remaining time is resources left / resources per hour
+
+            // 'amount' - amount of resources required
+            // 'Lab.getResourceAmount(resource)' - amount of resources acquired
+            // 'Lab.ProductPerHour' - resource accumulation per hour
+            //
+            float amountRemaining = step.getNeededAmount() - (float)le.getResourceAmount(step.getNeededResource());
+            float timeRemaining = amountRemaining / le.ProductPerHour;
+            return timeRemaining * 60 * 60; /* Convert hours to seconds */
         }
     }
 
