@@ -25,6 +25,8 @@ using KSP.Localization;
 
 namespace NE_Science
 {
+    using KAC;
+
     public class KEESExperiment : OMSExperiment
     {
         /* Overload from OMSExperiment */
@@ -344,6 +346,7 @@ namespace NE_Science
                 Events["DeployExperiment"].active = false;
                 state = RUNNING;
                 playAnimation(deployAnimation, 1, 0);
+                addAlarm();
                 return true;
         }
 
@@ -420,6 +423,34 @@ namespace NE_Science
             playAnimation(deployAnimation, -1, 1);
             state = ERROR;
             docked = false;
+        }
+
+        /** Sets KAC alarm for when experiment will be finished. */
+        internal bool addAlarm()
+        {
+            bool rv = false;
+
+            float alarmMargin = 30;
+            float timeRemaining = (exposureTimeRequired * 60 * 60) - alarmMargin;
+
+            String aID = NE_Helper.KACAPI.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, "KEES Alarm", Planetarium.GetUniversalTime() + timeRemaining);
+            if (aID == "")
+            {
+                /* Unable to create alarm */
+                goto done;
+            }
+
+            /* Set some additional alarm parameters */
+            KACWrapper.KACAPI.KACAlarm a = NE_Helper.KACAPI.Alarms.Find(z=>z.ID==aID);
+            a.Notes = "Alarm for " + experiment.experimentTitle;
+            a.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
+            a.AlarmMargin = alarmMargin;
+            a.VesselID = part.vessel.id.ToString();
+
+            rv = true;
+
+        done:
+            return rv;
         }
     }
 }

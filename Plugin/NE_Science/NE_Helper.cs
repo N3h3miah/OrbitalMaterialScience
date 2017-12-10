@@ -200,10 +200,10 @@ namespace NE_Science
             behaviour.StartCoroutine(_runAtEndOfFrame(action));
         }
 
-        /** Adds a Kerbal Alarm Clock alarm for the Experiment. */
-        public static bool AddAlarm(StepExperimentData e)
+        private static KACWrapper.KACAPI ka = null;
+        public static KACWrapper.KACAPI getKAC()
         {
-            bool rv = false;
+            KACWrapper.KACAPI ka = null;
 
             if (!KACWrapper.APIReady)
             {
@@ -213,17 +213,47 @@ namespace NE_Science
                     goto done;
                 }
             }
-            
+            ka = KACWrapper.KAC;
+
+        done:
+            return ka;
+        }
+
+        public static KACWrapper.KACAPI KACAPI {
+            get
+            {
+                if (ka == null)
+                {
+                    if (!KACWrapper.APIReady)
+                    {
+                        /* NB: Re-try initialization here because Start() seems to get called too early.. */
+                        if(!KACWrapper.InitKACWrapper())
+                        {
+                            goto done;
+                        }
+                    }
+                    ka = KACWrapper.KAC;
+                }
+            done:
+                return ka;
+            }
+        }
+
+        /** Adds a Kerbal Alarm Clock alarm for the Experiment. */
+        public static bool AddAlarm(StepExperimentData e)
+        {
+            bool rv = false;
+
             float timeRemaining = e.getTimeRemaining();
 
-            String aID = KACWrapper.KAC.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, "NEOS Alarm", Planetarium.GetUniversalTime() + timeRemaining);
+            String aID = KACAPI.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, "NEOS Alarm", Planetarium.GetUniversalTime() + timeRemaining);
             if (aID == "")
             {
                 /* Unable to create alarm */
                 goto done;
             }
             /* Set some additional alarm parameters */
-            KACWrapper.KACAPI.KACAlarm a = KACWrapper.KAC.Alarms.Find(z=>z.ID==aID);
+            KACWrapper.KACAPI.KACAlarm a = KACAPI.Alarms.Find(z=>z.ID==aID);
             a.Notes = "Alarm for " + e.getName();
             a.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
             a.AlarmMargin = 30; /* Fire 30 seconds before due time */
