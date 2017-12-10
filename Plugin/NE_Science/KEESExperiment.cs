@@ -428,29 +428,12 @@ namespace NE_Science
         /** Sets KAC alarm for when experiment will be finished. */
         internal bool addAlarm()
         {
-            bool rv = false;
+            KACWrapper.KACAPI.KACAlarm  a;
 
-            float alarmMargin = 30;
-            float timeRemaining = (exposureTimeRequired * 60 * 60) - alarmMargin;
+            a = NE_Helper.AddExperimentAlarm( exposureTimeRequired * 60 * 60, "KEES Alarm", experiment.experimentTitle, part.vessel);
+            /* TODO: Save alarm ID so we can modify the alarm if the user pauses or stops the experiment. */
 
-            String aID = NE_Helper.KACAPI.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, "KEES Alarm", Planetarium.GetUniversalTime() + timeRemaining);
-            if (aID == "")
-            {
-                /* Unable to create alarm */
-                goto done;
-            }
-
-            /* Set some additional alarm parameters */
-            KACWrapper.KACAPI.KACAlarm a = NE_Helper.KACAPI.Alarms.Find(z=>z.ID==aID);
-            a.Notes = "Alarm for " + experiment.experimentTitle;
-            a.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
-            a.AlarmMargin = alarmMargin;
-            a.VesselID = part.vessel.id.ToString();
-
-            rv = true;
-
-        done:
-            return rv;
+            return a != null;
         }
     }
 }
