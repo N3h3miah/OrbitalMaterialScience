@@ -29,8 +29,13 @@ namespace NE_Science
     {
 
         private static string SETTINGS_FILE;
-        private const string DEBUG_VALUE = "Debug";
+        private const string SETTINGS_DEBUG = "Debug";
+        private const string SETTINGS_NODE_KAC = "KerbalAlarmClock";
+        private const string SETTINGS_VALUE_ENABLED = "Enabled";
+        private const string SETTINGS_VALUE_ALARM_MARGIN = "AlarmMargin";
         private static bool debug = true;
+        private static bool setting_KAC_Enabled = false;
+        private static int setting_KAC_AlarmMargin = 0;
 
         void Start()
         {
@@ -42,6 +47,13 @@ namespace NE_Science
             }
         }
 
+        /// <summary>
+        /// Loads or creates the global settings.
+        /// </summary>
+        /// <remarks>
+        /// TODO: Refactor and wrap in its own class if we're going to add
+        /// more settings!
+        /// </remarks>
         private void loadOrCreateSettings()
         {
             bool d = false;
@@ -53,10 +65,26 @@ namespace NE_Science
                 ConfigNode settings = ConfigNode.Load(SETTINGS_FILE);
                 if (settings == null)
                 {
-                    settings.AddValue(DEBUG_VALUE, false);
+                    settings.AddValue(SETTINGS_DEBUG, false);
+                    ConfigNode cnSettingsKAC = settings.AddNode(SETTINGS_NODE_KAC);
+                    cnSettingsKAC.AddValue(SETTINGS_VALUE_ENABLED, true);
+                    cnSettingsKAC.AddValue(SETTINGS_VALUE_ALARM_MARGIN, 0);
                     settings.Save(SETTINGS_FILE);
                 } else {
-                    d = bool.Parse(settings.GetValue(DEBUG_VALUE));
+                    d = bool.Parse(settings.GetValue(SETTINGS_DEBUG));
+                    if (settings.HasNode(SETTINGS_NODE_KAC))
+                    {
+                        ConfigNode cnSettingsKAC = settings.GetNode(SETTINGS_NODE_KAC);
+                        setting_KAC_Enabled = GetValueAsBool(cnSettingsKAC, SETTINGS_VALUE_ENABLED);
+                        setting_KAC_AlarmMargin = GetValueAsInt(cnSettingsKAC, SETTINGS_VALUE_ALARM_MARGIN, 0);
+                    }
+                    else
+                    {
+                        ConfigNode cnSettingsKAC = settings.AddNode(SETTINGS_NODE_KAC);
+                        cnSettingsKAC.AddValue(SETTINGS_VALUE_ENABLED, true);
+                        cnSettingsKAC.AddValue(SETTINGS_VALUE_ALARM_MARGIN, 0);
+                        settings.Save(SETTINGS_FILE);
+                    }
                 }
             }
             catch (Exception e)
@@ -68,18 +96,43 @@ namespace NE_Science
         }
 
         /// <summary>
+        /// Returns the ConfigNode's value as a bool, or the defaultValue on failure.
+        /// </summary>
+        /// <returns>The node value as int.</returns>
+        /// <param name="node">The Node from which to retrieve the Value.</param>
+        /// <param name="name">The name of the Value to retrieve.</param>
+        /// <param name="defaultValue">Default value to return if the Value doesn't exist in the ConfigNode.</param>
+        public static bool GetValueAsBool(ConfigNode node, string name, bool defaultValue = false)
+        {
+            bool rv = defaultValue;
+            try
+            {
+                if (!node.TryGetValue(name, ref rv))
+                {
+                    rv = defaultValue;
+                }
+            }
+            catch (Exception e)
+            {
+                logError("GetValueAsInt - exception: " + e.Message);
+            }
+            return rv;
+        }
+
+        /// <summary>
         /// Returns the ConfigNode's value as an int, or 0 on failure.
         /// </summary>
         /// <returns>The node value as int.</returns>
         /// <param name="node">The Node from which to retrieve the Value.</param>
         /// <param name="name">The name of the Value to retrieve.</param>
-        public static int GetValueAsInt(ConfigNode node, string name)
+        /// <param name="defaultValue">Default value to return if the Value doesn't exist in the ConfigNode.</param>
+        public static int GetValueAsInt(ConfigNode node, string name, int defaultValue = 0)
         {
-            int rv = 0;
+            int rv = defaultValue;
             try {
                 if (!node.TryGetValue(name, ref rv))
                 {
-                    rv = 0;
+                    rv = defaultValue;
                 }
             } catch (Exception e) {
                 logError("GetValueAsInt - exception: " + e.Message);
@@ -93,13 +146,14 @@ namespace NE_Science
         /// <returns>The node value as float.</returns>
         /// <param name="node">The Node from which to retrieve the Value.</param>
         /// <param name="name">The name of the Value to retrieve.</param>
-        public static float GetValueAsFloat(ConfigNode node, string name)
+        /// <param name="defaultValue">Default value to return if the Value doesn't exist in the ConfigNode.</param>
+        public static float GetValueAsFloat(ConfigNode node, string name, float defaultValue = 0.0f)
         {
-            float rv = 0f;
+            float rv = defaultValue;
             try {
                 if (!node.TryGetValue(name, ref rv))
                 {
-                    rv = 0f;
+                    rv = defaultValue;
                 }
             } catch (Exception e) {
                 logError("GetValueAsFloat - exception: " + e.Message);
@@ -234,12 +288,17 @@ namespace NE_Science
                 float timeRemaining, string alarmTitle, string experimentName, Vessel v)
         {
             KACWrapper.KACAPI.KACAlarm alarm = null;
-            const float AlarmMargin = 30; /* Hard-code the margin to 30s for now */
 
-            var alarmTime = Planetarium.GetUniversalTime() + timeRemaining - AlarmMargin;
+            if (!setting_KAC_Enabled)
+            {
+                goto done;
+            }
+
+            var alarmMargin = setting_KAC_AlarmMargin;
+            var alarmTime = Planetarium.GetUniversalTime() + timeRemaining - alarmMargin;
 
             string aID = KACAPI?.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, alarmTitle, alarmTime);
-            if (aID == "")
+            if (string.IsNullOrEmpty(aID))
             {
                 /* Unable to create alarm */
                 goto done;
@@ -248,7 +307,7 @@ namespace NE_Science
             alarm = KACAPI.Alarms.Find(z=>z.ID==aID);
             alarm.Notes = "Alarm for " + experimentName;
             alarm.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
-            alarm.AlarmMargin = AlarmMargin;
+            alarm.AlarmMargin = alarmMargin;
             alarm.VesselID = v?.id.ToString();
 
         done:
