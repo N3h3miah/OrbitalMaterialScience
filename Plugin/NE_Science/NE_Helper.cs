@@ -30,12 +30,12 @@ namespace NE_Science
 
         private static string SETTINGS_FILE;
         private const string SETTINGS_DEBUG = "Debug";
-        private const string SETTINGS_NODE_KAC = "KerbalAlarmClock";
-        private const string SETTINGS_VALUE_ENABLED = "Enabled";
-        private const string SETTINGS_VALUE_ALARM_MARGIN = "AlarmMargin";
+        //private const string SETTINGS_NODE_KAC = "KerbalAlarmClock";
+        //private const string SETTINGS_VALUE_ENABLED = "Enabled";
+        //private const string SETTINGS_VALUE_ALARM_MARGIN = "AlarmMargin";
         private static bool debug = true;
-        private static bool setting_KAC_Enabled = false;
-        private static int setting_KAC_AlarmMargin = 0;
+        //private static bool setting_KAC_Enabled = false;
+        //private static int setting_KAC_AlarmMargin = 0;
 
         void Start()
         {
@@ -66,12 +66,15 @@ namespace NE_Science
                 if (settings == null)
                 {
                     settings.AddValue(SETTINGS_DEBUG, false);
+                    /*
                     ConfigNode cnSettingsKAC = settings.AddNode(SETTINGS_NODE_KAC);
                     cnSettingsKAC.AddValue(SETTINGS_VALUE_ENABLED, true);
                     cnSettingsKAC.AddValue(SETTINGS_VALUE_ALARM_MARGIN, 0);
                     settings.Save(SETTINGS_FILE);
+                    */
                 } else {
                     d = bool.Parse(settings.GetValue(SETTINGS_DEBUG));
+                    /*
                     if (settings.HasNode(SETTINGS_NODE_KAC))
                     {
                         ConfigNode cnSettingsKAC = settings.GetNode(SETTINGS_NODE_KAC);
@@ -85,6 +88,7 @@ namespace NE_Science
                         cnSettingsKAC.AddValue(SETTINGS_VALUE_ALARM_MARGIN, 0);
                         settings.Save(SETTINGS_FILE);
                     }
+                    */
                 }
             }
             catch (Exception e)
@@ -184,6 +188,18 @@ namespace NE_Science
             return (part != null && ResearchAndDevelopment.PartModelPurchased(part));
         }
 
+        public static bool isKacEnabled()
+        {
+            //return setting_KAC_Enabled;
+            return HighLogic.CurrentGame.Parameters.CustomParams<NE_Settings>().KAC_Enabled;
+        }
+
+        public static int getKacAlarmMargin()
+        {
+            //return setting_KAC_AlarmMargin;
+            return HighLogic.CurrentGame.Parameters.CustomParams<NE_Settings>().KAC_AlarmMargin;
+        }
+
         public static bool debugging()
         {
             return debug;
@@ -278,6 +294,12 @@ namespace NE_Science
             }
         }
 
+        /** Returns true if the KAC API is available. */
+        public static bool isKacAvailable()
+        {
+            return ka != null;
+        }
+
         /** Adds an alarm for the experiment.
          * @param timeRemaining The time, in seconds, when the experiment will complete.
          * @param alarmTitle The title of the alarm, shown in the main KAC window, generally "NEOS Alarm" or "KEES Alarm" etc.
@@ -289,12 +311,12 @@ namespace NE_Science
         {
             KACWrapper.KACAPI.KACAlarm alarm = null;
 
-            if (!setting_KAC_Enabled)
+            if (!isKacEnabled())
             {
                 goto done;
             }
 
-            var alarmMargin = setting_KAC_AlarmMargin;
+            var alarmMargin = getKacAlarmMargin();
             var alarmTime = Planetarium.GetUniversalTime() + timeRemaining - alarmMargin;
 
             string aID = KACAPI?.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, alarmTitle, alarmTime);

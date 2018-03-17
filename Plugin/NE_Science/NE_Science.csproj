@@ -91,6 +91,7 @@
     <Compile Include="KEES_PEC.cs" />
     <Compile Include="KEESDoExperimentParameter.cs" />
     <Compile Include="KEESExperimentContract.cs" />
+    <Compile Include="NE_Settings.cs" />
     <Compile Include="OMSExperiment.cs" />
     <Compile Include="MEP_Module.cs" />
     <Compile Include="NE_Helper.cs" />
