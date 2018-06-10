@@ -3,6 +3,17 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.7.2 (recompile) - 2018.06.10
+### General
+* Updated ModuleManager from 2.8.1 to the newly-released 3.0.7
+* Recompile for KSP1.4.3
+* Added Kerbal Alarm Clock integration support.
+  + When starting an experiment and KAC is installed, a KAC alarm is created which triggers
+    when the experiment is complete.
+  + A setting is added to the "Difficulty" menu of the game allowing this functionality to
+    be en-/dis-abled, and to specify an alarm margin.
+
+
 0.7.1 (HOTFIX) - 2017.12.03
 -----------------------------------------------------------
 
