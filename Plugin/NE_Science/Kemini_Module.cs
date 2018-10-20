@@ -27,12 +27,6 @@ namespace NE_Science
 
         private const string KEMINI_LAB_EQUIPMENT_TYPE = "KEMINI";
 
-        /// <summary>
-        /// Field to display the Kemini lab status in the popup menu
-        /// </summary>
-        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Kemini_Lab")]
-        public string keminiStatus = "";
-
         private LabEquipmentSlot keminiSlot = new LabEquipmentSlot(EquipmentRacks.KEMINI);
 
         public override void OnLoad(ConfigNode node)
@@ -62,6 +56,7 @@ namespace NE_Science
                 LabEquipment keminiLab = new LabEquipment("KL", "Kemini Lab", EquipmentRacks.KEMINI, 0f, 0f, 1f, Resources.LAB_TIME, 10f, Resources.ELECTRIC_CHARGE);
                 keminiSlot.install(keminiLab, this);
             }
+            Fields["labStatus"].guiName = "#ne_Kemini_Lab";
         }
 
 
@@ -73,8 +68,7 @@ namespace NE_Science
                     if (keminiSlot.isEquipmentInstalled() && keminiSlot.experimentSlotFree())
                     {
                         keminiSlot.installExperiment(exp);
-                        keminiStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().displayStateString();
-                        Fields["keminiStatus"].guiActive = true;
+                        displayStatusMessage( keminiSlot.getExperiment().displayStateString() );
                         keminiSlot.experimentAction();
                     }
                     else
@@ -134,13 +128,31 @@ namespace NE_Science
 
         protected override void displayStatusMessage(string s)
         {
-            labStatus = s;
+            if (keminiSlot.experimentSlotFree())
+            {
+                labStatus = s;
+            }
+            else
+            {
+                labStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + s;
+            }
             Fields["labStatus"].guiActive = true;
         }
 
         protected override void updateLabStatus()
         {
             Fields["labStatus"].guiActive = false;
+
+            if (keminiSlot.isEquipmentRunning() )
+            {
+                Events["stopResearch"].active = doResearch;
+                Events["startResearch"].active = !doResearch;
+            }
+            else
+            {
+                Events["stopResearch"].active = false;
+                Events["startResearch"].active = false;
+            }
 
             if (keminiSlot.isEquipmentInstalled())
             {
@@ -158,12 +170,8 @@ namespace NE_Science
                 Events["actionKeminiExp"].active = keminiSlot.canActionRun();
                 if (!keminiSlot.experimentSlotFree())
                 {
-                    keminiStatus = keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().displayStateString();
-                    Fields["keminiStatus"].guiActive = true;
-                }
-                else
-                {
-                    Fields["keminiStatus"].guiActive = false;
+                    //displayStatusMessage( keminiSlot.getExperiment().getAbbreviation() + ": " + keminiSlot.getExperiment().displayStateString() );
+                    displayStatusMessage( keminiSlot.getExperiment().displayStateString() );
                 }
             }
         }
