@@ -35,7 +35,7 @@ namespace NE_Science
         new public string errorStatus = Localizer.GetStringByTag("#ne_Experiment_Ruined");
 
         [KSPField(isPersistant = false)]
-        public int exposureTimeRequired;
+        public float exposureTimeRequired;
 
         [KSPField(isPersistant = true)]
         public bool docked = false;
@@ -378,7 +378,7 @@ namespace NE_Science
 
         public override string GetInfo()
         {
-            String ret = Localizer.Format("#ne_Exposure_time_required_1", exposureTimeRequired);
+            String ret = Localizer.Format("#ne_Exposure_time_required_1", exposureTimeRequired) + " " + Localizer.Format("#ne_Hours");
             ret += "\n";
             ret += Localizer.GetStringByTag("#ne_You_need_to_install_the_experiment_on_a_KEES_PEC");
 
