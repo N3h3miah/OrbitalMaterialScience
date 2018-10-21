@@ -143,15 +143,23 @@ namespace NE_Science
         {
             Fields["labStatus"].guiActive = false;
 
-            if (keminiSlot.isEquipmentRunning() )
+            if (keminiSlot.isEquipmentRunning())
             {
                 Events["stopResearch"].active = doResearch;
                 Events["startResearch"].active = !doResearch;
             }
             else
             {
-                Events["stopResearch"].active = false;
-                Events["startResearch"].active = false;
+                if (doResearch)
+                {
+                    Events["stopResearch"].active = false;
+                    Events["startResearch"].active = false;
+                }
+                else
+                {
+                    Events["stopResearch"].active = doResearch;
+                    Events["startResearch"].active = !doResearch;
+                }
             }
 
             if (keminiSlot.isEquipmentInstalled())
