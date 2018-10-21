@@ -138,6 +138,14 @@ namespace NE_Science
             if (state.Equals(StartState.Editor))
             {
                 Events["chooseEquipment"].active = true;
+                if (expData.getId() == "")
+                {
+                    Events["chooseEquipment"].guiName = Localizer.GetStringByTag("#ne_Add_Experiment");
+                }
+                else
+                {
+                    Events["chooseEquipment"].guiName = Localizer.Format("#ne_Remove_1", expData.getAbbreviation());
+                }
             }
             else
             {
