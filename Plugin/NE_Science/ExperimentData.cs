@@ -104,8 +104,10 @@ namespace NE_Science
 
         public virtual string getDescription(string linePrefix = "")
         {
-            string desc =linePrefix + "<b>" + name + "</b>\n";
-            desc += linePrefix + getReqString();
+            string desc = linePrefix + "<b>" + name + "</b>\n";
+            desc += linePrefix + getReqString() + "\n";
+            //desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", getTimeRemainingString());
+            desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", KSPUtil.PrintDateDelta(getTimeRequired(), true));
             return desc;
         }
 
@@ -146,6 +148,38 @@ namespace NE_Science
             return reqString;
         }
 
+        private string getTimeRemainingString()
+        {
+            string ts = "";
+
+            // TODO: Convert to minutes / hours / days.
+            //ts += (int)(getTimeRemaining() / 60) + " " + Localizer.Format("#ne_Minutes");
+
+            /*
+            int tr = (int)getTimeRemaining() / 60; // Minutes
+
+            int hours = tr / 60;
+            tr -= hours * 60;
+
+            int days = hours / 24;
+            hours -= days * 24;
+
+            int months = days / 30;
+            days -= months * 30;
+
+            if (days > 0)
+                ts += " " + days + " " + Localizer.Format("#ne_Days");
+            if (hours > 0)
+                ts += " " + hours +  " " + Localizer.Format("#ne_Hours");
+            */
+
+            ts += KSPUtil.PrintDateDelta(getTimeRemaining(), false, false);
+            ts += " / " + KSPUtil.PrintDateDelta(getTimeRemaining(), false, true);
+            ts += " / " + KSPUtil.PrintDateDelta(getTimeRemaining(), false, false, true);
+
+            return ts;
+        }
+
         public virtual bool canFinalize()
         {
             return state == ExperimentState.FINISHED;
@@ -154,6 +188,11 @@ namespace NE_Science
         public string getType()
         {
             return type;
+        }
+
+        public virtual float getTimeRequired()
+        {
+            return 0.0f;
         }
 
         public virtual float getTimeRemaining()
@@ -499,22 +538,52 @@ namespace NE_Science
             return step.getNeededResource() == Resources.EXPOSURE_TIME;
         }
 
+        /** Returns the total amount of time required to run this experiment. */
+        public override float getTimeRequired()
+        {
+            LabEquipment le = store as LabEquipment;
+            float time = 0.0f;
+
+            if (le == null)
+            {
+                // Experiment is not yet installed in a lab; so let's create a new lab just to calculate the time.
+                le = EquipmentRackRegistry.getLabEquipmentForRack(getEquipmentNeeded());
+                if (le == null)
+                {
+                    NE_Helper.log("Warning: Could not find lab equipemnt for " + getEquipmentNeeded());
+                }
+                else
+                {
+                    time = step.getNeededAmount() / le.ProductPerHour;
+                }
+            }
+            return time * 60 * 60; /* Convert hours to seconds */
+        }
+
         /** Returns the amount of time remaining to complete this experiment step in seconds. */
         public override float getTimeRemaining()
         {
             LabEquipment le = store as LabEquipment;
+            float time = 0.0f;
 
-            // Experiment can be finished when resources have accumulated
-            // Resources accumulate in the lab
-            // Remaining time is resources left / resources per hour
+            try
+            {
+                // Experiment can be finished when resources have accumulated
+                // Resources accumulate in the lab
+                // Remaining time is resources left / resources per hour
 
-            // 'amount' - amount of resources required
-            // 'Lab.getResourceAmount(resource)' - amount of resources acquired
-            // 'Lab.ProductPerHour' - resource accumulation per hour
-            //
-            float amountRemaining = step.getNeededAmount() - (float)le.getResourceAmount(step.getNeededResource());
-            float timeRemaining = amountRemaining / le.ProductPerHour;
-            return timeRemaining * 60 * 60; /* Convert hours to seconds */
+                // 'amount' - amount of resources required
+                // 'Lab.getResourceAmount(resource)' - amount of resources acquired
+                // 'Lab.ProductPerHour' - resource accumulation per hour
+                //
+                float amountRemaining = step.getNeededAmount() - (float)le.getResourceAmount(step.getNeededResource());
+                time = amountRemaining / le.ProductPerHour;
+            }
+            catch(Exception e)
+            {
+                NE_Helper.log("ERROR - caught exception while trying to calculate the remaining time : " + e.ToString());
+            }
+            return time * 60 * 60; /* Convert hours to seconds */
         }
     }
 
@@ -668,24 +737,53 @@ namespace NE_Science
             return steps[activeStep].getNeededResource() == Resources.EXPOSURE_TIME;
         }
 
+        /** Returns the total amount of time required to run this experiment. */
+        public override float getTimeRequired()
+        {
+            float time = 0.0f;
+
+            // Gather the time needed for every step.
+            for (int idx = 0, count = steps.Length; idx < count; idx++)
+            {
+                EquipmentRacks rack = steps[idx].getNeededEquipment();
+                LabEquipment le = EquipmentRackRegistry.getLabEquipmentForRack(rack);
+                if (le == null)
+                {
+                    NE_Helper.log("Warning: Could not find lab equipemnt for " + rack);
+                }
+                else
+                {
+                    time += steps[idx].getNeededAmount() / le.ProductPerHour;
+                }
+            }
+            return time * 60 * 60; /* Convert hours to seconds */
+        }
+
         /** Returns the amount of time remaining to complete this experiment step in seconds. */
         public override float getTimeRemaining()
         {
             LabEquipment le = store as LabEquipment;
+            float time = 0.0f;
 
-            // Experiment can be finished when resources have accumulated
-            // Resources accumulate in the lab
-            // Remaining time is resources left / resources per hour
+            try
+            {
+                // Experiment can be finished when resources have accumulated
+                // Resources accumulate in the lab
+                // Remaining time is resources left / resources per hour
 
-            // 'amount' - amount of resources required
-            // 'Lab.getResourceAmount(resource)' - amount of resources acquired
-            // 'Lab.ProductPerHour' - resource accumulation per hour
-            //
-            float amountRemaining = steps[activeStep].getNeededAmount() - (float)le.getResourceAmount(steps[activeStep].getNeededResource());
-            float timeRemaining = amountRemaining / le.ProductPerHour;
-            return timeRemaining * 60 * 60; /* Convert hours to seconds */
+                // 'amount' - amount of resources required
+                // 'Lab.getResourceAmount(resource)' - amount of resources acquired
+                // 'Lab.ProductPerHour' - resource accumulation per hour
+                //
+                float amountRemaining = steps[activeStep].getNeededAmount() - (float)le.getResourceAmount(steps[activeStep].getNeededResource());
+                time = amountRemaining / le.ProductPerHour;
+            }
+            catch(Exception e)
+            {
+                NE_Helper.log("ERROR - caught exception while trying to calculate the remaining time : " + e.ToString());
+            }
+            return time * 60 * 60; /* Convert hours to seconds */
         }
-
 
     }
 

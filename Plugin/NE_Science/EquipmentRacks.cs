@@ -32,6 +32,26 @@ namespace NE_Science
             new KeyValuePair<EquipmentRacks, String>(EquipmentRacks.USU, "NE.USU")
         };
 
+        public static LabEquipment getLabEquipmentForRack(EquipmentRacks er)
+        {
+            LabEquipment le = null;
+
+            for (int idx = 0, count = racks.Length; idx < count; idx++)
+            {
+                if(racks[idx].Key == er)
+                {
+                    AvailablePart part = PartLoader.getPartInfoByName(racks[idx].Value);
+                    if (part != null)
+                    {
+                        le = getLabEquipment(part.partPrefab, er);
+                    }
+                    break;
+                }
+            }
+
+            return le;
+        }
+
         public static List<LabEquipment> getAvailableRacks()
         {
             List<LabEquipment> list = new List<LabEquipment>();
