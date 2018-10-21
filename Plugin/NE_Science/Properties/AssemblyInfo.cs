@@ -30,6 +30,10 @@ using System.Runtime.InteropServices;
 //      Revision
 //
 [assembly: AssemblyVersion("0.8.2.33")]
-[assembly: AssemblyInformationalVersion("0.8.2 for KSP 1.4.3")]
+#if DEBUG
+[assembly: AssemblyInformationalVersion("0.8.2 Debug for KSP 1.4+")]
+#else
+[assembly: AssemblyInformationalVersion("0.8.2 for KSP 1.4+")]
+#endif
 [assembly: AssemblyFileVersion("0.8.2.33")]
 [assembly: KSPAssembly("NE_Science", 0, 82)]

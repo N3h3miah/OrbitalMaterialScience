@@ -3,7 +3,36 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.8.0 (for KSP 1.5) - 2018.06.10
+-----------------------------------------------------------
+### General
+* Updated ModuleManager to 3.1.0
+* Updated MiniAVC to v1.2.0.2
+* Display experiment time in the VAB. Bug #26.
+
+### OMS
+* Added support Universal Storage 2 and fixed Universal Storage 1.
+* Bugs fixed:
+  + Fix "double pressing" to add experiment in VAB. Bug #31.
+  + Fix "missing experiments on revert" in VAB. Bug #30.
+  + Fix Extraplanetary Launchpads support. Bug #27.
+  + Fix missing results for some experiments. Bug #23.
+
+### KEES
+* Bugs fixed:
+  + Spelling mistake in the PPMD results.
+
+### Kemini
+* Clean up GUI - remove some unnecessary buttons
+* Mk1 Pod only has 1 experiment if MakingHistory is installed
+* Add experiments to addition MakingHistory pods.
+* Bugs fixed:
+  + Fix "double pressing" to add experiment in VAB. Bug #31.
+  + Fix "missing experiments on revert" in VAB. Bug #30.
+
+
 0.7.2 (recompile) - 2018.06.10
+-----------------------------------------------------------
 ### General
 * Updated ModuleManager from 2.8.1 to the newly-released 3.0.7
 * Recompile for KSP1.4.3
