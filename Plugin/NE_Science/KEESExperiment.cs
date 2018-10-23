@@ -255,7 +255,7 @@ namespace NE_Science
         public bool isFinished()
         {
             double numExposureTime = getResourceAmount(Resources.EXPOSURE_TIME);
-            return Math.Round(numExposureTime, 2) >= exposureTimeRequired;
+            return Math.Round(numExposureTime, 3) >= exposureTimeRequired;
         }
 
 
@@ -378,7 +378,18 @@ namespace NE_Science
 
         public override string GetInfo()
         {
-            String ret = Localizer.Format("#ne_Exposure_time_required_1", exposureTimeRequired) + " " + Localizer.Format("#ne_Hours");
+            // TODO: Retrieve the lab and programmatically retrieve the ExposureTimePerHour; by default it's 1.0
+            string timeStr;
+            if (exposureTimeRequired < 1.0f)
+            {
+                timeStr = "< 1 " + Localizer.Format("#ne_Hours");
+            }
+            else
+            {
+                timeStr = "~ " + KSPUtil.PrintDateDelta(exposureTimeRequired * 60 * 60, false);
+            }
+
+            String ret = Localizer.Format("#ne_Exposure_time_required_1", timeStr);
             ret += "\n";
             ret += Localizer.GetStringByTag("#ne_You_need_to_install_the_experiment_on_a_KEES_PEC");
 
