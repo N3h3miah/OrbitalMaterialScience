@@ -19,6 +19,7 @@
 
 using System;
 using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -215,6 +216,64 @@ namespace NE_Science
 
         public static void logError(string errMsg){
             Debug.LogError("[NE] Error: " + errMsg);
+        }
+
+        /** Prints the time in years, days, and hours (and optionally minutes) */
+        public static string timeToStr(long timeInSeconds, bool printMinutes = false)
+        {
+            string ts = "";
+
+            int HoursPerDay = GameSettings.KERBIN_TIME ? 6 : 24;
+            int DaysPerYear = GameSettings.KERBIN_TIME ? 426 : 365;
+
+            long minutes = timeInSeconds / 60;
+            timeInSeconds -= minutes * 60;
+            long hours = minutes / 60;
+            minutes -= hours * 60;
+            long days = hours / HoursPerDay;
+            hours -= days * HoursPerDay;
+            long years = days / DaysPerYear;
+            days -= years * DaysPerYear;
+
+            bool hasTime = false;
+            try {
+                if (years > 0)
+                {
+                    ts += " " + years + " " + Localizer.GetStringByTag("#ne_Years");
+                    hasTime = true;
+                }
+                if (days > 0)
+                {
+                    ts += " " + days + " " + Localizer.GetStringByTag("#ne_Days");
+                    hasTime = true;
+                }
+                if (hours > 0)
+                {
+                    ts += " " + hours + " " + Localizer.GetStringByTag("#ne_Hours");
+                    hasTime = true;
+                }
+                if (printMinutes)
+                {
+                    if (minutes > 0)
+                    {
+                        ts += " " + minutes + " " + Localizer.GetStringByTag("#ne_Minutes");
+                    }
+                    else if(!hasTime)
+                    {
+                        ts += " < 1 " + Localizer.GetStringByTag("#ne_Minutes");
+                    }
+                }
+                else if (!hasTime)
+                {
+                    ts += " < 1 " + Localizer.GetStringByTag("#ne_Hours");
+                }
+            }
+            catch(Exception e)
+            {
+                NE_Helper.logError("Failed to convert time to string: " + e.ToString());
+            }
+
+            return ts;
         }
 
         // Returns the part which is currently under the mouse cursor
