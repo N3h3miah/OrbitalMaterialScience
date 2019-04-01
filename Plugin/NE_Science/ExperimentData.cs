@@ -22,6 +22,8 @@ using KSP.Localization;
 
 namespace NE_Science
 {
+    using KAC;
+
     public enum ExperimentState
     {
         STORED, INSTALLED, RUNNING, FINISHED, FINALIZED, COMPLETED
@@ -49,6 +51,8 @@ namespace NE_Science
         private Guid cachedVesselID;
         private int partCount;
         private ExperimentStorage[] contCache = null;
+
+        protected KACWrapper.KACAPI.KACAlarm alarm = null;
 
         /// <summary>
         /// Creates a new Experiment data object
@@ -327,8 +331,7 @@ namespace NE_Science
             {
                 state = ExperimentState.RUNNING;
                 /* TODO: configuration whether to auto-create alarms */
-                NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
-                /* TODO: Save alarm ID so we can modify the alarm if the user pauses or stops the experiment. */
+                alarm = NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
             }
         }
 

@@ -245,7 +245,6 @@ namespace NE_Science
 
         public virtual void checkFinished()
         {
-
             if(isFinished())
             {
                 finished();
@@ -254,10 +253,17 @@ namespace NE_Science
 
         public bool isFinished()
         {
-            double numExposureTime = getResourceAmount(Resources.EXPOSURE_TIME);
-            return Math.Round(numExposureTime, 3) >= exposureTimeRequired;
+            return exposureTimeRemaining <= 0.0;
         }
 
+        public float exposureTimeRemaining
+        {
+            get
+            {
+                double numExposureTime = getResourceAmount("ExposureTime");
+                return (float)(exposureTimeRequired - Math.Round(numExposureTime, 3));
+            }
+        }
 
         public void checkUndocked()
         {
@@ -346,7 +352,7 @@ namespace NE_Science
                 Events["DeployExperiment"].active = false;
                 state = RUNNING;
                 playAnimation(deployAnimation, 1, 0);
-                addAlarm();
+                setAlarm();
                 return true;
         }
 
@@ -429,14 +435,33 @@ namespace NE_Science
         }
 
         /** Sets KAC alarm for when experiment will be finished. */
-        internal bool addAlarm()
+        internal bool setAlarm()
         {
-            KACWrapper.KACAPI.KACAlarm  a;
+            deleteAlarm();
+            alarm = NE_Helper.AddExperimentAlarm( exposureTimeRemaining * 60 * 60, "KEES Alarm", experiment.experimentTitle, part.vessel);
+            return alarm != null;
+        }
 
-            a = NE_Helper.AddExperimentAlarm( exposureTimeRequired * 60 * 60, "KEES Alarm", experiment.experimentTitle, part.vessel);
-            /* TODO: Save alarm ID so we can modify the alarm if the user pauses or stops the experiment. */
+        internal bool pauseAlarm()
+        {
+            /* Current KACAPI doesn't support pausing, so we delete it instead. */
+            return deleteAlarm();
+        }
 
-            return a != null;
+        internal bool resumeAlarm()
+        {
+            /* Current KACAPI doesn't support pause/resume, so we create a new alarm instead. */
+            return setAlarm();
+        }
+
+        internal bool deleteAlarm()
+        {
+            if (alarm != null)
+            {
+                return NE_Helper.DeleteAlarm(alarm);
+                alarm = null;
+            }
+            return false;
         }
     }
 }

@@ -395,11 +395,20 @@ namespace NE_Science
             return alarm;
         }
 
-        /** Deletes a KAC alarm */
+        /** Deletes a KAC alarm by ID*/
         public static bool DeleteAlarm(string alarmId)
         {
             return KACAPI.DeleteAlarm(alarmId);
         }
 
+        /** Deletes a KAC alarm */
+        public static bool DeleteAlarm(KACWrapper.KACAPI.KACAlarm alarm)
+        {
+            if (alarm != null)
+            {
+                return KACAPI.DeleteAlarm(alarm.ID);
+            }
+            return false;
+        }
     }
 }

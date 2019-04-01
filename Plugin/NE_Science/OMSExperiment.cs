@@ -19,6 +19,8 @@ using KSP.Localization;
 
 namespace NE_Science
 {
+    using KAC;
+
     public class OMSExperiment : ModuleScienceExperiment
     {
         public const string COMPLETED = "completed";
@@ -51,6 +53,8 @@ namespace NE_Science
 
         [KSPField(isPersistant = true)]
         public float completed = 0;
+
+        public KACWrapper.KACAPI.KACAlarm alarm = null;
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
