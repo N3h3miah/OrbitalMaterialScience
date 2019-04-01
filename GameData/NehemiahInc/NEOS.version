@@ -1,6 +1,7 @@
 {
     "NAME":"Nehemiah Engineering Orbital Science (NEOS)",
     "URL":"https://raw.githubusercontent.com/mwerle/OrbitalMaterialScience/master/GameData/NehemiahInc/NEOS.version",
+    "CHANGE_LOG_URL":"https://raw.githubusercontent.com/mwerle/OrbitalMaterialScience/0.8.0/CHANGELOG.md",
     "GITHUB":
     {
         "USERNAME":"mwerle",
@@ -29,7 +30,7 @@
     "KSP_VERSION_MAX":
     {
         "MAJOR":1,
-        "MINOR":5,
+        "MINOR":6,
         "PATCH":99
     }
 } 
