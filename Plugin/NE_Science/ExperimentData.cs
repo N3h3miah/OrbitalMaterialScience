@@ -759,24 +759,36 @@ namespace NE_Science
             return time * 60 * 60; /* Convert hours to seconds */
         }
 
-        /** Returns the amount of time remaining to complete this experiment step in seconds. */
+        /** Returns the amount of time for all remaining experiment steps */
         public override float getTimeRemaining()
         {
-            LabEquipment le = store as LabEquipment;
             float time = 0.0f;
 
             try
             {
-                // Experiment can be finished when resources have accumulated
-                // Resources accumulate in the lab
-                // Remaining time is resources left / resources per hour
+                // Experiment can be finished when resources for all steps have accumulated
+                // Resources for a step accumulate in the lab associated with that step
+                // Remaining time for a step is resources left / resources per hour
+                // Remaining time for the experiment is the sum of all the remaining step times.
 
                 // 'amount' - amount of resources required
                 // 'Lab.getResourceAmount(resource)' - amount of resources acquired
                 // 'Lab.ProductPerHour' - resource accumulation per hour
                 //
-                float amountRemaining = steps[activeStep].getNeededAmount() - (float)le.getResourceAmount(steps[activeStep].getNeededResource());
-                time = amountRemaining / le.ProductPerHour;
+                for (int idx = activeStep, count = steps.Length; idx < count; idx++)
+                {
+                    EquipmentRacks rack = steps[idx].getNeededEquipment();
+                    LabEquipment le = EquipmentRackRegistry.getLabEquipmentForRack(rack);
+                    if (le == null)
+                    {
+                        NE_Helper.log("Warning: Could not find lab equipemnt for " + rack);
+                    }
+                    else
+                    {
+                        float amountRemaining = steps[idx].getNeededAmount() / le.ProductPerHour;
+                        time += amountRemaining / le.ProductPerHour;
+                    }
+                }
             }
             catch(Exception e)
             {
