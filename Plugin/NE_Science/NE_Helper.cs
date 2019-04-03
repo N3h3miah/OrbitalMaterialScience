@@ -402,4 +402,24 @@ namespace NE_Science
         }
 
     }
+
+    /// <summary>
+    /// This class implements Extension Methods for various other classes.
+    /// </summary>
+    /// It should be noted that Extension Methods can be called even if the
+    /// variable is null, so care must be taken inside the extension methods
+    /// not to cause NullReferenceExceptions.
+    public static class NE_ExtensionMethods
+    {
+        /// <summary>
+        /// Extension Method on Unity Objects returning whether the object really is null.
+        /// </summary>
+        /// Unity overloads the '==' operator so that it returns true on both null references
+        /// as well as references to destroyed objects. This function only returns true if
+        /// the reference truly is null, and returns false for "fake null" objects.
+        public static bool IsTrueNull(this UnityEngine.Object ob)
+        {
+            return (object)ob == null;
+        }
+    }
 }

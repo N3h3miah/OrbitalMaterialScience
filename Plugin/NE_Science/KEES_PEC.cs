@@ -52,33 +52,38 @@ namespace NE_Science
 
         private void checkForExp()
         {
-            if (node != null && node.attachedPart != null)
+            // The following line is needed because Unity does some funky
+            // stuff overloading the '==' operator and creating fake 'null'
+            // objects in certain situations, such as when they become
+            // inactive or destroyed.
+            //
+            // exp == null           // returns true if exp is null or "fake null"
+            // (object)exp == null   // uses the C# '==' operator, so returns true only if exp is really null
+            // exp is null           // also avoids the Unity overloaded '==', so also returns true only if exp is really null
+            // 
+            KEESExperiment newExp = node?.attachedPart?.GetComponent<KEESExperiment>();
+            if (newExp != null)
             {
-                KEESExperiment newExp = node.attachedPart.GetComponent<KEESExperiment>();
-                if (newExp != null)
+                if (exp is null)
                 {
-                    if (exp == null)
-                    {
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                        NE_Helper.log("New KEES Experiment installed");
-                    }
-                    else if (exp != newExp)
-                    {
-                        exp.dockedToPEC(false);
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                        NE_Helper.log("KEES Experiment switched");
-                    }
+                    exp = newExp;
+                    exp.dockedToPEC(true);
+                    NE_Helper.log("New KEES Experiment installed");
                 }
-                else if (exp != null)
+                else if (exp != newExp)
                 {
                     exp.dockedToPEC(false);
-                    NE_Helper.log("KEES Experiment undocked");
-                    exp = null;
+                    exp = newExp;
+                    exp.dockedToPEC(true);
+                    NE_Helper.log("KEES Experiment switched");
                 }
             }
-
+            else if (!(exp is null))
+            {
+                exp.dockedToPEC(false);
+                NE_Helper.log("KEES Experiment undocked");
+                exp = null;
+            }
         }
 
         public override void OnUpdate()
