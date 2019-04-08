@@ -214,6 +214,48 @@ namespace NE_Science
             StartCoroutine(updateStatus());
         }
 
+
+        private bool isExperimentsResultDialogOpen = false;
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            // check experiments result dialog has closed on this frame
+            if (isExperimentsResultDialogOpen && ExperimentsResultDialog.Instance == null)
+            {
+                // Do stuff if it closed
+            }
+            if (ExperimentsResultDialog.Instance != null)
+            {
+                // check experiments result dialog has opened on this frame
+                if (isExperimentsResultDialogOpen == false)
+                {
+                    // Do stuff if it just opened
+
+                    ExperimentsResultDialog erd = ExperimentsResultDialog.Instance;
+                    // TODO: Hook into callbacks?
+                    // subjectID == NE_KEES_TEST@KerbinSrfLanded ; last_subjectId == NE_KEES_TEST@KerbinSrfLandedLaunchPad
+                    if (erd.currentPage.pageData.subjectID.Contains("NE_KEES"))
+                    {
+                        UnityEngine.UI.Button[] buttons = erd.GetComponentsInChildren<UnityEngine.UI.Button>();
+                        foreach (UnityEngine.UI.Button b in buttons)
+                        {
+                            // Disable the Reset and Lab buttons
+                            if (b.name == "ButtonReset" || b.name == "ButtonLab")
+                            {
+                                b.interactable = false;
+                            }
+                        }
+
+                        // This doesn't seem to do anything
+                        //erd.currentPage.showReset = false;
+                    }
+                }
+            }
+
+            // update experiments result dialog open state
+            isExperimentsResultDialogOpen = (ExperimentsResultDialog.Instance != null);
+        }
+
         // Override from PartModule, called when the part is destroyed;
         // This can occur when the part is "g"rabbed using KIS.
         public override void OnInactive()
