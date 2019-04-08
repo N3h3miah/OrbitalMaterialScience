@@ -31,7 +31,7 @@ namespace NE_Science
         public double maxGforce = 2.5;
 
         private AttachNode node = null;
-        private KEESExperiment exp = null;
+        private IKEESExperiment exp = null;
 
         private int counter = 0;
 
@@ -48,39 +48,56 @@ namespace NE_Science
                 NE_Helper.logError("KEES PEC: AttachNode not found");
                 node = part.attachNodes[0];
             }
+
+            Events["Decouple"].active = NE_Helper.debugging() && !decoupled;
         }
 
+        /// <summary>
+        /// Checks whether a KEESExperiement has just been mounted or unmounted.
+        /// </summary>
         private void checkForExp()
         {
-            if (node != null && node.attachedPart != null)
+            // The following line is needed because Unity does some funky
+            // stuff overloading the '==' operator and creating fake 'null'
+            // objects in certain situations, such as when they become
+            // inactive or destroyed.
+            //
+            // exp == null           // returns true if exp is null or "fake null"
+            // (object)exp == null   // uses the C# '==' operator, so returns true only if exp is really null
+            // exp is null           // also avoids the Unity overloaded '==', so also returns true only if exp is really null
+            // 
+            IKEESExperiment newExp = node?.attachedPart?.GetComponent<IKEESExperiment>();
+            if (newExp != null)
             {
-                KEESExperiment newExp = node.attachedPart.GetComponent<KEESExperiment>();
-                if (newExp != null)
+                if (exp is null)
                 {
-                    if (exp == null)
-                    {
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                        NE_Helper.log("New KEES Experiment installed");
-                    }
-                    else if (exp != newExp)
-                    {
-                        exp.dockedToPEC(false);
-                        exp = newExp;
-                        exp.dockedToPEC(true);
-                        NE_Helper.log("KEES Experiment switched");
-                    }
+                    exp = newExp;
+                    exp.OnExperimentMounted();
+                    NE_Helper.log("New KEES Experiment installed");
                 }
-                else if (exp != null)
+                else if (exp != newExp)
                 {
-                    exp.dockedToPEC(false);
-                    NE_Helper.log("KEES Experiment undocked");
-                    exp = null;
+                    exp.OnExperimentUnmounted();
+                    exp = newExp;
+                    exp.OnExperimentMounted();
+                    NE_Helper.log("KEES Experiment switched");
                 }
             }
-
+            else if (!(exp is null))
+            {
+                exp.OnExperimentUnmounted();
+                NE_Helper.log("KEES Experiment undocked");
+                exp = null;
+            }
         }
 
+        /// <summary>
+        /// Check whether we have been coupled or decoupled from a Vessel
+        /// </summary>
+        /// Decoupling can occur on purpose (eg, Player removes the part from the ship using KIS),
+        /// or accidentally if the ship undergoes a high-G maneuvre.
+        /// TODO: Figure out whether we can hook into some game or KIS events instead as
+        ///       running these checks every frame is a bit expensive.
         public override void OnUpdate()
         {
             base.OnUpdate();
@@ -90,18 +107,14 @@ namespace NE_Science
             bool isVesselShip = part.parent != null && vessel != null && !vessel.isEVA;
             if (decoupled && vessel.vesselType != VesselType.Debris)
             {
-                NE_Helper.log("Decoupled PEC recoverd");
+                NE_Helper.log("Decoupled PEC recovered");
                 decoupled = false;
+                Events["Decouple"].active = NE_Helper.debugging();
             }
             if (!decoupled && isVesselShip && vessel.geeForce > maxGforce)
             {
                 NE_Helper.log ("KEES PEC over max G, decouple\n" + this.ToString ());
-                decouple();
-            }
-            //Decouple for testing
-            if (NE_Helper.debugging() && Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.D))
-            {
-                decouple();
+                Decouple();
             }
             if (!decoupled && counter == 0)//don't run this every frame
             {
@@ -110,13 +123,20 @@ namespace NE_Science
             counter = (++counter) % 6;
         }
 
-        private void decouple()
+        /// <summary>
+        /// Decouples the PEC from its parent vessel.
+        /// </summary>
+        /// This can occur due to a high-G maneuvre, or if the Player removes the part
+        /// from the ship, or due to a GUI click.
+        [KSPEvent(guiActive = true, guiActiveUnfocused = true, unfocusedRange = 5, guiName = "Decouple", active = true)]
+        public void Decouple()
         {
+            Events["Decouple"].active = false;
             decoupled = true;
             part.decouple();
-            if (exp != null)
+            if (!(exp is null))
             {
-                exp.pecDecoupled();
+                exp.OnPecDecoupled();
             }
             exp = null;
         }

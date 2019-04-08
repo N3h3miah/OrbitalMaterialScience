@@ -22,12 +22,537 @@ using System;
 using System.Linq;
 using UnityEngine;
 using KSP.Localization;
+using KSP.UI.Screens.Flight.Dialogs;
 
 namespace NE_Science
 {
     using KAC;
 
-    public class KEESExperiment : OMSExperiment
+    internal interface IKEESExperiment
+    {
+        /// <summary>
+        /// Called when the PEC gets decoupled from a Vessel
+        /// </summary>
+        void OnPecDecoupled();
+
+        /// <summary>
+        /// Called when the Experiment gets mounted from the PEC
+        /// </summary>
+        void OnExperimentMounted();
+
+        /// <summary>
+        /// Called when the Experiment gets unmounted from the PEC
+        /// </summary>
+        void OnExperimentUnmounted();
+    }
+
+    public class KEESExperimentNew : OMSExperiment, IKEESExperiment
+    {
+        #region KSP Fields and state variables
+        [KSPField(isPersistant = false)]
+        public float exposureTimeRequired;
+
+        [KSPField(isPersistant = true)]
+        public bool docked = false;
+
+        public float exposureTimeRemaining
+        {
+            get
+            {
+                double numExposureTime = getResourceAmount(Resources.EXPOSURE_TIME);
+                return (float)(exposureTimeRequired - Math.Round(numExposureTime, 3));
+            }
+        }
+
+        private BaseEvent DeployExperimentEvent
+        {
+            get { return Events["DeployExperiment"]; }
+        }
+
+        /// <summary>
+        /// The KEES_Lab which we are using.
+        /// </summary>
+        internal KEES_Lab keesLab = null;
+
+        #endregion
+
+        #region KSP Events
+#if false
+        [KSPEvent(guiActive = true, guiName = "#ne_Start_Experiment", active = false)]
+        public void StartExperiment()
+        {
+            if (GetScienceCount() > 0)
+            {
+                ScreenMessages.PostScreenMessage("#ne_Experiment_already_finalized", 6, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
+            if (checkBoring(vessel, true)) return;
+
+            if (experimentStarted())
+            {
+                setResourceMaxAmount(Resources.EXPOSURE_TIME, exposureTimeRequired);
+                ScreenMessages.PostScreenMessage("#ne_Started_experiment", 6, ScreenMessageStyle.UPPER_CENTER);
+            }
+        }
+#endif
+        // Event overloaded from ModuleScienceExperiment
+        // Displays button to user, the exact function of which will depend on the current state
+        new public void DeployExperiment()
+        {
+            switch(state)
+            {
+                case READY: // "Start"
+                    if (!checkBoring(vessel, true))
+                    {
+                        OnExperimentStarted();
+                    }
+                    break;
+
+                case RUNNING: // "Close"
+                    OnExperimentStopped();
+                    break;
+
+                case FINISHED: // Finalize
+                    OnExperimentFinalized();
+                    break;
+
+                default:
+                    NE_Helper.logError("Logic error - button clicked for unsupported state " + state);
+                    break;
+            }
+        }
+
+        // Event overloaded from ModuleScienceExperiment
+        new public void ResetExperiment()
+        {
+            NE_Helper.log("KEESExperiment: ResetExperiment()");
+            base.ResetExperiment();
+            ResourceHelper.setResourceAmount(part, Resources.EXPOSURE_TIME, 0);
+        }
+
+        // Event overloaded from ModuleScienceExperiment
+        new public void ResetExperimentExternal()
+        {
+            NE_Helper.log("KEESExperiment: ResetExperimentExternal()");
+            base.ResetExperimentExternal();
+            ResourceHelper.setResourceAmount(part, Resources.EXPOSURE_TIME, 0);
+        }
+
+        // Event overloaded from ModuleScienceExperiment
+        new public void ResetAction(KSPActionParam p)
+        {
+            NE_Helper.log("KEESExperiment: ResetAction()");
+            base.ResetAction(p);
+            ResourceHelper.setResourceAmount(part, Resources.EXPOSURE_TIME, 0);
+        }
+
+#if (DEBUG)
+        [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
+        public void DebugDump()
+        {
+            /* Printed out in Player.log */
+            NE_Helper.log(this.ToString());
+        }
+#endif
+#endregion
+
+#region PartModule Overrides
+        // Override from PartModule, called before OnUpdate() or OnFixedUpdate()
+        public override void OnStart(StartState f_kspState)
+        {
+            NE_Helper.log("KEESExperiment: OnStart()");
+            base.OnStart(f_kspState);
+            if (f_kspState == StartState.Editor) { return; }
+
+            // Change default status strings
+            notReadyStatus = Localizer.GetStringByTag("#ne_Not_installed");
+            readyStatus = Localizer.GetStringByTag("#ne_Ready");
+            errorStatus = Localizer.GetStringByTag("#ne_Experiment_Ruined");
+
+            // The only reason we have a "lab" is for the generator; a bit of overkill really.
+            // By default, let's turn off the generator, it should only be running if the
+            // experiment is running.
+            if (keesLab is null)
+            {
+                keesLab = part.FindModuleImplementing<KEES_Lab>();
+            }
+            keesLab.doResearch = false;
+            setResourceMaxAmount(Resources.EXPOSURE_TIME, exposureTimeRequired);
+            this.part.force_activate();
+
+            Fields["expStatus"].guiActive = true;
+            DeployExperimentEvent.active = false;
+            DeployExperimentEvent.guiActiveUnfocused = true;
+            DeployExperimentEvent.unfocusedRange = 3;
+#if (DEBUG)
+            Events["DebugDump"].active = true;
+#endif
+
+#if false
+            switch (this.state)
+            {
+                case NOT_READY:
+                case FINALIZED:
+                case ERROR:
+                    // Nothing to do
+                    break;
+                case READY:
+                    DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Start_Experiment");
+                    DeployExperimentEvent.active = true;
+                    break;
+                case RUNNING:
+                    DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Close");
+                    DeployExperimentEvent.active = true;
+                    keesLab.doResearch = true;
+                    break;
+                case FINISHED:
+                    DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Finalize_Results");
+                    DeployExperimentEvent.active = true;
+                    break;
+            }
+#endif
+            StartCoroutine(updateStatus());
+        }
+
+        // Override from PartModule, called when the part is destroyed;
+        // This can occur when the part is "g"rabbed using KIS.
+        public override void OnInactive()
+        {
+            NE_Helper.log("KEESExperiment: OnInactive()");
+#if false
+            if (docked)
+            {
+                dockedToPEC(false);
+                updateState();
+            }
+#endif
+            base.OnInactive();
+        }
+
+        /// <summary>
+        /// Generate the user-visible description of the part.
+        /// </summary>
+        public override string GetInfo()
+        {
+            // TODO: Retrieve the lab and programmatically retrieve the ExposureTimePerHour; by default it's 1.0
+            string timeStr;
+            timeStr = NE_Helper.timeToStr((long)(exposureTimeRequired * 60 * 60));
+            String ret = Localizer.Format("#ne_Exposure_time_required_1", timeStr);
+            ret += "\n";
+            ret += Localizer.GetStringByTag("#ne_You_need_to_install_the_experiment_on_a_KEES_PEC");
+
+            return ret;
+        }
+#endregion
+
+#region KEES Experiment Callbacks
+        /// <summary>
+        /// Called when the experiment is mounted on a PEC.
+        /// </summary>
+        /// This occurs either when the user manually drags the Experiment onto a PEC, or
+        /// on a scene switch to a Vessel contained a mounted Experiment.
+        public virtual void OnExperimentMounted()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentMounted()");
+            switch(state)
+            {
+                case NOT_READY:
+                    DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Start_Experiment");
+                    DeployExperimentEvent.active = true;
+                    expStatus = readyStatus;
+                    state = READY;
+                    break;
+
+                case RUNNING:
+                    // Can occur when we switch back to a running station in which case the
+                    // experiment may actually show up as closed.
+                    openExperiment();
+                    keesLab.doResearch = true;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Called when the experiment is removed from a PEC
+        /// </summary>
+        public virtual void OnExperimentUnmounted()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentUnmounted()");
+            DeployExperimentEvent.active = false;
+            expStatus = Localizer.GetStringByTag("#ne_Not_installed_on_a_PEC");
+
+            switch(state)
+            {
+                case READY:
+                    state = NOT_READY;
+                    break;
+
+                case RUNNING:
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Warning_1_has_detached_from_station_without_being_finalized", part.partInfo.title), 2, ScreenMessageStyle.UPPER_CENTER);
+                    stopResearch(NOT_READY);
+                    break;
+
+                case FINISHED:
+                    ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Warning_1_has_detached_from_station_without_being_finalized", part.partInfo.title), 2, ScreenMessageStyle.UPPER_CENTER);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Called when the PEC is removed from the Vessel
+        /// </summary>
+        public virtual void OnPecDecoupled()
+        {
+            NE_Helper.log("KEESExperiment: OnPecDecoupled()");
+            DeployExperimentEvent.active = false;
+            switch(state)
+            {
+                case READY:
+                    state = NOT_READY;
+                    expStatus = notReadyStatus;
+                    break;
+
+                case RUNNING:
+                    Events["DeployExperiment"].active = false;
+                    stopResearch(ERROR);
+                    expStatus = errorStatus;
+                    break;
+
+                default:
+                    // do nothing
+                    break;
+            }
+        }
+        /// <summary>
+        /// Called when an experiment is (re)started manually from the user
+        /// </summary>
+        public virtual void OnExperimentStarted()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentStarted()");
+            DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Close");
+            openExperiment();
+
+            // Save the science situation where this experiment was started. If it ever
+            // changes, the experiment is ruined.
+            String currentSubjectId = ScienceHelper.getScienceSubject(experimentID, vessel)?.id;
+            if (String.IsNullOrEmpty(last_subjectId))
+            {
+                last_subjectId = ScienceHelper.getScienceSubject(experimentID, vessel)?.id;
+            }
+            else if(last_subjectId != currentSubjectId)
+            {
+                OnBiomeChanged();
+                return;
+            }
+            setAlarm();
+            state = RUNNING;
+            expStatus = runningStatus;
+            // Start the lab
+            keesLab.doResearch = true;
+            ScreenMessages.PostScreenMessage("#ne_Started_experiment", 6, ScreenMessageStyle.UPPER_CENTER);
+        }
+        public virtual void OnExperimentStopped()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentStopped()");
+            DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Start_Experiment");
+            stopResearch(READY);
+            expStatus = readyStatus;
+        }
+        /// <summary>
+        /// Called on a RUNNING experiment when a biome change has been detected.
+        /// </summary>
+        public virtual void OnBiomeChanged()
+        {
+            NE_Helper.log("KEESExperiment: OnBiomeChanged()");
+            ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Location_changed_mid_experiment_1_ruined", part.partInfo.title), 6, ScreenMessageStyle.UPPER_CENTER);
+            DeployExperimentEvent.active = false;
+            stopResearch(ERROR, false);
+        }
+        /// <summary>
+        /// Called on a RUNNING experiment when Exposure Time has finished accumulating
+        /// </summary>
+        public virtual void OnExperimentFinished()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentFinished()");
+            DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Finalize_Results");
+            completed = (float)Planetarium.GetUniversalTime();
+            state = FINISHED;
+            expStatus = finalizedStatus;
+            // Stop the lab
+            keesLab.doResearch = false;
+        }
+        /// <summary>
+        /// Called when user clicks on "Finalize"; bring up KSP Science Dialog showing results
+        /// </summary>
+        /// TODO: How to handle if user clicks "Reset"???
+        public virtual void OnExperimentFinalized()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentFinalized()");
+            DeployExperimentEvent.active = false;
+            stopResearch(FINALIZED);
+            expStatus = finalizedStatus;
+            base.DeployExperiment();
+        }
+#endregion
+
+#region Coroutines
+        /// <summary>
+        /// Checks for any state transitions which can't be captured by events and updates the GUI
+        /// </summary>
+        /// We need to do the UI updates here as otherwise the UI is not properly updated on startup.
+        public System.Collections.IEnumerator updateStatus()
+        {
+            while (true)
+            {
+                switch(state)
+                {
+                    case NOT_READY:
+                        expStatus = notReadyStatus;
+                        DeployExperimentEvent.active = false;
+                        break;
+                    case READY:
+                        expStatus = readyStatus;
+                        DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Start_Experiment");
+                        DeployExperimentEvent.active = true;
+                        break;
+                    case RUNNING:
+                        expStatus = runningStatus;
+                        DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Close");
+                        DeployExperimentEvent.active = true;
+                        if (hasBiomeChangedSinceStart())
+                        {
+                            OnBiomeChanged();
+                        }
+                        if (hasExperimentFinished())
+                        {
+                            OnExperimentFinished();
+                        }
+                        break;
+                    case FINISHED:
+                        expStatus = finishedStatus;
+                        DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Finalize_Results");
+                        DeployExperimentEvent.active = true;
+                        break;
+                    case FINALIZED:
+                        expStatus = finalizedStatus;
+                        break;
+                    case ERROR:
+                        expStatus = errorStatus;
+                        break;
+                }
+                yield return new UnityEngine.WaitForSeconds(1f);
+            }
+        }
+#endregion
+
+#region Resource Helper Functions (TODO: Move to NE_Helper?)
+        public PartResource getResource(string name)
+        {
+            return ResourceHelper.getResource(part, name);
+        }
+
+        public double getResourceAmount(string name)
+        {
+            return ResourceHelper.getResourceAmount(part, name);
+        }
+
+        public PartResource setResourceMaxAmount(string name, double max)
+        {
+            return ResourceHelper.setResourceMaxAmount(part, name, max);
+        }
+#endregion
+
+#region Model animation support functions
+        /** Animates the experiment to open */
+        internal void openExperiment()
+        {
+            playAnimation("Deploy", 1, 0);
+        }
+
+        /** Animates the experiment to close */
+        internal void closeExperiment()
+        {
+            playAnimation("Deploy", -1, 1);
+        }
+
+        private void playAnimation(string animName, float speed, float time)
+        {
+            // MKW TODO - remove "FirstOrDefault" Linq statement
+            Animation anim = part.FindModelAnimators(animName).FirstOrDefault();
+            if (anim != null)
+            {
+                anim[animName].speed = speed;
+                anim[animName].normalizedTime = time;
+
+                anim.Play(animName);
+            }
+            else
+            {
+                NE_Helper.logError("no Animation; Name: " + animName);
+            }
+        }
+        #endregion
+
+        #region OMSExperiment Overloads
+        internal override float getRemainingExperimentTime()
+        {
+            return exposureTimeRemaining * 60 * 60;
+        }
+
+        internal override string getAlarmDescription()
+        {
+            return "KEES Alarm";
+        }
+        #endregion
+
+        /// <summary>
+        /// Converts the object to a human-readble string suitable for printing.
+        /// </summary>
+        /// Overloads base-class implementation.
+        new public String ToString()
+        {
+            String ret = base.ToString() + "\n";
+            ret += "\tstate:              " + this.state + "\n";
+            ret += "\tresource Amount:    " + getResourceAmount(Resources.EXPOSURE_TIME) + "\n";
+            ret += "\tScience Amount:     " + GetScienceCount() + "\n";
+            ret += "\tdataIsCollectable:  " + dataIsCollectable + "\n";
+            ret += "\tresettable:         " + resettable + "\n";
+            ret += "\tresourceToReset:    " + resourceToReset + "\n";
+            ret += "\trerunnable:         " + rerunnable + "\n";
+            return ret;
+        }
+
+        public void stopResearch(int newState, bool doCloseExperiment = true)
+        {
+            // Stop the lab
+            keesLab.doResearch = false;
+            if(doCloseExperiment)
+            {
+                closeExperiment();
+            }
+            deleteAlarm();
+            state = newState;
+        }
+
+        /// <summary>
+        /// Returns true if the Biome has changed from when the Experiment was started.
+        /// </summary>
+        public bool hasBiomeChangedSinceStart()
+        {
+            string subjectId = ScienceHelper.getScienceSubject(experimentID, vessel)?.id;
+            return subjectId != last_subjectId;
+        }
+
+        /// <summary>
+        /// Returns true if the experiment has completed its requirements.
+        /// </summary>
+        public bool hasExperimentFinished()
+        {
+            return exposureTimeRemaining <= 0.0;
+        }
+    }
+
+    public class KEESExperiment : OMSExperiment, IKEESExperiment
     {
         /* Overload from OMSExperiment */
         new public string notReadyStatus = Localizer.GetStringByTag("#ne_Not_installed");
@@ -62,9 +587,9 @@ namespace NE_Science
             base.OnStart(state);
             if (state == StartState.Editor) { return; }
 
-            #if (DEBUG)
+#if (DEBUG)
             Events["DebugDump"].active = true;
-            #endif
+#endif
             this.part.force_activate();
             switch(this.state){
                 case READY:
@@ -83,14 +608,28 @@ namespace NE_Science
             StartCoroutine(updateStatus());
         }
 
-        #if (DEBUG)
+        /** Called when the part is destroyed; but also when picked up using KIS.
+         */
+        public override void OnInactive()
+        {
+#if false
+            if (docked)
+            {
+                dockedToPEC(false);
+                updateState();
+            }
+#endif
+            base.OnInactive();
+        }
+
+#if (DEBUG)
         [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
         public void DebugDump()
         {
             /* Printed out in Player.log */
             NE_Helper.log(this.ToString ());
         }
-        #endif
+#endif
 
         /** Converts the object to a human-readble string suitable for printing.
          * Overloads base-class implementation.
@@ -191,14 +730,14 @@ namespace NE_Science
             resetExp();
         }
 
-        public void stopResearch(string resName)
+        public void stopResearch(int newState)
         {
-            setResourceMaxAmount(resName, 0);
-        }
-
-        public void stopResearch()
-        {
-            stopResearch(Resources.EXPOSURE_TIME);
+            Events["StartExperiment"].active = false;
+            Events["DeployExperiment"].active = false;
+            setResourceMaxAmount(Resources.EXPOSURE_TIME, 0);
+            playAnimation(deployAnimation, -1, 1);
+            deleteAlarm();
+            state = newState;
         }
 
         public void updateState()
@@ -321,22 +860,14 @@ namespace NE_Science
 
         public virtual void biomeChanged()
         {
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Location_changed_mid_experiment_1_ruined", part.partInfo.title), 6, ScreenMessageStyle.UPPER_CENTER);
-            stopResearch();
-            playAnimation(deployAnimation, -1, 1);
-            state = ERROR;
+            stopResearch(ERROR);
         }
 
         public virtual void undockedRunningExp()
         {
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
             ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Warning_1_has_detached_from_station_without_being_finalized",part.partInfo.title), 2, ScreenMessageStyle.UPPER_CENTER);
-            stopResearch();
-            playAnimation(deployAnimation, -1, 1);
-            state = NOT_READY;
+            stopResearch(NOT_READY);
         }
 
         public virtual void labFound()
@@ -366,20 +897,13 @@ namespace NE_Science
 
         public virtual void finalized()
         {
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
-            stopResearch();
-            state = FINALIZED;
-            playAnimation(deployAnimation, -1, 1);
+            stopResearch(FINALIZED);
         }
 
         public virtual void resetExp()
         {
             ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Resetting_Experiment_1", part.partInfo.title), 2, ScreenMessageStyle.UPPER_CENTER);
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
-            stopResearch();
-            state = NOT_READY;
+            stopResearch(NOT_READY);
         }
 
         public override string GetInfo()
@@ -400,11 +924,6 @@ namespace NE_Science
         }
 
 
-        public void dockedToPEC(bool docked)
-        {
-            this.docked = docked;
-        }
-
         private void playAnimation(string animName, float speed, float time)
         {
             // MKW TODO - remove "FirstOrDefault" Linq statement
@@ -422,24 +941,42 @@ namespace NE_Science
             }
         }
 
-
-        internal void pecDecoupled()
+        public virtual void OnExperimentMounted()
         {
-            Events["StartExperiment"].active = false;
-            Events["DeployExperiment"].active = false;
+            docked = true;
+            updateState();
+        }
+
+        public virtual void OnExperimentUnmounted()
+        {
+            docked = false;
+            updateState();
+        }
+
+        public virtual void OnPecDecoupled()
+        {
             ScreenMessages.PostScreenMessage(Localizer.Format("#ne_Warning_1_has_detached_from_the_vessel", part.partInfo.title), 2, ScreenMessageStyle.UPPER_CENTER);
-            stopResearch();
-            playAnimation(deployAnimation, -1, 1);
-            state = ERROR;
+            stopResearch(ERROR);
             docked = false;
         }
 
+        #if true
+        internal override float getRemainingExperimentTime()
+        {
+            return exposureTimeRemaining * 60 * 60;
+        }
+
+        internal override string getAlarmDescription()
+        {
+            return "KEES Alarm";
+        }
+        #else
         /** Sets KAC alarm for when experiment will be finished. */
         internal bool setAlarm()
         {
             deleteAlarm();
-            alarm = NE_Helper.AddExperimentAlarm( exposureTimeRemaining * 60 * 60, "KEES Alarm", experiment.experimentTitle, part.vessel);
-            return alarm != null;
+            alarmId = NE_Helper.AddExperimentAlarm( exposureTimeRemaining * 60 * 60, "KEES Alarm", experiment.experimentTitle, part.vessel);
+            return alarmId != null;
         }
 
         internal bool pauseAlarm()
@@ -456,12 +993,13 @@ namespace NE_Science
 
         internal bool deleteAlarm()
         {
-            if (alarm != null)
+            bool wasAlarmDeleted = NE_Helper.DeleteAlarm(alarm);
+            if (wasAlarmDeleted)
             {
-                return NE_Helper.DeleteAlarm(alarm);
                 alarm = null;
             }
-            return false;
+            return wasAlarmDeleted;
         }
+        #endif
     }
 }

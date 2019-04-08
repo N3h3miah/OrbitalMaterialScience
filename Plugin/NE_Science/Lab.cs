@@ -153,7 +153,6 @@ namespace NE_Science
         protected virtual void displayStatusMessage(string s)
         {
             labStatus = s;
-            Fields["labStatus"].guiActive = true;
         }
 
         protected V getOrDefault<K, V>(Dictionary<K, V> dict, K key)
@@ -210,6 +209,7 @@ namespace NE_Science
             }
             Events["stopResearch"].active = doResearch;
             Events["startResearch"].active = !doResearch;
+            Fields["labStatus"].guiActive = true;
             StartCoroutine(updateState());
         }
 

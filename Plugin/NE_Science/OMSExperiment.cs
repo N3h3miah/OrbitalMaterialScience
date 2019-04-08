@@ -21,7 +21,7 @@ namespace NE_Science
 {
     using KAC;
 
-    public class OMSExperiment : ModuleScienceExperiment
+    public abstract class OMSExperiment : ModuleScienceExperiment
     {
         public const string COMPLETED = "completed";
 
@@ -54,7 +54,8 @@ namespace NE_Science
         [KSPField(isPersistant = true)]
         public float completed = 0;
 
-        public KACWrapper.KACAPI.KACAlarm alarm = null;
+        [KSPField(isPersistant = true)]
+        public string alarmId = string.Empty;
 
         public static bool checkBoring(Vessel vessel, bool msg = false)
         {
@@ -71,5 +72,49 @@ namespace NE_Science
             return false;
         }
 
+
+        #region Kerbal Alarm Clock helpers
+        /// <summary>
+        /// Overload this to return the remaining experiment time.
+        /// </summary>
+        /// This method will be used when creating new alarms.
+        /// <returns>The remaining experiment time in minutes.</returns>
+        internal abstract float getRemainingExperimentTime();
+
+        /// <summary>
+        /// Overload this to return the display name to be used in the alarm.
+        /// </summary>
+        internal abstract string getAlarmDescription();
+
+        /** Sets KAC alarm for when experiment will be finished. */
+        internal bool setAlarm()
+        {
+            deleteAlarm();
+            alarmId = NE_Helper.AddExperimentAlarm(getRemainingExperimentTime(), "KEES Alarm", experiment.experimentTitle, part.vessel);
+            return !string.IsNullOrEmpty(alarmId);
+        }
+
+        internal bool pauseAlarm()
+        {
+            /* Current KACAPI doesn't support pausing, so we delete it instead. */
+            return deleteAlarm();
+        }
+
+        internal bool resumeAlarm()
+        {
+            /* Current KACAPI doesn't support pause/resume, so we create a new alarm instead. */
+            return setAlarm();
+        }
+
+        internal bool deleteAlarm()
+        {
+            bool wasAlarmDeleted = NE_Helper.DeleteAlarm(alarmId);
+            if (wasAlarmDeleted)
+            {
+                alarmId = string.Empty;
+            }
+            return wasAlarmDeleted;
+        }
+        #endregion
     }
 }

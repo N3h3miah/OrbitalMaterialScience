@@ -52,7 +52,7 @@ namespace NE_Science
         private int partCount;
         private ExperimentStorage[] contCache = null;
 
-        protected KACWrapper.KACAPI.KACAlarm alarm = null;
+        protected string alarmId = null;
 
         /// <summary>
         /// Creates a new Experiment data object
@@ -331,7 +331,7 @@ namespace NE_Science
             {
                 state = ExperimentState.RUNNING;
                 /* TODO: configuration whether to auto-create alarms */
-                alarm = NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
+                alarmId = NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
             }
         }
 
