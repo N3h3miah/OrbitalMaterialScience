@@ -24,71 +24,53 @@ namespace NE_Science
     class KEES_PEC : PartModule
     {
 
-        [KSPField(isPersistant = false)]
-        public string nodeName = "top";
+        [KSPField(isPersistant = true)]
+        public bool decoupled = false;
 
         [KSPField(isPersistant = false)]
         public double maxGforce = 2.5;
 
-        private AttachNode node = null;
-        private IKEESExperiment exp = null;
+        protected AttachNode node
+        {
+            get
+            {
+                AttachNode node = part.FindAttachNode("top");
+                if (node == null)
+                {
+                    NE_Helper.logError("KEES PEC: AttachNode not found");
+                    node = part.attachNodes[0];
+                }
+                return node;
+            }
+        }
 
-        private int counter = 0;
+        public Part attachedPart
+        {
+            get
+            {
+                return node?.attachedPart;
+            }
+        }
 
-        [KSPField(isPersistant = true)]
-        public bool decoupled = false;
-
-        public override void OnStart(PartModule.StartState state)
+        public override void OnStart(StartState state)
         {
             base.OnStart(state);
-
-            node = part.FindAttachNode(nodeName);
-            if (node == null)
+            if(state == StartState.Editor)
             {
-                NE_Helper.logError("KEES PEC: AttachNode not found");
-                node = part.attachNodes[0];
+                return;
             }
 
             Events["Decouple"].active = NE_Helper.debugging() && !decoupled;
         }
 
+
         /// <summary>
-        /// Checks whether a KEESExperiement has just been mounted or unmounted.
+        /// Returns true if the PEC is attached to a Vessel
         /// </summary>
-        private void checkForExp()
+        private bool isVesselShip()
         {
-            // The following line is needed because Unity does some funky
-            // stuff overloading the '==' operator and creating fake 'null'
-            // objects in certain situations, such as when they become
-            // inactive or destroyed.
-            //
-            // exp == null           // returns true if exp is null or "fake null"
-            // (object)exp == null   // uses the C# '==' operator, so returns true only if exp is really null
-            // exp is null           // also avoids the Unity overloaded '==', so also returns true only if exp is really null
-            // 
-            IKEESExperiment newExp = node?.attachedPart?.GetComponent<IKEESExperiment>();
-            if (newExp != null)
-            {
-                if (exp is null)
-                {
-                    exp = newExp;
-                    exp.OnExperimentMounted();
-                    NE_Helper.log("New KEES Experiment installed");
-                }
-                else if (exp != newExp)
-                {
-                    exp.OnExperimentUnmounted();
-                    exp = newExp;
-                    exp.OnExperimentMounted();
-                    NE_Helper.log("KEES Experiment switched");
-                }
-            }
-            else if (!(exp is null))
-            {
-                exp.OnExperimentUnmounted();
-                NE_Helper.log("KEES Experiment undocked");
-                exp = null;
-            }
+            bool isVesselShip = part.parent != null && vessel != null && !vessel.isEVA;
+            return isVesselShip;
         }
 
         /// <summary>
@@ -104,51 +86,105 @@ namespace NE_Science
             /* Only perform the max-G check if we are attached to a vessel.
              * During KAS grab, vessel can be itself or a Kerbal, and we may
              * get spurious high G's. */
-            bool isVesselShip = part.parent != null && vessel != null && !vessel.isEVA;
-            if (decoupled && vessel.vesselType != VesselType.Debris)
+            if (!decoupled && isVesselShip() && vessel.geeForce > maxGforce)
             {
-                NE_Helper.log("Decoupled PEC recovered");
-                decoupled = false;
-                Events["Decouple"].active = NE_Helper.debugging();
+                // Launch coroutine to ensure we really are decoupling due to max-G's
+                // During KIS-grab, we can get spurious high G's
+                StartCoroutine(WaitForDecouple(vessel.geeForce));
             }
-            if (!decoupled && isVesselShip && vessel.geeForce > maxGforce)
+            
+        }
+
+        /// <summary>
+        /// Wait for a second before checking whether we've really decoupled due to high-G's
+        /// or whether this got triggered due to a KIS grab
+        /// </summary>
+        private System.Collections.IEnumerator WaitForDecouple(double geeForce)
+        {
+            yield return new WaitForSeconds(1);
+            // If the high G's were due to KIS, we're now decoupled (and probably inactive),
+            // otherwise we need to detach now.
+            if (!decoupled && isVesselShip() && geeForce > maxGforce)
             {
-                NE_Helper.log ("KEES PEC over max G, decouple\n" + this.ToString ());
+                NE_Helper.log("KEES PEC over max G, decouple\n" + this.ToString());
                 Decouple();
             }
-            if (!decoupled && counter == 0)//don't run this every frame
-            {
-                checkForExp();
-            }
-            counter = (++counter) % 6;
         }
 
         /// <summary>
         /// Decouples the PEC from its parent vessel.
         /// </summary>
         /// This can occur due to a high-G maneuvre, or if the Player removes the part
-        /// from the ship, or due to a GUI click.
+        /// from the ship, or due to a debug GUI click.
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, unfocusedRange = 5, guiName = "Decouple", active = true)]
         public void Decouple()
         {
-            Events["Decouple"].active = false;
-            decoupled = true;
             part.decouple();
-            if (!(exp is null))
-            {
-                exp.OnPecDecoupled();
-            }
-            exp = null;
+            OnDetached();
         }
 
-        #if (DEBUG)
+#if (DEBUG)
         [KSPEvent(guiActive = true, guiName = "Debug Dump", active = true)]
         public void DebugDump()
         {
             /* Printed out in Player.log */
             NE_Helper.log(this.ToString ());
         }
-        #endif
+#endif
+
+        /// <summary>
+        /// Called when the PEC is attached to a Vessel
+        /// </summary>
+        public void OnAttached()
+        {
+            attachedPart?.SendMessage("OnPecCoupled", SendMessageOptions.DontRequireReceiver);
+            decoupled = false;
+            Events["Decouple"].active = NE_Helper.debugging();
+        }
+
+        /// <summary>
+        /// Called when the PEC is detached from a Vessel
+        /// </summary>
+        public void OnDetached()
+        {
+            attachedPart?.SendMessage("OnPecDecoupled", SendMessageOptions.DontRequireReceiver);
+            decoupled = true;
+            Events["Decouple"].active = false;
+        }
+
+        #region KIS Events
+        /// <summary>
+        /// Process incoming KIS events
+        /// </summary>
+        /// eventData is a dictionary with the following entries:
+        ///     action - name of action; we're interested in the following: AttachEnd, Decouple
+        ///     targetPart - part we got attached to; on Decouple it's null
+        ///     
+        void OnKISAction(Dictionary<string, object> eventData)
+        {
+            NE_Helper.log("KEESExperiment: received KISAction - " + eventData.ToString());
+            try
+            {
+                switch ((string)eventData["action"])
+                {
+                    // Called when we've been attached.
+                    case "AttachEnd":
+                        NE_Helper.log("KEES_Pec - attached using KIS");
+                        OnAttached();
+                        break;
+
+                    case "Decouple":
+                        NE_Helper.log("KEES_Pec - decoupled using KIS");
+                        OnDetached();
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                NE_Helper.logError("Exception while handling KISAction: " + e.ToString());
+            }
+        }
+        #endregion
 
         /** Converts the object to a human-readble string suitable for printing.
         /** Converts the object to a human-readable string suitable for printing.
@@ -158,7 +194,7 @@ namespace NE_Science
         {
             String ret = base.ToString () + "\n";
             ret += "\tnode:               " + node + "\n";
-            ret += "\texp:                " + exp + "\n";
+            ret += "\texp:                " + attachedPart + "\n";
             ret += "\tdecoupled:          " + decoupled + "\n";
             ret += "\tpart:               " + part + "\n";
             ret += "\tpart.parent:        " + part.parent + "\n";
