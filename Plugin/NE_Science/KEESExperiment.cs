@@ -259,9 +259,8 @@ namespace NE_Science
         /// </summary>
         public override string GetInfo()
         {
-            // TODO: Retrieve the lab and programmatically retrieve the ExposureTimePerHour; by default it's 1.0
             string timeStr;
-            timeStr = NE_Helper.timeToStr((long)(exposureTimeRequired * 60 * 60));
+            timeStr = NE_Helper.timeToStr((long)(exposureTimeRequired * keesLab.ExposureTimePerHour));
             String ret = Localizer.Format("#ne_Exposure_time_required_1", timeStr);
             ret += "\n";
             ret += Localizer.GetStringByTag("#ne_You_need_to_install_the_experiment_on_a_KEES_PEC");
@@ -422,7 +421,6 @@ namespace NE_Science
         /// <summary>
         /// Called when user clicks on "Finalize"; bring up KSP Science Dialog showing results
         /// </summary>
-        /// TODO: How to handle if user clicks "Reset"???
         public virtual void OnExperimentFinalized()
         {
             NE_Helper.log("KEESExperiment: OnExperimentFinalized()");
@@ -519,7 +517,7 @@ namespace NE_Science
         #region OMSExperiment Overloads
         internal override float getRemainingExperimentTime()
         {
-            return exposureTimeRemaining * 60 * 60;
+            return exposureTimeRemaining * keesLab.ExposureTimePerHour;
         }
 
         internal override string getAlarmDescription()
