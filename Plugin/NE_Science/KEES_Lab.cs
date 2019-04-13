@@ -21,7 +21,7 @@ using System.Text;
 
 namespace NE_Science
 {
-    class KEES_Lab : Lab
+    public class KEES_Lab : Lab
     {
 
         [KSPField(isPersistant = false)]

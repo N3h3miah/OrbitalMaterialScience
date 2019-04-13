@@ -75,10 +75,10 @@ namespace NE_Science
 
         #region Kerbal Alarm Clock helpers
         /// <summary>
-        /// Overload this to return the remaining experiment time.
+        /// Overload this to return the remaining experiment time in seconds.
         /// </summary>
         /// This method will be used when creating new alarms.
-        /// <returns>The remaining experiment time in minutes.</returns>
+        /// <returns>The remaining experiment time in seconds.</returns>
         internal abstract float getRemainingExperimentTime();
 
         /// <summary>

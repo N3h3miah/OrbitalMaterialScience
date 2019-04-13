@@ -58,7 +58,18 @@ namespace NE_Science
         /// <summary>
         /// The KEES_Lab which we are using.
         /// </summary>
-        internal KEES_Lab keesLab = null;
+        private KEES_Lab keesLab = null;
+        public KEES_Lab KeesLab
+        {
+            get
+            {
+                if (keesLab is null)
+                {
+                    keesLab = part.FindModuleImplementing<KEES_Lab>();
+                }
+                return keesLab;
+            }
+        }
 
         #endregion
 
@@ -179,16 +190,19 @@ namespace NE_Science
             readyStatus = Localizer.GetStringByTag("#ne_Ready");
             errorStatus = Localizer.GetStringByTag("#ne_Experiment_Ruined");
 
-            // The only reason we have a "lab" is for the generator; a bit of overkill really.
-            // By default, let's turn off the generator, it should only be running if the
-            // experiment is running.
-            if (keesLab is null)
-            {
-                keesLab = part.FindModuleImplementing<KEES_Lab>();
-            }
-            keesLab.doResearch = false;
             ResourceHelper.setResourceMaxAmount(part, Resources.EXPOSURE_TIME, exposureTimeRequired);
             this.part.force_activate();
+
+            // Set up the unsaved experiment state after returning to a ship
+            if (state == RUNNING)
+            {
+                KeesLab.doResearch = true;
+                openExperiment();
+            }
+            else
+            {
+                KeesLab.doResearch = false;
+            }
 
             Fields["expStatus"].guiActive = true;
             DeployExperimentEvent.active = false;
@@ -242,25 +256,13 @@ namespace NE_Science
             isExperimentsResultDialogOpen = (ExperimentsResultDialog.Instance != null);
         }
 
-        // Override from PartModule, called when the part is destroyed;
-        // This can occur when the part is "g"rabbed using KIS.
-        public override void OnInactive()
-        {
-            NE_Helper.log("KEESExperiment: OnInactive()");
-            if (docked)
-            {
-                OnExperimentUnmounted();
-            }
-            base.OnInactive();
-        }
-
         /// <summary>
         /// Generate the user-visible description of the part.
         /// </summary>
         public override string GetInfo()
         {
-            string timeStr;
-            timeStr = NE_Helper.timeToStr((long)(exposureTimeRequired * keesLab.ExposureTimePerHour));
+            long exposureTimeInSeconds = (long)(exposureTimeRequired * KeesLab.ExposureTimePerHour * 60 * 60);
+            string timeStr = NE_Helper.timeToStr(exposureTimeInSeconds);
             String ret = Localizer.Format("#ne_Exposure_time_required_1", timeStr);
             ret += "\n";
             ret += Localizer.GetStringByTag("#ne_You_need_to_install_the_experiment_on_a_KEES_PEC");
@@ -288,7 +290,7 @@ namespace NE_Science
                     // Can occur when we switch back to a running station in which case the
                     // experiment may actually show up as closed.
                     openExperiment();
-                    keesLab.doResearch = true;
+                    KeesLab.doResearch = true;
                     break;
             }
             docked = true;
@@ -349,7 +351,6 @@ namespace NE_Science
 
                 case RUNNING:
                 case FINISHED:
-                    Events["DeployExperiment"].active = false;
                     stopResearch(ERROR);
                     expStatus = errorStatus;
                     break;
@@ -385,7 +386,7 @@ namespace NE_Science
             state = RUNNING;
             expStatus = runningStatus;
             // Start the lab
-            keesLab.doResearch = true;
+            KeesLab.doResearch = true;
             ScreenMessages.PostScreenMessage("#ne_Started_experiment", 6, ScreenMessageStyle.UPPER_CENTER);
         }
         public virtual void OnExperimentStopped()
@@ -411,12 +412,11 @@ namespace NE_Science
         public virtual void OnExperimentFinished()
         {
             NE_Helper.log("KEESExperiment: OnExperimentFinished()");
-            DeployExperimentEvent.guiName = Localizer.GetStringByTag("#ne_Finalize_Results");
             completed = (float)Planetarium.GetUniversalTime();
             state = FINISHED;
-            expStatus = finalizedStatus;
+            expStatus = finishedStatus;
             // Stop the lab
-            keesLab.doResearch = false;
+            KeesLab.doResearch = false;
         }
         /// <summary>
         /// Called when user clicks on "Finalize"; bring up KSP Science Dialog showing results
@@ -436,6 +436,8 @@ namespace NE_Science
         /// Checks for any state transitions which can't be captured by events and updates the GUI
         /// </summary>
         /// We need to do the UI updates here as otherwise the UI is not properly updated on startup.
+        ///
+        /// TODO: Check again whether we have to do the GUI updates here or whether we can move them into the events.
         public System.Collections.IEnumerator updateStatus()
         {
             while (true)
@@ -517,7 +519,8 @@ namespace NE_Science
         #region OMSExperiment Overloads
         internal override float getRemainingExperimentTime()
         {
-            return exposureTimeRemaining * keesLab.ExposureTimePerHour;
+            float exposureTimeInSeconds = exposureTimeRequired * KeesLab.ExposureTimePerHour * 60 * 60;
+            return exposureTimeInSeconds;
         }
 
         internal override string getAlarmDescription()
@@ -546,7 +549,7 @@ namespace NE_Science
         public void stopResearch(int newState, bool doCloseExperiment = true)
         {
             // Stop the lab
-            keesLab.doResearch = false;
+            KeesLab.doResearch = false;
             if(doCloseExperiment)
             {
                 closeExperiment();
