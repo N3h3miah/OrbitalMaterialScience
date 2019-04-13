@@ -3,6 +3,26 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.8.1 (for KSP 1.7)
+-----------------------------------------------------------
+### General
+* Recompiled for KSP 1.7
+* Added bulkhead profiles to all parts (fixes #38)
+  + Compatible with taniwha's Custom Bulkhead Profiles mod.
+* Disabled controlling the flow of the experiment resources via tweakables.
+
+### KEES
+* Bugs fixed:
+  + Fixed loading and saving of Alarms (fixes #32)
+  + Disabled resetting and transmitting experiments from the Science Results
+    dialog
+
+
+0.8.0.2 (for KSP 1.6.1)
+-----------------------------------------------------------
+### General
+* Marked as compatible with KSP 1.6.1
+
 0.8.0 (for KSP 1.5) - 2018.06.10
 -----------------------------------------------------------
 ### General
