@@ -109,10 +109,7 @@ namespace NE_Science
         internal bool deleteAlarm()
         {
             bool wasAlarmDeleted = NE_Helper.DeleteAlarm(alarmId);
-            if (wasAlarmDeleted)
-            {
-                alarmId = string.Empty;
-            }
+            alarmId = string.Empty;
             return wasAlarmDeleted;
         }
         #endregion
