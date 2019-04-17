@@ -22,7 +22,7 @@ using KSP.Localization;
 
 namespace NE_Science
 {
-    public class Kemini_Module : Lab
+    public class Kemini_Module : Lab, IScienceResultHelperClient
     {
 
         private const string KEMINI_LAB_EQUIPMENT_TYPE = "KEMINI";
@@ -70,6 +70,8 @@ namespace NE_Science
                         keminiSlot.installExperiment(exp);
                         displayStatusMessage( keminiSlot.getExperiment().displayStateString() );
                         keminiSlot.experimentAction();
+
+                        ScienceResultHelper.Instance.Register(this);
                     }
                     else
                     {
@@ -78,7 +80,6 @@ namespace NE_Science
                     break;
             }
         }
-
 
         public void installEquipmentRack(LabEquipment le)
         {
@@ -202,5 +203,28 @@ namespace NE_Science
             return ret;
         }
 
+
+        #region ExperimentResultDialog interface and callbacks
+        /// <summary>
+        /// ExperimentResultHelperClient interface
+        /// </summary>
+        public Part getPart()
+        {
+            return part;
+        }
+        public void OnExperimentResultDialogResetClicked()
+        {
+            NE_Helper.log("Kemini_Module: OnExperimentResultDialogResetClicked()");
+        }
+        public void OnExperimentResultDialogOpened()
+        {
+            NE_Helper.log("Kemini_Module: OnExperimentResultDialogOpened()");
+            ScienceResultHelper.Instance.DisableButton(ScienceResultHelper.ExperimentResultDialogButton.ButtonReset);
+        }
+        public void OnExperimentResultDialogClosed ()
+        {
+            NE_Helper.log("Kemini_Module: OnExperimentResultDialogClosed()");
+        }
+        #endregion
     }
 }
