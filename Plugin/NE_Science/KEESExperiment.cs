@@ -234,16 +234,26 @@ namespace NE_Science
                     ExperimentsResultDialog erd = ExperimentsResultDialog.Instance;
                     // TODO: Hook into callbacks?
                     // subjectID == NE_KEES_TEST@KerbinSrfLanded ; last_subjectId == NE_KEES_TEST@KerbinSrfLandedLaunchPad
-                    if (erd.currentPage.pageData.subjectID.Contains("NE_KEES"))
+                    //if (erd.currentPage.pageData.subjectID.Contains("NE_KEES"))
+                    if(erd.currentPage.host == part)
                     {
                         UnityEngine.UI.Button[] buttons = erd.GetComponentsInChildren<UnityEngine.UI.Button>();
                         foreach (UnityEngine.UI.Button b in buttons)
                         {
-                            // Disable the Reset and Lab buttons
-                            if (b.name == "ButtonReset" || b.name == "ButtonLab" || b.name == "ButtonTransmit")
+                            // Disable buttons
+                            if (b.name == "ButtonReset" || b.name == "ButtonLab" || b.name == "ButtonTransmit" || b.name == "ButtonTransmit_CommNet")
                             {
-                                b.interactable = false;
+                                // Do this to make the button greyed-out
+                                //b.interactable = false;
+                                // Do this to hide the button
+                                b.gameObject.SetActive(false);
+                                // Do this to hook into the button onClick event
+                                //b.onClick.AddListener(ResetExperiment);
+
+                                // NB: Hiding too many buttons makes the review window too small; so either need to resize it manually,
+                                // or just grey-out the buttons.
                             }
+                            b.onClick.AddListener(() => OnExperimentResultDialogClicked(b.name));
                         }
 
                         // This doesn't seem to do anything
@@ -254,6 +264,11 @@ namespace NE_Science
 
             // update experiments result dialog open state
             isExperimentsResultDialogOpen = (ExperimentsResultDialog.Instance != null);
+        }
+
+        public void OnExperimentResultDialogClicked(string button)
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentResultDialogClicked with button " + button);
         }
 
         /// <summary>
