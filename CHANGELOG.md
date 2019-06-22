@@ -18,10 +18,17 @@ Major features are **bolded**, contributors are *emphasized*.
     dialog
 
 
-0.8.0.2 (for KSP 1.6.1)
+0.8.0-3 (for KSP 1.7) - 2019.06.22
 -----------------------------------------------------------
 ### General
-* Marked as compatible with KSP 1.6.1
+ * Marked as compatible with KSP 1.7.x
+
+
+0.8.0-2 (for KSP 1.6) - 2019.04.01
+-----------------------------------------------------------
+### General
+* Marked as compatible with KSP 1.6.x
+
 
 0.8.0 (for KSP 1.5) - 2018.06.10
 -----------------------------------------------------------
