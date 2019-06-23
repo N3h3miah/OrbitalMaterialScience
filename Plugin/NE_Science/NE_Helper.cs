@@ -375,6 +375,11 @@ namespace NE_Science
         {
             string aID = null;
 
+            if( timeRemaining < 10.0 )
+            {
+                goto done;
+            }
+
             if (!isKacEnabled())
             {
                 goto done;
