@@ -9,13 +9,23 @@ Major features are **bolded**, contributors are *emphasized*.
 * Recompiled for KSP 1.7
 * Added bulkhead profiles to all parts (fixes #38)
   + Compatible with taniwha's Custom Bulkhead Profiles mod.
-* Disabled controlling the flow of the experiment resources via tweakables.
+* Disabled controlling the flow of some of the experiment resources via tweakables.
+  + MSL_LabTime still needs to flow to support the MEP experiments.
 
 ### KEES
 * Bugs fixed:
   + Fixed loading and saving of Alarms (fixes #32)
   + Disabled resetting and transmitting experiments from the Science Results
-    dialog
+    dialog (fixes #8)
+
+### MEE
+* Bugs fixed:
+  + KAC Alarms not created properly for MEP experiments.
+* Added MSL-1000 or MPL-600 labs as requirements for MEP experiments.
+
+
+### Kemini:
+* Removed Kenmini from Pea pod as it caused the pod to fall off its decoupler.
 
 
 0.8.0-3 (for KSP 1.7) - 2019.06.22
