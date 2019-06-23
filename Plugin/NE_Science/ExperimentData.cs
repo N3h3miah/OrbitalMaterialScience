@@ -110,7 +110,6 @@ namespace NE_Science
         {
             string desc = linePrefix + "<b>" + name + "</b>\n";
             desc += linePrefix + getReqString() + "\n";
-            //desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", getTimeRemainingString());
             desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", KSPUtil.PrintDateDelta(getTimeRequired(), true));
             return desc;
         }
@@ -194,11 +193,17 @@ namespace NE_Science
             return type;
         }
 
+        /** Returns the total time required to perform the experiment.
+         * In the case of multi-step experiments, it should return the total of all steps.
+         */
         public virtual float getTimeRequired()
         {
             return 0.0f;
         }
 
+        /** Returns the time remaining to perform the experiment.
+         * In the case of multi-step experiments, it should return the remaining time of the current step.
+         */
         public virtual float getTimeRemaining()
         {
             return 0;
@@ -762,44 +767,51 @@ namespace NE_Science
             return time * 60 * 60; /* Convert hours to seconds */
         }
 
-        /** Returns the amount of time for all remaining experiment steps */
+        /** Returns the amount of time remaining for the current experiment step
+         * TODO: Different steps might require different resources produced by different labs.
+         *       For now, the Material Exposure Experiments do:
+         *           Steps 1 & 3 require MSL_Labtime (from either an MSL-1000 or MPL-600)
+         *           Step 2 requires Exposure Time
+         *       So either we need :
+         *         * a new Equipment rack to prepare exposure experiments and a mechanism to move the experiment between labs, or
+         *         * to be able to find a Lab which can produce the required resource attached to the ship, or
+         *         * add a MSL_LabTime generator to the MEP-825 exposure platform.
+         */
         public override float getTimeRemaining()
         {
             float time = 0.0f;
 
             try
             {
-                // Experiment can be finished when resources for all steps have accumulated
-                // Resources for a step accumulate in the lab associated with that step
-                // Remaining time for a step is resources left / resources per hour
-                // Remaining time for the experiment is the sum of all the remaining step times.
+                // Experiment can be finished when resources have accumulated
+                // Resources accumulate in the lab
+                // Remaining time is resources left / resources per hour
 
                 // 'amount' - amount of resources required
                 // 'Lab.getResourceAmount(resource)' - amount of resources acquired
                 // 'Lab.ProductPerHour' - resource accumulation per hour
                 //
-                for (int idx = activeStep, count = steps.Length; idx < count; idx++)
+                T step = getActiveStep();
+                EquipmentRacks rack = step.getNeededEquipment();
+                LabEquipment le = EquipmentRackRegistry.getLabEquipmentForRack(rack);
+                float amountRemaining = step.getNeededAmount();
+                float productPerHour = 1.0f; // Default
+                if (le == null)
                 {
-                    EquipmentRacks rack = steps[idx].getNeededEquipment();
-                    LabEquipment le = EquipmentRackRegistry.getLabEquipmentForRack(rack);
-                    if (le == null)
-                    {
-                        NE_Helper.log("Warning: Could not find lab equipemnt for " + rack);
-                    }
-                    else
-                    {
-                        float amountRemaining = steps[idx].getNeededAmount() / le.ProductPerHour;
-                        time += amountRemaining / le.ProductPerHour;
-                    }
+                    NE_Helper.log("Warning: Could not find lab equipment for " + rack);
+                    le = store as LabEquipment;
                 }
+                amountRemaining -= (float)le.getResourceAmount(step.getNeededResource());
+                // TODO : Ensure the lab produces the product we want!
+                productPerHour = le.ProductPerHour;
+                time = amountRemaining / productPerHour;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 NE_Helper.log("ERROR - caught exception while trying to calculate the remaining time : " + e.ToString());
             }
             return time * 60 * 60; /* Convert hours to seconds */
         }
-
     }
 
     public class TestExperimentData : KerbalResearchExperimentData
