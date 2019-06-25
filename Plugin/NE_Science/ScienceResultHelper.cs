@@ -156,8 +156,11 @@ namespace NE_Science
         /// <param name="f_client"></param>
         public void Register(IScienceResultHelperClient f_client)
         {
-            _Clients.AddUnique(f_client);
-            //enabled = true;
+            var c = _Clients.AddUnique(f_client);
+            if (!(c is null))
+            {
+                NE_Helper.log("Added " + f_client.ToString() + " as ExperimentResultDialog listener.");
+            }
         }
 
         /// <summary>
@@ -168,8 +171,12 @@ namespace NE_Science
         {
             //var index = _Clients.FindIndex(e => e.getPart() == f_client.getPart());
             //_Clients.RemoveAt(index);
-            _Clients.Remove(f_client);
-            if(_Clients.Count == 0)
+            var didRemove = _Clients.Remove(f_client);
+            if (didRemove)
+            {
+                NE_Helper.log("Removed " + f_client.ToString() + " from ExperimentResultDialog listeners.");
+            }
+            if (_Clients.Count == 0)
             {
                 //enabled = false;
             }
@@ -198,7 +205,11 @@ namespace NE_Science
         /// <param name="f_button">The button to disable.</param>
         public void DisableButton(ExperimentResultDialogButton f_button)
         {
-            _Buttons[f_button.ToString()].interactable = false;
+            Button b = _Buttons[f_button.ToString()];
+            if (b)
+            {
+                b.interactable = false;
+            }
         }
 
         /// <summary>
@@ -208,7 +219,11 @@ namespace NE_Science
         /// <param name="f_button">The button to enable.</param>
         public void EnableButton(ExperimentResultDialogButton f_button)
         {
-            _Buttons[f_button.ToString()].interactable = true;
+            Button b = _Buttons[f_button.ToString()];
+            if(b)
+            {
+                b.interactable = true;
+            }
         }
 
         /// <summary>
@@ -219,7 +234,11 @@ namespace NE_Science
         /// <param name="f_button">The button to hide.</param>
         public void HideButton(ExperimentResultDialogButton f_button)
         {
-            _Buttons[f_button.ToString()].gameObject.SetActive(false);
+            Button b = _Buttons[f_button.ToString()];
+            if (b)
+            {
+                b.gameObject.SetActive(false);
+            }
         }
 
         /// <summary>
@@ -229,7 +248,11 @@ namespace NE_Science
         /// <param name="f_button">The button to show.</param>
         public void ShowButton(ExperimentResultDialogButton f_button)
         {
-            _Buttons[f_button.ToString()].gameObject.SetActive(true);
+            Button b = _Buttons[f_button.ToString()];
+            if (b)
+            {
+                b.gameObject.SetActive(false);
+            }
         }
         #endregion
 
