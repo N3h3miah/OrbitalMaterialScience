@@ -11,6 +11,7 @@ Major features are **bolded**, contributors are *emphasized*.
   + Compatible with taniwha's Custom Bulkhead Profiles mod.
 * Disabled controlling the flow of some of the experiment resources via tweakables.
   + MSL_LabTime still needs to flow to support the MEP experiments.
+* Disabled the "Reset" button of the Experiment Results Dialog for all experiments.
 
 ### KEES
 * Bugs fixed:
@@ -22,7 +23,6 @@ Major features are **bolded**, contributors are *emphasized*.
 * Bugs fixed:
   + KAC Alarms not created properly for MEP experiments.
 * Added MSL-1000 or MPL-600 labs as requirements for MEP experiments.
-
 
 ### Kemini:
 * Removed Kenmini from Pea pod as it caused the pod to fall off its decoupler.
