@@ -174,7 +174,7 @@ namespace NE_Science
 
         public override void installExperiment(ExperimentData exp)
         {
-            if (exp.getEquipmentNeeded() == EquipmentRacks.EXPOSURE)
+            if (exp.getEquipmentNeeded() == EquipmentRacks.EXPOSURE && exposureSlot.experimentSlotFree())
             {
                 exposureSlot.installExperiment(exp);
                 experimentName = exp.getAbbreviation() + ": " + exp.stateString();
