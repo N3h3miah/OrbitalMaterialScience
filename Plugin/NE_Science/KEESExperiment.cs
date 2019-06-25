@@ -32,7 +32,7 @@ namespace NE_Science
 {
     using KAC;
 
-    public class KEESExperiment : OMSExperiment
+    public class KEESExperiment : OMSExperiment, IScienceResultHelperClient
     {
         #region KSP Fields and state variables
         [KSPField(isPersistant = false)]
@@ -194,82 +194,18 @@ namespace NE_Science
             this.part.force_activate();
 
             // Set up the unsaved experiment state after returning to a ship
-            if (state == RUNNING)
-            {
-                KeesLab.doResearch = true;
-                openExperiment();
-            }
-            else
-            {
-                KeesLab.doResearch = false;
-            }
+            OnExperimentMounted();
 
             Fields["expStatus"].guiActive = true;
             DeployExperimentEvent.active = false;
             DeployExperimentEvent.guiActiveUnfocused = true;
             DeployExperimentEvent.unfocusedRange = 3;
-#if (DEBUG)
+            #if (DEBUG)
             Events["DebugDump"].active = true;
-#endif
+            #endif
             StartCoroutine(updateStatus());
         }
 
-
-        private bool isExperimentsResultDialogOpen = false;
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            // check experiments result dialog has closed on this frame
-            if (isExperimentsResultDialogOpen && ExperimentsResultDialog.Instance == null)
-            {
-                // Do stuff if it closed
-            }
-            if (ExperimentsResultDialog.Instance != null)
-            {
-                // check experiments result dialog has opened on this frame
-                if (isExperimentsResultDialogOpen == false)
-                {
-                    // Do stuff if it just opened
-
-                    ExperimentsResultDialog erd = ExperimentsResultDialog.Instance;
-                    // TODO: Hook into callbacks?
-                    // subjectID == NE_KEES_TEST@KerbinSrfLanded ; last_subjectId == NE_KEES_TEST@KerbinSrfLandedLaunchPad
-                    //if (erd.currentPage.pageData.subjectID.Contains("NE_KEES"))
-                    if(erd.currentPage.host == part)
-                    {
-                        UnityEngine.UI.Button[] buttons = erd.GetComponentsInChildren<UnityEngine.UI.Button>();
-                        foreach (UnityEngine.UI.Button b in buttons)
-                        {
-                            // Disable buttons
-                            if (b.name == "ButtonReset" || b.name == "ButtonLab" || b.name == "ButtonTransmit" || b.name == "ButtonTransmit_CommNet")
-                            {
-                                // Do this to make the button greyed-out
-                                //b.interactable = false;
-                                // Do this to hide the button
-                                b.gameObject.SetActive(false);
-                                // Do this to hook into the button onClick event
-                                //b.onClick.AddListener(ResetExperiment);
-
-                                // NB: Hiding too many buttons makes the review window too small; so either need to resize it manually,
-                                // or just grey-out the buttons.
-                            }
-                            b.onClick.AddListener(() => OnExperimentResultDialogClicked(b.name));
-                        }
-
-                        // This doesn't seem to do anything
-                        //erd.currentPage.showReset = false;
-                    }
-                }
-            }
-
-            // update experiments result dialog open state
-            isExperimentsResultDialogOpen = (ExperimentsResultDialog.Instance != null);
-        }
-
-        public void OnExperimentResultDialogClicked(string button)
-        {
-            NE_Helper.log("KEESExperiment: OnExperimentResultDialogClicked with button " + button);
-        }
 
         /// <summary>
         /// Generate the user-visible description of the part.
@@ -295,6 +231,7 @@ namespace NE_Science
         public virtual void OnExperimentMounted()
         {
             NE_Helper.log("KEESExperiment: OnExperimentMounted()");
+            KeesLab.doResearch = false;
             switch(state)
             {
                 case NOT_READY:
@@ -309,6 +246,7 @@ namespace NE_Science
                     break;
             }
             docked = true;
+            ScienceResultHelper.Instance.Register(this);
         }
 
         /// <summary>
@@ -340,6 +278,7 @@ namespace NE_Science
                     break;
             }
             docked = false;
+            ScienceResultHelper.Instance.Unregister(this);
         }
 
         /// <summary>
@@ -541,6 +480,33 @@ namespace NE_Science
         internal override string getAlarmDescription()
         {
             return "KEES Alarm";
+        }
+        #endregion
+
+
+        #region ExperimentResultDialog interface and callbacks
+        /// <summary>
+        /// ExperimentResultHelperClient interface
+        /// </summary>
+        public virtual Part getPart()
+        {
+            return part;
+        }
+        /** Default implementation; does nothing. */
+        public virtual void OnExperimentResultDialogResetClicked()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentResultDialogResetClicked()");
+        }
+        /** Default implementation; disabled 'Reset' button. */
+        public virtual void OnExperimentResultDialogOpened()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentResultDialogOpened()");
+            ScienceResultHelper.Instance.DisableButton(ScienceResultHelper.ExperimentResultDialogButton.ButtonReset);
+        }
+        /** Default implementation; does nothing. */
+        public virtual void OnExperimentResultDialogClosed()
+        {
+            NE_Helper.log("KEESExperiment: OnExperimentResultDialogClosed()");
         }
         #endregion
 
