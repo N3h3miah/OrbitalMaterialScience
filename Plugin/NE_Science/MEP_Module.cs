@@ -251,6 +251,22 @@ namespace NE_Science
             Events["FixArm"].active = Events["FixArm"].guiActiveUnfocused;
         }
 
+        protected override void onLabPaused()
+        {
+            base.onLabPaused();
+
+            /* Delete all alarms */
+            exposureSlot?.getExperiment()?.onPaused();
+        }
+
+        protected override void onLabStarted()
+        {
+            base.onLabStarted();
+
+            /* Create alarms for any running experiments */
+            exposureSlot?.getExperiment()?.onResumed();
+        }
+
         public void errorOnStart()
         {
             MEPlabState = MEPLabStatus.RUNNING;
