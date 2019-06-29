@@ -36,6 +36,7 @@ namespace NE_Science
         public const string STATE_VALUE = "State";
         private const string MASS_VALUE = "Mass";
         private const string COST_VALUE = "Cost";
+        private const string ALARM_ID = "AlarmId";
 
         private string id;
         private string name;
@@ -212,6 +213,7 @@ namespace NE_Science
         protected virtual void load(ConfigNode node)
         {
             state = getState(node.GetValue(STATE_VALUE));
+            alarmId = node.GetValue(ALARM_ID);
         }
 
         private ExperimentState getState(string s)
@@ -240,6 +242,10 @@ namespace NE_Science
             node.AddValue(TYPE_VALUE, getType());
             node.AddValue(STATE_VALUE, state);
             node.AddValue(MASS_VALUE, mass);
+            if( !String.IsNullOrEmpty(alarmId) )
+            {
+                node.AddValue(ALARM_ID, alarmId);
+            }
 
             return node;
         }
