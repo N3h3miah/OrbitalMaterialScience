@@ -11,15 +11,10 @@ Major features are **bolded**, contributors are *emphasized*.
   + Compatible with taniwha's Custom Bulkhead Profiles mod.
 * Disabled controlling the flow of some of the experiment resources via tweakables.
   + MSL_LabTime still needs to flow to support the MEP experiments.
-* Disabled the "Reset" button of the Experiment Results Dialog for all experiments.
+* Disabled the "Reset" button of the Experiment Results Dialog for all experiments (fixes #8)
+* Implemented alarm handling when pausing and loading the game (fixes #32)
 
-### KEES
-* Bugs fixed:
-  + Fixed loading and saving of Alarms (fixes #32)
-  + Disabled resetting and transmitting experiments from the Science Results
-    dialog (fixes #8)
-
-### MEE
+### MEP
 * Bugs fixed:
   + KAC Alarms not created properly for MEP experiments.
 * Added MSL-1000 or MPL-600 labs as requirements for MEP experiments.
