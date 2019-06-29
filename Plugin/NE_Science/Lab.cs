@@ -26,21 +26,47 @@ namespace NE_Science
 {
     public abstract class Lab : PartModule, IPartMassModifier
     {
+        #region KSPFields
+        /// A KSPField is a class member which can be automatically persisted in the save file
+        /// or displayed as a Tweakable.
 
+        ///
+        /// Minimum crew required to operate this Lab.
+        ///
         [KSPField(isPersistant = false)]
         public int minimumCrew = 0;
 
+        /// <summary>
+        /// Current status whether the lab is active / performing research.
+        /// </summary>
         [KSPField(isPersistant = true)]
         public bool doResearch = true;
 
+        /// <summary>
+        /// Time when the lab was last active.
+        /// </summary>
         [KSPField(isPersistant = true)]
         public string last_active = "0";
 
+        /// <summary>
+        /// Abbreviation used in various places.
+        /// </summary>
         [KSPField(isPersistant = false)]
         public string abbreviation = "";
 
+        /// <summary>
+        /// GUI field to display the current lab status.
+        /// </summary>
+        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Lab_Status")]
+        public string labStatus = "";
+
+        ///
+        /// Last count of crew in Part.
+        /// This can be different to part.protoModuleCrew.Count if a crew member has just entered or left the Part.
+        ///
         [KSPField(isPersistant = false)]
         private int m_cCrew = 0;
+        #endregion
 
         public double LastActive
         {
@@ -62,9 +88,6 @@ namespace NE_Science
                 last_active = value.ToString();
             }
         }
-
-        [KSPField(isPersistant = false, guiActive = false, guiName = "#ne_Lab_Status")]
-        public string labStatus = "";
 
         public virtual void installExperiment(ExperimentData exp)
         {
@@ -249,6 +272,10 @@ namespace NE_Science
 
         double owed_time = 0;
 
+        /// <summary>
+        /// Called once after the Part is initialized (ie, after OnAwake) but before the first Update.
+        /// </summary>
+        /// <param name="state"></param>
         public override void OnStart(PartModule.StartState state)
         {
             base.OnStart(state);
@@ -271,6 +298,11 @@ namespace NE_Science
             StartCoroutine(updateState());
         }
 
+        /// <summary>
+        /// Coroutine running while the Part is active.
+        /// </summary>
+        /// This is more efficient than running OnUpdate.
+        /// <returns></returns>
         public System.Collections.IEnumerator updateState()
         {
             while (true)
@@ -289,6 +321,9 @@ namespace NE_Science
                 yield return new UnityEngine.WaitForSeconds(1f);
             }
         }
+
+        #region KSPEvents
+        // KSPEvents can display a gui button in the part action menu
 
         [KSPEvent(guiActive = true, guiName = "#ne_Resume_Research", active = true)]
         public void startResearch()
@@ -310,7 +345,10 @@ namespace NE_Science
         {
             onLabPaused();
         }
+        #endregion
 
+        #region KSPActions
+        // KSPActions can be bound to action keys in the Editor
         [KSPAction("#ne_Resume_Research")]
         public void startResearchingAction(KSPActionParam param)
         {
@@ -331,9 +369,12 @@ namespace NE_Science
             else
                 startResearch();
         }
+        #endregion
 
-
-
+        /// <summary>
+        /// Called by Unity on every physics tic.
+        /// </summary>
+        /// This should be used for any physics calculations.
         public override void OnFixedUpdate()
         {
             if (isActive())
@@ -378,6 +419,7 @@ namespace NE_Science
             }
         }
 
+        #region IPartMassModifier overrides
         /// <summary>Overridden from IPartMassModifier</summary>
         public ModifierChangeWhen GetModuleMassChangeWhen()
         {
@@ -389,6 +431,7 @@ namespace NE_Science
         {
             return getMass();
         }
+        #endregion
     }
 
     public class Generator
