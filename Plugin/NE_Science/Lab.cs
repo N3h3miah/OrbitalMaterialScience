@@ -330,7 +330,7 @@ namespace NE_Science
         {
             if (part.protoModuleCrew.Count < minimumCrew)
             {
-                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module.", 6, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
             if (OMSExperiment.checkBoring(vessel, true))
