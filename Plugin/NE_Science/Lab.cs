@@ -39,6 +39,9 @@ namespace NE_Science
         [KSPField(isPersistant = false)]
         public string abbreviation = "";
 
+        [KSPField(isPersistant = false)]
+        private int m_cCrew = 0;
+
         public double LastActive
         {
             get
@@ -167,19 +170,28 @@ namespace NE_Science
             }
         }
 
+        public bool isUnderstaffed()
+        {
+            return part.protoModuleCrew.Count < minimumCrew;
+        }
+
+        /** This function is called whenever the display of the status messages should change. */
         private void updateStatus()
         {
             if (!doResearch)
             {
-                displayStatusMessage(Localizer.GetStringByTag("#ne_Paused"));
-            }
-            else if (minimumCrew > 0 && part.protoModuleCrew.Count < minimumCrew)
-            {
-                displayStatusMessage(Localizer.Format("#ne_Understaffed_1_of_2", part.protoModuleCrew.Count, minimumCrew));
-            }
-            else if (OMSExperiment.checkBoring(vessel, false))
-            {
-                displayStatusMessage(Localizer.GetStringByTag("#ne_Go_to_space"));
+                if(OMSExperiment.checkBoring(vessel, false))
+                {
+                    displayStatusMessage(Localizer.GetStringByTag("#ne_Go_to_space"));
+                }
+                else if(isUnderstaffed())
+                {
+                    displayStatusMessage(Localizer.Format("#ne_Understaffed_1_of_2", part.protoModuleCrew.Count, minimumCrew));
+                }
+                else
+                {
+                    displayStatusMessage(Localizer.GetStringByTag("#ne_Paused"));
+                }
             }
             else
             {
@@ -187,8 +199,52 @@ namespace NE_Science
             }
         }
 
+        /** This function is called whenever the display of the lab status messages should change. */
         protected virtual void updateLabStatus()
         {
+            /* Defauilt implementation : no-op */
+        }
+
+        /** Called whenever the state of the lab changes to stopped, such as when understaffed or paused */
+        protected virtual void onLabPaused()
+        {
+            /* Defauilt implementation : no-op */
+            doResearch = false;
+            Events["stopResearch"].active = doResearch;
+            Events["startResearch"].active = !doResearch;
+        }
+
+        /// <summary>
+        /// Called whenever crew enters or leaves this part.
+        /// </summary>
+        protected virtual void onCrewMoved()
+        {
+            /* Crew left and we dropped below the minimum crew requirement. */
+            if( m_cCrew >= minimumCrew && part.protoModuleCrew.Count < minimumCrew )
+            {
+                onLabPaused();
+            }
+            /* Crew entered and we went above the minimum crew requirement. */
+            if( m_cCrew < minimumCrew && part.protoModuleCrew.Count >= minimumCrew )
+            {
+                updateStatus();
+                /* Lab is not automatically restarted, player must press button. */
+            }
+        }
+
+        /// <summary>
+        /// Called when the state of the lab changes to started.
+        /// </summary>
+        /// This can occur when crew members enter the Part, or the user clicks on resume.
+        /// It is always called  before updateLabStatus()
+        /// 
+        protected virtual void onLabStarted()
+        {
+            /* Defauilt implementation : no-op */
+            doResearch = true;
+            Events["stopResearch"].active = doResearch;
+            Events["startResearch"].active = !doResearch;
+            updateStatus();
         }
 
         double owed_time = 0;
@@ -202,6 +258,8 @@ namespace NE_Science
             }
             this.part.force_activate();
             generators = new List<Generator>();
+
+            m_cCrew = part.protoModuleCrew.Count;
 
             if (LastActive > 0)
             {
@@ -217,7 +275,17 @@ namespace NE_Science
         {
             while (true)
             {
-                updateStatus();
+                /* Unfortunately there doesn't appear to be an Event for this, so we need to poll
+                 * to Check if crew has entered or left this part. */
+                if( m_cCrew != part.protoModuleCrew.Count )
+                {
+                    onCrewMoved();
+                    m_cCrew = part.protoModuleCrew.Count;
+                }
+                else
+                {
+                    updateStatus();
+                }
                 yield return new UnityEngine.WaitForSeconds(1f);
             }
         }
@@ -230,19 +298,17 @@ namespace NE_Science
                 ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module.", 6, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
-            doResearch = true;
-            Events["stopResearch"].active = doResearch;
-            Events["startResearch"].active = !doResearch;
-            updateStatus();
+            if (OMSExperiment.checkBoring(vessel, true))
+            {
+                return;
+            }
+            onLabStarted();
         }
 
         [KSPEvent(guiActive = true, guiName = "#ne_Pause_Research", active = true)]
         public void stopResearch()
         {
-            doResearch = false;
-            Events["stopResearch"].active = doResearch;
-            Events["startResearch"].active = !doResearch;
-            updateStatus();
+            onLabPaused();
         }
 
         [KSPAction("#ne_Resume_Research")]

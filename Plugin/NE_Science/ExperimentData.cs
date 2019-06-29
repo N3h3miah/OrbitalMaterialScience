@@ -335,7 +335,18 @@ namespace NE_Science
             if(started)
             {
                 state = ExperimentState.RUNNING;
-                /* TODO: configuration whether to auto-create alarms */
+                onResumed();
+            }
+        }
+
+        internal virtual void onPaused()
+        {
+            NE_Helper.DeleteAlarm(alarmId);
+        }
+
+        internal virtual void onResumed()
+        {
+            if(state == ExperimentState.RUNNING) {
                 alarmId = NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
             }
         }

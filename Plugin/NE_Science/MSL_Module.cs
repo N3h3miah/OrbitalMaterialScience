@@ -428,7 +428,26 @@ namespace NE_Science
                     prStatus = Localizer.GetStringByTag("#ne_No_Experiment");
                 }
             }
+        }
 
+        protected override void onLabPaused()
+        {
+            base.onLabPaused();
+
+            /* Delete all alarms */
+            cirSlot?.getExperiment()?.onPaused();
+            firSlot?.getExperiment()?.onPaused();
+            printerSlot?.getExperiment()?.onPaused();
+        }
+
+        protected override void onLabStarted()
+        {
+            base.onLabStarted();
+
+            /* Create alarms for any running experiments */
+            cirSlot?.getExperiment()?.onResumed();
+            firSlot?.getExperiment()?.onResumed();
+            printerSlot?.getExperiment()?.onResumed();
         }
 
         private string getEquipmentString()
