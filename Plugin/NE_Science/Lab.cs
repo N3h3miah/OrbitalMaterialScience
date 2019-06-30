@@ -233,8 +233,7 @@ namespace NE_Science
         {
             /* Defauilt implementation : no-op */
             doResearch = false;
-            Events["stopResearch"].active = doResearch;
-            Events["startResearch"].active = !doResearch;
+            Events["labAction"].guiName = "#ne_Resume_Research";
         }
 
         /// <summary>
@@ -265,8 +264,7 @@ namespace NE_Science
         {
             /* Defauilt implementation : no-op */
             doResearch = true;
-            Events["stopResearch"].active = doResearch;
-            Events["startResearch"].active = !doResearch;
+            Events["labAction"].guiName = "#ne_Pause_Research";
             updateStatus();
         }
 
@@ -292,8 +290,7 @@ namespace NE_Science
             {
                 owed_time = Planetarium.GetUniversalTime() - LastActive;
             }
-            Events["stopResearch"].active = doResearch;
-            Events["startResearch"].active = !doResearch;
+            Events["labAction"].guiName = doResearch? "#ne_Pause_Research" : "#ne_Resume_Research";
             Fields["labStatus"].guiActive = true;
             StartCoroutine(updateState());
         }
@@ -322,10 +319,6 @@ namespace NE_Science
             }
         }
 
-        #region KSPEvents
-        // KSPEvents can display a gui button in the part action menu
-
-        [KSPEvent(guiActive = true, guiName = "#ne_Resume_Research", active = true)]
         public void startResearch()
         {
             if (part.protoModuleCrew.Count < minimumCrew)
@@ -340,10 +333,25 @@ namespace NE_Science
             onLabStarted();
         }
 
-        [KSPEvent(guiActive = true, guiName = "#ne_Pause_Research", active = true)]
         public void stopResearch()
         {
             onLabPaused();
+        }
+
+        #region KSPEvents
+        // KSPEvents can display a gui button in the part action menu
+
+        [KSPEvent(guiActive = true, guiName = "#ne_Resume_Research", active = true)]
+        public void labAction()
+        {
+            if(!doResearch)
+            {
+                startResearch();
+            }
+            else
+            {
+                stopResearch();
+            }
         }
         #endregion
 
