@@ -9,15 +9,20 @@ Major features are **bolded**, contributors are *emphasized*.
 * Recompiled for KSP 1.7
 * Added bulkhead profiles to all parts (fixes #38)
   + Compatible with taniwha's Custom Bulkhead Profiles mod.
-* Disabled controlling the flow of some of the experiment resources via tweakables.
-  + MSL_LabTime still needs to flow to support the MEP experiments.
 * Disabled the "Reset" button of the Experiment Results Dialog for all experiments (fixes #8)
 * Implemented alarm handling when pausing and loading the game (fixes #32)
+* Disabled controlling the flow of some of the experiment resources via tweakables.
+  + MSL_LabTime still needs to flow to support the MEP experiments.
+
+### OSS
+* Only play IVA sounds if we're in IVA and in the part causing the sounds.
 
 ### MEP
+* Pausing the experiment now causes it to retract the experiment (fixes #42).
+* Experiment actions now can only be performed if a Kerbal is in the MEP.
 * Bugs fixed:
   + KAC Alarms not created properly for MEP experiments.
-* Added MSL-1000 or MPL-600 labs as requirements for MEP experiments.
+  + Fixed description to add MSL-1000 or MPL-600 labs as requirements for MEP experiments.
 
 ### Kemini:
 * Removed Kenmini from Pea pod as it caused the pod to fall off its decoupler.
