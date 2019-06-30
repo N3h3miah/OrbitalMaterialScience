@@ -204,6 +204,11 @@ namespace NE_Science
                 return false;
             }
 
+            if( p == null )
+            {
+                return false;
+            }
+
             // If the part does not have an instantiated IVA, or isn't attached to an active vessel the user can't be in it.
             if (p.internalModel == null || p.vessel == null || !p.vessel.isActiveVessel)
             {

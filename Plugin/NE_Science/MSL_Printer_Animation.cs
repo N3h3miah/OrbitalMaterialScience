@@ -64,22 +64,32 @@ namespace NE_Science
         {
             base.OnAwake();
             GameEvents.OnCameraChange.Add(OnCameraChange);
+            GameEvents.OnIVACameraKerbalChange.Add(OnIVACameraChange);
         }
 
+        /// <summary>
+        /// Called whenever the camera changes.
+        /// </summary>
+        /// WARNING: the first time this is called, the part may not be fully initialized yet
+        /// so we must make sure all possible code-paths can handle nulls.
+        /// <param name="newMode"></param>
         private void OnCameraChange(CameraManager.CameraMode newMode)
         {
-            isUserInIVA = NE_Helper.IsUserInIVA(part);
+            onCameraChanged();
+        }
 
-            // If we leave IVA, stop all sounds
-            if (!isUserInIVA)
-            {
-                stopSoundFX();
-            }
+        /// <summary>
+        /// Called whenever the IVA camera changes to a different Kerbal.
+        /// </summary>
+        /// <param name="newKerbal"></param>
+        private void OnIVACameraChange(Kerbal newKerbal)
+        {
+            onCameraChanged();
         }
 
         public override void OnFixedUpdate()
         {
-            base.OnUpdate();
+            base.OnFixedUpdate();
             if (count == 0)
             {
                 if (headBase == null || head == null)
@@ -101,9 +111,19 @@ namespace NE_Science
             count = (count + 1) % 2;
         }
 
+        private void onCameraChanged()
+        {
+            isUserInIVA = NE_Helper.IsUserInIVA(part);
+            if(!isUserInIVA)
+            {
+                // Need to call this since the OnFixedUpdate() is only called while in IVA.
+                stopSoundFX();
+            }
+        }
+
         private void stopSoundFX()
         {
-            if (prAs.isPlaying)
+            if (prAs != null && prAs.isPlaying)
             {
                 prAs.Stop();
             }
@@ -111,7 +131,7 @@ namespace NE_Science
 
         private void playSoundFX()
         {
-            if (!prAs.isPlaying)
+            if (prAs != null && !prAs.isPlaying)
             {
                 prAs.Play();
             }
