@@ -176,20 +176,28 @@ namespace NE_Science
             }
         }
 
-        protected override void onLabPaused()
+        protected override bool onLabPaused()
         {
-            base.onLabPaused();
+            if(! base.onLabPaused() )
+            {
+                return false;
+            }
 
             /* Delete all alarms */
             keminiSlot?.getExperiment()?.onPaused();
+            return true;
         }
 
-        protected override void onLabStarted()
+        protected override bool onLabStarted()
         {
-            base.onLabStarted();
+            if(! base.onLabStarted() )
+            {
+                return false;
+            }
 
             /* Create alarms for any running experiments */
             keminiSlot?.getExperiment()?.onResumed();
+            return true;
         }
 
         [KSPEvent(guiActive = true, guiName = "#ne_Move_Kemini_Experiment", active = false)]

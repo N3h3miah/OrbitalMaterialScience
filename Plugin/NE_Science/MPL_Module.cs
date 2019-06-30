@@ -351,22 +351,30 @@ namespace NE_Science
             }
         }
 
-        protected override void onLabPaused()
+        protected override bool onLabPaused()
         {
-            base.onLabPaused();
+            if(! base.onLabPaused() )
+            {
+                return false;
+            }
 
             /* Delete all alarms */
             msgSlot?.getExperiment()?.onPaused();
             usuSlot?.getExperiment()?.onPaused();
+            return true;
         }
 
-        protected override void onLabStarted()
+        protected override bool onLabStarted()
         {
-            base.onLabStarted();
+            if(! base.onLabStarted() )
+            {
+                return false;
+            }
 
             /* Create alarms for any running experiments */
             msgSlot?.getExperiment()?.onResumed();
             usuSlot?.getExperiment()?.onResumed();
+            return true;
         }
 
         private string getEquipmentString()

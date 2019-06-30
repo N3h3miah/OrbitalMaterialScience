@@ -105,11 +105,15 @@ namespace NE_Science
 
                 case MEPLabStatus.ERROR_ON_START:
                     playAnimation(errorOnStartAnimName, 1f, 1f, onAnimationOnStartFinished);
+                    Events["DeployPlatform"].active = false;
+                    Events["labAction"].active = false;
                     Events["FixArm"].active = true;
                     break;
 
                 case MEPLabStatus.ERROR_ON_STOP:
                     playAnimation(errorOnStopAnimName, -1f, 0f, onAnimationOnStartFinished);
+                    Events["DeployPlatform"].active = false;
+                    Events["labAction"].active = false;
                     Events["FixArm"].active = true;
                     break;
             }
@@ -131,6 +135,11 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "#ne_Action_Experiment")]
         public void actionExp()
         {
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
             if (exposureSlot.isExposureAction())
             {
                 bool shouldArmMove = canArmMove();
@@ -176,6 +185,11 @@ namespace NE_Science
         [KSPEvent(guiActive = true, guiName = "#ne_Deploy_Platform")]
         public void DeployPlatform()
         {
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
             Events["labAction"].active = false;
             Events["DeployPlatform"].active = false;
             switch (MEPlabState)
@@ -195,6 +209,11 @@ namespace NE_Science
         [KSPAction("#ne_Deploy_Platform")]
         public void deployExposurePlatform(KSPActionParam param)
         {
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
             if(MEPlabState != MEPLabStatus.NOT_READY)
             {
                 return;
@@ -207,6 +226,11 @@ namespace NE_Science
         [KSPAction("#ne_Retract_Platform")]
         public void retractExposurePlatform(KSPActionParam param)
         {
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return;
+            }
             if(MEPlabState != MEPLabStatus.READY)
             {
                 return;
@@ -291,38 +315,62 @@ namespace NE_Science
             }
         }
 
-        protected override void onLabPaused()
+        protected override bool canPerformLabActions()
         {
+            // The MEP doesn't usually require crew but does when performing an action.
+            return (part.protoModuleCrew.Count >= 1) && base.canPerformLabActions();
+        }
+
+        protected override bool onLabPaused()
+        {
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return false;
+            }
+            if( !base.onLabPaused() )
+            {
+                return false;
+            }
             ExperimentData e = exposureSlot?.getExperiment();
-            base.onLabPaused();
 
             if( e != null )
             {
                 /* And if the experiment is running let's animate closing it. */
-                if( e.state == ExperimentState.RUNNING )
+                if( exposureSlot.isExposureAction() && (e.state == ExperimentState.RUNNING) )
                 {
                     animateRobotArm(canArmMove());
                 }
                 /* Notify the experiment that the lab has paused */
                 e.onPaused();
             }
+            return true;
         }
 
-        protected override void onLabStarted()
+        protected override bool onLabStarted()
         {
-            ExperimentData e = exposureSlot?.getExperiment();
-            base.onLabStarted();
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return false;
+            }
+            if( !base.onLabStarted() )
+            {
+                return false;
+            }
 
+            ExperimentData e = exposureSlot?.getExperiment();
             if( e != null )
             {
                 /* And if the experiment is running let's animate closing it. */
-                if( e.state == ExperimentState.RUNNING )
+                if( exposureSlot.isExposureAction() && (e.state == ExperimentState.RUNNING) )
                 {
                     animateRobotArm(canArmMove());
                 }
                 /* Notify the experiment that the lab has resumed */
                 e.onResumed();
             }
+            return true;
         }
 
         /// <summary>
@@ -393,12 +441,14 @@ namespace NE_Science
         {
             ScreenMessages.PostScreenMessage("#ne_Warning_robotic_arm_failure", 6, ScreenMessageStyle.UPPER_CENTER);
             MEPlabState = MEPLabStatus.ERROR_ON_START;
+            Events["FixArm"].active = true;
         }
 
         private void onAnimExpStopErrorFinished(Animation anim)
         {
             ScreenMessages.PostScreenMessage("#ne_Warning_robotic_arm_failure", 6, ScreenMessageStyle.UPPER_CENTER);
             MEPlabState = MEPLabStatus.ERROR_ON_STOP;
+            Events["FixArm"].active = true;
         }
 
         private void onAnimStartFixFinished(Animation anim)
@@ -462,12 +512,6 @@ namespace NE_Science
         /// </summary>
         internal void animateRobotArm(bool canArmMove)
         {
-            // Arm only used for exposure steps
-            if (!exposureSlot.isExposureAction())
-            {
-                return;
-            }
-
             Events["labAction"].active = false;
             Events["DeployPlatform"].active = false;
             switch (MEPlabState)

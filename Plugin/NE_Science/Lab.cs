@@ -222,18 +222,27 @@ namespace NE_Science
             }
         }
 
-        /** This function is called whenever the display of the lab status messages should change. */
+        /// <summary>
+        /// This function is called regularly and should be used to update any state
+        /// or displays which cannot be updated via events.
+        /// </summary>
+        /// The primary state which must be polled is to detect when an experiment has finished.
         protected virtual void updateLabStatus()
         {
-            /* Defauilt implementation : no-op */
+            /* Default implementation : no-op */
         }
 
         /** Called whenever the state of the lab changes to stopped, such as when understaffed or paused */
-        protected virtual void onLabPaused()
+        protected virtual bool onLabPaused()
         {
-            /* Defauilt implementation : no-op */
+            if (!canPerformLabActions())
+            {
+                return false;
+            }
+
             doResearch = false;
             Events["labAction"].guiName = "#ne_Resume_Research";
+            return true;
         }
 
         /// <summary>
@@ -255,17 +264,36 @@ namespace NE_Science
         }
 
         /// <summary>
+        /// Query whether we can perform lab actions such as starting or pausing the lab.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool canPerformLabActions()
+        {
+            return !isUnderstaffed();
+        }
+
+        /// <summary>
         /// Called when the state of the lab changes to started.
         /// </summary>
         /// This can occur when crew members enter the Part, or the user clicks on resume.
         /// It is always called  before updateLabStatus()
-        /// 
-        protected virtual void onLabStarted()
+        /// <returns>True if the lab was started</returns>
+        protected virtual bool onLabStarted()
         {
-            /* Defauilt implementation : no-op */
+            if (!canPerformLabActions())
+            {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
+                return false;
+            }
+            if (OMSExperiment.checkBoring(vessel, true))
+            {
+                return false;
+            }
+
             doResearch = true;
             Events["labAction"].guiName = "#ne_Pause_Research";
             updateStatus();
+            return true;
         }
 
         double owed_time = 0;
@@ -321,21 +349,18 @@ namespace NE_Science
 
         public void startResearch()
         {
-            if (part.protoModuleCrew.Count < minimumCrew)
-            {
-                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
-                return;
-            }
-            if (OMSExperiment.checkBoring(vessel, true))
+            if( !onLabStarted() )
             {
                 return;
             }
-            onLabStarted();
         }
 
         public void stopResearch()
         {
-            onLabPaused();
+            if( !onLabPaused() )
+            {
+                return;
+            }
         }
 
         #region KSPEvents
