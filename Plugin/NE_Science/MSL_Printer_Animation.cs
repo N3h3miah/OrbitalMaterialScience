@@ -60,11 +60,24 @@ namespace NE_Science
         private int baseDirection = 1;
         private int headDirection = 1;
 
-        public override void OnAwake()
+        /// <summary>
+        /// Called every time object is activated.
+        /// </summary>
+        /// Use this instead of OnAwake so that we only listen to the GameEvents when we really have to.
+        public void OnEnable()
         {
-            base.OnAwake();
             GameEvents.OnCameraChange.Add(OnCameraChange);
             GameEvents.OnIVACameraKerbalChange.Add(OnIVACameraChange);
+        }
+
+        /// <summary>
+        /// Called every time object is deactivated.
+        /// </summary>
+        /// Use this instead of OnDestroy so that we only listen to the GameEvents when we really have to.
+        public void OnDisable()
+        {
+            GameEvents.OnCameraChange.Remove(OnCameraChange);
+            GameEvents.OnIVACameraKerbalChange.Remove(OnIVACameraChange);
         }
 
         /// <summary>
