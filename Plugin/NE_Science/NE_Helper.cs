@@ -19,6 +19,7 @@
 
 using System;
 using UnityEngine;
+using KSP.Localization;
 
 namespace NE_Science
 {
@@ -188,6 +189,71 @@ namespace NE_Science
             return (part != null && ResearchAndDevelopment.PartModelPurchased(part));
         }
 
+
+        /// <summary>
+        /// Returns TRUE if the current view is inside the specified Part
+        /// </summary>
+        /// This code was largely copied from the "RasterPropMonitor" mod.
+        /// <param name="p"></param>
+        /// <returns>TRUE if the current view is in the IVA of the provided Part</returns>
+        public static bool IsUserInIVA(Part p)
+        {
+           // Just in case, check for whether we're not in flight.
+            if (!HighLogic.LoadedSceneIsFlight)
+            {
+                return false;
+            }
+
+            if( p == null )
+            {
+                return false;
+            }
+
+            // If the part does not have an instantiated IVA, or isn't attached to an active vessel the user can't be in it.
+            if (p.internalModel == null || p.vessel == null || !p.vessel.isActiveVessel)
+            {
+                return false;
+            }
+
+            // If the camera view isn't in IVA then the user can't be in it either.
+            if (CameraManager.Instance == null ||
+                (CameraManager.Instance.currentCameraMode != CameraManager.CameraMode.IVA
+                && CameraManager.Instance.currentCameraMode != CameraManager.CameraMode.Internal))
+            {
+                return false;
+            }
+
+            // Now that we got that out of the way, we know that the user is in SOME pod on our ship. We just don't know which.
+            // Let's see if he's controlling a kerbal in our pod.
+            Kerbal currKerbal = CameraManager.Instance.IVACameraActiveKerbal;
+            if (currKerbal != null && currKerbal.InPart == p)
+            {
+                return true;
+            }
+
+            // There still remains an option of InternalCamera which we will now sort out.
+            if (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.Internal)
+            {
+                // So we're watching through an InternalCamera. Which doesn't record which pod we're in anywhere, like with kerbals.
+                // But we know that if the camera's transform parent is somewhere in our pod, it's us.
+                // InternalCamera.Instance.transform.parent is the transform the camera is attached to that is on either a prop or the internal itself.
+                // The problem is figuring out if it's in our pod, or in an identical other pod.
+                // Unfortunately I don't have anything smarter right now than get a list of all transforms in the internal and cycle through it.
+                // This is a more annoying computation than looking through every kerbal in a pod (there's only a few of those,
+                // but potentially hundreds of transforms) and might not even be working as I expect. It needs testing.
+                Transform[] componentTransforms = p.internalModel.GetComponentsInChildren<Transform>();
+                foreach (Transform thisTransform in componentTransforms)
+                {
+                    if (thisTransform == InternalCamera.Instance.transform.parent)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static bool isKacEnabled()
         {
             //return setting_KAC_Enabled;
@@ -215,6 +281,64 @@ namespace NE_Science
 
         public static void logError(string errMsg){
             Debug.LogError("[NE] Error: " + errMsg);
+        }
+
+        /** Prints the time in years, days, and hours (and optionally minutes) */
+        public static string timeToStr(long timeInSeconds, bool printMinutes = false)
+        {
+            string ts = "";
+
+            int HoursPerDay = GameSettings.KERBIN_TIME ? 6 : 24;
+            int DaysPerYear = GameSettings.KERBIN_TIME ? 426 : 365;
+
+            long minutes = timeInSeconds / 60;
+            timeInSeconds -= minutes * 60;
+            long hours = minutes / 60;
+            minutes -= hours * 60;
+            long days = hours / HoursPerDay;
+            hours -= days * HoursPerDay;
+            long years = days / DaysPerYear;
+            days -= years * DaysPerYear;
+
+            bool hasTime = false;
+            try {
+                if (years > 0)
+                {
+                    ts += " " + years + " " + Localizer.GetStringByTag("#ne_Years");
+                    hasTime = true;
+                }
+                if (days > 0)
+                {
+                    ts += " " + days + " " + Localizer.GetStringByTag("#ne_Days");
+                    hasTime = true;
+                }
+                if (hours > 0)
+                {
+                    ts += " " + hours + " " + Localizer.GetStringByTag("#ne_Hours");
+                    hasTime = true;
+                }
+                if (printMinutes)
+                {
+                    if (minutes > 0)
+                    {
+                        ts += " " + minutes + " " + Localizer.GetStringByTag("#ne_Minutes");
+                    }
+                    else if(!hasTime)
+                    {
+                        ts += " < 1 " + Localizer.GetStringByTag("#ne_Minutes");
+                    }
+                }
+                else if (!hasTime)
+                {
+                    ts += " < 1 " + Localizer.GetStringByTag("#ne_Hours");
+                }
+            }
+            catch(Exception e)
+            {
+                NE_Helper.logError("Failed to convert time to string: " + e.ToString());
+            }
+
+            return ts;
         }
 
         // Returns the part which is currently under the mouse cursor
@@ -300,16 +424,26 @@ namespace NE_Science
             return ka != null;
         }
 
+        public static KACWrapper.KACAPI.KACAlarm FindAlarm(string alarmId)
+        {
+            return KACAPI?.Alarms.Find(z => z.ID == alarmId);
+        }
+
         /** Adds an alarm for the experiment.
          * @param timeRemaining The time, in seconds, when the experiment will complete.
          * @param alarmTitle The title of the alarm, shown in the main KAC window, generally "NEOS Alarm" or "KEES Alarm" etc.
          * @param experimentName The name of the experiment.
-         * @return On success, returns the alarm which was created, on failure, null.
+         * @return On success, returns the id of the alarm which was created, on failure, null.
          */
-        public static KACWrapper.KACAPI.KACAlarm AddExperimentAlarm(
+        public static string AddExperimentAlarm(
                 float timeRemaining, string alarmTitle, string experimentName, Vessel v)
         {
-            KACWrapper.KACAPI.KACAlarm alarm = null;
+            string aID = null;
+
+            if( timeRemaining < 10.0 )
+            {
+                goto done;
+            }
 
             if (!isKacEnabled())
             {
@@ -319,28 +453,57 @@ namespace NE_Science
             var alarmMargin = getKacAlarmMargin();
             var alarmTime = Planetarium.GetUniversalTime() + timeRemaining - alarmMargin;
 
-            string aID = KACAPI?.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, alarmTitle, alarmTime);
+            aID = KACAPI?.CreateAlarm(KACWrapper.KACAPI.AlarmTypeEnum.ScienceLab, alarmTitle, alarmTime);
             if (string.IsNullOrEmpty(aID))
             {
                 /* Unable to create alarm */
                 goto done;
             }
             /* Set some additional alarm parameters */
-            alarm = KACAPI.Alarms.Find(z=>z.ID==aID);
+            KACWrapper.KACAPI.KACAlarm alarm = FindAlarm(aID);
             alarm.Notes = "Alarm for " + experimentName;
             alarm.AlarmAction = KACWrapper.KACAPI.AlarmActionEnum.KillWarp;
             alarm.AlarmMargin = alarmMargin;
             alarm.VesselID = v?.id.ToString();
 
         done:
-            return alarm;
+            return aID;
         }
 
-        /** Deletes a KAC alarm */
+        /** Deletes a KAC alarm by ID*/
         public static bool DeleteAlarm(string alarmId)
         {
             return KACAPI.DeleteAlarm(alarmId);
         }
 
+        /** Deletes a KAC alarm */
+        public static bool DeleteAlarm(KACWrapper.KACAPI.KACAlarm alarm)
+        {
+            if (alarm != null)
+            {
+                return KACAPI.DeleteAlarm(alarm.ID);
+            }
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// This class implements Extension Methods for various other classes.
+    /// </summary>
+    /// It should be noted that Extension Methods can be called even if the
+    /// variable is null, so care must be taken inside the extension methods
+    /// not to cause NullReferenceExceptions.
+    public static class NE_ExtensionMethods
+    {
+        /// <summary>
+        /// Extension Method on Unity Objects returning whether the object really is null.
+        /// </summary>
+        /// Unity overloads the '==' operator so that it returns true on both null references
+        /// as well as references to destroyed objects. This function only returns true if
+        /// the reference truly is null, and returns false for "fake null" objects.
+        public static bool IsTrueNull(this UnityEngine.Object ob)
+        {
+            return (object)ob == null;
+        }
     }
 }

@@ -22,6 +22,8 @@ using KSP.Localization;
 
 namespace NE_Science
 {
+    using KAC;
+
     public enum ExperimentState
     {
         STORED, INSTALLED, RUNNING, FINISHED, FINALIZED, COMPLETED
@@ -34,6 +36,7 @@ namespace NE_Science
         public const string STATE_VALUE = "State";
         private const string MASS_VALUE = "Mass";
         private const string COST_VALUE = "Cost";
+        private const string ALARM_ID = "AlarmId";
 
         private string id;
         private string name;
@@ -49,6 +52,8 @@ namespace NE_Science
         private Guid cachedVesselID;
         private int partCount;
         private ExperimentStorage[] contCache = null;
+
+        protected string alarmId = null;
 
         /// <summary>
         /// Creates a new Experiment data object
@@ -106,7 +111,6 @@ namespace NE_Science
         {
             string desc = linePrefix + "<b>" + name + "</b>\n";
             desc += linePrefix + getReqString() + "\n";
-            //desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", getTimeRemainingString());
             desc += linePrefix + Localizer.Format("#ne_Needs_Time_1", KSPUtil.PrintDateDelta(getTimeRequired(), true));
             return desc;
         }
@@ -190,11 +194,17 @@ namespace NE_Science
             return type;
         }
 
+        /** Returns the total time required to perform the experiment.
+         * In the case of multi-step experiments, it should return the total of all steps.
+         */
         public virtual float getTimeRequired()
         {
             return 0.0f;
         }
 
+        /** Returns the time remaining to perform the experiment.
+         * In the case of multi-step experiments, it should return the remaining time of the current step.
+         */
         public virtual float getTimeRemaining()
         {
             return 0;
@@ -203,6 +213,7 @@ namespace NE_Science
         protected virtual void load(ConfigNode node)
         {
             state = getState(node.GetValue(STATE_VALUE));
+            alarmId = node.GetValue(ALARM_ID);
         }
 
         private ExperimentState getState(string s)
@@ -231,6 +242,10 @@ namespace NE_Science
             node.AddValue(TYPE_VALUE, getType());
             node.AddValue(STATE_VALUE, state);
             node.AddValue(MASS_VALUE, mass);
+            if( !String.IsNullOrEmpty(alarmId) )
+            {
+                node.AddValue(ALARM_ID, alarmId);
+            }
 
             return node;
         }
@@ -326,9 +341,19 @@ namespace NE_Science
             if(started)
             {
                 state = ExperimentState.RUNNING;
-                /* TODO: configuration whether to auto-create alarms */
-                NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
-                /* TODO: Save alarm ID so we can modify the alarm if the user pauses or stops the experiment. */
+                onResumed();
+            }
+        }
+
+        internal virtual void onPaused()
+        {
+            NE_Helper.DeleteAlarm(alarmId);
+        }
+
+        internal virtual void onResumed()
+        {
+            if(state == ExperimentState.RUNNING) {
+                alarmId = NE_Helper.AddExperimentAlarm( getTimeRemaining(), "NEOS Alarm", getName(), store.getPart().vessel);
             }
         }
 
@@ -759,10 +784,18 @@ namespace NE_Science
             return time * 60 * 60; /* Convert hours to seconds */
         }
 
-        /** Returns the amount of time remaining to complete this experiment step in seconds. */
+        /** Returns the amount of time remaining for the current experiment step
+         * TODO: Different steps might require different resources produced by different labs.
+         *       For now, the Material Exposure Experiments do:
+         *           Steps 1 & 3 require MSL_Labtime (from either an MSL-1000 or MPL-600)
+         *           Step 2 requires Exposure Time
+         *       So either we need :
+         *         * a new Equipment rack to prepare exposure experiments and a mechanism to move the experiment between labs, or
+         *         * to be able to find a Lab which can produce the required resource attached to the ship, or
+         *         * add a MSL_LabTime generator to the MEP-825 exposure platform.
+         */
         public override float getTimeRemaining()
         {
-            LabEquipment le = store as LabEquipment;
             float time = 0.0f;
 
             try
@@ -775,16 +808,27 @@ namespace NE_Science
                 // 'Lab.getResourceAmount(resource)' - amount of resources acquired
                 // 'Lab.ProductPerHour' - resource accumulation per hour
                 //
-                float amountRemaining = steps[activeStep].getNeededAmount() - (float)le.getResourceAmount(steps[activeStep].getNeededResource());
-                time = amountRemaining / le.ProductPerHour;
+                T step = getActiveStep();
+                EquipmentRacks rack = step.getNeededEquipment();
+                LabEquipment le = EquipmentRackRegistry.getLabEquipmentForRack(rack);
+                float amountRemaining = step.getNeededAmount();
+                float productPerHour = 1.0f; // Default
+                if (le == null)
+                {
+                    NE_Helper.log("Warning: Could not find lab equipment for " + rack);
+                    le = store as LabEquipment;
+                }
+                amountRemaining -= (float)le.getResourceAmount(step.getNeededResource());
+                // TODO : Ensure the lab produces the product we want!
+                productPerHour = le.ProductPerHour;
+                time = amountRemaining / productPerHour;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 NE_Helper.log("ERROR - caught exception while trying to calculate the remaining time : " + e.ToString());
             }
             return time * 60 * 60; /* Convert hours to seconds */
         }
-
     }
 
     public class TestExperimentData : KerbalResearchExperimentData

@@ -1,6 +1,6 @@
 ﻿/*
  *   This file is part of Orbital Material Science.
- *   
+ *
  *   Orbital Material Science is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation, either version 3 of the License, or
@@ -23,6 +23,7 @@ namespace NE_Science
 {
     class MSL_FIR_Animation : InternalModule
     {
+        private bool isUserInIVA = false;
 
         [KSPField]
         public string pumpSound = "NehemiahInc/OMS/Sounds/pump";
@@ -41,9 +42,49 @@ namespace NE_Science
 
         private int count = 0;
 
+        /// <summary>
+        /// Called every time object is activated.
+        /// </summary>
+        /// Use this instead of OnAwake so that we only listen to the GameEvents when we really have to.
+        public void OnEnable()
+        {
+            GameEvents.OnCameraChange.Add(OnCameraChange);
+            GameEvents.OnIVACameraKerbalChange.Add(OnIVACameraChange);
+        }
+
+        /// <summary>
+        /// Called every time object is deactivated.
+        /// </summary>
+        /// Use this instead of OnDestroy so that we only listen to the GameEvents when we really have to.
+        public void OnDisable()
+        {
+            GameEvents.OnCameraChange.Remove(OnCameraChange);
+            GameEvents.OnIVACameraKerbalChange.Remove(OnIVACameraChange);
+        }
+
+        /// <summary>
+        /// Called whenever the camera changes.
+        /// </summary>
+        /// WARNING: the first time this is called, the part may not be fully initialized yet
+        /// so we must make sure all possible code-paths can handle nulls.
+        /// <param name="newMode"></param>
+        private void OnCameraChange(CameraManager.CameraMode newMode)
+        {
+            onCameraChanged();
+        }
+
+        /// <summary>
+        /// Called whenever the IVA camera changes to a different Kerbal.
+        /// </summary>
+        /// <param name="newKerbal"></param>
+        private void OnIVACameraChange(Kerbal newKerbal)
+        {
+            onCameraChanged();
+        }
+
         public override void OnFixedUpdate()
         {
-            base.OnUpdate();
+            base.OnFixedUpdate();
             if (count == 0)
             {
                 if (pump1 == null || pump2 == null)
@@ -51,7 +92,7 @@ namespace NE_Science
                     initPartObjects();
                 }
                 MSL_Module lab = part.GetComponent<MSL_Module>();
-                if (lab.isEquipmentRunning(EquipmentRacks.FIR))
+                if (lab.isEquipmentRunning(EquipmentRacks.FIR) && isUserInIVA)
                 {
                     if (pump1 != null)
                     {
@@ -71,9 +112,19 @@ namespace NE_Science
             count = (count + 1) % 2;
         }
 
+        private void onCameraChanged()
+        {
+            isUserInIVA = NE_Helper.IsUserInIVA(part);
+            if(!isUserInIVA)
+            {
+                // Need to call this since the OnFixedUpdate() is only called while in IVA.
+                stopSoundFX();
+            }
+        }
+
         private void stopSoundFX()
         {
-            if (pumpAs.isPlaying)
+            if (pumpAs != null && pumpAs.isPlaying)
             {
                 pumpAs.Stop();
             }
@@ -81,7 +132,7 @@ namespace NE_Science
 
         private void playSoundFX()
         {
-            if (!pumpAs.isPlaying)
+            if (pumpAs != null && !pumpAs.isPlaying)
             {
                 pumpAs.Play();
             }
