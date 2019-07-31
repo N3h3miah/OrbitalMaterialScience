@@ -129,6 +129,7 @@
     <None Include="../../GameData/**/*.*">
       <Link>%(RecursiveDir)%(FileName)</Link>
     </None>
+    <None Include=".editorconfig" />
     <None Include="NE_Science.cd" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
