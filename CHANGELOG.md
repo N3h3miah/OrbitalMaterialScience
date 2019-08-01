@@ -3,6 +3,11 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.8.2 (for KSP 1.7)
+-----------------------------------------------------------
+* Hotfix release for issue #46 - KEES experiments not starting.
+
+
 0.8.1 (for KSP 1.7)
 -----------------------------------------------------------
 ### General
