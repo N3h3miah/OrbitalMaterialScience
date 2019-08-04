@@ -80,6 +80,8 @@ Related and Recommended Mods
 
 * [Connected Living Spaces](https://github.com/codepoetpbowden/ConnectedLivingSpace) - various parts are compatible with CLS and allow Kerbals to move through them.
 
+* [Custom Bulkhead Profiles](https://forum.kerbalspaceprogram.com/index.php?showtopic=181645) - supplies additional bulkhead profile descriptions used by NEOS.
+
 Download Links
 --------------
 
