@@ -71,8 +71,8 @@ namespace NE_Science
                     ConfigNode cnSettingsKAC = settings.AddNode(SETTINGS_NODE_KAC);
                     cnSettingsKAC.AddValue(SETTINGS_VALUE_ENABLED, true);
                     cnSettingsKAC.AddValue(SETTINGS_VALUE_ALARM_MARGIN, 0);
-                    settings.Save(SETTINGS_FILE);
                     */
+                    settings.Save(SETTINGS_FILE);
                 } else {
                     d = bool.Parse(settings.GetValue(SETTINGS_DEBUG));
                     /*
@@ -94,7 +94,6 @@ namespace NE_Science
             }
             catch (Exception e)
             {
-                d = true;
                 NE_Helper.logError("Loading Settings: " + e.Message);
             }
             NE_Helper.debug = d;
