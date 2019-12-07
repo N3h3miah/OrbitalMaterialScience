@@ -2,8 +2,9 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Configuration Defaults; can be overridden in the .user file -->
   <PropertyGroup>
-    <KSP_DIR>$(SolutionDir)..\..\KSP_Dev\</KSP_DIR>
-    <PDB2MDB_TOOL>$(SolutionDir)..\..\pdb2mdb.exe</PDB2MDB_TOOL>
+    <!-- KSPDIR specifies the KSP directory used for DLL References and also where the output files are copied.
+         It can be overridden either in the .user file or via an environment variable. -->
+    <KSPDIR Condition="'$(KSPDIR)'==''">$(SolutionDir)..\..\KSP_Dev\</KSPDIR>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,7 +22,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -41,44 +42,10 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="$(KSPDIR)\KSP_x64_Data\Managed\Assembly*.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>$(KSP_DIR)\KSP_x64_Data\Managed\UnityEngine.InputModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>$(KSP_DIR)\KSP_x64_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>$(KSP_DIR)\KSP_x64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>$(KSP_DIR)KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+    <Reference Include="$(KSPDIR)\KSP_x64_Data\Managed\UnityEngine*.dll">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -136,25 +103,6 @@
     <Compile Include="WindowCounter.cs" />
     <Compile Include="DependancyChecker.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' " />
-    <Copy SourceFiles="$(TargetPath).mdb" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' " />
-  </Target>
-  -->
-  <ItemGroup>
-    <TargetFiles Include="$(TargetPath)" />
-    <TargetFiles Include="$(TargetDir)$(TargetName).pdb" Condition=" '$(Configuration)' == 'Debug' " />
-    <TargetFiles Include="$(TargetDir)$(TargetFileName).mdb" Condition=" '$(Configuration)' == 'Debug' " />
-  </ItemGroup>
-  <Target Name="AfterBuild">
-    <Copy SourceFiles="@(TargetFiles)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
-  </Target>
   <ItemGroup>
     <None Include="../../GameData/**/*.*">
       <Link>%(RecursiveDir)%(FileName)</Link>
@@ -162,7 +110,33 @@
     <None Include=".editorconfig" />
     <None Include="NE_Science.cd" />
   </ItemGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <PostBuildEvent>$(PDB2MDB_TOOL) "$(TargetPath)"</PostBuildEvent>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  -->
+  <Target Name="GetAssemblyVersion" AfterTargets="Build" BeforeTargets="AfterBuild">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <Message Text="Assembly Version: %(Targets.Version)" Importance="high" />
+    <WriteLinesToFile File="$(SolutionDir)/version.txt" Overwrite="true" Lines="%(Targets.Version)" />
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <TargetFiles Include="$(TargetPath)" />
+    <TargetFiles Include="$(TargetDir)$(TargetName).pdb" Condition=" '$(Configuration)' == 'Debug' " />
+  </ItemGroup>
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(TargetFiles)" DestinationFolder="../../GameData/NehemiahInc/NE_Science_Common/Plugins/" />
+    <Copy SourceFiles="@(TargetFiles)" DestinationFolder="$(KSPDIR)/GameData/NehemiahInc/NE_Science_Common/Plugins/" Condition=" '$(Configuration)' == 'Debug' " />
+  </Target>
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(KSPDIR)/KSP_x64.exe</StartProgram>
+    <StartWorkingDirectory>$(KSPDIR)</StartWorkingDirectory>
   </PropertyGroup>
 </Project>
