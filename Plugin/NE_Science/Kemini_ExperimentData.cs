@@ -33,8 +33,21 @@ namespace NE_Science
             : base(id, type, name, abb, EquipmentRacks.KEMINI, mass, cost)
         {
             storageType = ExperimentFactory.KEMINI_EXPERIMENTS;
-            step = new ResourceExperimentStep(this, Resources.LAB_TIME, labTime, "", 0);
+            step = new ResourceExperimentStep(this, Resources.KEMINI_LAB_TIME, labTime, "", 0);
         }
+
+        protected override void load(ConfigNode node)
+        {
+            base.load(node);
+            // Backwards-compatibility for save games from before KSP1.8
+            // TODO: Remove sometime in the future
+            if(step.getNeededResource() == Resources.LAB_TIME)
+            {
+                var stepNode = step.getNode();
+                stepNode.SetValue("Res", Resources.KEMINI_LAB_TIME);
+                step = ExperimentStep.getExperimentStepFromConfigNode(stepNode, this);
+            }
+        }         
 
         public override List<Lab> getFreeLabsWithEquipment(Vessel vessel)
         {

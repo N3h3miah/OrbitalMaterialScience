@@ -108,6 +108,7 @@
       <Link>%(RecursiveDir)%(FileName)</Link>
     </None>
     <None Include=".editorconfig" />
+    <None Include="NehemiahInc\Kemini\Resources\Resources.cfg" />
     <None Include="NE_Science.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
