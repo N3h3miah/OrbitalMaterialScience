@@ -76,11 +76,6 @@
 				<include name="LICENSE" />
 			</fileset>
 		</copy>
-		<copy todir="${CurrMod.dir}/NehemiahInc">
-			<fileset basedir="ExternalDependencies/MiniAVC">
-				<include name="MiniAVC.dll" />
-			</fileset>
-		</copy>
 	</target>
 
 	<target name="copyMM" description="Copy Module Manager to current mod dir">
