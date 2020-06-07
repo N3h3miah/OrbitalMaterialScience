@@ -3,11 +3,32 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.9.0 (for KSP 1.9)
+-----------------------------------------------------------
+### General
+* Recompiled for KSP 1.9 (should be compatible with KSP 1.8 or higher)
+  + NOTE: This version of NEOS will no longer work with earlier versions of KSP!
+* Bugs fixed:
+  + Fixed a bug preventing loading of very old save files.
+  + Fixed a bug preventing the settings file from getting created.
+
+### KEES
+* Reduced max G-force for KEES PEC.
+* Bugs fixed:
+  + Contract rewards for Kemini and KEES (#47)
+  + Correct alarm time when restarting KEES experiments (#48)
+
+### Kemini
+* Added support for the HGR "SoyJuice" pods.
+* Bugs fixed:
+  + Contract rewards for Kemini and KEES (#47)
+
+ 
 0.8.2 (for KSP 1.7)
 -----------------------------------------------------------
 * Hotfix release for issue #46 - KEES experiments not starting.
 
-
+  
 0.8.1 (for KSP 1.7)
 -----------------------------------------------------------
 ### General
