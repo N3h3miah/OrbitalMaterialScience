@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 #if DEBUG
 [assembly: AssemblyInformationalVersion("0.9.0 Debug for KSP 1.8+")]
 #else
-[assembly: AssemblyInformationalVersion("0.8.3 for KSP 1.7+")]
+[assembly: AssemblyInformationalVersion("0.9.0 for KSP 1.8+")]
 #endif
 [assembly: AssemblyFileVersion("0.9.0.40")]
 [assembly: KSPAssembly("NE_Science", 0, 90)]
