@@ -8,6 +8,8 @@ Major features are **bolded**, contributors are *emphasized*.
 ### General
 * Recompiled for KSP 1.9 (should be compatible with KSP 1.8 or higher)
   + NOTE: This version of NEOS will no longer work with earlier versions of KSP!
+* Updated included ModuleManager to 4.1.3
+* No longer include MiniAVC in the package
 * Bugs fixed:
   + Fixed a bug preventing loading of very old save files.
   + Fixed a bug preventing the settings file from getting created.
