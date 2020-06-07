@@ -108,21 +108,24 @@ namespace NE_Science
             ConfigNode cn = configNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME, "type", type);
             if (cn == null)
             {
-                // Pre-Kemini-0.3 savegames have another level of nesting of ConfigNodes so let's recursively look into the child-nodes
-                foreach(ConfigNode child in configNode.nodes)
+                // Pre-NEOS-0.3 savegames have another level of nesting of ConfigNodes so let's search the child-nodes
+                foreach(ConfigNode childNode in configNode.nodes)
                 {
-                    rv = getLabEquipmentSlotByType(child, type);
-                    if (rv != null)
+                    cn = childNode.GetNode(LabEquipmentSlot.CONFIG_NODE_NAME, "type", type);
+                    if (cn != null)
                     {
-                        goto done;
+                        break;
                     }
                 }
 
-                // Not found, so let's raise an error
-                NE_Helper.logError("Lab getLabEquipmentSlotByType: node " + configNode.name
-                    + " does not contain a " + LabEquipmentSlot.CONFIG_NODE_NAME
-                    + " node of type " + type);
-                goto done;
+                // Not found, so let's log an error
+                if (cn == null)
+                {
+                    NE_Helper.logError("Lab getLabEquipmentSlotByType: node " + configNode.name
+                        + " does not contain a " + LabEquipmentSlot.CONFIG_NODE_NAME
+                        + " node of type " + type);
+                    goto done;
+                }
             }
             rv = LabEquipmentSlot.getLabEquipmentSlotFromConfigNode(cn, this);
 

@@ -6,23 +6,7 @@
   -->
   <!--
   <PropertyGroup>
-    <KSP_DIR>$(SolutionDir)..\..\KSP_Dev\</KSP_DIR>
-    <PDB2MDB_TOOL>$(SolutionDir)..\..\pdb2mdb.exe</PDB2MDB_TOOL>
-  </PropertyGroup>
-  -->
-  <!-- The following section sets up custom run commands so you can start
-       KSP directly from Visual Studio by pressing F5
-  -->
-  <!--
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartAction>Program</StartAction>
-    <StartProgram>$(KSP_DIR)KSP_x64_Dbg.exe</StartProgram>
-    <StartWorkingDirectory>$(KSP_DIR)</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartAction>Program</StartAction>
-    <StartProgram>$(KSP_DIR)\KSP_x64.exe</StartProgram>
-    <StartWorkingDirectory>$(KSP_DIR)</StartWorkingDirectory>
+    <KSPDIR>$(SolutionDir)..\..\KSP_Dev\</KSPDIR>
   </PropertyGroup>
   -->
 </Project>
