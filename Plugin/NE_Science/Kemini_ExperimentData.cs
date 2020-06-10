@@ -65,12 +65,13 @@ namespace NE_Science
 
         public override bool canMove(Vessel vessel)
         {
-            return state == ExperimentState.INSTALLED;
+            return state == ExperimentState.INSTALLED || state == ExperimentState.FINISHED;
         }
 
         public override void runLabAction()
         {
             base.runLabAction();
+            // UI Optimisation - if lab is in same part as storage, automatically move a finished experiment to storage.
             if (state == ExperimentState.FINISHED)
             {
                 ExperimentStorage[] storages = store.getPartGo().GetComponents<ExperimentStorage>();
