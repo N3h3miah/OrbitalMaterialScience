@@ -323,11 +323,6 @@ namespace NE_Science
 
         protected override bool onLabPaused()
         {
-            if (!canPerformLabActions())
-            {
-                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
-                return false;
-            }
             if( !base.onLabPaused() )
             {
                 return false;
@@ -349,11 +344,6 @@ namespace NE_Science
 
         protected override bool onLabStarted()
         {
-            if (!canPerformLabActions())
-            {
-                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
-                return false;
-            }
             if( !base.onLabStarted() )
             {
                 return false;

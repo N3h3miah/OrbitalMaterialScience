@@ -235,14 +235,14 @@ namespace NE_Science
             /* Default implementation : no-op */
         }
 
-        /** Called whenever the state of the lab changes to stopped, such as when understaffed or paused */
+        /// <summary>
+        /// Called whenever the lab is paused either via user-action, or if the
+        /// lab becomes understaffed.
+        /// </summary>
+        /// <param name="force">If force is true, the lab will be paused even if it cannot perform lab actions</param>
+        /// <returns></returns>
         protected virtual bool onLabPaused()
         {
-            if (!canPerformLabActions())
-            {
-                return false;
-            }
-
             doResearch = false;
             Events["labAction"].guiName = "#ne_Resume_Research";
             return true;
@@ -283,11 +283,6 @@ namespace NE_Science
         /// <returns>True if the lab was started</returns>
         protected virtual bool onLabStarted()
         {
-            if (!canPerformLabActions())
-            {
-                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
-                return false;
-            }
             if (OMSExperiment.checkBoring(vessel, true))
             {
                 return false;
@@ -350,20 +345,35 @@ namespace NE_Science
             }
         }
 
-        public void startResearch()
+        /// <summary>
+        /// Called directly from GUI; starts research if there are no other
+        /// factors stopping it.
+        /// </summary>
+        private void startResearch()
         {
-            if( !onLabStarted() )
+            if( !canPerformLabActions() )
             {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
+
+            // Success; lab can start
+            onLabStarted();
         }
 
+        /// <summary>
+        /// Called directly from GUI; stops research if possible.
+        /// </summary>
         public void stopResearch()
         {
-            if( !onLabPaused() )
+            if( !canPerformLabActions() )
             {
+                ScreenMessages.PostScreenMessage("#ne_Not_enough_crew_in_this_module", 6, ScreenMessageStyle.UPPER_CENTER);
                 return;
             }
+
+            // Success; lab can pause
+            onLabPaused();
         }
 
         #region KSPEvents
