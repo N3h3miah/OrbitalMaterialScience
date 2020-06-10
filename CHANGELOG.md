@@ -3,6 +3,23 @@ Changelog for Nehemiah Engineering Orbital Science
 
 Major features are **bolded**, contributors are *emphasized*.
 
+0.9.1 (for KSP 1.9)
+-----------------------------------------------------------
+### General
+* Significantly nerfed science payout for all experiments.
+* Bugs fixed:
+  + Fix experiments automatically starting if there are insufficient
+    crew in the Lab. (No longer creates a KAC alarm unless the experiment is
+    actually running).
+  + Fix experiments not pausing when crew leaves the Lab.
+  + Fix "Finalize" not showing the experiment abbreviation.
+
+### Kemini
+* Bugs fixed:
+  + Fix being unable to Move and Finalize an experiment if the Lab does not
+    also have storage as is the case with the HGR SoyJuice pods.
+  + Fix multiple experiments accruing Lab Time from all Labs.
+
 0.9.0 (for KSP 1.9)
 -----------------------------------------------------------
 ### General
