@@ -89,6 +89,6 @@ Download Links
 
 * [SpaceDock](https://spacedock.info/mod/1393)
 
-* [CurseForge](https://mods.curse.com/ksp-mods/kerbal/270269-neos)
+* [CurseForge](https://www.curseforge.com/kerbal/ksp-mods/neos)
 
 * And via the [CKAN](https://forum.kerbalspaceprogram.com/threads/100067) tool.
