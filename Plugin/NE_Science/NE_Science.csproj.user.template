@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Copy (or merge) this file to "NE_Science.csproj.user, uncomment the following
+       lines, and edit to suit your development environment.
+       See "Contributing.md" for more details.
+  -->
+  <!--
+  <PropertyGroup>
+    <KSPDIR>$(SolutionDir)..\..\KSP_Dev\</KSPDIR>
+  </PropertyGroup>
+  -->
+</Project>
